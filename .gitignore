@@ -1,0 +1,13 @@
+# Sistema
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Node / builds (en caso de incluir docs-site directamente)
+docs-site/node_modules/
+docs-site/docs/.vitepress/cache/
+docs-site/docs/.vitepress/dist/
+
+# Temporales / logs
+*.tmp
+*.log
