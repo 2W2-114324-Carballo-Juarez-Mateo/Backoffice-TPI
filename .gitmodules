@@ -1,0 +1,3 @@
+[submodule "docs-site"]
+	path = docs-site
+	url = https://github.com/2W2-114324-Carballo-Juarez-Mateo/backoffice-docs.git
