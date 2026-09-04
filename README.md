@@ -6,18 +6,19 @@ Plataforma de Aprendizaje Gamificado de Programación. Este repositorio contiene
 
 | Ruta | Qué es |
 |---|---|
-| `backoffice_backend_requerimientos_arquitectura.md` | **Doc fuente del backend** (fuente de verdad): ADRs, RF/RNF, arquitectura, multitenancy/RLS, mensajería Kafka |
-| `arquitectura_microservicios_plataforma_gamificada_v2.md` | Documento general de la plataforma (v2) |
-| `BackOffice Resumen Visual.md` | Resumen visual del módulo |
-| `frontend_plan_comunicacion.md` | Plan de comunicación del frontend (Caso A) |
-| `frontend_arquitectura_analisis.md` | Investigación de arquitectura frontend (casos A/B) |
-| `plan-seccion-interactiva.md` | Plan de la sección interactiva del sitio |
-| `sdd/` | **SDD** (Software Design Documents): backend y frontend, con AGENTS.md para agentes de IA |
-| `notebooklm/` | Fuente + prompts de NotebookLM (para generar videos de defensa) |
-| `Presentacion-BackOffice.pptx` | Presentación generada (script en `docs-site/scripts/generate-pptx.mjs`) |
-| `Presentacion-Gamma-BackOffice.md` | Markdown listo para generar la presentación en **Gamma** (10 slides) |
-| `docs-site/` | **Sitio VitePress** (submódulo → `2W2-114324-Carballo-Juarez-Mateo/backoffice-docs`) |
-| `*.pdf` | Documentos de la cátedra (PRD, propuesta BE, teoría FE) |
+| `plan/` | **Todo lo definido de nuestro plan** (Backend + Frontend + MSII + entregables) |
+| `plan/backoffice_backend_requerimientos_arquitectura.md` | Doc fuente del backend (fuente de verdad): ADRs, RF/RNF, arquitectura, multitenancy/RLS, mensajería Kafka |
+| `plan/arquitectura_microservicios_plataforma_gamificada_v2.md` | Documento general de la plataforma (v2) |
+| `plan/BackOffice Resumen Visual.md` | Resumen visual del módulo |
+| `plan/frontend_plan_comunicacion.md` · `plan/frontend_arquitectura_analisis.md` | Plan e investigación del frontend (Caso A) |
+| `plan/plan-seccion-interactiva.md` | Plan de la sección interactiva del sitio |
+| `plan/sdd/` | **SDD** (Software Design Documents): backend y frontend, con AGENTS.md para agentes de IA |
+| `plan/notebooklm/` | Fuente + prompts de NotebookLM (para generar videos de defensa) |
+| `plan/Presentacion-BackOffice.pptx` | Presentación generada (script en `plan/docs-site/scripts/generate-pptx.mjs`) |
+| `plan/Presentacion-Gamma-BackOffice.md` | Markdown listo para generar la presentación en **Gamma** (10 slides) |
+| `plan/docs-site/` | **Sitio VitePress** (submódulo → `2W2-114324-Carballo-Juarez-Mateo/backoffice-docs`) |
+| `propuestas-ajenas/` | **Documentos de la cátedra y propuestas ajenas** (PRD, propuesta BE, teoría FE, propuesta del compañero) |
+| `*.pdf` en `propuestas-ajenas/` | PRD, TUP_PIV_BE_PROPUESTA_ARQ, TUP_PIV_FE_TEO_U1, 2 propuestas (PDF/MD) |
 
 ## Sitio desplegado
 
