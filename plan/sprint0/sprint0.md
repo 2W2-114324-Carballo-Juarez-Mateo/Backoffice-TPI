@@ -66,9 +66,58 @@ Repos y entorno levantados · DoD definida · backlog inicial en Taiga · contra
 
 ---
 
+## 4. Primeras Épicas
+
+| ID | Épica | RF base | Prioridad |
+|---|---|---|---|
+| **EP-1** | Administración de plataforma | RF-CFG-01/05 · RF-ROL | Must |
+| **EP-2** | Configuración global (PAR-01..24) | RF-CFG-04/06 | Must |
+| **EP-3** | Gestión del proveedor LLM | RF-IA-ADM-01..07 | Must |
+| **EP-4** | Contratos de lectura (6 temas) | RF-RPT-10 | Must |
+| **EP-5** | Reportes docentes y panel | RF-RPT-01/02/04/05 | Must / Should / Could |
+| **EP-6** | Frontend BackOffice (app Angular + BFF) | (a definir) | Futura |
+
+## 5. Primeras Historias de Usuario
+
+Formato: *Como [rol], quiero [acción], para [beneficio]* + criterios de aceptación.
+
+### EP-1 · Administración de plataforma
+**US-01** · Como **ADMIN**, quiero **dar de alta y baja administradores**, para controlar quién puede operar la plataforma.
+- Aceptación: solo ADMIN · un admin **no puede auto-eliminarse** (RF-ROL-02) · **protección del último admin** (RF-ROL-05) · auditada (RF-AUD-03).
+
+### EP-2 · Configuración global
+**US-02** · Como **ADMIN**, quiero **crear/editar parámetros globales (PAR-01..24)**, para definir la economía de la plataforma.
+- Aceptación: **versionado** y cambios **solo hacia adelante** (RF-CFG-06) · idempotencia · evento `GlobalConfigurationChanged`.
+
+**US-03** · Como **consumidor (Temas 03/05/08/10)**, quiero **recibir el cambio de parámetro**, para aplicar la configuración sin hardcodear.
+- Aceptación: **Outbox** + idempotencia por `version` · **caché TTL 10 min**.
+
+### EP-3 · Proveedor LLM
+**US-04** · Como **ADMIN**, quiero **dar de alta/sustituir/dar de baja un proveedor o modelo**, para decidir qué IA se usa por función.
+- Aceptación: exclusivo ADMIN · auditado (RF-IA-35) · evento `ModelProviderChanged`.
+
+**US-05** · Como **ADMIN**, quiero **habilitar un modelo evaluador solo si pasa el golden set**, para garantizar la calidad de la evaluación.
+- Aceptación: **calibración dentro de PAR-14** · modelo único activo · **deriva → alerta** (RF-IA-32).
+
+### EP-4 · Contratos de lectura
+**US-06** · Como **Reporting**, quiero **consumir eventos/lecturas de los Temas 02/04/05/07/08/10**, para construir los read models.
+- Aceptación: contratos **acordados con los equipos** · envelope estándar · adapter por tema (RF-RPT-10).
+
+### EP-5 · Reportes docentes y panel
+**US-07** · Como **PROFESOR**, quiero **ver reportes de mi curso-cohorte**, para evaluar el avance de mis alumnos.
+- Aceptación: **solo su curso** (otro → 403, RLS) · panel con alumno en riesgo (RF-RPT-03).
+
+**US-08** · Como **ADMIN**, quiero **ver el consolidado global de métricas (y por curso)**, para monitorear la plataforma.
+- Aceptación: alcance **`ALL` solo ADMIN y auditado** · RLS por `course_id`.
+
+**US-09** · Como **ADMIN/PROFESOR**, quiero **exportar reportes**, para usarlos fuera de la plataforma.
+- Aceptación: export CSV/PDF generado por backend (RF-RPT-04 · Could).
+
+---
+
 ## Secciones pendientes (se agregan en orden)
 - [x] **1. Propuesta de Sprint 0 + tareas iniciales**
 - [x] **2. Definition of Done (DoD)**
 - [ ] **3. Capacidad del equipo** (Excel 2 hojas + justificación)
-- [ ] **4. Primeras Épicas**
-- [ ] **5. Primeras Historias de Usuario**
+- [x] **4. Primeras Épicas**
+- [x] **5. Primeras Historias de Usuario**
