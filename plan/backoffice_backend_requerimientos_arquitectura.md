@@ -171,6 +171,21 @@ Entre ellos se encuentran:
 
 Estos valores deben tratarse como **configuración**, no como constantes hardcodeadas.
 
+### PAR-19..PAR-24 — Candidatos deducidos de la especificación (a validar con la cátedra)
+
+> **Nota importante:** el documento del profe asigna el **registro PAR-01..PAR-24** (Lámina 6), pero la tabla del PRD solo define hasta **PAR-18** (economía). El PRD (nota a `RF-CFG-04`) aclara que *"los parámetros operativos de plataforma se completan en LL"*. Los siguientes **6 candidatos** fueron **deducidos** de la especificación (magic numbers de los temas consumidores + Lámina 6) y **NO son oficiales**: se presentan **a validar con la cátedra**. Los valores marcados como *propuesto* no tienen número oficial en la documentación.
+
+| PAR | Clave técnica (sugerida) | Tipo | Valor de referencia | Cita de la especificación | Consume |
+|---|---|---|---|---|---|
+| **PAR-19** | `late_submission_penalty_pct` | FLOAT | 30% (`0.30`) | "Entrega tardía con penalidad del 30% en ventana de 48 h" | **T05** (Prácticos) |
+| **PAR-20** | `late_submission_window_hours` | INTEGER | 48 h | "…penalidad del 30% en ventana de 48 h" | **T03 / T05** (Desafíos) |
+| **PAR-21** | `event_multiplier_cap` | FLOAT | 3x (`3.0`) | "Multiplicador de eventos con techo de 3x" | **T08 / T10** (Banco / Gamificación) |
+| **PAR-22** | `llm_custom_challenges_weekly_limit` | INTEGER | *propuesto*: 5/semana *(sin número oficial)* | "Desafíos personalizados por LLM… Límite semanal de generación" | **T03 / T07** |
+| **PAR-23** | `reporting_cache_freshness_minutes` | INTEGER | 15 min | "Frescura máxima de 15 minutos en los datos" | **T12** (Reporting) |
+| **PAR-24** | `session_inactivity_timeout_minutes` | INTEGER | *propuesto*: 30 min *(sin número oficial; dueño real: T01)* | "Parámetros operativos de plataforma (política de sesiones)" | **T01** (Identity) |
+
+**Por qué como candidatos:** evita *magic numbers* en los microservicios (Lámina 6), permite al ADMIN ajustar reglas operativas sin recompilar, y el registro genérico (jsonb) los soporta sin migraciones. **Coordinación:** PAR-24 (sesión) es operativa de **T01** → confirmar si es PAR del Backoffice o configuración propia de T01.
+
 ### RF-CFG-05 — Separación de ámbitos de configuración
 
 El backend deberá impedir que un PROFESOR modifique parámetros globales reservados a ADMIN.
