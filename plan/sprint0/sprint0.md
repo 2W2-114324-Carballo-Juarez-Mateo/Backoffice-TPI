@@ -80,11 +80,12 @@ Repos y entorno levantados · DoD definida · backlog inicial en Taiga · contra
 | **Épica 3 — Modelos LLM y Golden Set** | Proveedores/modelos de IA, evaluador, calibración y deriva (exclusivo ADMIN) | RF-IA-ADM-01..07 | Must |
 
 ### T-B · Observabilidad y Soporte Académico
-> **La única que muestra información en vez de gobernarla:** su usuario típico (**PROFESOR**) solo consulta, no configura nada.
+> **Muestra información en vez de gobernarla:** el **PROFESOR** solo consulta (no configura nada); el **ADMIN** ve el consolidado. Incluye el habilitador transversal de los contratos de lectura.
 
 | Épica | Alcance | RF base | Prioridad |
 |---|---|---|---|
-| **Épica 4 — Observabilidad, Reportes y Panel de Riesgo** | Reportes docentes, panel de métricas, alumno en riesgo, export y alertas (más el habilitador de contratos de lectura) | RF-RPT-01/02/03/04/05 · RF-RPT-10 | Must / Should / Could |
+| **Épica 4 — Contratos de Lectura** | Consumo de eventos/lecturas de los Temas 02/04/05/07/08/10 para construir los read models (habilitador de todo el tema) | RF-RPT-10 | Must |
+| **Épica 5 — Observabilidad, Reportes y Panel de Riesgo** | Reportes docentes, panel de métricas, alumno en riesgo, export y alertas | RF-RPT-01/02/03/04/05 | Must / Should / Could |
 
 **Futura:** Frontend BackOffice (app Angular + BFF) — a definir cuando se aborde la materia Front.
 
@@ -123,11 +124,15 @@ Formato: *Como [rol], quiero [acción], para [beneficio]* + criterios de aceptac
 
 ### T-B · Observabilidad y Soporte Académico
 
-#### Épica 4 · Observabilidad, Reportes y Panel de Riesgo
-> La única épica que **muestra** en vez de gobernar: reportes y métricas. El **PROFESOR consulta solo su curso**; el **ADMIN** ve el consolidado.
+#### Épica 4 · Contratos de Lectura
+> Habilitador transversal del tema: el Reporting consume los datos de los demás equipos para poder mostrar algo. **Sin esto, no hay reportes.**
 
-**US-06** · Como **Reporting**, quiero **consumir eventos/lecturas de los Temas 02/04/05/07/08/10**, para construir los read models (habilitador de esta épica).
+**US-06** · Como **Reporting**, quiero **consumir eventos/lecturas de los Temas 02/04/05/07/08/10**, para construir los read models.
+- *Para qué importa:* es la fuente de datos de todo el tema T-B; se acuerda con los equipos al inicio.
 - Aceptación: contratos **acordados con los equipos** · envelope estándar · adapter por tema (RF-RPT-10).
+
+#### Épica 5 · Observabilidad, Reportes y Panel de Riesgo
+> La épica que **muestra** en vez de gobernar: reportes y métricas. El **PROFESOR consulta solo su curso**; el **ADMIN** ve el consolidado.
 
 **US-07** · Como **PROFESOR**, quiero **ver los reportes de mi curso-cohorte**, para evaluar el avance de mis alumnos.
 - *Para qué importa:* toma de decisiones pedagógicas con datos reales de su cohorte.
