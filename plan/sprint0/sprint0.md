@@ -76,7 +76,7 @@ _Pendiente de completar._ El equipo está cargando el **Excel de 2 hojas** (`CAP
 Capacidad efectiva = ((Días del Sprint − Ausencias) × Horas por día − Otras actividades) × % de dedicación
 ```
 
-Los valores finales se incorporan en esta sección y en la **justificación del Sprint 1** (ver matriz de trazabilidad, sección 5).
+Los valores finales se incorporan en esta sección y se usan en la planificación de los Sprints.
 
 ---
 
@@ -127,332 +127,53 @@ graph TD
 
 ## 5. Matriz de Trazabilidad y Backlog Priorizado
 
-| Tema | Épica | Historia | Título | Rol | SP | Prioridad | Sprint |
-|---|---|---|---|---|---|---|---|
-| TH-01 | EP-01 | **US-01** | Modificación y versionado hacia adelante de parámetros globales (PAR-01..24) | ADMIN | 5 | Must | Sprint 1 |
-| TH-01 | EP-01 | **US-02** | Publicación Outbox y caché TTL para consumidores (Temas 03/05/08/10) | Consumidores | 5 | Must | Sprint 1 |
-| TH-01 | EP-02 | **US-03** | Asignación y revocación de rol ADMIN con salvaguarda cero-admin | ADMIN | 5 | Must | Sprint 1 |
-| TH-01 | EP-03 | **US-04** | Registro, sustitución y conmutación segura de proveedores LLM | ADMIN | 5 | Must | Sprint 1 |
-| TH-01 | EP-03 | **US-05** | Homologación golden set, calibración PAR-14 y fallback por deriva | ADMIN / Sistema | 8 | Must | Sprint 1 |
-| TH-02 | EP-04 | **US-06** | Ingesta EDA idempotente y monitoreo de frescura (15 min) | Reporting / Sistema | 8 | Must | Sprint 1 |
-| TH-02 | EP-05 | **US-07** | Panel docente de curso-cohorte, semáforo de riesgo y alerta | PROFESOR | 8 | Should | Sprint 2 |
-| TH-02 | EP-05 | **US-08** | Tablero consolidado de KPIs con bloqueo de anonimato y alertas de desvío | ADMIN | 8 | Should | Sprint 2 |
-| TH-02 | EP-05 | **US-09** | Exportación asíncrona de reportes (PDF/CSV) | ADMIN / PROFESOR | 5 | Could | Sprint 3 |
+> Este es el **backlog general** (no está atado a un Sprint puntual): la capacidad del equipo define qué se toma en cada Sprint de planificación.
 
-> **Calibración Sprint 1 (Must):** `5+5+5+5+8+8 = 36 SP`. La **capacidad efectiva** (sección 3) definirá cuántas historias se toman en el Sprint 1.
+| Tema | Épica | Historia | Título | Rol | SP | Prioridad | Especificación |
+|---|---|---|---|---|---|---|---|
+| TH-01 | EP-01 | **US-01** | Modificación y versionado de parámetros globales (PAR-01..24) | ADMIN | 5 | Must | [uh/US-01.md](uh/US-01.md) |
+| TH-01 | EP-01 | **US-02** | Propagación del cambio de parámetro (Outbox + caché con TTL) | Consumidores | 5 | Must | [uh/US-02.md](uh/US-02.md) |
+| TH-01 | EP-02 | **US-03** | Asignación y revocación del rol administrador | ADMIN | 5 | Must | [uh/US-03.md](uh/US-03.md) |
+| TH-01 | EP-03 | **US-04** | Registro, sustitución y conmutación de proveedores de IA | ADMIN | 5 | Must | [uh/US-04.md](uh/US-04.md) |
+| TH-01 | EP-03 | **US-05** | Revisión de calidad de modelos de IA (golden set y tolerancia) | ADMIN / Sistema | 8 | Must | [uh/US-05.md](uh/US-05.md) |
+| TH-02 | EP-04 | **US-06** | Recolección de datos de otros temas (ingesta y frescura) | Reporting / Sistema | 8 | Must | [uh/US-06.md](uh/US-06.md) |
+| TH-02 | EP-05 | **US-07** | Panel docente con alumnos en riesgo | PROFESOR | 8 | Should | [uh/US-07.md](uh/US-07.md) |
+| TH-02 | EP-05 | **US-08** | Tablero consolidado de indicadores (KPIs) | ADMIN | 8 | Should | [uh/US-08.md](uh/US-08.md) |
+| TH-02 | EP-05 | **US-09** | Exportación de reportes | ADMIN / PROFESOR | 5 | Could | [uh/US-09.md](uh/US-09.md) |
+
+> **Backlog general:** las historias **Must** suman `5+5+5+5+8+8 = 36 SP`. La **capacidad efectiva** (sección 3) define cuántas se toman por Sprint.
 
 ---
 
-## 6. Especificación Detallada de Épicas e Historias de Usuario
+## 6. Historias de Usuario (especificación completa)
 
-Cada historia incluye: descripción (Como/Quiero/Para), reglas de negocio, criterios de aceptación (CA), escenarios BDD (Gherkin), endpoints y estimación.
+Cada historia está especificada con el **template del equipo** (`templateUH.md`): Descripción (Como/Quiero/Para) · Reglas de negocio · Validaciones · Criterios de Aceptación · BDD (Gherkin) · Prototipo · Estimación · Dependencias · **Tareas asociadas**.
 
-### 6.1 Épica EP-01 · Parámetros Globales (PAR-01..24)
+### En simple (resumen por historia)
 
-**Objetivo:** centralizar, versionar y gobernar los parámetros de economía y operativos de la plataforma, garantizando que cada cambio rija **hacia adelante** y se propague por **Outbox → Kafka** a los consumidores (Temas 03/05/08/10).
+| Historia | En simple |
+|---|---|
+| **US-01** | El administrador cambia las reglas del juego desde una pantalla; cada cambio queda anotado y vale de ahora en adelante. |
+| **US-02** | Cuando cambia una regla, el sistema avisa a los demás servicios sin perder el aviso; si algo se cae, siguen con el último valor. |
+| **US-03** | El administrador da y quita el rol de administrador, con la garantía de que nunca quede la plataforma sin responsables. |
+| **US-04** | El administrador elige qué proveedor/modelo de IA se usa, sin exponer las claves. |
+| **US-05** | Todo modelo de IA se prueba contra respuestas de referencia antes de usarse y se vigila para que no se desvíe. |
+| **US-06** | El sistema junta los datos de los demás temas y avisa si algún dato está desactualizado. |
+| **US-07** | El profesor ve el estado de sus comisiones y avisa a tiempo cuando un alumno está en riesgo. |
+| **US-08** | El administrador ve el tablero general de indicadores y recibe avisos cuando algo baja de lo esperado. |
+| **US-09** | Se puede pedir un reporte en PDF/CSV y se avisa cuando está listo para descargar. |
 
-**Suposiciones:** el PRD define PAR-01..18; el catálogo es **extensible** hasta PAR-24 (candidatos deducidos a validar con la cátedra). Los consumidores mantienen **caché con TTL 10 min**.
+### Archivos (template completo + tareas)
 
-**Restricciones:** solo ADMIN modifica (RF-CFG-04) · PROFESOR solo lectura sin metadatos de autoría (RF-CFG-05) · **no retroactividad** (RF-CFG-06) · `Idempotency-Key` obligatorio en PUT.
-
-**Criterios de aceptación épicos:** modificación versionada (`v1→v2`) persistida junto al `OutboxMessage` · consulta diferenciada ADMIN/PROFESOR · despacho garantizado a Kafka.
-
-**Dependencias / Impactos:** `administration-service` · Kafka · equipos T03/05/08/10 · tablas `system_parameters`, `outbox_events`.
-
-#### US-01 · Modificación y versionado hacia adelante de parámetros globales
-- **Como:** ADMIN · **Quiero:** modificar PAR-01..24 con valor, vigencia y justificación · **Para:** ajustar la economía sin desplegar código y respetando la no-retroactividad.
-- **Reglas de negocio:** solo ADMIN · incremento de `version` + fila en `outbox_events` + `parameter_audit_history` · validación de rango por PAR (ej. PAR-19 [0..100%]) · `effective_from` no puede ser pasado · idempotencia por `Idempotency-Key`.
-- **Criterios de aceptación:**
-  - **CA1:** PUT válido → `200` + versión incrementada + outbox creado.
-  - **CA2:** reintento con la misma `Idempotency-Key` → mismo resultado sin duplicar.
-  - **CA3:** PROFESOR → `403 Forbidden`.
-  - **CA4:** valor fuera de rango o fecha retroactiva → `400/422`.
-- **Escenarios (Gherkin):**
-  ```gherkin
-  Escenario: Modificación exitosa con versionado
-    Dado el parámetro "PAR-19" con versión 3
-    Cuando ADMIN envía PUT /api/administration/parameters/PAR-19 con valor "25"
-    Entonces el valor pasa a 25, la versión a 4, se crea el OutboxMessage y responde 200
-
-  Escenario: Reintento idempotente
-    Dado un cambio ya procesado con Idempotency-Key "abc-123"
-    Cuando el cliente reenvía la misma petición por timeout de red
-    Entonces no se crea nueva versión y responde el resultado previo
-
-  Escenario: Rechazo no autorizado
-    Dado un usuario con rol PROFESOR
-    Cuando envía PUT a un parámetro
-    Entonces responde 403 Forbidden sin modificar valor ni versión
-  ```
-- **Endpoints:** `GET/PUT /api/administration/parameters/{key}`.
-- **Estimación:** 5 SP · **Must** · Sprint 1.
-
-#### US-02 · Publicación Outbox y caché TTL para consumidores
-- **Como:** sistema (`administration-service`) y consumidores (Temas 03/05/08/10) · **Quiero:** publicar atómicamente `GlobalConfigurationChanged` y que los consumidores sincronicen su caché · **Para:** consistencia eventual sin acoplamiento temporal.
-- **Reglas de negocio:** transactional outbox (`PENDING→PUBLISHED`) · relay a Kafka en el topic `administration.events` (partición por `key`) · envelope estándar con `eventId`/`version` · consumidores invalidan caché (TTL 10 min) y siguen con el último valor si el Backoffice cae.
-- **Criterios de aceptación:**
-  - **CA1:** todo cambio genera `outbox_events` en `PENDING`.
-  - **CA2:** el relay publica y marca `PUBLISHED` (sin pérdida si Kafka no está).
-  - **CA3:** los consumidores invalidan su caché al recibir el evento o por TTL.
-- **Escenarios (Gherkin):**
-  ```gherkin
-  Escenario: Despacho exitoso
-    Dado un cambio comiteado en la base con fila outbox pendiente
-    Cuando el relay ejecuta su ciclo
-    Entonces emite GlobalConfigurationChanged en administration.events y marca PUBLISHED
-
-  Escenario: Broker caído
-    Dado Kafka fuera de servicio
-    Cuando el relay intenta publicar
-    Entonces los mensajes permanecen PENDING en PostgreSQL y no se pierde ningún cambio
-
-  Escenario: Backoffice caído
-    Dado el Backoffice sin servicio
-    Cuando Tema 03 necesita evaluar PAR-19
-    Entonces sirve su caché local (última versión conocida) sin interrumpir a los alumnos
-  ```
-- **Endpoints:** consumer groups (`reporting`, `audit`) sobre `administration.events`.
-- **Estimación:** 5 SP · **Must** · Sprint 1.
-
-### 6.2 Épica EP-02 · Administración de la Plataforma
-
-**Objetivo:** gobernar el ciclo de vida de los administradores, con **salvaguardas** contra el bloqueo de la plataforma y **bitácora de auditoría** inmutable.
-
-**Suposiciones:** el Gateway (T01) resuelve autenticación y propaga claims (`X-User-Id`, `X-User-Roles`); el Backoffice **no crea identidades**, solo gestiona el rol sobre un `user_id` de T01.
-
-**Restricciones:** salvaguarda **cero-admin** (RF-ROL-05/06) · un admin no puede auto-eliminarse (RF-ROL-02) · auditoría inmutable con retención 5 años (RF-AUD-*).
-
-**Criterios de aceptación épicos:** asignación/revocación con bloqueo transaccional contra la orfandad · evento `AdminDeleted` con `remainingAdmins` · bitácora consultable por ADMIN/AUDITOR (solo lectura).
-
-**Dependencias / Impactos:** T01 (Identidad) · tablas `backoffice_admins`, `audit_log`.
-
-#### US-03 · Asignación y revocación de rol ADMIN con salvaguarda cero-admin
-- **Como:** ADMIN · **Quiero:** asignar/revocar el rol admin a identidades de T01 · **Para:** delegar gobernanza sin compartir credenciales y nunca quedar sin administradores.
-- **Reglas de negocio:** el alta recibe un `userId` existente de T01 (si no existe → `404`) · un admin no puede revocarse en sesión activa (`400`) · antes de revocar se valida `count(active_admins) > 1` con lock pesimista; si queda 1 → `409` · auditoría con motivo (mín. 15 caracteres) · rol AUDITOR solo lectura.
-- **Criterios de aceptación:**
-  - **CA1:** alta a `userId` existente → `201` + estado `ACTIVE` + auditoría.
-  - **CA2:** auto-eliminación → `400 CANNOT_SELF_DEACTIVATE`.
-  - **CA3:** último admin → `409 ZERO_ADMIN_PROTECTION` sin alterar el registro.
-  - **CA4:** baja exitosa publica `AdminDeleted` con `remainingAdmins`.
-- **Escenarios (Gherkin):**
-  ```gherkin
-  Escenario: Asignación exitosa
-    Dado que el operador es ADMIN y el usuario "usr-88312" existe en T01
-    Cuando envía POST /api/administration/admins con userId y justificación
-    Entonces responde 201 y se registra en la bitácora
-
-  Escenario: Auto-eliminación rechazada
-    Dado el admin "adm-01" con sesión activa
-    Cuando envía DELETE /api/administration/admins/adm-01
-    Entonces responde 400 CANNOT_SELF_DEACTIVATE sin alterar el estado
-
-  Escenario: Salvaguarda cero-admin
-    Dado que existen 2 administradores activos
-    Cuando el admin A da de baja al admin B
-    Entonces queda 1 activo y se publica AdminDeleted con remainingAdmins=1
-    Y si ese último intenta darse de baja, responde 409 Conflict
-  ```
-- **Endpoints:** `POST /api/administration/admins` · `DELETE /api/administration/admins/{userId}` · `GET /api/administration/admins` · `GET /api/administration/admins/audit-log`.
-- **Estimación:** 5 SP · **Must** · Sprint 1.
-
-### 6.3 Épica EP-03 · Modelos LLM y Golden Set
-
-**Objetivo:** gobernanza de los modelos de IA (evaluador): **qué proveedor/modelo se usa y que esté calibrado** antes de habilitarse. Exclusivo de ADMIN.
-
-**Suposiciones:** golden set precalificado por la cátedra · los Temas 04/07 consumen el proveedor activo.
-
-**Restricciones:** registro/auditoría de proveedores (RF-IA-30) · **API keys cifradas** y nunca expuestas · **modelo único activo** por función (RF-IA-31) · aprobación por **tolerancia PAR-14** (RF-IA-32): `MAE ≤ PAR-14` (default ±5 pts) · **deriva mensual** → fallback heurístico + alerta.
-
-**Criterios de aceptación épicos:** catálogo de proveedores con credenciales enmascaradas · pipeline de golden set con persistencia del MAE · imposibilidad de activar un modelo sin `PASSED` · conmutación en caliente con `ModelProviderChanged`.
-
-**Dependencias / Impactos:** `administration-service` · APIs externas (OpenAI/Gemini/Anthropic) · T04/T07 · tablas `llm_providers`, `llm_models`, `golden_set_cases`, `golden_set_runs`.
-
-#### US-04 · Registro, sustitución y conmutación segura de proveedores LLM
-- **Como:** ADMIN · **Quiero:** registrar modelos, gestionar parámetros y sustituir el activo · **Para:** optimizar costo/calidad sin interrumpir evaluaciones y sin exponer credenciales.
-- **Reglas de negocio:** estados `BENCHMARK_PENDING → HOMOLOGATED → ACTIVE_EVALUATOR → DEPRECATED` · solo `HOMOLOGATED` puede ser activado (si no → `409`) · al conmutar, el saliente pasa a standby y se publica `ModelProviderChanged` · API keys enmascaradas.
-- **Criterios de aceptación:**
-  - **CA1:** registro → `BENCHMARK_PENDING`.
-  - **CA2:** conmutación entre homologados actualiza el activo y publica el evento con `previousModel`/`newModel`.
-  - **CA3:** activar un modelo no homologado → `409 Conflict`.
-- **Escenarios (Gherkin):**
-  ```gherkin
-  Escenario: Registro de modelo
-    Dado que el ADMIN configura "claude-3-5-sonnet"
-    Cuando guarda con temperatura 0.1 y max_tokens 2000
-    Entonces queda BENCHMARK_PENDING y no se puede activar directo
-
-  Escenario: Conmutación entre homologados
-    Dado "gpt-4o-mini" y "claude-3-5-sonnet" homologados
-    Cuando el ADMIN promueve a "claude-3-5-sonnet"
-    Entonces se actualiza el activo y se publica ModelProviderChanged para T04/T07
-
-  Escenario: Rechazo de modelo no certificado
-    Dado un modelo sin golden set aprobado
-    Cuando el ADMIN intenta activarlo
-    Entonces responde 409 Conflict
-  ```
-- **Endpoints:** `POST/GET /api/administration/llm/providers` · `GET /api/administration/llm/models` · `POST /api/administration/llm/models/{id}/activate`.
-- **Estimación:** 5 SP · **Must** · Sprint 1.
-
-#### US-05 · Homologación golden set, calibración PAR-14 y fallback por deriva
-- **Como:** ADMIN y Sistema · **Quiero:** ejecutar el golden set para certificar candidatos y monitorear la deriva del activo · **Para:** asegurar la equidad pedagógica de la IA y proteger a los alumnos ante degradación.
-- **Reglas de negocio:** suite de casos calibrados; si `MAE ≤ PAR-14` → `PASSED`/`HOMOLOGATED`, si no → `REJECTED` y bloqueado · job mensual recalibra; si el MAE excede PAR-14 → **fallback heurístico** + `ALERTA_DERIVA_CALIBRACION_IA` (severidad crítica).
-- **Criterios de aceptación:**
-  - **CA1:** corrida calcula y persiste el MAE.
-  - **CA2:** `MAE ≤ PAR-14` → `HOMOLOGATED`; si es mayor → bloqueado.
-  - **CA3:** job de deriva activa el fallback y la alerta sin intervención humana.
-- **Escenarios (Gherkin):**
-  ```gherkin
-  Escenario: Homologación exitosa
-    Dado PAR-14 con tolerancia de 5 puntos
-    Cuando se ejecuta el golden set y el MAE es 3.4
-    Entonces se registra PASSED y el modelo pasa a HOMOLOGATED
-
-  Escenario: Rechazo por desvío
-    Dado un modelo con MAE 7.8 (mayor a 5)
-    Cuando finaliza el benchmark
-    Entonces la corrida se marca REJECTED y el modelo queda bloqueado
-
-  Escenario: Fallback por deriva mensual
-    Dado que el job reevalúa el activo y el MAE se degrada a 6.2
-    Entonces se conmuta a FALLBACK_HEURISTICO y se emite ALERTA_DERIVA_CALIBRACION_IA
-  ```
-- **Endpoints:** `POST/GET /api/administration/llm/golden-set/runs`.
-- **Estimación:** 8 SP · **Must** · Sprint 1.
-
-### 6.4 Épica EP-04 · Contratos de Lectura e Ingesta
-
-**Objetivo:** adaptadores de ingesta sobre los topics de Kafka de los Temas 02/04/05/07/08/10 con **desduplicación idempotente** y **monitoreo de frescura** (≤ 15 min). Es el **habilitador** del tema T-B.
-
-**Suposiciones:** topics provistos por el clúster con contratos acordados en Sprint 0 · envelope canónico con `eventId` UUID.
-
-**Restricciones:** idempotencia estricta (RF-RPT-10) · frescura ≤ 15 min con alerta de degradación · manejo de malformados con **DLQ** sin cortar el consumo.
-
-**Criterios de aceptación épicos:** consumo en paralelo con inserción idempotente (`ON CONFLICT DO NOTHING`) · monitor de frescura por tema con alertas · indicador visual si el desfase supera 15 min.
-
-**Dependencias / Impactos:** `reporting-service` · Kafka · productores T02/04/05/07/08/10 · tablas `processed_events`, `read_contract_status`, `student_analytics_summary`.
-
-#### US-06 · Ingesta EDA idempotente y monitoreo de frescura (15 min)
-- **Como:** Reporting y ADMIN · **Quiero:** ingerir eventos de los 6 temas con desduplicación por `eventId` y verificar la frescura ≤ 15 min · **Para:** mantener estadísticas confiables e informar preventivamente si un reporte está desactualizado.
-- **Reglas de negocio:** deduplicación por PK `event_id` en `processed_events` · monitor cada 2 min compara `CURRENT_TIMESTAMP - last_event_timestamp` por productor; si supera 15 min → `CONTRATO_LECTURA_DEGRADADO` + insignia "Datos posiblemente desactualizados" · al normalizarse, se retira la advertencia.
-- **Criterios de aceptación:**
-  - **CA1:** evento nuevo actualiza proyecciones y registra `event_id`.
-  - **CA2:** duplicado se descarta y se confirma el offset.
-  - **CA3:** malformado → DLQ `backoffice.events.dlq`.
-  - **CA4:** desfase > 15 min → alerta + marca en UI; se apaga al normalizar.
-- **Escenarios (Gherkin):**
-  ```gherkin
-  Escenario: Ingesta idempotente
-    Dado un evento en el topic con UUID nuevo
-    Cuando el consumidor lo procesa
-    Entonces registra el ID, actualiza métricas y confirma el offset; un reenvío por rebalanceo se ignora
-
-  Escenario: Degradación por frescura
-    Dado que Tema 02 lleva 22 min sin emitir
-    Cuando el monitor ejecuta su verificación
-    Entonces emite CONTRATO_LECTURA_DEGRADADO y la API expone isStale:true
-
-  Escenario: Normalización
-    Dado un reporte degradado por falta de datos
-    Cuando Tema 02 reanuda la emisión
-    Entonces se actualiza la frescura y se retira la advertencia en el próximo refresco
-  ```
-- **Endpoints:** consumer groups sobre topics de los 6 temas · `GET /api/reports/health/freshness`.
-- **Estimación:** 8 SP · **Must** · Sprint 1.
-
-### 6.5 Épica EP-05 · Observabilidad, Reportes y Panel de Riesgo
-
-**Objetivo:** tableros de visualización pedagógica y directiva: **semáforo de riesgo**, **KPIs** del PRD con salvaguardas éticas y reportes exportables.
-
-**Suposiciones:** el PROFESOR visualiza solo sus comisiones (`assigned_courses`) · snapshots consolidados por `reporting-service`.
-
-**Restricciones:** sin rankings docentes (RF-RPT-07) · anonimato con umbral mínimo de encuestas (PAR de privacidad) · **RLS por curso** (403 a comisiones ajenas) · semáforo de riesgo con alerta (RF-RPT-03).
-
-**Criterios de aceptación épicos:** panel de curso con semáforo y alerta a notificaciones · tablero de KPIs con alertas de desvío · export asíncrono con `exportId` y firma (hash).
-
-**Dependencias / Impactos:** `reporting-service` · frontend · T02/T04/T11 · read models.
-
-#### US-07 · Panel docente de curso-cohorte, semáforo de riesgo y alerta
-- **Como:** PROFESOR · **Quiero:** ver el semáforo de riesgo de los alumnos de mis comisiones y que el sistema notifique situaciones críticas · **Para:** intervenir pedagógicamente a tiempo.
-- **Reglas de negocio:** RLS valida que el `courseId` pertenezca a los cursos asignados (si no → `403`) · riesgo **ROJO** (inactividad >10 días o reprobación >60% o vidas agotadas) / **AMARILLO** / **VERDE** · al pasar a ROJO se emite `ALERTA_ESTUDIANTE_EN_RIESGO` a notificaciones (T11) · sin rankings docentes.
-- **Criterios de aceptación:**
-  - **CA1:** docente ve solo sus comisiones con badge y diagnóstico.
-  - **CA2:** alumno en ROJO → alerta a T11.
-  - **CA3:** comisión ajena → `403`.
-  - **CA4:** sin comparativas entre docentes.
-- **Escenarios (Gherkin):**
-  ```gherkin
-  Escenario: Detección y alerta de riesgo
-    Dado el docente con la comisión 2W2 y un alumno con 14 días de inactividad
-    Cuando se procesa la foto analítica
-    Entonces el panel muestra el semáforo ROJO y se emite ALERTA_ESTUDIANTE_EN_RIESGO
-
-  Escenario: Restricción por comisión ajena
-    Dado el docente con solo la comisión CURS-2W2
-    Cuando consulta CURS-2W3
-    Entonces responde 403 Forbidden sin exponer datos
-
-  Escenario: Sin comparativas
-    Dado que el docente revisa su resumen
-    Entonces solo se muestra el promedio de su comisión, sin comparar contra otros docentes
-  ```
-- **Endpoints:** `GET /api/reports/courses/{courseId}/teacher`.
-- **Estimación:** 8 SP · **Should** · Sprint 2.
-
-#### US-08 · Tablero consolidado de KPIs con bloqueo de anonimato y alertas de desvío
-- **Como:** ADMIN · **Quiero:** ver los KPIs del PRD en un tablero consolidado, configurar umbrales y aplicar el bloqueo ético por anonimato · **Para:** supervisar la calidad global del campus sin desanonimizar respuestas.
-- **Reglas de negocio:** KPIs (CSAT, aprobación, deserción, actividad semanal, ritmo, etc.) · en desglose por curso, si el N de encuestas es menor al umbral → se enmascara ("Muestra insuficiente") y valor nulo · alertas configurables por KPI (`ALERTA_KPI_FUERA_DE_RANGO`) · acceso solo ADMIN (`403` a otros roles) · sin rankings de profesores.
-- **Criterios de aceptación:**
-  - **CA1:** tablero con tarjetas de KPIs y metas.
-  - **CA2:** comisiones con N < umbral muestran el bloqueo ético.
-  - **CA3:** KPI bajo umbral → alerta.
-  - **CA4:** roles no admin → `403`.
-- **Escenarios (Gherkin):**
-  ```gherkin
-  Escenario: Alerta por desvío de KPI
-    Dado un umbral de satisfacción mínima del 80%
-    Cuando el indicador cae a 74%
-    Entonces la tarjeta queda en alerta y se emite ALERTA_KPI_FUERA_DE_RANGO
-
-  Escenario: Bloqueo ético de muestra
-    Dado una comisión con 3 encuestas (N < umbral)
-    Cuando el ADMIN consulta el desglose por curso
-    Entonces el sistema devuelve isMasked:true y la leyenda "Muestra Insuficiente"
-
-  Escenario: Acceso denegado
-    Dado un rol distinto de ADMIN
-    Cuando intenta acceder al tablero
-    Entonces responde 403 Forbidden
-  ```
-- **Endpoints:** `GET /api/reports/panel` (alcance `ALL` para ADMIN) · `GET /api/alerts`.
-- **Estimación:** 8 SP · **Should** · Sprint 2.
-
-#### US-09 · Exportación asíncrona de reportes (PDF/CSV)
-- **Como:** ADMIN o PROFESOR · **Quiero:** solicitar la exportación de reportes en PDF/CSV procesada en segundo plano · **Para:** obtener constancias oficiales sin bloquear la UI.
-- **Reglas de negocio:** patrón asíncrono: la petición devuelve `202` con `exportId`; el backend procesa en streaming; al terminar publica `EXPORTACION_LISTA` con URL temporal (`expiresAt`) · firma forense (hash) en el PDF · **RLS:** el PROFESOR exporta solo sus comisiones.
-- **Criterios de aceptación:**
-  - **CA1:** solicitud → `202` con `exportId`.
-  - **CA2:** al terminar → evento `EXPORTACION_LISTA` + URL temporal.
-  - **CA3:** PDF con hash de integridad.
-  - **CA4:** enlace expirado → `410 Gone`.
-- **Escenarios (Gherkin):**
-  ```gherkin
-  Escenario: Solicitud no bloqueante
-    Dado un reporte extenso a exportar en PDF
-    Cuando se envía la solicitud
-    Entonces responde 202 con exportId y al terminar publica EXPORTACION_LISTA con la URL
-
-  Escenario: Alcance docente
-    Dado un PROFESOR que exporta calificaciones
-    Entonces el CSV contiene solo sus comisiones asignadas
-
-  Escenario: Enlace expirado
-    Dado un reporte cuyo enlace temporal venció
-    Cuando el usuario intenta descargarlo
-    Entonces responde 410 Gone
-  ```
-- **Endpoints:** `POST /api/reporting/exports` · `GET /api/reporting/exports/{exportId}`.
-- **Estimación:** 5 SP · **Could** · Sprint 3.
+1. [US-01 · Modificación de parámetros globales](uh/US-01.md)
+2. [US-02 · Propagación del cambio de parámetro (Outbox + caché)](uh/US-02.md)
+3. [US-03 · Asignación y revocación del rol administrador](uh/US-03.md)
+4. [US-04 · Registro y conmutación de proveedores de IA](uh/US-04.md)
+5. [US-05 · Revisión de calidad de modelos de IA](uh/US-05.md)
+6. [US-06 · Recolección de datos de otros temas](uh/US-06.md)
+7. [US-07 · Panel docente con alumnos en riesgo](uh/US-07.md)
+8. [US-08 · Tablero consolidado de indicadores](uh/US-08.md)
+9. [US-09 · Exportación de reportes](uh/US-09.md)
 
 ---
 
@@ -462,4 +183,4 @@ Cada historia incluye: descripción (Como/Quiero/Para), reglas de negocio, crite
 - [ ] **3. Capacidad del equipo** (Excel 2 hojas + justificación)
 - [x] **4. Jerarquía de Producto y Temas Estratégicos**
 - [x] **5. Matriz de Trazabilidad y Backlog Priorizado**
-- [x] **6. Especificación Detallada de Épicas e Historias de Usuario**
+- [x] **6. Historias de Usuario (especificación completa en `uh/`)**
