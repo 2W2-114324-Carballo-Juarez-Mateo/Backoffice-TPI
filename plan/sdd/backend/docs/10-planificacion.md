@@ -2,6 +2,8 @@
 
 Tareas asignadas (Tema 12) según `TUP_PIV_BE_PROPUESTA_ARQ.pdf`, en las 3 columnas del documento (MoSCoW) y dimensionadas en **talles T-shirt (S/M/L)**.
 
+> **Clasificación por tema (supra-épicas):** **T-A · Gobernanza y Configuración Institucional** (Administración de plataforma · Registro de parámetros PAR · Proveedor LLM) y **T-B · Observabilidad y Soporte Académico** (Contratos de lectura · Reportes docentes).
+
 ## 🟢 Must — Pedido para empezar (sprint 1)
 
 | Ítem | RF | Subtareas | Talla | Dependencia |

@@ -36,12 +36,14 @@ Repos y entorno levantados · DoD definida · backlog inicial en Taiga · contra
 ### Nivel 0 · Tarea
 - Cumple sus **criterios de aceptación propios** (los definidos por tarea en `sdd/`).
 - **Build verde** (`mvn clean verify`) · tests de la tarea pasando.
+- **Cobertura de tests ≥ 90%** (objetivo: se intenta lograr siempre en lo posible).
 - Una tarea se cierra solo cuando su **historia** también alcanza el **Nivel 1**.
 
 ### Nivel 1 · Historia de Usuario
 - Cumple el **requisito citado (`RF-XXX`)** y sus **criterios de aceptación**.
 - **Build verde** (`mvn clean verify`) · sin warnings críticos · **Clean Architecture** (sin reglas de negocio en controllers).
 - **Tests** unitarios de dominio/casos de uso + **integración con Testcontainers** (PostgreSQL + Kafka) donde publique/consuma eventos.
+- **Cobertura de tests ≥ 90%** (objetivo: se intenta lograr siempre en lo posible).
 - **Outbox + idempotencia** verificados (por `event_id` y `version`).
 - **Autorización por rol** probada (ADMIN/PROFESOR → 200/403).
 - **Alcance multitenancy** verificado: RLS filtra por `course_id`; `ALL` solo ADMIN y auditado.
@@ -66,48 +68,72 @@ Repos y entorno levantados · DoD definida · backlog inicial en Taiga · contra
 
 ---
 
-## 4. Primeras Épicas
+## 4. Primeras Épicas (clasificadas por tema)
 
-| ID | Épica | RF base | Prioridad |
+### T-A · Gobernanza y Configuración Institucional
+> **Quién tiene poder de actuar sobre la plataforma y bajo qué reglas:** humanos con rol **ADMIN** (Épicas 1 y 2) y **modelos de IA habilitados** (Épica 3). Todas **escriben/deciden**, no solo muestran.
+
+| Épica | Alcance | RF base | Prioridad |
 |---|---|---|---|
-| **EP-1** | Administración de plataforma | RF-CFG-01/05 · RF-ROL | Must |
-| **EP-2** | Configuración global (PAR-01..24) | RF-CFG-04/06 | Must |
-| **EP-3** | Gestión del proveedor LLM | RF-IA-ADM-01..07 | Must |
-| **EP-4** | Contratos de lectura (6 temas) | RF-RPT-10 | Must |
-| **EP-5** | Reportes docentes y panel | RF-RPT-01/02/04/05 | Must / Should / Could |
-| **EP-6** | Frontend BackOffice (app Angular + BFF) | (a definir) | Futura |
+| **Épica 1 — Parámetros Globales** | Reglas de economía y operativas (PAR-01..24) que define el ADMIN y aplican los Temas 03/05/08/10 | RF-CFG-04/06 | Must |
+| **Épica 2 — Administración de la Plataforma** | Gestión de administradores y roles: quién puede operar | RF-CFG-01/05 · RF-ROL | Must |
+| **Épica 3 — Modelos LLM y Golden Set** | Proveedores/modelos de IA, evaluador, calibración y deriva (exclusivo ADMIN) | RF-IA-ADM-01..07 | Must |
+
+### T-B · Observabilidad y Soporte Académico
+> **La única que muestra información en vez de gobernarla:** su usuario típico (**PROFESOR**) solo consulta, no configura nada.
+
+| Épica | Alcance | RF base | Prioridad |
+|---|---|---|---|
+| **Épica 4 — Observabilidad, Reportes y Panel de Riesgo** | Reportes docentes, panel de métricas, alumno en riesgo, export y alertas (más el habilitador de contratos de lectura) | RF-RPT-01/02/03/04/05 · RF-RPT-10 | Must / Should / Could |
+
+**Futura:** Frontend BackOffice (app Angular + BFF) — a definir cuando se aborde la materia Front.
 
 ## 5. Primeras Historias de Usuario
 
-Formato: *Como [rol], quiero [acción], para [beneficio]* + criterios de aceptación.
+Formato: *Como [rol], quiero [acción], para [beneficio]* + criterios de aceptación. Agrupadas por tema y épica.
 
-### EP-1 · Administración de plataforma
-**US-01** · Como **ADMIN**, quiero **dar de alta y baja administradores**, para controlar quién puede operar la plataforma.
-- Aceptación: solo ADMIN · un admin **no puede auto-eliminarse** (RF-ROL-02) · **protección del último admin** (RF-ROL-05) · auditada (RF-AUD-03).
+### T-A · Gobernanza y Configuración Institucional
 
-### EP-2 · Configuración global
-**US-02** · Como **ADMIN**, quiero **crear/editar parámetros globales (PAR-01..24)**, para definir la economía de la plataforma.
+#### Épica 1 · Parámetros Globales (PAR-01..24)
+> El catálogo de reglas que rigen toda la plataforma. El ADMIN las configura; los Temas 03/05/08/10 las aplican. **Propósito:** que ninguna regla numérica quede fija en el código de un microservicio.
+
+**US-01** · Como **ADMIN**, quiero **crear y editar los parámetros globales (PAR-01..24)**, para definir la economía y las reglas operativas desde una sola consola.
+- *Para qué importa:* evita valores hardcodeados; un cambio se propaga sin recompilar.
 - Aceptación: **versionado** y cambios **solo hacia adelante** (RF-CFG-06) · idempotencia · evento `GlobalConfigurationChanged`.
 
-**US-03** · Como **consumidor (Temas 03/05/08/10)**, quiero **recibir el cambio de parámetro**, para aplicar la configuración sin hardcodear.
-- Aceptación: **Outbox** + idempotencia por `version` · **caché TTL 10 min**.
+**US-02** · Como **consumidor (Temas 03/05/08/10)**, quiero **recibir el cambio de parámetro**, para aplicar la configuración vigente sin hardcodear.
+- *Para qué importa:* todos los cursos usan el mismo valor vigente → economía coherente.
+- Aceptación: **Outbox** + idempotencia por `version` · **caché TTL 10 min** (respaldo si el evento no llega).
 
-### EP-3 · Proveedor LLM
-**US-04** · Como **ADMIN**, quiero **dar de alta/sustituir/dar de baja un proveedor o modelo**, para decidir qué IA se usa por función.
+#### Épica 2 · Administración de la Plataforma
+> Control de **quién puede operar**: alta/baja de administradores y roles. Protege al sistema (último admin) y deja rastro (auditoría).
+
+**US-03** · Como **ADMIN**, quiero **dar de alta y de baja administradores**, para controlar quién opera la plataforma.
+- *Para qué importa:* escalar el equipo de operación y retirar accesos sin quedar sin admins ni sin rastro.
+- Aceptación: solo ADMIN · un admin **no puede auto-eliminarse** (RF-ROL-02) · **protección del último admin** (RF-ROL-05) · auditada (RF-AUD-03).
+
+#### Épica 3 · Modelos LLM y Golden Set
+> Gobernanza de los modelos de IA (evaluador): **qué proveedor/modelo se usa y que esté calibrado** antes de habilitarse. Exclusivo de ADMIN.
+
+**US-04** · Como **ADMIN**, quiero **dar de alta, sustituir o dar de baja un proveedor o modelo de IA**, para decidir qué modelo se usa en cada función (ej. evaluador).
 - Aceptación: exclusivo ADMIN · auditado (RF-IA-35) · evento `ModelProviderChanged`.
 
-**US-05** · Como **ADMIN**, quiero **habilitar un modelo evaluador solo si pasa el golden set**, para garantizar la calidad de la evaluación.
+**US-05** · Como **ADMIN**, quiero **habilitar un modelo evaluador solo si pasa el golden set**, para garantizar la calidad antes de que se use.
 - Aceptación: **calibración dentro de PAR-14** · modelo único activo · **deriva → alerta** (RF-IA-32).
 
-### EP-4 · Contratos de lectura
-**US-06** · Como **Reporting**, quiero **consumir eventos/lecturas de los Temas 02/04/05/07/08/10**, para construir los read models.
+### T-B · Observabilidad y Soporte Académico
+
+#### Épica 4 · Observabilidad, Reportes y Panel de Riesgo
+> La única épica que **muestra** en vez de gobernar: reportes y métricas. El **PROFESOR consulta solo su curso**; el **ADMIN** ve el consolidado.
+
+**US-06** · Como **Reporting**, quiero **consumir eventos/lecturas de los Temas 02/04/05/07/08/10**, para construir los read models (habilitador de esta épica).
 - Aceptación: contratos **acordados con los equipos** · envelope estándar · adapter por tema (RF-RPT-10).
 
-### EP-5 · Reportes docentes y panel
-**US-07** · Como **PROFESOR**, quiero **ver reportes de mi curso-cohorte**, para evaluar el avance de mis alumnos.
+**US-07** · Como **PROFESOR**, quiero **ver los reportes de mi curso-cohorte**, para evaluar el avance de mis alumnos.
+- *Para qué importa:* toma de decisiones pedagógicas con datos reales de su cohorte.
 - Aceptación: **solo su curso** (otro → 403, RLS) · panel con alumno en riesgo (RF-RPT-03).
 
-**US-08** · Como **ADMIN**, quiero **ver el consolidado global de métricas (y por curso)**, para monitorear la plataforma.
+**US-08** · Como **ADMIN**, quiero **ver el consolidado global de métricas (y por curso)**, para monitorear la plataforma completa.
 - Aceptación: alcance **`ALL` solo ADMIN y auditado** · RLS por `course_id`.
 
 **US-09** · Como **ADMIN/PROFESOR**, quiero **exportar reportes**, para usarlos fuera de la plataforma.
