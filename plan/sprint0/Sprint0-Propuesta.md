@@ -100,6 +100,8 @@ Cada historia está en `uh/` con el **template del equipo** (`templateUH.md`): D
 | **US-08** | El admin ve el tablero de indicadores y recibe avisos si algo baja. | [uh/US-08.md](uh/US-08.md) |
 | **US-09** | Se puede pedir un reporte en PDF/CSV y avisan cuando está listo. | [uh/US-09.md](uh/US-09.md) |
 
+> **Todas las tareas** de las 9 historias (con explicación en simple, talle y horas) están consolidadas en [tareas.md](tareas.md), listas para cargar en Taiga. Los **responsables** se asignan aparte.
+
 ## 6. Matriz de trazabilidad (resumen)
 
 | Épica | Historias | SP | Prioridad |
