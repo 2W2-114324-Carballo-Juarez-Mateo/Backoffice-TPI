@@ -93,14 +93,19 @@ Cada historia está en `uh/` con el **template del equipo** (`templateUH.md`): D
 | **US-01** | El admin cambia las reglas desde una pantalla; queda anotado y vale de ahora en adelante. | [uh/US-01.md](uh/US-01.md) |
 | **US-02** | Al cambiar una regla, el sistema avisa a los demás sin perder el aviso. | [uh/US-02.md](uh/US-02.md) |
 | **US-03** | El admin da y quita el rol de administrador, nunca sin responsables. | [uh/US-03.md](uh/US-03.md) |
-| **US-04** | El admin elige qué modelo de IA se usa, sin exponer claves. | [uh/US-04.md](uh/US-04.md) |
-| **US-05** | Todo modelo se prueba contra respuestas de referencia antes de usarse. | [uh/US-05.md](uh/US-05.md) |
-| **US-06** | El sistema junta los datos de los otros temas y avisa si están viejos. | [uh/US-06.md](uh/US-06.md) |
-| **US-07** | El profesor ve el estado de sus comisiones y avisa si un alumno está en riesgo. | [uh/US-07.md](uh/US-07.md) |
-| **US-08** | El admin ve el tablero de indicadores y recibe avisos si algo baja. | [uh/US-08.md](uh/US-08.md) |
+| **US-04** | El admin registra proveedores y modelos de IA, sin exponer claves. | [uh/US-04.md](uh/US-04.md) |
+| **US-05** | El admin activa y cambia el modelo de IA en uso; el sistema avisa a los servicios. | [uh/US-05.md](uh/US-05.md) |
+| **US-06** | El sistema prueba un modelo contra respuestas de referencia y guarda el resultado. | [uh/US-06.md](uh/US-06.md) |
+| **US-07** | Un modelo solo se usa si su error está dentro de lo permitido; si se desvía, se saca solo. | [uh/US-07.md](uh/US-07.md) |
+| **US-08** | El sistema junta los datos de los otros temas y guarda cada uno una sola vez. | [uh/US-08.md](uh/US-08.md) |
 | **US-09** | Se puede pedir un reporte en PDF/CSV y avisan cuando está listo. | [uh/US-09.md](uh/US-09.md) |
+| **US-10** | El sistema avisa cuando un tema lleva demasiado tiempo sin enviar datos. | [uh/US-10.md](uh/US-10.md) |
+| **US-11** | El sistema arma el resumen de cada comisión y calcula el riesgo de cada alumno. | [uh/US-11.md](uh/US-11.md) |
+| **US-12** | El profesor ve el panel de sus comisiones y avisa si un alumno está en riesgo alto. | [uh/US-12.md](uh/US-12.md) |
+| **US-13** | El admin ve el tablero de indicadores y las muestras muy chicas se ocultan. | [uh/US-13.md](uh/US-13.md) |
+| **US-14** | El admin define cuándo un indicador está bajo y el sistema avisa; solo él lo ve. | [uh/US-14.md](uh/US-14.md) |
 
-> **Todas las tareas** de las 9 historias (con explicación en simple, talle y horas) están consolidadas en [tareas.md](tareas.md), listas para cargar en Taiga. Los **responsables** se asignan aparte.
+> **Todas las tareas** de las 14 historias (con explicación en simple, talle y horas) están consolidadas en [tareas.md](tareas.md), listas para cargar en Taiga. Los **responsables** se asignan aparte.
 
 ## 6. Matriz de trazabilidad (resumen)
 
@@ -108,8 +113,8 @@ Cada historia está en `uh/` con el **template del equipo** (`templateUH.md`): D
 |---|---|---|---|
 | EP-01 · Parámetros Globales | US-01, US-02 | 5+5 | Must |
 | EP-02 · Administración de la Plataforma | US-03 | 5 | Must |
-| EP-03 · Modelos LLM y Golden Set | US-04, US-05 | 5+8 | Must |
-| EP-04 · Contratos de Lectura e Ingesta | US-06 | 8 | Must |
-| EP-05 · Observabilidad, Reportes y Panel | US-07, US-08, US-09 | 8+8+5 | Should / Should / Could |
+| EP-03 · Modelos LLM y Golden Set | US-04, US-05, US-06, US-07 | 5+5+5+5 | Must |
+| EP-04 · Contratos de Lectura e Ingesta | US-08, US-10 | 5+3 | Must |
+| EP-05 · Observabilidad, Reportes y Panel | US-09, US-11, US-12, US-13, US-14 | 5+5+5+5+3 | Could / Should / Should / Should / Should |
 
-> **Backlog general:** las historias **Must** suman **36 SP**; la capacidad efectiva define cuántas se toman por Sprint.
+> **Backlog general:** las historias **Must** suman **43 SP**; la capacidad efectiva define cuántas se toman por Sprint.

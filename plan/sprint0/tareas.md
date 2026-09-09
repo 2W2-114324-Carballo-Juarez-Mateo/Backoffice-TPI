@@ -1,6 +1,6 @@
 # Plan de Tareas — Backlog general (BackOffice · Tema 12)
 
-> Todas las tareas de las 9 historias de usuario, agrupadas por tema y épica, listas para cargar en **Taiga**. Formato por tarea: **nombre** — qué hace (en simple). *(Talle · Horas)*. Los **responsables** se cargan después.
+> Todas las tareas de las 14 historias de usuario, agrupadas por tema y épica, listas para cargar en **Taiga**. Formato por tarea: **nombre** — qué hace (en simple). *(Talle · Horas)*. Los **responsables** se cargan después.
 
 ---
 
@@ -8,7 +8,7 @@
 
 ### EP-01 · Parámetros Globales
 
-#### US-01 · Modificación de parámetros globales (PAR-01..24)
+#### US-01 · Modificación y versionado de parámetros globales
 
 1. **Crear el registro de parámetros** — La tabla y la estructura para guardar los parámetros (PAR-01..24) y poder buscarlos. *(M · 6 h)*
 2. **Pantalla/API para ver y cambiar parámetros** — Los puntos para listar y modificar un parámetro, con sus validaciones. *(M · 8 h)*
@@ -45,26 +45,47 @@
 
 ### EP-03 · Modelos LLM y Golden Set
 
-#### US-04 · Registro y conmutación de proveedores de IA
+#### US-04 · Registro de proveedores y modelos de IA
 
-1. **Crear el registro de proveedores y modelos** — Las tablas para guardar proveedores y modelos de IA. *(M · 6 h)*
-2. **Puntos para alta, listado y activación** — Las operaciones para registrar un modelo, listarlos y activarlo. *(M · 8 h)*
-3. **Manejar los estados del modelo** — Controla si un modelo está pendiente, aprobado, activo o retirado. *(S · 4 h)*
+1. **Crear las entidades de proveedor y modelo** — Las tablas para guardar proveedores y modelos de IA. *(M · 6 h)*
+2. **Alta de proveedor** — El punto para registrar un proveedor con sus parámetros. *(M · 6 h)*
+3. **Listado de modelos con estado** — El punto para ver el catálogo y el estado de cada modelo. *(S · 4 h)*
 4. **Guardar y ocultar las claves** — Las claves se guardan cifradas y nunca se muestran completas. *(M · 6 h)*
-5. **Avisar el cambio de modelo activo** — Al activar otro modelo, se avisa a los servicios que lo usan. *(S · 4 h)*
-6. **Pruebas de la gestión** — Tests de alta, estados y protección de claves. *(M · 6 h)*
-7. **Pantalla de gestión de proveedores** — La pantalla donde se registran y activan los modelos. *(M · 8 h)*
+5. **Estado inicial "pendiente de revisión"** — Todo modelo nuevo queda en espera y no se puede activar. *(S · 4 h)*
+6. **Pruebas de la gestión** — Tests de alta, listado y protección de claves. *(M · 6 h)*
+7. **Pantalla de registro** — La pantalla para cargar proveedores y modelos. *(M · 8 h)*
 8. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
 
-#### US-05 · Revisión de calidad de modelos de IA (golden set y tolerancia)
+#### US-05 · Sustitución y conmutación de modelos de IA
 
-1. **Crear el registro de casos de referencia** — Las tablas para guardar las respuestas de referencia y los resultados de revisión. *(M · 6 h)*
-2. **Proceso que prueba el modelo** — Ejecuta el modelo contra las respuestas de referencia y calcula el error promedio. *(L · 10 h)*
-3. **Regla de aprobación por tolerancia** — Solo aprueba el modelo si el error está dentro de la tolerancia (PAR-14). *(S · 4 h)*
-4. **Revisión periódica del modelo activo** — Controla cada cierto tiempo que el modelo en uso siga dentro de la tolerancia. *(M · 6 h)*
-5. **Cambio automático a un respaldo** — Si el modelo se desvía, pasa a un respaldo y se avisa. *(M · 8 h)*
-6. **Pruebas de la revisión** — Tests de aprobación, rechazo y deriva. *(M · 8 h)*
-7. **Pantalla de resultados de revisión** — La pantalla donde se ven los resultados de cada revisión. *(M · 8 h)*
+1. **Activación de modelo** — El punto para activar un modelo como el que se usa. *(S · 4 h)*
+2. **Validar que esté aprobado** — Impide activar un modelo que no pasó la revisión (responde 409). *(S · 4 h)*
+3. **Un solo modelo activo** — Garantiza que haya un único activo por función. *(S · 4 h)*
+4. **Publicar el aviso de cambio** — Al conmutar se publica `ModelProviderChanged` con el anterior y el nuevo. *(M · 6 h)*
+5. **Actualizar estados** — El activo pasa a reserva y el nuevo a activo. *(S · 4 h)*
+6. **Pruebas de conmutación** — Tests de activación, rechazo y evento. *(M · 6 h)*
+7. **Acción de activar en el front** — El botón para activar un modelo. *(S · 4 h)*
+8. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
+
+#### US-06 · Gestión del golden set y ejecución de revisión
+
+1. **Crear el registro de casos de referencia** — Las tablas para guardar las respuestas de referencia y los resultados. *(M · 6 h)*
+2. **Proceso que prueba el modelo** — Ejecuta el modelo contra los casos y calcula el error promedio. *(L · 10 h)*
+3. **Ejecutar la revisión** — El punto para lanzar una revisión. *(S · 4 h)*
+4. **Consultar los resultados** — El punto para ver el detalle de cada revisión. *(S · 4 h)*
+5. **Pruebas de la revisión** — Tests de cálculo y de casos sin referencia. *(M · 6 h)*
+6. **Pantalla de resultados** — La pantalla con los resultados de cada revisión. *(M · 6 h)*
+7. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
+
+#### US-07 · Aprobación por tolerancia (PAR-14) y fallback por deriva
+
+1. **Regla de aprobación por tolerancia** — Aprobado si el error está dentro de PAR-14; rechazado si no. *(S · 4 h)*
+2. **Bloquear modelos rechazados** — No se puede activar un modelo rechazado. *(S · 4 h)*
+3. **Revisión periódica del activo** — Controla cada cierto tiempo que el modelo en uso siga dentro de la tolerancia. *(M · 6 h)*
+4. **Cambio automático al respaldo** — Si se desvía, pasa a un respaldo. *(M · 6 h)*
+5. **Alerta de deriva** — Se emite la alerta crítica cuando el modelo se desvía. *(S · 4 h)*
+6. **Pruebas de aprobación/deriva** — Tests de aprobación, rechazo y deriva. *(M · 6 h)*
+7. **Estado del modelo en el front** — La pantalla muestra el estado y el aviso de deriva. *(S · 4 h)*
 8. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
 
 ---
@@ -73,50 +94,74 @@
 
 ### EP-04 · Contratos de Lectura e Ingesta
 
-#### US-06 · Recolección de datos de otros temas (ingesta y frescura)
+#### US-08 · Ingesta de datos de los temas con deduplicación
 
-1. **Crear el registro de datos recibidos** — Las tablas para guardar los datos que llegan y el estado de frescura. *(M · 6 h)*
-2. **Recibir los datos de cada tema** — Los consumidores que escuchan los datos de los 6 temas. *(L · 12 h)*
-3. **Evitar datos repetidos** — Si llega un dato ya procesado, no se vuelve a contar. *(S · 4 h)*
-4. **Controlar que los datos estén al día** — Si un tema pasa 15 minutos sin enviar datos, se avisa y se marca. *(M · 6 h)*
-5. **Separar datos con errores** — Los datos mal formados van a una cola aparte sin detener el resto. *(S · 4 h)*
-6. **Pruebas de la ingesta** — Tests de deduplicación, frescura y descarte. *(M · 8 h)*
-7. **Aviso visual de datos viejos** — El indicador en el panel que avisa cuando los datos están desactualizados. *(S · 4 h)*
-8. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
+1. **Tabla de datos procesados** — La tabla que guarda los identificadores de datos ya recibidos. *(M · 6 h)*
+2. **Consumidores por tema** — Los receptores de datos de cada uno de los 6 temas. *(L · 12 h)*
+3. **Deduplicación por identificador** — Si llega un dato ya procesado, no se vuelve a contar. *(S · 4 h)*
+4. **Cola de datos mal formados** — Los datos con errores van a una cola aparte sin detener el resto. *(S · 4 h)*
+5. **Pruebas de la ingesta** — Tests de deduplicación y descarte. *(M · 6 h)*
+6. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
+
+#### US-10 · Control de frescura de los datos y avisos
+
+1. **Monitor de frescura** — El control periódico del estado de cada tema. *(M · 6 h)*
+2. **Calcular el desfase** — Compara el último dato recibido con el umbral de 15 minutos. *(S · 4 h)*
+3. **Avisar y marcar** — Emite el aviso y marca los reportes afectados. *(S · 4 h)*
+4. **Quitar el aviso al normalizar** — Cuando el tema vuelve a enviar datos, se retira la marca. *(S · 4 h)*
+5. **Estado de frescura por API** — El punto que expone si los datos están al día. *(S · 4 h)*
+6. **Insignia en el front** — El indicador visual de datos desactualizados. *(S · 4 h)*
+7. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
 
 ### EP-05 · Observabilidad, Reportes y Panel de Riesgo
 
-#### US-07 · Panel docente con alumnos en riesgo
-
-1. **Armar el reporte por comisión** — El modelo de datos con el resumen de cada curso-cohorte. *(M · 8 h)*
-2. **Calcular el estado de riesgo** — Define si cada alumno está en riesgo alto, medio o normal. *(M · 6 h)*
-3. **Mostrar solo la comisión del docente** — El punto del panel que valida que el profesor solo vea sus comisiones. *(M · 8 h)*
-4. **Avisar cuando un alumno está en riesgo** — Se envía el aviso al sistema de notificaciones. *(S · 4 h)*
-5. **Pruebas del panel** — Tests de acceso por comisión y de cálculo de riesgo. *(M · 6 h)*
-6. **Pantalla del panel docente** — La pantalla con el semáforo de riesgo de cada alumno. *(M · 8 h)*
-7. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
-
-#### US-08 · Tablero consolidado de indicadores (KPIs)
-
-1. **Calcular los indicadores consolidados** — Los valores de satisfacción, aprobación, actividad, etc. desde los datos recibidos. *(M · 8 h)*
-2. **Ocultar muestras muy chicas** — Si una comisión tiene pocas respuestas, su valor se oculta ("muestra insuficiente"). *(S · 4 h)*
-3. **Umbrales de aviso configurables** — El administrador define cuándo un indicador está bajo y se avisa. *(M · 6 h)*
-4. **Mostrar el tablero solo a ADMIN** — El punto del tablero que valida el permiso del administrador. *(M · 6 h)*
-5. **Pruebas del tablero** — Tests de agregación, anonimato y permisos. *(M · 6 h)*
-6. **Pantalla del tablero de indicadores** — La pantalla con las tarjetas de indicadores y sus metas. *(M · 8 h)*
-7. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
-
 #### US-09 · Exportación de reportes
 
-1. **Pedir la exportación sin trabar la pantalla** — La solicitud responde al instante con un identificador y se procesa en segundo plano. *(M · 6 h)*
-2. **Generar el archivo (PDF y CSV)** — Arma el reporte en segundo plano, en streaming para no quedarse sin memoria. *(L · 12 h)*
-3. **Avisar cuando está listo** — Se avisa y queda disponible un enlace temporal de descarga. *(S · 4 h)*
-4. **Respetar el alcance por rol** — El profesor solo exporta sus comisiones. *(S · 4 h)*
-5. **Controlar el vencimiento del enlace** — Si el enlace venció, no se puede descargar. *(S · 4 h)*
+1. **Solicitud de exportación asíncrona** — Responde al instante con un identificador y se procesa en segundo plano. *(M · 6 h)*
+2. **Generar el archivo (PDF y CSV)** — Arma el reporte en segundo plano, en streaming. *(L · 12 h)*
+3. **Aviso de archivo listo** — Se avisa y queda disponible un enlace temporal. *(S · 4 h)*
+4. **Alcance por rol** — El profesor solo exporta sus comisiones. *(S · 4 h)*
+5. **Vencimiento del enlace** — Si el enlace venció, no se puede descargar. *(S · 4 h)*
 6. **Pruebas de la exportación** — Tests de generación, alcance y vencimiento. *(M · 6 h)*
 7. **Botón de exportación en el front** — El botón para pedir el reporte y el aviso de descarga. *(M · 6 h)*
 8. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
 
+#### US-11 · Read model y cálculo de riesgo por cohorte
+
+1. **Read model por comisión** — El modelo de datos con el resumen de cada curso-cohorte. *(M · 8 h)*
+2. **Cálculo del estado de riesgo** — Define si cada alumno está en riesgo alto, medio o normal. *(M · 6 h)*
+3. **Procesamiento periódico** — La foto analítica que recalcula el riesgo. *(M · 6 h)*
+4. **Pruebas del cálculo** — Tests de las reglas de riesgo. *(M · 6 h)*
+5. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
+
+#### US-12 · Panel del docente con RLS y alerta de riesgo
+
+1. **Endpoint del panel docente** — El punto que devuelve el panel de una comisión. *(M · 8 h)*
+2. **Validar acceso por comisión (RLS)** — Solo el profesor de esa comisión accede; otras responden 403. *(M · 6 h)*
+3. **Aviso de riesgo alto** — Se envía el aviso cuando un alumno pasa a riesgo alto. *(S · 4 h)*
+4. **Sin comparaciones entre docentes** — La vista no permite comparar a los docentes. *(S · 4 h)*
+5. **Pruebas de acceso y aviso** — Tests de RLS y de aviso. *(M · 6 h)*
+6. **Pantalla del panel docente** — La pantalla con el semáforo de riesgo. *(M · 8 h)*
+7. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
+
+#### US-13 · Indicadores consolidados con bloqueo de anonimato
+
+1. **Calcular los indicadores consolidados** — Los valores de satisfacción, aprobación, actividad, etc. desde los datos recibidos. *(M · 8 h)*
+2. **Bloqueo de anonimato** — Si una comisión tiene pocas respuestas, su valor se oculta. *(S · 4 h)*
+3. **Endpoint del tablero (solo ADMIN)** — El punto del tablero con permiso de administrador. *(M · 6 h)*
+4. **Pruebas de agregación y anonimato** — Tests de agregados, anonimato y permisos. *(M · 6 h)*
+5. **Pantalla del tablero** — La pantalla con las tarjetas de indicadores y sus metas. *(M · 8 h)*
+6. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
+
+#### US-14 · Umbrales de aviso y acceso al tablero
+
+1. **Configurar umbrales** — El ADMIN define cuándo un indicador está bajo lo esperado. *(S · 4 h)*
+2. **Evaluar y emitir el aviso** — Si un indicador baja del umbral, se avisa. *(S · 4 h)*
+3. **Restringir el acceso** — Solo ADMIN ve el tablero y los avisos. *(S · 4 h)*
+4. **Pruebas de umbral y permisos** — Tests de umbral, aviso y acceso. *(M · 6 h)*
+5. **Configuración de umbrales en el front** — La pantalla para fijar los umbrales. *(S · 4 h)*
+6. **Documentar y cargar en Taiga** — OpenAPI, sdd y tarea en Taiga. *(S · 3 h)*
+
 ---
 
-> **Totales (referencia):** 9 historias · 69 tareas · horas estimadas a completar con la capacidad del equipo.
+> **Totales (referencia):** 14 historias · 100 tareas · horas estimadas a completar con la capacidad del equipo.
