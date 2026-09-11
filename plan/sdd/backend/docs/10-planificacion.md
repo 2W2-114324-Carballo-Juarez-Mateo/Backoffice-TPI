@@ -1,34 +1,28 @@
 # 10 — Planificación y dimensionamiento
 
-Tareas asignadas (Tema 12) según `TUP_PIV_BE_PROPUESTA_ARQ.pdf`, en las 3 columnas del documento (MoSCoW) y dimensionadas en **talles T-shirt (S/M/L)**.
+> Backlog **general** (no atado a un Sprint puntual) del Backoffice (Tema 12). Estructura: **2 temas estratégicos → 5 épicas → 14 historias de usuario**. Estimación: **SP (Fibonacci)** por historia y **horas** por tarea. Ver `docs/11-epicas-historias.md` y el repo `plan/sprint0/` (`Sprint0-Propuesta.md` · `uh/` · `tareas.md`).
 
-> **Clasificación por tema (supra-épicas):** **T-A · Gobernanza y Configuración Institucional** (Administración de plataforma · Registro de parámetros PAR · Proveedor LLM) y **T-B · Observabilidad y Soporte Académico** (Contratos de lectura · Reportes docentes).
+## 2 temas estratégicos
 
-## 🟢 Must — Pedido para empezar (sprint 1)
+- **T-A · Gobernanza y Configuración Institucional** — *quién puede actuar y bajo qué reglas* (ADMIN + modelos de IA). Épicas EP-01..03 → `administration-service`.
+- **T-B · Observabilidad y Soporte Académico** — *muestra en vez de gobernar* (PROFESOR consulta; ADMIN ve consolidado). Épicas EP-04..05 → `reporting-service`.
 
-| Ítem | RF | Subtareas | Talla | Dependencia |
+## Épicas e Historias (14)
+
+| Tema | Épica | Historias | SP | Prioridad |
 |---|---|---|---|---|
-| Administración de plataforma | RF-CFG-01/05 | Operativa de ADMIN sobre config/proveedores · consumo de auth/roles (T01) · permisos de endpoints | M | T01 |
-| Registro de parámetros PAR-01..24 | RF-CFG-04/06 | CRUD `GlobalParameter` · versionado · hacia adelante · evento `GlobalConfigurationChanged` | M | Temas 03/05/08/10 |
-| Gestión del proveedor LLM (exclusiva ADMIN) | RF-IA-ADM-01..07 | CRUD proveedores · modelo↔función · evaluador único · golden set + calibración · deriva | L | T07 consume |
-| Contratos de lectura con los 6 temas | RF-RPT-10 | Acordar contratos (02/04/05/07/08/10) · suscripción a eventos · adapters · read models | L | Temas 02/04/05/07/08/10 |
-| Reportes docentes | RF-RPT-01 | Read models por cohorte · endpoints de reporte · autorización por matrícula (T02) | M | Contratos |
+| T-A | EP-01 · Parámetros Globales | US-01, US-02 | 5+5 | Must |
+| T-A | EP-02 · Administración de la Plataforma | US-03 | 5 | Must |
+| T-A | EP-03 · Modelos LLM y Golden Set | US-04, US-05, US-06, US-07 | 5+5+5+5 | Must |
+| T-B | EP-04 · Contratos de Lectura e Ingesta | US-08, US-10 | 5+3 | Must |
+| T-B | EP-05 · Observabilidad, Reportes y Panel | US-09, US-11, US-12, US-13, US-14 | 5+5+5+5+3 | Could / Should ×4 |
 
-## 🟡 Should — Para más adelante
+> **Must = US-01..08 y US-10 (43 SP)** · **Should = US-11..14** · **Could = US-09**. Detalle por historia (template + tareas con horas) en el repo `plan/sprint0/uh/` y `plan/sprint0/tareas.md`.
 
-| Ítem | RF | Subtareas | Talla | Dependencia |
-|---|---|---|---|---|
-| Panel del profesor (alumno en riesgo) | RF-RPT-03 | `AtRiskStudent` · indicador · endpoint | M | Lecturas T04/05/08/10 |
-| Frescura ≤ 15 min | RF-RPT-06 | SLA de frescura · monitoreo de lag | S-M | Contratos |
-| KPIs CSAT 5★ | RF-RPT-02 | Agregados anónimos · KPI por cohorte | S-M | T04 |
-| Alertas configurables | RF-RPT-05 | Reglas configurables · `/api/alerts` | S-M | Lecturas |
-| Sin comparación entre docentes | RF-RPT-07 | Scope no cross-docente · tests | S | — |
+## Criterios de prioridad (del documento del profe)
 
-## 🔵 Could — Podría ser
+- **Pedido para empezar (Must)** = núcleo del dominio + lo que otros equipos necesitan (los **contratos de lectura** son la dependencia crítica).
+- **Para más adelante (Should)** = se diseña ahora y se implementa después.
+- **Podría ser (Could)** = un extra a medias vale menos que un núcleo terminado.
 
-| Ítem | RF | Subtareas | Talla | Dependencia |
-|---|---|---|---|---|
-| Exportación de datos | RF-RPT-04 | CSV/PDF · `/api/export/*` | M | Read models |
-
-> Criterio del documento: "Pedido para empezar" = núcleo + lo que otros equipos necesitan (los **contratos de lectura** son la dependencia crítica del sprint 1: sin ellos no hay nada demostrable). "Para más adelante" = se diseña ahora y se implementa después. "Podría ser" = un extra a medias vale menos que un núcleo terminado.
-> Referencia: `backoffice_backend_requerimientos_arquitectura.md` §40bis · sitio `msii/planificacion`.
+> Referencia del profe: `TUP_PIV_BE_PROPUESTA_ARQ.pdf` (3 columnas). Nuestro backlog lo detalla en épicas/historias/tareas.

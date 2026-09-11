@@ -273,13 +273,14 @@ Infra: Eureka (discovery) · Config Server · Kafka (eventos) · PostgreSQL por 
 
 ---
 
-## 7. Planificación (Must / Should / Could)
+## 7. Planificación (backlog general · 14 historias)
 
-- **Must — Pedido para empezar (sprint 1):** Administración de plataforma (M, ~4d) · Registro de parámetros PAR-01..24 (M, ~4d) · Gestión del proveedor LLM (L, ~8d) · Contratos de lectura con los 6 temas (L, ~7d) · Reportes docentes (M, ~5d). **Total ~28 persona-días.**
-- **Should — Para más adelante:** Panel del profesor/alumno en riesgo (M) · Frescura ≤15 min (S-M) · KPIs CSAT 5★ (S-M) · Alertas configurables (S-M) · Sin comparación entre docentes (S).
-- **Could — Podría ser:** Exportación de datos (M).
+- **Estructura:** **2 temas estratégicos → 5 épicas → 14 historias de usuario**. Estimación: **SP (Fibonacci)** por historia y **horas** por tarea (la capacidad real la define el Excel del equipo).
+- **Must (43 SP):** Parámetros Globales (US-01/02) · Administración de la Plataforma (US-03) · Modelos LLM y Golden Set (US-04/05/06/07) · Contratos de Lectura e Ingesta (US-08/10).
+- **Should (US-11..14):** Panel docente con riesgo · Tablero de KPIs con anonimato · Umbrales y alertas.
+- **Could (US-09):** Exportación de reportes.
 
-Regla del documento: "Para más adelante" se diseña ahora y se implementa después; "Podría ser" es un extra que vale menos que un núcleo terminado.
+Regla del documento: "Para más adelante" se diseña ahora y se implementa después; "Podría ser" es un extra que vale menos que un núcleo terminado. Detalle completo: `plan/sprint0/uh/` y `plan/sprint0/tareas.md`.
 
 ---
 

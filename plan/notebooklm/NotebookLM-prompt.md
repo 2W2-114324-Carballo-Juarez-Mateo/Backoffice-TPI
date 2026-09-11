@@ -153,8 +153,8 @@ Generá **un video explicativo de 6 a 8 minutos** que explique la propuesta comp
 3. Los 2 microservicios y qué hacen (Administration & Configuration — PAR-01..24 + proveedor LLM; Reporting & Analytics — reportes, panel, métricas CSAT, exportación, alertas).
 4. Requerimientos funcionales clave (RF-CFG-06 hacia adelante · RF-IA-ADM proveedor exclusivo · RF-RPT reportes/métricas).
 5. Requerimientos no funcionales y arquitectura (autorización 2 niveles, Database per Service, sync por gateway, Kafka + Outbox + idempotencia, rate limiting/429, secretos).
-6. Integración con los otros 11 temas (qué damos: PAR→03/05/08/10, proveedores→T07; qué recibimos: contratos de lectura, matrícula T02, auth T01; contratos = dependencia crítica del sprint 1).
-7. Planificación Must/Should/Could (5 tareas Must, ~28 persona-días).
+6. Integración con los otros 11 temas (qué damos: PAR→03/05/08/10, proveedores→T07; qué recibimos: contratos de lectura, matrícula T02, auth T01; contratos = dependencia crítica).
+7. Planificación: backlog general con 2 temas → 5 épicas → **14 historias** (SP Fibonacci + horas por tarea; Must = 43 SP).
 8. Cierre y defensa (argumentos + posibles preguntas del profesor con respuestas).
 
 **Reglas:**

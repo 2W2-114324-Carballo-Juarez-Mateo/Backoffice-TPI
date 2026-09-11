@@ -7,7 +7,7 @@ Cada app tiene su `location` con fallback a **su propio** index:
 ```nginx
 # BackOffice (SSR)
 location /backoffice/ {
-    proxy_pass http://backoffice-ssr:4000;
+    proxy_pass http://backoffice-ssr:8095;
 }
 
 # Respaldar el caso estático / fallback profundo:
@@ -17,12 +17,12 @@ location /backoffice/ {
 
 # Alumno (raíz)
 location / {
-    proxy_pass http://alumno-ssr:4100;
+    proxy_pass http://alumno-ssr:8094;
 }
 
 # API → BFF/Gateway (reverse proxy)
 location /api/ {
-    proxy_pass http://bff-backoffice:4100;
+    proxy_pass http://bff-backoffice:8094;
 }
 ```
 
@@ -59,8 +59,8 @@ nginx -g 'daemon off;'
 ```nginx
 upstream bff_backend {
     least_conn;
-    server bff-backoffice-1:4100;
-    server bff-backoffice-2:4100;
+    server bff-backoffice-1:8094;
+    server bff-backoffice-2:8094;
 }
 location /api/ {
     proxy_pass http://bff_backend/;

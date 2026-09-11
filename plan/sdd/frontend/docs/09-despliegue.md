@@ -34,7 +34,7 @@ server {
     add_header Strict-Transport-Security "max-age=31536000" always;
 
     location /backoffice/ {                 # SSR
-        proxy_pass http://backoffice-ssr:4000;
+        proxy_pass http://backoffice-ssr:8095;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
     }
@@ -82,8 +82,8 @@ nginx -g 'daemon off;'
 ```nginx
 upstream bff_backend {
     least_conn;
-    server bff-backoffice-1:4100;
-    server bff-backoffice-2:4100;
+    server bff-backoffice-1:8094;
+    server bff-backoffice-2:8094;
 }
 location /api/ { proxy_pass http://bff_backend/; }
 ```

@@ -2531,51 +2531,44 @@ La prioridad técnica no modifica el alcance funcional establecido por el PRD; s
 
 # 40bis. Planificación y dimensionamiento
 
-Tareas asignadas (Tema 12) según `TUP_PIV_BE_PROPUESTA_ARQ.pdf`, en las 3 columnas del documento (MoSCoW) y dimensionadas en **talles T-shirt (S/M/L)**.
+Backlog **general** (no atado a un Sprint puntual) del Backoffice (Tema 12). Estructura: **2 temas estratégicos → 5 épicas → 14 historias de usuario**. Estimación: **SP (Fibonacci)** por historia y **horas** por tarea (la capacidad real la define el Excel del equipo).
 
-## 🟢 Must — Pedido para empezar (sprint 1)
+## Temas estratégicos
 
-| Ítem | RF | Subtareas | Talla | Dependencia |
+- **T-A · Gobernanza y Configuración Institucional** — *quién puede actuar y bajo qué reglas* (ADMIN + modelos de IA) → `administration-service`. Épicas EP-01..03.
+- **T-B · Observabilidad y Soporte Académico** — *muestra en vez de gobernar* (PROFESOR consulta; ADMIN ve consolidado) → `reporting-service`. Épicas EP-04..05.
+
+## Épicas e Historias (14)
+
+| Tema | Épica | Historias | SP | Prioridad |
 |---|---|---|---|---|
-| Administración de plataforma | RF-CFG-01/05 | Operativa de ADMIN sobre config/proveedores · consumo de auth/roles (T01) · permisos de endpoints | M | T01 |
-| Registro de parámetros PAR-01..24 | RF-CFG-04/06 | CRUD `GlobalParameter` · versionado · hacia adelante · evento `GlobalConfigurationChanged` | M | Temas 03/05/08/10 |
-| Gestión del proveedor LLM (exclusiva ADMIN) | RF-IA-ADM-01..07 | CRUD proveedores · modelo↔función · evaluador único · golden set + calibración · deriva | L | T07 consume |
-| Contratos de lectura con los 6 temas | RF-RPT-10 | Acordar contratos (02/04/05/07/08/10) · suscripción a eventos · adapters · read models | L | Temas 02/04/05/07/08/10 |
-| Reportes docentes | RF-RPT-01 | Read models por cohorte · endpoints de reporte · autorización por matrícula (T02) | M | Contratos |
+| T-A | EP-01 · Parámetros Globales | US-01, US-02 | 5+5 | Must |
+| T-A | EP-02 · Administración de la Plataforma | US-03 | 5 | Must |
+| T-A | EP-03 · Modelos LLM y Golden Set | US-04, US-05, US-06, US-07 | 5+5+5+5 | Must |
+| T-B | EP-04 · Contratos de Lectura e Ingesta | US-08, US-10 | 5+3 | Must |
+| T-B | EP-05 · Observabilidad, Reportes y Panel | US-09, US-11, US-12, US-13, US-14 | 5+5+5+5+3 | Could / Should ×4 |
 
-## 🟡 Should — Para más adelante
+> **Must = US-01..08 y US-10 (43 SP)** · **Should = US-11..14** · **Could = US-09**. Detalle por historia (template + tareas con horas) en `plan/sprint0/uh/` y `plan/sprint0/tareas.md`.
 
-| Ítem | RF | Subtareas | Talla | Dependencia |
-|---|---|---|---|---|
-| Panel del profesor (alumno en riesgo) | RF-RPT-03 | `AtRiskStudent` · indicador · endpoint | M | Lecturas T04/05/08/10 |
-| Frescura ≤ 15 min | RF-RPT-06 | SLA de frescura · monitoreo de lag | S-M | Contratos |
-| KPIs CSAT 5★ | RF-RPT-02 | Agregados anónimos · KPI por cohorte | S-M | T04 |
-| Alertas configurables | RF-RPT-05 | Reglas configurables · `/api/alerts` | S-M | Lecturas |
-| Sin comparación entre docentes | RF-RPT-07 | Scope no cross-docente · tests | S | — |
+## Criterios de prioridad (del documento del profe)
 
-## 🔵 Could — Podría ser
-
-| Ítem | RF | Subtareas | Talla | Dependencia |
-|---|---|---|---|---|
-| Exportación de datos | RF-RPT-04 | CSV/PDF · `/api/export/*` | M | Read models |
-
-> Criterio del documento: "Pedido para empezar" = núcleo + lo que otros equipos necesitan (los **contratos de lectura** son la dependencia crítica del sprint 1). "Para más adelante" = se diseña ahora y se implementa después. "Podría ser" = extra a medias vale menos que un núcleo terminado.
+- **Pedido para empezar (Must)** = núcleo + lo que otros equipos necesitan (los **contratos de lectura** son la dependencia crítica).
+- **Para más adelante (Should)** = se diseña ahora y se implementa después.
+- **Podría ser (Could)** = un extra a medias vale menos que un núcleo terminado.
 
 ---
 
-# 40ter. Propuestas de tareas (Must)
+# 40ter. Tareas de dominio (detalle técnico)
 
-Cada tarea Must tiene una **propuesta profesional completa** (objetivo, alcance, RF, diseño técnico con best practices, diagrama, contrato API, modelo de datos, reglas, plan con persona-días, pruebas, DoD y riesgos). Se documenta en el sitio (carpeta `msii/tareas/`) y en `sdd/backend/tareas/`.
+Las **tareas de dominio** (administración, parámetros, proveedor LLM, contratos, reportes) tienen **propuesta profesional completa** (objetivo, alcance, RF, diseño técnico, diagrama, contrato API, modelo de datos, reglas, pruebas, DoD, riesgos) en el sitio (`msii/tareas/`) y en `sdd/backend/tareas/`, **mapeadas a las épicas** del backlog:
 
-| # | Tarea | RF | Talla | Persona-días |
-|---|---|---|---|---|
-| 1 | Administración de plataforma | RF-CFG-01/05 | M | ~4 |
-| 2 | Registro de parámetros PAR-01..24 | RF-CFG-04/06 | M | ~4 |
-| 3 | Gestión del proveedor LLM (exclusiva ADMIN) | RF-IA-ADM-01..07 | L | ~8 |
-| 4 | Contratos de lectura con los 6 temas | RF-RPT-10 | L | ~7 |
-| 5 | Reportes docentes | RF-RPT-01 | M | ~5 |
-
-**Total estimado del núcleo: ~28 persona-días.** Las tareas 3 y 4 son las más grandes (L) y las más riesgosas por dependencias (T07 y los 6 temas). La tarea 4 es la dependencia crítica del sprint 1.
+| Tarea de dominio | RF | Épica |
+|---|---|---|
+| Administración de plataforma | RF-CFG-01/05 | EP-02 |
+| Registro de parámetros PAR-01..24 | RF-CFG-04/06 | EP-01 |
+| Gestión del proveedor LLM (exclusiva ADMIN) | RF-IA-ADM-01..07 | EP-03 |
+| Contratos de lectura con los 6 temas | RF-RPT-10 | EP-04 |
+| Reportes docentes | RF-RPT-01/02/03/04/05 | EP-05 |
 
 > Best practices aplicadas en todas: Clean Architecture, CQRS (command/query), DTOs + validación, autorización por ámbito (*validar ≠ autorizar*, consume T01), eventos con Outbox + idempotencia, Idempotency-Key, rate limiting, observabilidad (correlation ID, logs, health), OpenAPI, Flyway, soft delete y pruebas (unit + integración con Testcontainers + contract).
 
