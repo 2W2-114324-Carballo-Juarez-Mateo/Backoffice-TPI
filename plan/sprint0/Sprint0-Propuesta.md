@@ -105,7 +105,7 @@ Cada historia está en `uh/` con el **template del equipo** (`templateUH.md`): D
 | **US-13** | El admin ve el tablero de indicadores y las muestras muy chicas se ocultan. | [uh/US-13.md](uh/US-13.md) |
 | **US-14** | El admin define cuándo un indicador está bajo y el sistema avisa; solo él lo ve. | [uh/US-14.md](uh/US-14.md) |
 
-> **Todas las tareas** de las 14 historias (con explicación en simple, talle y horas) están consolidadas en [tareas.md](tareas.md), listas para cargar en Taiga. Los **responsables** se asignan aparte.
+> **Todas las tareas** de las 14 historias (en simple, con **SP Fibonacci en la historia y horas en cada tarea**) están consolidadas en [tareas.md](tareas.md), listas para cargar en Taiga. Los **responsables** se asignan aparte. Las tareas de **Frontend** están en el bloque TH-03 (futura) y no computan en la capacidad de Back.
 
 ## 6. Matriz de trazabilidad (resumen)
 
