@@ -2603,7 +2603,7 @@ Backlog **general** (no atado a un Sprint puntual) del Backoffice (Tema 12). Est
 | T-B | EP-04 · Contratos de Lectura e Ingesta | US-08, US-10 | 5+3 | Must |
 | T-B | EP-05 · Observabilidad, Reportes y Panel | US-09, US-11, US-12, US-13, US-14 | 5+5+5+5+3 | Could / Should ×4 |
 
-> **Must = US-01..08 y US-10 (43 SP)** · **Should = US-11..14** · **Could = US-09**. Detalle por historia (template + tareas con horas) en `plan/sprint0/uh/` y `plan/sprint0/tareas.md`.
+> **Must = US-01..08 y US-10 (43 SP)** · **Should = US-11..14** · **Could = US-09**. Detalle por historia (template + tareas con horas) en `plan/sprint0/uh/` y `plan/tareas.md`.
 
 ## Criterios de prioridad (del documento del profe)
 

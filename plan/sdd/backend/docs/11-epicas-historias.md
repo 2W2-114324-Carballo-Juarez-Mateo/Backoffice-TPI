@@ -1,6 +1,6 @@
 # 11 — Épicas e Historias de Usuario (SDD por épica)
 
-> Documento de diseño general por **épica** (no por tarea). Cada épica describe: **objetivo · alcance técnico · historias incluidas · contratos · dependencias**. El detalle por historia (template, CA, BDD, tareas con horas) está en el repo `plan/sprint0/uh/` y `plan/sprint0/tareas.md`.
+> Documento de diseño general por **épica** (no por tarea). Cada épica describe: **objetivo · alcance técnico · historias incluidas · contratos · dependencias**. El detalle por historia (template, CA, BDD, tareas con horas) está en el repo `plan/sprint0/uh/` y `plan/tareas.md`.
 
 ---
 

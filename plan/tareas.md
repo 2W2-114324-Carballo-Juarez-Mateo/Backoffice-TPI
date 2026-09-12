@@ -4,8 +4,13 @@
 >
 > **Roles:** `[BACKEND]` · `[FRONTEND]` · `[TEST]` · `[DOCUMENTACION]` · `[REVISION]`
 
----
+## Estimación
 
+- **Historia = Story Points (Fibonacci): 1 · 2 · 3 · 5 · 8 · 13** — tamaño relativo (ver matriz en `sprint0/Sprint0-Propuesta.md`).
+- **Tarea = horas** — la capacidad del sprint se calcula en horas (Excel).
+- **Alcance:** las tareas de **Frontend** están en el bloque **TH-03 · Experiencia de Usuario (futura)** y **NO computan en la capacidad del sprint de Back** (DoD: backend funcional).
+
+---
 ## TH-01 · Gobernanza y Configuración Institucional
 
 ### EP-01 · Parámetros Globales
@@ -85,7 +90,9 @@
 
 > **Orden:** DOCUMENTACION (6) y BACKEND (1+2) arrancan en paralelo. BACKEND (3) necesita (2). FRONTEND (4) y TEST (5) arrancan cuando (1+2) están listos. REVISION (7) al final. Depende de US-04 (modelos registrados).
 
-#### US-06 · Gestión del golden set y ejecución de calibración
+#### US-06 · Gestión del golden set y ejecución de calibración · ⚠️ BLOQUEADO
+
+> ⚠️ **BLOQUEADO — pendiente de contrato con T07:** quién ejecuta el golden set (la arquitectura define a T07 como consumidor; no se confirmó que exponga un endpoint de calibración). **No cargar en Taiga hasta coordinar con T07/cátedra.**
 
 1. **[G06] - [BACKEND] - Crear migración Flyway y entidades GoldenSet y CalibrationRun** — Tabla golden_set (version, entries jsonb). Tabla calibration_runs (model_id, error_avg, tolerance_ok, run_at). *(M · 6 h)*
 2. **[G06] - [BACKEND] - Implementar endpoint para cargar y actualizar el golden set base** — POST/PUT golden-set. ADMIN sube o actualiza casos de referencia. Validar mínimo de casos. *(S · 4 h)*
@@ -206,11 +213,18 @@
 
 > **Orden:** BACKEND (1), DOCUMENTACION (5) y FRONTEND (3) arrancan en paralelo. BACKEND (2) necesita (1) + indicadores de US-13. TEST (4) necesita (1+2). REVISION (6) al final. Depende de US-13 (indicadores calculados).
 
----
+## TH-03 · Experiencia de Usuario (Frontend, futura) — NO computa en la capacidad del sprint de Back
 
+> Estas tareas pertenecen a la **materia Front** (bloque propio a definir). Se listan acá para no perderlas; **no se suman a la capacidad del sprint de Back**.
+
+- **[FRONTEND]** Pantalla de catálogo y formulario de edición de parámetros (US-01) · Pantalla de gestión de administradores (US-03) · Pantalla de registro de proveedores/modelos (US-04) · Acción de activar modelo (US-05) · Pantalla de resultados de revisión (US-06) · Estado del modelo y aviso de deriva (US-07) · Botón de exportación y aviso de descarga (US-09) · Insignia de datos desactualizados (US-10) · Panel docente con semáforo (US-12) · Tablero de indicadores (US-13) · Configuración de umbrales y alertas (US-14).
+
+---
 ## Totales y Cadenas de Ejecución
 
 > **Totales:** 14 historias · **104 tareas** (distribuidas en 5 roles: BACKEND, FRONTEND, TEST, DOCUMENTACION, REVISION).
+>
+> **Totales de Back (referencia):** **≈ 578 h** en tareas BACKEND/TEST/DOCUMENTACION/REVISION de las 14 UH (+ tareas FRONTEND en TH-03, fuera de capacidad). La capacidad real la define el Excel del equipo.
 >
 > **Cadenas de Trabajo Paralelo:**
 > - **Frente A (Parámetros):** US-02 → US-01

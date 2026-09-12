@@ -280,7 +280,7 @@ Infra: Eureka (discovery) · Config Server · Kafka (eventos) · PostgreSQL por 
 - **Should (US-11..14):** Panel docente con riesgo · Tablero de KPIs con anonimato · Umbrales y alertas.
 - **Could (US-09):** Exportación de reportes.
 
-Regla del documento: "Para más adelante" se diseña ahora y se implementa después; "Podría ser" es un extra que vale menos que un núcleo terminado. Detalle completo: `plan/sprint0/uh/` y `plan/sprint0/tareas.md`.
+Regla del documento: "Para más adelante" se diseña ahora y se implementa después; "Podría ser" es un extra que vale menos que un núcleo terminado. Detalle completo: `plan/sprint0/uh/` y `plan/tareas.md`.
 
 ---
 
