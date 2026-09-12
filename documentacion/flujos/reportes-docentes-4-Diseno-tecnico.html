@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>reportes-docentes — 4. Dise&#241;o t&#233;cnico — Backoffice (Tema 12)</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; background:#0f1120; color:#e6e4ff; font-family:'Segoe UI',system-ui,sans-serif; }
+  header { display:flex; align-items:center; justify-content:space-between; padding:14px 22px;
+           background:#171a36; border-bottom:3px solid #3d6cff; }
+  header h1 { font-size:15px; margin:0; letter-spacing:.5px; }
+  header .tag { font-size:11px; color:#8f97ff; font-family:Consolas,monospace; }
+  a.back { color:#00d4ff; text-decoration:none; font-size:12px; }
+  a.back:hover { text-decoration:underline; }
+  main { padding:24px; }
+  .diagram-wrap { background:#141635; border:2px solid #3c417a; border-radius:10px; padding:18px;
+                  overflow-x:auto; }
+  footer { padding:12px 22px; font-size:11px; color:#7d82b8; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Backoffice (Tema 12) — reportes-docentes — 4. Dise&#241;o t&#233;cnico</h1>
+  <span class="tag">UTN FRC · MSII · microservicios</span>
+</header>
+<main>
+  <p><a class="back" href="../index.html">← Volver al índice</a></p>
+  <div class="diagram-wrap">
+    <pre class="mermaid">sequenceDiagram
+    participant P as PROFESOR
+    participant GW as Gateway (T01)
+    participant RP as Reporting &amp; Analytics
+    participant T02 as Tema 02 (matr&#237;cula)
+    participant DB as reporting_db
+
+    P-&gt;&gt;GW: GET /api/reports/courses/{courseId}/teacher
+    GW-&gt;&gt;RP: valida JWT (T01) + propaga contexto
+    RP-&gt;&gt;GW: &#191;el profesor pertenece a la cohorte? (sync por gateway)
+    GW-&gt;&gt;T02: validar matr&#237;cula
+    T02--&gt;&gt;GW: s&#237; / no
+    GW--&gt;&gt;RP: resultado
+    RP-&gt;&gt;DB: lee read model de la cohorte
+    RP--&gt;&gt;GW: reporte agregado
+    GW--&gt;&gt;P: 200</pre>
+  </div>
+</main>
+<footer>Documentación del microservicio Backoffice · Generado desde plan/docs-site.</footer>
+<script>mermaid.initialize({ startOnLoad:true, theme:'dark', themeVariables:{
+  primaryColor:'#1b1e46', primaryTextColor:'#e6e4ff', primaryBorderColor:'#3d6cff',
+  lineColor:'#00d4ff', secondaryColor:'#241b46', tertiaryColor:'#2a1240',
+  actorBkg:'#1b1e46', actorBorder:'#3d6cff', actorTextColor:'#e6e4ff',
+  signalColor:'#00d4ff', signalTextColor:'#e6e4ff', labelBoxBkgColor:'#1e2148',
+  labelBoxBorderColor:'#00d4ff', labelTextColor:'#e6e4ff', noteBkgColor:'#33204d',
+  noteBorderColor:'#a45cff', noteTextColor:'#e6e4ff' } });</script>
+</body>
+</html>

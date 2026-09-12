@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backoffice (Tema 12) — Documentación y Flujos</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; background:#0f1120; color:#e6e4ff; font-family:'Segoe UI',system-ui,sans-serif; }
+  header { padding:22px 28px; background:#171a36; border-bottom:3px solid #3d6cff; }
+  header h1 { margin:0; font-size:20px; letter-spacing:.5px; }
+  header p { margin:6px 0 0; color:#8f97ff; font-size:13px; }
+  main { padding:26px 28px; max-width:1100px; }
+  h2 { color:#00d4ff; font-size:14px; letter-spacing:1px; text-transform:uppercase; margin:26px 0 10px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px; }
+  a.card { display:block; background:#141635; border:2px solid #3c417a; border-radius:10px;
+           padding:14px 16px; color:#e6e4ff; text-decoration:none; transition:.15s; }
+  a.card:hover { border-color:#00d4ff; transform:translateY(-2px); box-shadow:0 4px 18px rgba(0,212,255,.15); }
+  a.card .t { font-weight:600; font-size:13px; }
+  a.card .d { font-size:11px; color:#8f97ff; margin-top:4px; font-family:Consolas,monospace; }
+  .doc a { display:inline-block; margin:6px 8px 6px 0; padding:10px 16px; background:#1e2148;
+           border:2px solid #a45cff; border-radius:10px; color:#e6e4ff; text-decoration:none; font-size:13px; }
+  .doc a:hover { border-color:#00d4ff; }
+  footer { padding:16px 28px; font-size:11px; color:#7d82b8; border-top:1px solid #262a59; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Backoffice (Tema 12) — Microservicio</h1>
+  <p>Plataforma de Aprendizaje Gamificado · UTN FRC · MSII · Documentación para compartir y presentar</p>
+</header>
+<main>
+
+  <div class="doc">
+    <h2>Documentación</h2>
+    <a href="DOCUMENTACION_MICROSERVICIO.md">📄 Documentación del microservicio (.md)</a>
+    <a href="README.md">📑 Índice del folder (.md)</a>
+  </div>
+
+  <h2>Flujos · Casos de uso</h2>
+  <div class="grid">
+    <a class="card" href="flujos/casos-de-uso-Caso-1-Login-y-sesion-Front-BFF-Identity.html"><span class="t">Caso 1 · Login y sesión (Front → BFF → Identity)</span><span class="d">flujos/casos-de-uso-Caso-1...</span></a>
+    <a class="card" href="flujos/casos-de-uso-Caso-2-Alta-de-administrador-gestion-de-plataforma.html"><span class="t">Caso 2 · Alta de administrador</span><span class="d">flujos/casos-de-uso-Caso-2...</span></a>
+    <a class="card" href="flujos/casos-de-uso-Caso-3-Cambio-de-configuracion-global-PAR-01-Kafka-cache.html"><span class="t">Caso 3 · Cambio de configuración global (PAR-01) — Kafka + caché</span><span class="d">flujos/casos-de-uso-Caso-3...</span></a>
+    <a class="card" href="flujos/casos-de-uso-Caso-4-Reporte-por-curso-multitenancy-RLS-y-caso-ADMIN.html"><span class="t">Caso 4 · Reporte por curso (multitenancy, RLS y caso ADMIN)</span><span class="d">flujos/casos-de-uso-Caso-4...</span></a>
+    <a class="card" href="flujos/casos-de-uso-Caso-5-Gestion-del-proveedor-LLM-exclusivo-ADMIN.html"><span class="t">Caso 5 · Gestión del proveedor LLM (exclusivo ADMIN)</span><span class="d">flujos/casos-de-uso-Caso-5...</span></a>
+    <a class="card" href="flujos/casos-de-uso-Caso-6-Panel-exportacion-y-alertas-Reporting.html"><span class="t">Caso 6 · Panel, exportación y alertas (Reporting)</span><span class="d">flujos/casos-de-uso-Caso-6...</span></a>
+  </div>
+
+  <h2>Flujos · Comunicación entre microservicios</h2>
+  <div class="grid">
+    <a class="card" href="flujos/comunicacion-Service-Discovery-Eureka.html"><span class="t">Service Discovery (Eureka)</span><span class="d">flujos/comunicacion-Service-Discovery-Eureka.html</span></a>
+    <a class="card" href="flujos/comunicacion-Sincrona-HTTPREST.html"><span class="t">Comunicación síncrona (HTTP/REST)</span><span class="d">flujos/comunicacion-Sincrona-HTTPREST.html</span></a>
+    <a class="card" href="flujos/comunicacion-Asincrona-Eventos-Kafka.html"><span class="t">Comunicación asíncrona (eventos Kafka)</span><span class="d">flujos/comunicacion-Asincrona-Eventos-Kafka.html</span></a>
+    <a class="card" href="flujos/comunicacion-Flujo-critico-gestion-de-proveedor-de-modelo-ADMIN.html"><span class="t">Flujo crítico · Gestión de proveedor de modelo</span><span class="d">flujos/comunicacion-Flujo-critico-gestion-de-proveedor...</span></a>
+    <a class="card" href="flujos/comunicacion-Flujo-critico-baja-de-ADMIN-del-Tema-01-consumido.html"><span class="t">Flujo crítico · Baja de ADMIN (Tema 01, consumido)</span><span class="d">flujos/comunicacion-Flujo-critico-baja-de-ADMIN...</span></a>
+    <a class="card" href="flujos/mensajeria-3-Como-fluye-un-cambio-de-configuracion.html"><span class="t">Cómo fluye un cambio de configuración</span><span class="d">flujos/mensajeria-3-Como-fluye-un-cambio...</span></a>
+  </div>
+
+  <h2>Flujos · Diseño técnico por tarea</h2>
+  <div class="grid">
+    <a class="card" href="flujos/registro-parametros-4-Diseno-tecnico.html"><span class="t">Registro de parámetros — Diseño técnico</span><span class="d">flujos/registro-parametros-4...</span></a>
+    <a class="card" href="flujos/administracion-plataforma-4-Diseno-tecnico.html"><span class="t">Administración de plataforma — Diseño técnico</span><span class="d">flujos/administracion-plataforma-4...</span></a>
+    <a class="card" href="flujos/proveedor-llm-4-Diseno-tecnico.html"><span class="t">Proveedor LLM — Diseño técnico</span><span class="d">flujos/proveedor-llm-4...</span></a>
+    <a class="card" href="flujos/contratos-lectura-4-Diseno-tecnico.html"><span class="t">Contratos de lectura — Diseño técnico</span><span class="d">flujos/contratos-lectura-4...</span></a>
+    <a class="card" href="flujos/reportes-docentes-4-Diseno-tecnico.html"><span class="t">Reportes docentes — Diseño técnico</span><span class="d">flujos/reportes-docentes-4...</span></a>
+  </div>
+
+</main>
+<footer>Backoffice (Tema 12) · Generado desde plan/docs-site · Los HTML son autocontenidos (mermaid por CDN).</footer>
+</body>
+</html>
