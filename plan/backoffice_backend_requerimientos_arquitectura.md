@@ -203,6 +203,8 @@ PROFESOR define decisiones propias de su curso, como:
 
 Los cambios de parámetros globales deberán aplicarse únicamente hacia adelante.
 
+> **Alcance (decisión):** los cambios aplican **de inmediato** (no retroactivos). **No se agenda vigencia futura** en el MVP (la fecha futura queda como extensión futura si la cátedra la requiere).
+
 Los desafíos ya resueltos no deberán recalcular su XP o monedas históricas debido a un cambio de configuración.
 
 ---

@@ -29,6 +29,8 @@
 10. **[G06] - [REVISION] - Peer review de PR, validación de DoD Nivel 1 y cierre en Taiga** — Clean Architecture, PMD/Checkstyle, sin secretos, build CI verde. *(S · 3 h)*
 
 > **Orden:** DOCUMENTACION (9) y BACKEND (1+2) arrancan en paralelo. FRONTEND (5) arranca con el contrato congelado. TEST (7+8) arranca cuando existen las tareas 2+3. REVISION (10) siempre al final. Depende de US-02 (tabla outbox).
+>
+> **Alcance MVP:** el cambio aplica **de inmediato** (sin fecha de vigencia futura). La agenda de vigencia futura queda como extensión futura (Could) — si la pide la cátedra, se agrega un job programado (nueva versión + evento en la fecha).
 
 #### US-02 · Propagación del cambio de parámetro (Outbox + Kafka + Caché TTL)
 
