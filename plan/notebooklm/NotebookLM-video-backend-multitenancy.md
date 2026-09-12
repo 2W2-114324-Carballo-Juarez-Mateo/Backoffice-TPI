@@ -10,7 +10,7 @@
 Generá un **Video Overview** de la fuente "Backoffice-Fuente-NotebookLM" centrado en **la propuesta de backend del Backoffice (Tema 12)**. En español, didáctico, con **analogías** (gateway = portero, Kafka = buzón, consumidor puro = tablero de control, tenant = cada curso es su propio salón, caché con TTL = el pizarrón del aula que se actualiza cada 10 min o antes si llega el aviso).
 
 **Estructura sugerida (5 bloques):**
-1. **Qué es el Backoffice**: consumidor puro, 2 microservicios (Administration & Configuration → PAR-01..24 + proveedor LLM exclusivo de ADMIN; Reporting & Analytics → reportes, panel, métricas CSAT, exportación, alertas); qué consume (T01/T02) y qué lee (02/04/05/07/08/10).
+1. **Qué es el Backoffice**: consumidor puro, 2 microservicios (Administration & Configuration → PAR-01..23 (PAR-24 asignado al Tema 01) + proveedor LLM exclusivo de ADMIN; Reporting & Analytics → reportes, panel, métricas CSAT, exportación, alertas); qué consume (T01/T02) y qué lee (02/04/05/07/08/10).
 2. **Arquitectura e integración**: gateway de plataforma (T01), sync por gateway, autorización en 2 niveles, RF/RNF clave.
 3. **Mensajería híbrida con Kafka + caché TTL**:
    - **Por qué híbrido**: REST responde (operaciones/consultas) y los eventos avisan (cambios de configuración global). **Kafka es la decisión de plataforma** (Notificaciones y Banco también lo usan), con topic + **consumer group por servicio**, **replay** disponible y **orden por partición**; RabbitMQ queda como alternativa (los read models de Reporting se reconstruyen por **contratos de lectura REST**).

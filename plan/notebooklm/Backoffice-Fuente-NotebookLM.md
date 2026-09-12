@@ -38,7 +38,7 @@ La **cohorte** es la instancia concreta de un curso en un período académico (e
 El **Backoffice (T12)** es un **"consumidor puro"**: no tiene dominio propio. Todo lo que muestra pertenece a otros temas. Sus tareas (asignadas por el docente):
 
 1. **Administración de plataforma** (operativa de ADMIN).
-2. **Registro de parámetros PAR-01 a PAR-24** (configuración global de la economía).
+2. **Registro de parámetros PAR-01 a PAR-23 (PAR-24 asignado al Tema 01)** (configuración global de la economía).
 3. **Gestión del proveedor LLM, exclusiva de ADMIN**.
 4. **Contratos de lectura con los seis temas** que le proveen datos (02, 04, 05, 07, 08, 10).
 5. **Reportes docentes**.
@@ -62,7 +62,7 @@ El **Backoffice (T12)** es un **"consumidor puro"**: no tiene dominio propio. To
 - Pruebas: JUnit 5, Mockito, Testcontainers, Spring Cloud Contract (opcional).
 
 ### Nuestros 2 microservicios propietarios
-1. **Administration & Configuration Service** — configuración global (PAR-01..24) + gestión del proveedor LLM (exclusiva de ADMIN). Base: `administration_db`.
+1. **Administration & Configuration Service** — configuración global (PAR-01..23) + gestión del proveedor LLM (exclusiva de ADMIN). Base: `administration_db`.
 2. **Reporting & Analytics Service** — reportes docentes, panel del profesor, métricas, exportación y alertas. Base: `reporting_db`.
 
 Consumimos: identidad/auth/roles/2FA/auditoría/retención (T01), cohorte/matrícula (T02). Leemos: Temas 02/04/05/07/08/10.
@@ -76,7 +76,7 @@ Consumimos: identidad/auth/roles/2FA/auditoría/retención (T01), cohorte/matrí
 - **RF-CFG-04:** los parámetros de economía (PAR) son globales y solo los administra el ADMIN.
 - **RF-CFG-05:** separación de ámbitos: el PROFESOR no puede modificar parámetros globales.
 - **RF-CFG-06:** los cambios de parámetros aplican **solo hacia adelante**; nunca se recalculan XP/monedas históricos.
-- **PAR-01 a PAR-24:** catálogo global (el PRD lista PAR-01..18; el registro es genérico y extensible). Ejemplos: PAR-01 XP por dificultad (100/250/500), PAR-06 precio de una vida (300), PAR-14 tolerancia de calibración, PAR-16 retención (5 años).
+- **PAR-01 a PAR-23 (PAR-24 asignado al Tema 01):** catálogo global (el PRD lista PAR-01..18; el registro es genérico y extensible). Ejemplos: PAR-01 XP por dificultad (100/250/500), PAR-06 precio de una vida (300), PAR-14 tolerancia de calibración, PAR-16 retención (5 años).
 
 ### 3.2 Gestión del proveedor LLM (exclusiva de ADMIN)
 > **Aclaración clave:** los **proveedores de LLM son empresas externas** (OpenAI, Anthropic, etc.). El Backoffice **no es proveedor ni invoca a los modelos**: solo **administra la configuración** (qué proveedores están habilitados y qué modelo se usa para cada función). Quien **utiliza** los modelos es el **Tema 07 (Evaluación LLM)**, que consume esa configuración.
@@ -164,7 +164,7 @@ Infra: Eureka (discovery) · Config Server · Kafka (eventos) · PostgreSQL por 
 - El PRD no exige aislamiento físico por tenant → multitenancy lógico es barato y simple (un esquema por servicio, migraciones simples).
 
 **Dónde aplica en el Backoffice:**
-- **Administration & Configuration** (PAR-01..24, proveedores, evaluador, golden set): **global a propósito** (no tenant-scoped) — la economía debe valer igual en todos los cursos.
+- **Administration & Configuration** (PAR-01..23, proveedores, evaluador, golden set): **global a propósito** (no tenant-scoped) — la economía debe valer igual en todos los cursos.
 - **Reporting & Analytics** (métricas, reportes docentes, panel): **sí tenant-scoped por `course_id`** — read models acotados + pertenencia del actor.
 
 **TenantContext:** componente que determina por operación el alcance del usuario: JWT → identidad/rol → `course_id` solicitado → validación de pertenencia (matrícula T02) → TenantContext autorizado. **Nunca confía en el `course_id` del request**; setea `app.current_course` en la sesión de la base (para RLS).
@@ -228,7 +228,7 @@ Infra: Eureka (discovery) · Config Server · Kafka (eventos) · PostgreSQL por 
 
 **Con quién se conecta (vía BFF → Gateway T01):**
 - **Identity (T01)**: login, sesión (cookie httpOnly), roles, 401 → login.
-- **Administration & Configuration** (nuestro): PAR-01..24, proveedores LLM, evaluador, golden set.
+- **Administration & Configuration** (nuestro): PAR-01..23, proveedores LLM, evaluador, golden set.
 - **Reporting & Analytics** (nuestro): panel, reportes docentes, métricas/CSAT, export, alertas.
 - **Cursos / Matrícula (T02)**: listar cursos (selector de tenant) y validar pertenencia.
 - **Lecturas 02/04/05/07/08/10**: solo si el panel lo requiere.
@@ -304,7 +304,7 @@ Regla del documento: "Para más adelante" se diseña ahora y se implementa despu
 2. **2 servicios propietarios** (Administration & Configuration, Reporting & Analytics) y el resto se consume/lee.
 3. **Contratos de lectura** = la dependencia más riesgosa; se acuerdan en el sprint 1.
 4. **Proveedor LLM exclusivo de ADMIN** con golden set + calibración + deriva (RF-IA-35/30/31/32).
-5. **PAR-01..24** con registro genérico y cambios solo hacia adelante (RF-CFG-06).
+5. **PAR-01..23** con registro genérico y cambios solo hacia adelante (RF-CFG-06).
 6. **Integración correcta:** sync por el gateway (regla no negociable), asíncrono por Kafka con Outbox + idempotencia.
 7. **Seguridad:** autorización en 2 niveles, 2FA (consumida de T01), rate limiting + 429, Idempotency-Key.
 8. **Privacidad:** encuestas solo agregados anónimos; sin comparación entre docentes.

@@ -13,7 +13,7 @@ Actuá como **explicador académico** de un proyecto universitario de backend. T
 **Stack técnico:** Java 21 · Spring Boot 3 · Maven · PostgreSQL · Kafka · Eureka · Spring Cloud Gateway (de plataforma, Tema 01) · JPA/Hibernate · Clean Architecture.
 
 **Nuestros 2 microservicios propietarios:**
-1. **Administration & Configuration Service** → configuración global (parámetros PAR-01..24) + gestión del proveedor LLM (exclusiva de ADMIN).
+1. **Administration & Configuration Service** → configuración global (parámetros PAR-01..23) + gestión del proveedor LLM (exclusiva de ADMIN).
 2. **Reporting & Analytics Service** → reportes docentes, panel del profesor, métricas, exportación y alertas.
 
 **Consumimos:** identidad, auth, roles, 2FA, auditoría y retención del **Tema 01**; la cohorte del **Tema 02**; y leemos datos de los Temas 02/04/05/07/08/10 para reportes/métricas.
@@ -27,7 +27,7 @@ Actuá como **explicador académico** de un proyecto universitario de backend. T
 - **RF-CFG-04**: los parámetros de economía (PAR) son globales y solo los administra el ADMIN.
 - **RF-CFG-05**: separación de ámbitos; el PROFESOR no puede modificar parámetros globales.
 - **RF-CFG-06**: los cambios de parámetros aplican solo hacia adelante (nunca se recalculan XP/monedas históricos).
-- Parámetros **PAR-01 a PAR-24** (base PRD PAR-01..18; el registro es genérico y extensible).
+- Parámetros **PAR-01 a PAR-23 (PAR-24 asignado al Tema 01)** (base PRD PAR-01..18; el registro es genérico y extensible).
 
 ### Gestión del proveedor LLM (exclusiva de ADMIN)
 - **RF-IA-ADM-01**: alta/sustitución/baja de proveedores y modelos de LLM, exclusiva de ADMIN y auditada (RF-IA-35).
@@ -150,7 +150,7 @@ Generá **un video explicativo de 6 a 8 minutos** que explique la propuesta comp
 **Estructura del video (por escena: qué se VE + qué se DICE):**
 1. Intro (0:00-0:30): título "Backoffice — Tema 12", proyecto, equipo.
 2. Qué es el Backoffice y por qué "consumidor puro" (tablero de control): 2 servicios propietarios + consumo (T01/T02) + lectura (02/04/05/07/08/10).
-3. Los 2 microservicios y qué hacen (Administration & Configuration — PAR-01..24 + proveedor LLM; Reporting & Analytics — reportes, panel, métricas CSAT, exportación, alertas).
+3. Los 2 microservicios y qué hacen (Administration & Configuration — PAR-01..23 + proveedor LLM; Reporting & Analytics — reportes, panel, métricas CSAT, exportación, alertas).
 4. Requerimientos funcionales clave (RF-CFG-06 hacia adelante · RF-IA-ADM proveedor exclusivo · RF-RPT reportes/métricas).
 5. Requerimientos no funcionales y arquitectura (autorización 2 niveles, Database per Service, sync por gateway, Kafka + Outbox + idempotencia, rate limiting/429, secretos).
 6. Integración con los otros 11 temas (qué damos: PAR→03/05/08/10, proveedores→T07; qué recibimos: contratos de lectura, matrícula T02, auth T01; contratos = dependencia crítica).

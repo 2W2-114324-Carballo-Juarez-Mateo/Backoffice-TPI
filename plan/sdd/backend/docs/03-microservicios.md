@@ -4,7 +4,7 @@ El Backoffice (Tema 12) es **consumidor puro**: solo **2 servicios propietarios*
 
 ## Administration & Configuration Service
 
-- Registro de parámetros **PAR-01..PAR-24** (base PRD PAR-01..18; registro genérico/extensible), versionados, hacia adelante.
+- Registro de parámetros **PAR-01..PAR-23** (base PRD PAR-01..18; PAR-24 asignado al Tema 01; registro genérico/extensible), versionados, hacia adelante.
 - **Gestión de proveedores de LLM** (RF-IA-35): alta, sustitución, baja, auditada — exclusiva ADMIN.
 - **Asignación modelo ↔ función** (RF-IA-23/24) y configuración del evaluador (RF-IA-25/28).
 - **Golden set base y calibración a nivel plataforma** (RF-IA-30/31) y **detección de deriva** (RF-IA-32).

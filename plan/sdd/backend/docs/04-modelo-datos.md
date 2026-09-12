@@ -9,7 +9,7 @@ Modelo por servicio (campos/tipos JPA). **Solo los 2 servicios propietarios del 
 | Campo | Tipo | Notas |
 |---|---|---|
 | id | UUID | PK |
-| key | varchar(20) | PAR-01..PAR-24 (base PRD PAR-01..18; registro extensible) |
+| key | varchar(20) | PAR-01..PAR-23 (base PRD PAR-01..18; PAR-24 asignado a T01; registro extensible) |
 | value | jsonb | versionado (RF-CFG-06) |
 | version | int | incrementa por cambio |
 | updated_by / updated_at | UUID / timestamp | FK lógica → Tema 01 |

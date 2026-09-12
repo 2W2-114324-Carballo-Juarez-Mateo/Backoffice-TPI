@@ -122,7 +122,7 @@ El Backoffice **respeta** estas reglas de plataforma (tomadas del PRD) pero **no
 - Protección del último ADMIN, incondicional (RF-ROL-05).
 - Baja reforzada: contraseña + 2FA + confirmación (RF-ROL-06).
 
-**Cómo consume el Backoffice:** al recibir una solicitud administrativa, el gateway valida el token (Tema 01) y propaga el contexto de usuario; el microservicio Backoffice consulta a Tema 01 (por el gateway) la decisión de autorización por rol/permiso y, para reportes, la pertenencia a la cohorte (Tema 02). *Validar ≠ autorizar*: la autorización final la toma el servicio dueño de la regla.
+**Cómo consume el Backoffice:** el gateway de plataforma (Tema 01) valida el JWT y propaga el contexto validado (headers `X-User-Id`, `X-User-Roles`, `traceparent`, `X-Request-Id`). El Backoffice **no valida el token** (nunca firma/exp) y **no consulta ninguna API REST de autorización a Tema 01** (no existe endpoint `authorize`): cada microservicio **autoriza localmente** con `@PreAuthorize` sobre el rol ya propagado en `X-User-Roles`. Para reportes, la pertenencia del PROFESOR a la cohorte se valida contra la **matrícula del Tema 02** (cross-team, §17). *Validar ≠ autorizar*: el gateway valida; la autorización final la toma el servicio dueño de la regla.
 
 ---
 
@@ -171,9 +171,9 @@ Entre ellos se encuentran:
 
 Estos valores deben tratarse como **configuración**, no como constantes hardcodeadas.
 
-### PAR-19..PAR-24 — Candidatos deducidos de la especificación (a validar con la cátedra)
+### PAR-19..PAR-23 — Candidatos deducidos de la especificación (a validar con la cátedra)
 
-> **Nota importante:** el documento del profe asigna el **registro PAR-01..PAR-24** (Lámina 6), pero la tabla del PRD solo define hasta **PAR-18** (economía). El PRD (nota a `RF-CFG-04`) aclara que *"los parámetros operativos de plataforma se completan en LL"*. Los siguientes **6 candidatos** fueron **deducidos** de la especificación (magic numbers de los temas consumidores + Lámina 6) y **NO son oficiales**: se presentan **a validar con la cátedra**. Los valores marcados como *propuesto* no tienen número oficial en la documentación.
+> **Nota importante:** el documento del profe asigna el **registro PAR-01..PAR-24** (Lámina 6), pero la tabla del PRD solo define hasta **PAR-18** (economía). El PRD (nota a `RF-CFG-04`) aclara que *"los parámetros operativos de plataforma se completan en LL"*. Los siguientes **5 candidatos** fueron **deducidos** de la especificación (magic numbers de los temas consumidores + Lámina 6) y **NO son oficiales**: se presentan **a validar con la cátedra**. Los valores marcados como *propuesto* no tienen número oficial en la documentación. **PAR-24 fue asignado al Tema 01** (ownership confirmado con el equipo de Usuarios): queda fuera del Backoffice (`PAR-01..23`).
 
 | PAR | Clave técnica (sugerida) | Tipo | Valor de referencia | Cita de la especificación | Consume |
 |---|---|---|---|---|---|
@@ -182,9 +182,8 @@ Estos valores deben tratarse como **configuración**, no como constantes hardcod
 | **PAR-21** | `event_multiplier_cap` | FLOAT | 3x (`3.0`) | "Multiplicador de eventos con techo de 3x" | **T08 / T10** (Banco / Gamificación) |
 | **PAR-22** | `llm_custom_challenges_weekly_limit` | INTEGER | *propuesto*: 5/semana *(sin número oficial)* | "Desafíos personalizados por LLM… Límite semanal de generación" | **T03 / T07** |
 | **PAR-23** | `reporting_cache_freshness_minutes` | INTEGER | 15 min | "Frescura máxima de 15 minutos en los datos" | **T12** (Reporting) |
-| **PAR-24** | `session_inactivity_timeout_minutes` | INTEGER | *propuesto*: 30 min *(sin número oficial; dueño real: T01)* | "Parámetros operativos de plataforma (política de sesiones)" | **T01** (Identity) |
 
-**Por qué como candidatos:** evita *magic numbers* en los microservicios (Lámina 6), permite al ADMIN ajustar reglas operativas sin recompilar, y el registro genérico (jsonb) los soporta sin migraciones. **Coordinación:** PAR-24 (sesión) es operativa de **T01** → confirmar si es PAR del Backoffice o configuración propia de T01.
+**Por qué como candidatos:** evita *magic numbers* en los microservicios (Lámina 6), permite al ADMIN ajustar reglas operativas sin recompilar, y el registro genérico (jsonb) los soporta sin migraciones. **Coordinación:** PAR-24 (`session_inactivity_timeout_minutes`) **es operativo de T01** y quedó fuera del Backoffice (resuelto en la negociación de contratos con Usuarios).
 
 ### RF-CFG-05 — Separación de ámbitos de configuración
 
@@ -308,6 +307,8 @@ El Backoffice depende de **contratos de lectura** con los temas que le proveen d
 ## 4.6 Auditoría — **consumida del Tema 01**
 
 > La **persistencia y consulta de auditoría** pertenecen al **Tema 01 (Identidad y Usuarios)**. El Backoffice **emite** los eventos de auditoría de sus operaciones administrativas (o los provoca), y Tema 01 los persiste; el Backoffice puede **consultar** auditoría vía contrato de lectura, pero **no implementa** el registro.
+>
+> **Contrato cerrado (T01):** publicación en topic **`audit.events` (v1)**, envelope estándar + `role` (propuesto como estándar de plataforma, T01 lo confirma). Eventos emitidos por el Backoffice: `ParameterChanged`, `ModelProviderChanged`, `EvaluatorActivated`, `GlobalRead`. Lectura: `GET /api/users/audit` y `GET /api/users/audit/{id}` (ruteo del gateway `/api/{servicio}/**`), rol **ADMIN**, paginación `offset`/`limit` (def. 50, máx 100), respuesta `{items, total, nextOffset}`.
 
 ### RF-AUD-01 — Registro de acciones administrativas
 
@@ -315,7 +316,7 @@ Las operaciones administrativas sensibles del Backoffice (cambios de parámetros
 
 ### RF-AUD-02 — Datos mínimos de auditoría
 
-Los eventos de auditoría que el Backoffice emite contienen, como mínimo: evento, actor, rol, fecha/hora, operación, recurso, resultado, motivo cuando aplique y correlation ID (el contrato lo define Tema 01).
+Los eventos de auditoría que el Backoffice emite contienen, como mínimo: evento, actor, rol, fecha/hora, operación, recurso, resultado, motivo cuando aplique y correlation ID. El schema se acordó con Tema 01 (envelope estándar + `role`, topic `audit.events` v1).
 
 ### RF-AUD-03 — Acciones que el Backoffice debe auditar
 
@@ -332,7 +333,9 @@ Los registros de auditoría no deberán modificarse desde las APIs administrativ
 
 ## 4.7 Retención — **consumida del Tema 01**
 
-> La **retención** (5 años configurable, sin purga automática, decisión de ADMIN) pertenece al **Tema 01 (Identidad y Usuarios)**. El Backoffice **no la implementa**: la respeta como política de plataforma y la consume cuando corresponde.
+> La **retención** (5 años configurable, sin purga automática, decisión de ADMIN) pertenece al **Tema 01 (Identidad y Usuarios)**. El Backoffice **no la implementa** y **nunca purga por su cuenta**: solo **alinea sus read models** de reporting al recibir los eventos de retención.
+>
+> **Contrato cerrado (T01):** payload aceptado para `DataAnonymized` y `RetentionDecisionCreated` con `entityType`/`entityId` (reutiliza los UUIDs de plataforma, `courseId`/`userId`). Lectura opcional (postergada): `GET /api/users/retention/policy` y `GET /api/users/retention/records`.
 
 ### RF-RET-01 — Conservación
 
@@ -746,7 +749,7 @@ Se utilizará un **API Gateway** como punto de entrada único del BackOffice.
 - Autenticación inicial.
 - Validación de JWT.
 - Rate limiting.
-- Correlation ID.
+- Correlación (`X-Request-Id` + `traceparent`, W3C).
 - CORS.
 - Manejo uniforme de errores.
 - Health routing.
@@ -767,10 +770,20 @@ API Gateway (de plataforma, Tema 01)
   ▼
 Administration & Configuration Service
   │
-  ├── ¿Rol/permiso? (consulta a Tema 01)
+  ├── ¿Rol/permiso? (autorización local con @PreAuthorize sobre X-User-Roles)
   ├── ¿Regla de negocio permite operación?
   └── (si necesita otro servicio, sale y vuelve por el gateway)
 ```
+
+## 9.0 Convención de rutas de la plataforma
+
+**Convención acordada con el Tema 01 (ruteo del gateway):** toda API pública vive bajo `/api/{servicio}/**`, donde `{servicio}` es el prefijo del servicio definido en el gateway (derivado del `serviceId` de Eureka; sin ese prefijo el `DiscoveryLocatorConfig` devuelve **404**). Ejemplos:
+
+- `users-service` (T01) → `/api/users/**` (auditoría: `GET /api/users/audit`; retención: `GET /api/users/retention/*`).
+- `administration-service` (T12) → `/api/administration/**`.
+- `reporting-service` (T12) → `/api/reports/**`.
+
+**Regla del Backoffice:** todos sus endpoints propios se publican bajo `/api/administration/**` o `/api/reports/**` (incluyendo exportación y alertas, que viven bajo `/api/reports/**`). Los endpoints de otros temas se consumen bajo el prefijo de ese tema.
 
 ## 9.1 Comunicación entre servicios por el gateway
 
@@ -783,7 +796,7 @@ Para evitar saturación de los endpoints administrativos y el abuso (p. ej. fuer
 - **Tecnología:** Spring Cloud Gateway con token bucket — **Bucket4j** (in-memory, por instancia) o **Redis `RequestRateLimiter`** (distribuido, si hay varias instancias).
 - **Umbrales por endpoint y rol**, con atención especial a:
   - `/api/auth/login` y `/api/auth/2fa/verify` (prevención de fuerza bruta).
-  - `/api/audit` (consultas pesadas).
+  - `/api/users/audit` (consultas pesadas).
   - Operaciones administrativas críticas (PUT de configuración, baja de ADMIN).
 - **Respuesta:** `429 Too Many Requests` con header **`Retry-After`** y el formato de error uniforme (§29).
 - **Nota multi-instancia:** el bucket in-memory limita por instancia; con N instancias el límite efectivo se multiplica. Si eso importa, se usa Redis.
@@ -954,12 +967,14 @@ Los eventos deberán incluir:
 |---|---|---|---|
 | `identity.events` | AdminCreated, AdminDeleted, AdminRecoveryExecuted, RoleChanged | Publica | `audit`, `reporting`… |
 | `administration.events` | GlobalConfigurationChanged, ModelProviderChanged, ModelFunctionChanged | Publica | `gamification`, `challenges`, `bank`, `roadmap`… |
-| `audit.events` | eventos de auditoría (RF-AUD-*) | Publica | `audit` |
+| `audit.events` (v1) | eventos de auditoría (RF-AUD-*) | Publica | `audit` |
 | `retention.events` | RetentionDecisionCreated, DataAnonymized | Publica | `audit`, `reporting`… |
 | `course.events` | CourseCreated, CourseActivated, CourseArchived, RosterUpdated | **Consume** | `reporting` |
 | `gamification.events` / `ranking.events` / `survey.events` | eventos de otros equipos | **Consume** | `reporting` |
 
 Cada **consumer group** pertenece a un consumidor (un servicio). **Idempotencia por `event_id` y por `version`** (el consumidor descarta `v ≤ local`). Los **read models de Reporting se reconstruyen vía contratos de lectura REST** (no dependen del historial del broker). Los consumidores de parámetros usan **caché local con TTL 10 min** que el evento invalida antes (respaldo ante caída del Backoffice).
+
+> **Envelope estándar:** acordado con T01 agregar el campo `role` al envelope base (`eventId, eventType, occurredAt, correlationId, actorId, role, source, payload`) — propuesto como estándar de plataforma; T01 lo confirma formalmente. **Pendientes de contrato externo:** payloads de `identity.events` (AdminCreated/AdminDeleted/AdminRecoveryExecuted/RoleChanged) y `retention.events` (RetentionDecisionCreated/DataAnonymized) — mismo mecanismo outbox de T01, schema a cerrar.
 
 ### Payloads concretos de eventos cross-team
 
@@ -1249,7 +1264,7 @@ El **ADMIN** (rol validado en T01) tiene **dos alcances** sobre el reporting:
 | **Puntual** | `course_id` específico | Un curso en particular (mismo camino que un PROFESOR, RLS normal). |
 | **Global** | `'ALL'` (centinela) | Todos los cursos: panel general, comparativas, reportes globales. |
 
-**Mecanismo (sin apagar RLS):** el `TenantContext` setea `app.current_course = 'ALL'` **solo cuando la aplicación autorizó** al ADMIN (o a un rol/permiso explícito `REPORTS_VIEW_ALL`) a operar entre cursos. La política RLS contempla el centinela:
+**Mecanismo (sin apagar RLS):** el `TenantContext` setea `app.current_course = 'ALL'` **solo cuando la aplicación autorizó** al ADMIN a operar entre cursos. **Contrato cerrado con T01:** el alcance se **deriva server-side del rol** propagado (`X-User-Roles` contiene `ADMIN`); **no** existe (ni hace falta) un permiso `REPORTS_VIEW_ALL`, y el alcance **no viaja** en el JWT ni en headers del request. La política RLS contempla el centinela:
 
 ```sql
 CREATE POLICY tenant_isolation ON cohort_metrics_snapshot
@@ -1308,22 +1323,37 @@ El alcance del PROFESOR sobre un curso se valida contra la **membresía real** p
 
 ## 18.1 JWT
 
-El token contendrá información mínima necesaria:
+> **Contrato cerrado con el Tema 01.** El token lo emite y valida el **gateway de plataforma (T01)**; el Backoffice **no valida firma/exp** — recibe el contexto ya validado por headers (ver §18.3).
+
+Claims reales del token de persona (access):
 
 ```json
 {
   "sub": "user-id",
-  "role": "ADMIN",
+  "roles": ["ADMIN"],
+  "type": "user",
   "jti": "token-id",
-  "exp": 0000000000
+  "sid": "session-id",
+  "est": "ACTIVA",
+  "pwd": false,
+  "onb": false,
+  "iat": 0,
+  "exp": 0
 }
 ```
 
-No se recomienda introducir grandes cantidades de información mutable dentro del JWT.
+- `est` (estado de cuenta), `pwd` (debe cambiar password) y `onb` (onboarding pendiente) permiten saber si una cuenta puede operar antes de mostrarle pantallas de Backoffice.
+- **Algoritmo:** RS256. **JWKS pública:** `GET /.well-known/jwks.json` (convención web estándar).
+- **Duración:** access token ~10 minutos; refresh ~7 días (lo consume el front, fuera del alcance de Backoffice).
+- No existen claims `permissions[]` ni `courseScope`: el alcance `course_id`/`ALL` **no viaja en el JWT** (se deriva server-side, §17.5).
 
 ---
 
 ## 18.2 Autorización
+
+> **Contrato cerrado con el Tema 01.** Roles reales de persona: **`ADMIN`, `PROFESOR`, `ALUMNO`**. Existe además `MS`, exclusivo para tokens de servicio (comunicación micro-a-micro), no asignable a personas. **No existe rol `AUDITOR`**: la lectura de auditoría queda como `ADMIN` (si en el futuro hace falta un permiso más fino, se modela como regla propia del Backoffice).
+
+El claim es `roles` (**plural, array**). La autorización se resuelve **localmente** en cada microservicio con `@PreAuthorize` sobre el rol propagado por el gateway (`X-User-Roles` / `X-Service-Scopes`); **no existe** (ni está previsto) un endpoint REST tipo `GET /api/auth/authorize`.
 
 Ejemplo:
 
@@ -1342,7 +1372,7 @@ ROLE_PROFESOR
 Mientras:
 
 ```text
-PUT /api/configuration/global/PAR-01
+PUT /api/administration/parameters/PAR-01
 ```
 
 requiere:
@@ -1350,6 +1380,24 @@ requiere:
 ```text
 ROLE_ADMIN
 ```
+
+---
+
+## 18.3 Contexto propagado por el gateway (headers)
+
+> **Contrato cerrado con el Tema 01.** El `IdentityPropagationFilter` del gateway borra los headers entrantes con estos nombres (anti-spoofing) y los inyecta desde el token validado; la red además bloquea acceso directo a los microservicios (solo el gateway publica puertos). El Backoffice puede confiar en ellos **solo si recibe tráfico exclusivamente vía gateway**.
+
+| Header | Contenido |
+|---|---|
+| `X-Principal-Type` | `user` \| `service` (siempre presente) |
+| `X-User-Id` | UUID de la persona (si `Principal-Type: user`) |
+| `X-Service-Id` | id del servicio llamador (si `Principal-Type: service`) |
+| `X-User-Roles` | roles separados por coma, ej. `ADMIN` |
+| `X-Service-Scopes` | rol `MS` + scope (solo micro-a-micro) |
+| `traceparent` | W3C Trace Context (se genera/propaga en el gateway) |
+| `X-Request-Id` | id de request para correlación de logs |
+
+> **No existe `X-Course-Id` ni `X-Tenant`:** el alcance multitenant se deriva server-side a partir del rol (ver §17.5). La correlación usa `X-Request-Id` + `traceparent` (reemplaza la nomenclatura previa `X-Correlation-Id`).
 
 ---
 
@@ -1946,22 +1994,26 @@ GET  /api/administration/evaluator/calibration
 
 ## Reporting & Analytics (reportes, métricas, export, alertas)
 
+> Todos bajo `/api/reports/**` (convención de rutas §9.0).
+
 ```http
 GET    /api/reports/platform
 GET    /api/reports/courses/{courseId}
 GET    /api/reports/courses/{courseId}/metrics
 GET    /api/reports/courses/{courseId}/teacher        ← panel del profesor (alumno en riesgo)
 GET    /api/reports/courses/{courseId}/teacher/risk
-GET    /api/export/courses/{courseId}                ← exportación (CSV/PDF)
-GET    /api/export/platform
-GET    /api/alerts                                   ← alertas configurables (para más adelante)
+GET    /api/reports/export/courses/{courseId}        ← exportación (CSV/PDF)
+GET    /api/reports/export/platform
+GET    /api/reports/alerts                           ← alertas configurables (para más adelante)
 ```
 
 ## Auditoría — consumida del Tema 01
 
+> Ruteo del gateway de plataforma: `users-service` → `/api/users/**` (§9.0).
+
 ```http
-GET /api/audit        ← contrato de lectura con el Tema 01
-GET /api/audit/{id}
+GET /api/users/audit        ← contrato de lectura con el Tema 01
+GET /api/users/audit/{id}
 ```
 
 Los endpoints son una propuesta de diseño y deberán ajustarse a los casos de uso definitivos.
@@ -1976,12 +2028,12 @@ Los endpoints son una propuesta de diseño y deberán ajustarse a los casos de u
 | `/api/administration/model-providers*` | GET/POST/PUT/DELETE | ADMIN | exclusivo ADMIN (RF-IA-35) |
 | `/api/administration/model-functions*` | GET/PUT | ADMIN | exclusivo ADMIN (RF-IA-23/24) |
 | `/api/administration/evaluator/*` | GET/POST | ADMIN | exclusivo ADMIN (RF-IA-25/28/31) |
-| `/api/audit` | GET | ADMIN | global (lectura Tema 01) |
+| `/api/users/audit` | GET | ADMIN | global (lectura Tema 01) |
 | `/api/reports/platform` | GET | ADMIN | global |
 | `/api/reports/courses/{courseId}*` | GET | ADMIN, PROFESOR | PROFESOR: solo su cohorte (matrícula Tema 02) |
 | `/api/reports/courses/{courseId}/teacher*` | GET | PROFESOR, ADMIN | PROFESOR: solo su cohorte; **sin comparación entre docentes** |
-| `/api/export/*` | GET | ADMIN (platform) / PROFESOR (su cohorte) | según recurso |
-| `/api/alerts` | GET | ADMIN, PROFESOR | según recurso |
+| `/api/reports/export/*` | GET | ADMIN (platform) / PROFESOR (su cohorte) | según recurso |
+| `/api/reports/alerts` | GET | ADMIN, PROFESOR | según recurso |
 
 > La autorización se valida **siempre** en el microservicio propietario (RNF-03), incluso cuando el Gateway ya validó el JWT. La pertenencia del PROFESOR a una cohorte se valida contra la **matrícula del Tema 02** (cross-team, §17).
 
@@ -2245,14 +2297,17 @@ El equipo de BackOffice no debe implementar el frontend administrativo salvo que
 - **Regla:** cambios hacia adelante (RF-CFG-06).
 
 ### 3. Contratos de lectura del Backoffice (consumidor puro)
-- **Mecanismo:** Reporting & Analytics (Backoffice) lee de los temas **02, 04, 05, 07, 08, 10** (eventos/APIs a través del gateway) para construir read models. **Sin esos contratos en el sprint 1 no hay nada demostrable.**
+- **Mecanismo:** Reporting & Analytics (Backoffice) lee de los temas **02, 04, 05, 07, 08, 10** (eventos/APIs a través del gateway, bajo el prefijo de cada tema) para construir read models. **Sin esos contratos en el sprint 1 no hay nada demostrable.**
 - **Encuestas:** solo agregados anónimos (RF-ENC-04/12).
 
-### 4. Autorización y auditoría
-- **Auth/autorización:** el gateway (T01) valida el token y propaga contexto; la decisión de autorización la toma el servicio dueño de la regla (validar ≠ autorizar).
-- **Auditoría:** el Backoffice emite eventos de auditoría de sus acciones; T01 los persiste.
+### 4. Autorización y auditoría (contrato cerrado con T01)
+- **Auth/autorización:** el gateway (T01) valida el token y propaga contexto (`X-User-Id`, `X-User-Roles`, `X-Principal-Type`, `traceparent`, `X-Request-Id`); la autorización se decide **localmente** en cada microservicio con `@PreAuthorize` sobre el rol propagado (no hay endpoint REST de autorización).
+- **Auditoría:** el Backoffice emite eventos en `audit.events` (v1) con el envelope estándar + `role`; T01 los persiste. Lectura: `GET /api/users/audit` (ADMIN, paginado).
 
-> **Convención de eventos:** todos los eventos siguen `{eventId, eventType, occurredAt, correlationId, actorId, source, payload}` (ver §12), con contrato versionado (§11/33.3).
+### 5. Retención (contrato cerrado con T01)
+- El Backoffice **no purga por su cuenta**; alinea sus read models al recibir `DataAnonymized`/`RetentionDecisionCreated` (payload con `entityType`/`entityId`). Lectura opcional de política: `GET /api/users/retention/*`.
+
+> **Convención de eventos:** todos los eventos siguen `{eventId, eventType, occurredAt, correlationId, actorId, role, source, payload}` (ver §12; `role` propuesto como estándar de plataforma), con contrato versionado (§11/33.3).
 
 ---
 
