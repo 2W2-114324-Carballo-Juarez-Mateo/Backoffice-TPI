@@ -12,7 +12,7 @@
 | **T04 · Teóricos y Encuestas** | Consume (agregados anónimos CSAT) | ⏳ PENDIENTE | — |
 | **T05 · Desafíos Prácticos** | Consume (entregas/resultados) + provee (PAR-19/20) | ⏳ PENDIENTE | — |
 | **T07 · Evaluación LLM** | Consume (deriva/calibración) + provee (`ModelProviderChanged`, PAR-22) | ⏳ PENDIENTE | — |
-| **T08 · Banco** | Consume (XP/monedas) + provee (PAR-21) | ⏳ PENDIENTE | — |
+| **T08 · Banco** | Consume (XP/monedas) + provee (PAR-21) | 🟡 SOLICITUD LISTA | `CONTRATOS_T08_SOLICITUD.md` |
 | **T03 · Desafíos** | Provee (PAR-20 y economía) + lectura de métricas | ⏳ PENDIENTE | — |
 
 > Pendientes internos (T01 lo confirmó): schema externo de `identity.events` y `retention.events`, confirmación formal del `role` en el envelope estándar, y la exposición del estado 2FA (claim vs endpoint).
@@ -60,7 +60,7 @@
 | **T04** | Agregados anónimos de encuestas (CSAT), topic `survey.events` | a generar |
 | **T05** | Entregas/resultados, topic, PAR-19/20 | a generar |
 | **T07** | `ModelProviderChanged` (nosotros→ellos), deriva/calibración/golden set (ellos→nosotros), PAR-22 | a generar |
-| **T08** | Saldos/XP/monedas, topic, PAR-21 | a generar |
+| **T08** | Saldos/XP/monedas, topic `bank.events`, PAR-03/06/07/21 | `CONTRATOS_T08_SOLICITUD.md` |
 | **T03** | Consumo de PAR (economía), lectura de métricas de desafíos | a generar |
 
 ## Convenciones transversales (aplican a todos)
