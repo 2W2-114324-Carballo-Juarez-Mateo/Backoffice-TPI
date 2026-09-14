@@ -14,21 +14,26 @@
 ## US-04 · Registro de proveedores y modelos de IA
 
 ### T2 — [BACKEND] Endpoint de registro de proveedores y catálogo con enmascaramiento · 6h
+**Descripción (plan/tareas.md):** POST (CA1 → 201). GET (CA2 — listado con estado). Claves enmascaradas sk-**** (CA3).
 **Qué hacer:** `POST` de registro (→ 201) y `GET` de catálogo con estado; claves enmascaradas `sk-****`.
 **CA relacionados:** CA1, CA2, CA3.
 
 ### T5 — [TEST] Seguridad: cifrado en BD y enmascaramiento en respuestas · 6h
+**Descripción (plan/tareas.md):** API Key persiste cifrada, NINGÚN endpoint la devuelve en texto plano (CA3).
 **Qué hacer:** verificar que la API Key persiste **cifrada** y que ningún endpoint la devuelve en texto plano.
 **CA relacionados:** CA3.
 
 ### T6 — [TEST] Validar bloqueo de activación para modelos en `PENDING_REVIEW` · 4h
+**Descripción (plan/tareas.md):** Intentar activar modelo recién registrado → rechazo.
 **Qué hacer:** intentar activar un modelo recién registrado → rechazo.
 **CA relacionados:** CA1.
 
 ### T7 — [DOCUMENTACION] Documentar endpoints en OpenAPI y actualizar SDD · 3h
+**Descripción (plan/tareas.md):** Spec springdoc con esquemas. Documentar máquina de estados del modelo.
 **Qué hacer:** spec springdoc + máquina de estados del modelo.
 
 ### T8 — [REVISION] Peer review de seguridad de credenciales y control en Taiga · 3h
+**Descripción (plan/tareas.md):** Que no se filtren API Keys en logs, respuestas ni repo. RULES-seguridad §3 y §5.
 **Qué hacer:** que no se filtren API Keys en logs, respuestas ni repo.
 
 ## Criterios de aceptación (US-04)

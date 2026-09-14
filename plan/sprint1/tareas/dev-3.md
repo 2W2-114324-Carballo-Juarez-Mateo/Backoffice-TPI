@@ -16,18 +16,22 @@
 ## US-01 · Modificación y versionado de parámetros globales
 
 ### T1 — [BACKEND] Migración Flyway y entidad `GlobalParameter` con historial · 6h
+**Descripción (plan/tareas.md):** Script DDL, entidad JPA con key, value (jsonb), version (int). Seed de PAR-01..18.
 **Qué hacer:** tabla `global_parameter` (`key`, `value` jsonb, `version`, `updated_by/at`) + entidad JPA + repositorio, con **seed PAR-01..18** (defaults del PRD).
 **CA relacionados:** CA1.
 
 ### T2 — [BACKEND] Caso de uso `UpdateParameterCommand` con versionado y vigencia no retroactiva · 6h
+**Descripción (plan/tareas.md):** Incrementa versión, valida rango, rechaza fechas retroactivas (RF-CFG-06), soporta Idempotency-Key (CA2).
 **Qué hacer:** incrementa versión, valida rango, rechaza retroactividad (RF-CFG-06) y soporta **Idempotency-Key**.
 **CA relacionados:** CA1, CA2, CA4.
 
 ### T7 — [TEST] Tests unitarios de dominio: versionado, idempotencia y vigencia · 6h
+**Descripción (plan/tareas.md):** Incremento de versión (CA1), idempotencia por clave repetida (CA2), rechazo de fecha retroactiva y rango (CA4).
 **Qué hacer:** incremento de versión (CA1), idempotencia por clave repetida (CA2), rechazo de rango/retroactividad (CA4).
 **CA relacionados:** CA1, CA2, CA4.
 
 ### T10 — [REVISION] Peer review de PR, validación de DoD Nivel 1 y cierre en Taiga · 3h
+**Descripción (plan/tareas.md):** Clean Architecture, PMD/Checkstyle, sin secretos, build CI verde.
 **Qué hacer:** revisar el PR de la historia, validar DoD Nivel 1 y cerrar en Taiga.
 
 ## Criterios de aceptación (US-01)

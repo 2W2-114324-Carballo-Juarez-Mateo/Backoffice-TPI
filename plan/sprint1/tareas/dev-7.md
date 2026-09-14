@@ -15,20 +15,24 @@
 ## US-08 · Ingesta de datos de los temas con deduplicación
 
 ### T5 — [TEST] Integración: ingesta, deduplicación y DLT · 8h
+**Descripción (plan/tareas.md):** Testcontainers (Kafka + PostgreSQL). BDD Esc. 1 (nuevo → procesado), BDD Esc. 2 (duplicado → ignorado), BDD Esc. 3 (malformado → DLT).
 **Qué hacer:** Testcontainers (Kafka + PostgreSQL): nuevo → procesado (CA1); duplicado → ignorado (CA2); malformado → DLT (CA3).
 **CA relacionados:** CA1, CA2, CA3.
 
 ### T7 — [REVISION] Peer review de consumidores y control en Taiga · 3h
+**Descripción (plan/tareas.md):** Asignación de particiones, commit de offsets, tolerancia a fallos.
 **Qué hacer:** revisar asignación de particiones, commit de offsets y tolerancia a fallos.
 
 ## US-03 · Consola de gestión administrativa (integración de identidades)
 
 ### T1 — [BACKEND] Filtro de seguridad e inspección de headers del Gateway · 4h
+**Descripción (plan/tareas.md):** Validación de tokens y extracción de contexto de autorización en administration-service sin persistencia local de usuarios.
 **Qué hacer:** filtro que extrae el contexto de autorización de los headers propagados (`X-User-Roles`, `X-User-Id`, `X-Principal-Type`), **sin persistir usuarios**.
 **CA relacionados:** CA1 (autorización por rol).
 **Refs:** `plan/CONTRATOS.md` (contratos T01 cerrados).
 
 ### T5 — [TEST] Integración del filtro de seguridad y autorización por headers · 6h
+**Descripción (plan/tareas.md):** MockMvc: validar que requests con X-User-Roles: ADMIN acceden a administración y PROFESOR recibe 403.
 **Qué hacer:** MockMvc: `X-User-Roles: ADMIN` accede a administración y `PROFESOR` recibe 403.
 **CA relacionados:** CA1, CA3.
 

@@ -16,18 +16,22 @@
 ## US-08 · Ingesta de datos de los temas con deduplicación
 
 ### T2a — [BACKEND] Consumidores de Kafka para T02 / T04 / T05 · 6h
+**Descripción (plan/tareas.md):** Parte de US-08 T2: consumer groups + **adapter por tema** para **T02, T04, T05** (transformar payload en read model).
 **Qué hacer:** consumer group + un **adapter por tema** que transforma el payload en read model (Cursos/Matrícula, Teóricos/Encuestas, Prácticos).
 **CA relacionados:** CA1.
 
 ### T2b — [BACKEND] Consumidores de Kafka para T06 / T07 / T08 / T10 · 6h
+**Descripción (plan/tareas.md):** Parte de US-08 T2: consumer groups + **adapter por tema** para **T06, T07, T08, T10** (transformar payload en read model).
 **Qué hacer:** idem para Sandbox (T06), Evaluación LLM (T07), Banco (T08), Roadmap (T10).
 **CA relacionados:** CA1.
 
 ### T3 — [BACKEND] Deduplicación por `eventId` en cada consumidor · 4h
+**Descripción (plan/tareas.md):** Verificar en processed_events. Si existe → descartar (CA2). Si no → procesar y registrar (CA1).
 **Qué hacer:** verificar en `processed_events`; si existe → descartar; si no → procesar y registrar.
 **CA relacionados:** CA1, CA2.
 
 ### T6 — [DOCUMENTACION] Mapear contratos de lectura y esquemas JSON de los 6 temas · 6h
+**Descripción (plan/tareas.md):** Campos consumidos por tema. Consumer groups en docs/08. Entregable de coordinación con los otros equipos.
 **Qué hacer:** documentar los campos consumidos por tema y los consumer groups (entregable de coordinación con los otros equipos).
 
 ## Criterios de aceptación (US-08)

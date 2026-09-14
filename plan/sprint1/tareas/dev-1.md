@@ -14,24 +14,29 @@
 
 ## Infra · Tarea transversal
 ### T0 — [INFRA] Scaffolding Maven multi-módulo + Docker Compose (PostgreSQL, Kafka, Eureka) · 6h
+**Descripción (plan/tareas.md):** Scaffolding del multi-módulo Maven + Docker Compose (PostgreSQL, Kafka, Eureka). Requisito previo del sprint.
 **Qué hacer:** dejar el esqueleto del multi-módulo Maven + `docker-compose` (2 PostgreSQL, Kafka, Eureka, Config, Gateway) funcionando. Es el **requisito previo** para que arranque el resto.
 **Refs:** SKILL-despliegue · RULES-stack.
 
 ## US-02 · Propagación del cambio de parámetro (Outbox + Kafka + Caché TTL)
 
 ### T1a — [BACKEND] Migración Flyway de `outbox_events` · 3h
+**Descripción (plan/tareas.md):** Parte de US-02 T1: **DDL y entidad `OutboxMessage`** (tabla `outbox_events`). El publisher va en T1b.
 **Qué hacer:** crear la tabla `outbox_events` (`id`, `event_type`, `payload`, `status`, `created_at`) en `administration_db` con una migración Flyway. **Prerequisito compartido → mergear Día 1** (desbloquea US-01 T4).
 **Refs:** SKILL-despliegue (Flyway).
 
 ### T1b — [BACKEND] Publisher programado (Outbox → Kafka) · 5h
+**Descripción (plan/tareas.md):** Parte de US-02 T1: **worker `@Scheduled`** que lee pendientes, publica en `administration.events` y marca enviado.
 **Qué hacer:** `@Scheduled` que lee los pendientes de `outbox_events`, publica en el topic `administration.events` y los marca como enviados.
 **CA relacionados:** CA1, CA2 de US-02.
 
 ### T2 — [BACKEND] Envelope estándar `GlobalConfigurationChanged` · 4h
+**Descripción (plan/tareas.md):** Clase del envelope: eventId, eventType, occurredAt, correlationId, actorId, source, payload {key, value, version}.
 **Qué hacer:** definir el envelope `{eventId, eventType, occurredAt, correlationId, actorId, role, source, payload{key, value, version}}`.
 **Refs:** SKILL-evento · `plan/CONTRATOS.md`.
 
 ### T8 — [DOCUMENTACION] Envelope, catálogo de topics y contrato del consumidor · 4h
+**Descripción (plan/tareas.md):** Schema JSON, topic `administration.events`, guía para que Temas 03/05/08/10 implementen su consumidor con caché TTL 10 min.
 **Qué hacer:** documentar el envelope + topics + guía para que T03/05/08/10 implementen su consumidor con caché TTL 10 min.
 
 ## Criterios de aceptación (US-02)

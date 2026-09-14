@@ -15,19 +15,23 @@
 ## US-03 · Consola de gestión administrativa (integración de identidades)
 
 ### T2 — [BACKEND] Cliente HTTP hacia Tema 01 vía Gateway · 6h
+**Descripción (plan/tareas.md):** Cliente Feign/WebClient M2M para consultas de auditoría forense (GET /api/users/audit) y verificación de cuentas sin almacenar usuarios.
 **Qué hacer:** cliente Feign/WebClient M2M hacia Tema 01 para operaciones administrativas y **auditoría delegada** (`GET /api/users/audit`), sin almacenar usuarios.
 **Refs:** `plan/CONTRATOS.md` (rutas `/api/users/**`).
 
 ### T7 — [DOCUMENTACION] Matriz de delegación de identidades con Tema 01 · 4h
+**Descripción (plan/tareas.md):** Documentar que Tema 01 es el SSOT de identidades; mapear headers X-Principal-Type, X-User-Id, X-User-Roles y flujo SPA → Gateway → Tema 01.
 **Qué hacer:** documentar que T01 es el SSOT de identidades; mapear headers `X-Principal-Type`, `X-User-Id`, `X-User-Roles` y el flujo SPA → Gateway → T01.
 
 ## US-04 · Registro de proveedores y modelos de IA
 
 ### T1 — [BACKEND] Migración Flyway y entidades `ModelProvider` / `LlmModel` con cifrado de API Keys · 6h
+**Descripción (plan/tareas.md):** Tablas con status ACTIVE/RETIRED, cifrado simétrico. Modelo nuevo → PENDING_REVIEW (CA1).
 **Qué hacer:** tablas con estado (`ACTIVE`/`RETIRED`/`PENDING_REVIEW`) y **cifrado simétrico** de las API Keys.
 **CA relacionados:** CA1.
 
 ### T3 — [BACKEND] Regla de estado inicial `PENDING_REVIEW` con bloqueo de activación · 4h
+**Descripción (plan/tareas.md):** Modelo recién registrado NO activable. Transición: PENDING_REVIEW → APPROVED → ACTIVE/STANDBY.
 **Qué hacer:** modelo nuevo **no activable**; transición `PENDING_REVIEW → APPROVED → ACTIVE/STANDBY`.
 **CA relacionados:** CA1.
 

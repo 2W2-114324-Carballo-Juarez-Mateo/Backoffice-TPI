@@ -16,18 +16,22 @@
 ## US-01 · Modificación y versionado de parámetros globales
 
 ### T3 — [BACKEND] Endpoints REST GET/PUT de parámetros con autorización por rol · 6h
+**Descripción (plan/tareas.md):** Controladores GET y PUT con DTOs, @Valid, ADMIN escribe y PROFESOR solo lee (CA3).
 **Qué hacer:** controladores GET y PUT con DTOs, `@Valid` y autorización (ADMIN escribe, PROFESOR solo lee).
 **CA relacionados:** CA1, CA3.
 
 ### T4 — [BACKEND] Persistir el registro en `outbox_events` dentro de la misma transacción · 6h
+**Descripción (plan/tareas.md):** Insertar OutboxMessage con payload GlobalConfigurationChanged en la misma tx (CA1). Requiere tabla de US-02.
 **Qué hacer:** insertar el `OutboxMessage` (payload `GlobalConfigurationChanged`) en la **misma tx** del cambio de parámetro.
 **CA relacionados:** CA1 (alimenta US-02).
 
 ### T8 — [TEST] Tests de integración con Testcontainers (PostgreSQL) · 6h
+**Descripción (plan/tareas.md):** Persistencia real de parámetro + historial + outbox. PROFESOR → 403 (CA3), ADMIN → 200 (CA1).
 **Qué hacer:** persistencia real de parámetro + historial + outbox; PROFESOR → 403 (CA3), ADMIN → 200 (CA1).
 **CA relacionados:** CA1, CA3.
 
 ### T9 — [DOCUMENTACION] Congelar contrato OpenAPI 3 y diagrama de secuencia · 4h
+**Descripción (plan/tareas.md):** Spec springdoc de los 3 endpoints. Diagrama ADMIN → Gateway → Service → Outbox. Actualizar sdd/backend/docs/05.
 **Qué hacer:** spec springdoc de los endpoints + diagrama ADMIN → Gateway → Service → Outbox. Actualizar `sdd/backend/docs/05`.
 
 ## Criterios de aceptación (US-01)

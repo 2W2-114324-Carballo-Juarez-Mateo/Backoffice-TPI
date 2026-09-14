@@ -14,18 +14,22 @@
 ## US-02 · Propagación del cambio de parámetro (Outbox + Kafka + Caché TTL)
 
 ### T3 — [BACKEND] Reintentos con backoff exponencial y Dead Letter Topic · 6h
+**Descripción (plan/tareas.md):** Si Kafka no disponible, eventos quedan pendientes. Reintentos con backoff. Irrecuperables → DLT. Sin pérdida (CA2).
 **Qué hacer:** ante broker caído, los eventos quedan pendientes y se reintentan con backoff; los irrecuperables van a DLT sin pérdida.
 **CA relacionados:** CA2.
 
 ### T4 — [BACKEND] Idempotencia por `eventId` y versión (consumidor de referencia) · 4h
+**Descripción (plan/tareas.md):** Tabla `ProcessedEvent(event_id, consumer)`. Descartar duplicados (CA4). Componente reutilizable, NO implementación en otros equipos.
 **Qué hacer:** tabla `ProcessedEvent(event_id, consumer)`; descartar duplicados y versiones anteriores. Es un **componente de referencia** (no se implementa en los otros equipos).
 **CA relacionados:** CA4.
 
 ### T5 — [TEST] Integración del ciclo completo Outbox → Kafka → consumo · 8h
+**Descripción (plan/tareas.md):** Testcontainers (Kafka + PostgreSQL). Inserción en outbox → publicación → recepción.
 **Qué hacer:** test con Testcontainers (Kafka + PostgreSQL): inserción en outbox → publicación → recepción/consumo.
 **CA relacionados:** CA1, CA2.
 
 ### T9 — [REVISION] Peer review de concurrencia y transaccionalidad · 3h
+**Descripción (plan/tareas.md):** Atomicidad de tx outbox, manejo de conexiones concurrentes, ausencia de race conditions.
 **Qué hacer:** revisar atomicidad de la tx outbox, manejo de conexiones concurrentes y ausencia de race conditions; cerrar en Taiga.
 
 ## Criterios de aceptación (US-02)

@@ -15,26 +15,31 @@
 ## US-02 · Propagación del cambio de parámetro (Outbox + Kafka)
 
 ### T6 — [TEST] Validar resiliencia ante caída del broker de Kafka · 6h
+**Descripción (plan/tareas.md):** Simular desconexión: eventos pendientes en outbox, reenvío al restaurar (CA2, BDD Esc. 2).
 **Qué hacer:** simular desconexión: eventos pendientes en outbox y reenvío al restaurar (sin pérdida).
 **CA relacionados:** CA2.
 
 ### T7 — [TEST] Validar descarte de eventos duplicados y de versión anterior · 4h
+**Descripción (plan/tareas.md):** Mismo eventId dos veces → segundo ignorado (CA4).
 **Qué hacer:** mismo `eventId` dos veces → el segundo se ignora; versión anterior no sobreescribe.
 **CA relacionados:** CA4.
 
 ## US-08 · Ingesta de datos de los temas con deduplicación
 
 ### T1 — [BACKEND] Migración Flyway y tabla de deduplicación `ProcessedEvent` · 4h
+**Descripción (plan/tareas.md):** DDL en reporting_db. Tabla processed_events(event_id UUID PK, consumer VARCHAR, processed_at TIMESTAMP).
 **Qué hacer:** `reporting_db` → tabla `processed_events(event_id UUID PK, consumer, processed_at)`.
 **CA relacionados:** CA1, CA2.
 
 ### T4 — [BACKEND] Dead Letter Topic para eventos malformados · 4h
+**Descripción (plan/tareas.md):** Mensajes con errores de formato van a DLT sin bloquear el partition consumer (CA3).
 **Qué hacer:** configurar DLT para mensajes malformados sin bloquear el partition consumer.
 **CA relacionados:** CA3.
 
 ## US-03 · Consola de gestión administrativa (integración de identidades)
 
 ### T8 — [REVISION] Auditoría de fronteras de microservicios y seguridad en PR · 3h
+**Descripción (plan/tareas.md):** Garantizar que no se creó ninguna tabla de usuarios en administration_db y que la arquitectura permanece limpia.
 **Qué hacer:** garantizar que **no se creó ninguna tabla de usuarios** en `administration_db` y que las fronteras están limpias.
 
 ## Criterios de aceptación (US-08)
