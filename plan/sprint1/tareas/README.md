@@ -44,3 +44,24 @@
 - **RULES.md / SKILLS.md:** raíz del repo de trabajo `Repositorio/TPI---Backoffice-Demo-/`.
 - **Contratos:** `plan/CONTRATOS.md` · **Parámetros:** `plan/PARAMETROS.md`.
 - **Backlog general:** `plan/tareas.md` · **Original (10 devs):** `plan/sprint1/tareas divididas (luciano).md`.
+
+## Registro de trabajo / trazabilidad (feedback de la IA)
+
+Al final de **cada `dev-N.md`** hay una sección **"Registro de trabajo / trazabilidad"** con **un bloque por tarea asignada**. La completa la IA (o el dev) al terminar la tarea, para dejar constancia de **qué se hizo y cómo**. Es una práctica propia del equipo: **no** forma parte del DoD.
+
+**Formato de cada bloque (definido acá, una sola vez):**
+
+| Campo | Qué registrar |
+|---|---|
+| **Estado** | ⬜ pendiente · 🟡 en curso · ✅ hecho |
+| **Qué se hizo** | Resumen de la implementación (2–4 líneas) |
+| **Archivos/clases tocadas** | Rutas de los archivos/clases modificados o creados |
+| **Decisiones / supuestos** | Qué se decidió y por qué (y supuestos asumidos) |
+| **CA / RF cubiertos** | Criterios de aceptación y requerimientos que cubre (ej. `US-02 CA1`, `RF-CFG-06`) |
+| **Tests agregados** | Unitarios / integración / Testcontainers |
+| **PR / commits** | Nº de PR y hashes relevantes |
+| **Pendientes / deuda técnica** | Lo que quedó afuera o a revisar |
+
+Al final de cada MD hay un **"Resumen del integrante"** (tareas completadas x/y, horas reales y notas generales).
+
+> Los bloques ya vienen **pre-cargados vacíos** por cada tarea en los `dev-N.md`; solo hay que completarlos.

@@ -41,3 +41,54 @@
 - [ ] Sin secretos ni hardcodes; cumple RULES.md.
 - [ ] PR con ≥1 review aprobado.
 - [ ] sdd/docs actualizados.
+
+---
+
+## Registro de trabajo / trazabilidad (feedback de la IA)
+
+> Completar al terminar cada tarea, para dejar constancia de qué se hizo y cómo. Formato definido en el [README](README.md#registro-de-trabajo--trazabilidad-feedback-de-la-ia).
+
+### US-08 · T2a — [BACKEND] Consumidores de Kafka para T02/T04/T05
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-08 · T2b — [BACKEND] Consumidores de Kafka para T06/T07/T08/T10
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-08 · T3 — [BACKEND] Deduplicación por eventId
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-08 · T6 — [DOCUMENTACION] Mapear contratos de lectura de los 6 temas
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### Resumen del integrante
+- **Tareas completadas:** 0/4 · **Horas reales:** __ / __ h
+- **Notas generales:**
+

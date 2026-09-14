@@ -42,3 +42,64 @@
 - [ ] Sin secretos ni hardcodes; cumple RULES.md.
 - [ ] PR con ≥1 review aprobado.
 - [ ] OpenAPI/sdd actualizados.
+
+---
+
+## Registro de trabajo / trazabilidad (feedback de la IA)
+
+> Completar al terminar cada tarea, para dejar constancia de qué se hizo y cómo. Formato definido en el [README](README.md#registro-de-trabajo--trazabilidad-feedback-de-la-ia).
+
+### US-04 · T2 — [BACKEND] Endpoint de registro y catálogo con enmascaramiento
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-04 · T5 — [TEST] Seguridad: cifrado en BD y enmascaramiento
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-04 · T6 — [TEST] Bloqueo de activación en PENDING_REVIEW
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-04 · T7 — [DOCUMENTACION] OpenAPI de proveedores/modelos
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-04 · T8 — [REVISION] Peer review de seguridad de credenciales
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### Resumen del integrante
+- **Tareas completadas:** 0/5 · **Horas reales:** __ / __ h
+- **Notas generales:**
+

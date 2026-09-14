@@ -40,3 +40,54 @@
 - [ ] Sin secretos ni hardcodes; cumple RULES.md.
 - [ ] PR con ≥1 review aprobado.
 - [ ] sdd/docs actualizados.
+
+---
+
+## Registro de trabajo / trazabilidad (feedback de la IA)
+
+> Completar al terminar cada tarea, para dejar constancia de qué se hizo y cómo. Formato definido en el [README](README.md#registro-de-trabajo--trazabilidad-feedback-de-la-ia).
+
+### US-02 · T3 — [BACKEND] Reintentos con backoff exponencial y Dead Letter Topic
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-02 · T4 — [BACKEND] Idempotencia por eventId y versión
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-02 · T5 — [TEST] Integración del ciclo Outbox → Kafka → consumo
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-02 · T9 — [REVISION] Peer review de concurrencia y transaccionalidad
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### Resumen del integrante
+- **Tareas completadas:** 0/4 · **Horas reales:** __ / __ h
+- **Notas generales:**
+

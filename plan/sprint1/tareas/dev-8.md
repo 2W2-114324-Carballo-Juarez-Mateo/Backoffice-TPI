@@ -47,3 +47,54 @@
 - [ ] Sin secretos ni hardcodes; cumple RULES.md.
 - [ ] PR con ≥1 review aprobado.
 - [ ] sdd/docs actualizados.
+
+---
+
+## Registro de trabajo / trazabilidad (feedback de la IA)
+
+> Completar al terminar cada tarea, para dejar constancia de qué se hizo y cómo. Formato definido en el [README](README.md#registro-de-trabajo--trazabilidad-feedback-de-la-ia).
+
+### US-03 · T2 — [BACKEND] Cliente HTTP hacia Tema 01 vía Gateway
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-03 · T7 — [DOCUMENTACION] Matriz de delegación de identidades
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-04 · T1 — [BACKEND] Migración y entidades ModelProvider / LlmModel
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-04 · T3 — [BACKEND] Regla PENDING_REVIEW con bloqueo de activación
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### Resumen del integrante
+- **Tareas completadas:** 0/4 · **Horas reales:** __ / __ h
+- **Notas generales:**
+

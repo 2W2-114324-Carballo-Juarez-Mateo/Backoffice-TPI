@@ -52,3 +52,64 @@
 - [ ] Sin secretos ni hardcodes; cumple RULES.md.
 - [ ] PR con ≥1 review aprobado.
 - [ ] sdd/docs actualizados.
+
+---
+
+## Registro de trabajo / trazabilidad (feedback de la IA)
+
+> Completar al terminar cada tarea, para dejar constancia de qué se hizo y cómo. Formato definido en el [README](README.md#registro-de-trabajo--trazabilidad-feedback-de-la-ia).
+
+### US-02 · T6 — [TEST] Resiliencia ante caída del broker de Kafka
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-02 · T7 — [TEST] Descarte de duplicados y de versión anterior
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-08 · T1 — [BACKEND] Migración y tabla ProcessedEvent
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-08 · T4 — [BACKEND] Dead Letter Topic para malformados
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### US-03 · T8 — [REVISION] Auditoría de fronteras de microservicios
+- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
+- **Qué se hizo:**
+- **Archivos/clases tocadas:**
+- **Decisiones / supuestos:**
+- **CA / RF cubiertos:**
+- **Tests agregados:**
+- **PR / commits:**
+- **Pendientes / deuda técnica:**
+
+### Resumen del integrante
+- **Tareas completadas:** 0/5 · **Horas reales:** __ / __ h
+- **Notas generales:**
+
