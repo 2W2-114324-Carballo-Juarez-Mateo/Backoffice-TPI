@@ -130,7 +130,7 @@
 > Historia 100% backend. No requiere frontend.
 
 1. **[G06] - [BACKEND] - Crear migración Flyway y tabla de deduplicación ProcessedEvent** — DDL en reporting_db. Tabla processed_events(event_id UUID PK, consumer VARCHAR, processed_at TIMESTAMP). *(S · 4 h)*
-2. **[G06] - [BACKEND] - Implementar consumidores de Kafka para los 6 temas proveedores** — Consumer groups para topics de T02, T04, T05, T07, T08, T10. Un adapter por tema que transforma payload en read model. *(L · 12 h)*
+2. **[G06] - [BACKEND] - Implementar consumidores de Kafka para los temas proveedores** — Consumer groups para topics de T02, T04, T05, T07, T10. **T08 (Banco) se ingesta por REST** (`/api/bank/**`, polling ≤15 min — acordado con Banco). Un adapter por tema que transforma payload en read model. *(L · 12 h)*
 3. **[G06] - [BACKEND] - Implementar deduplicación por eventId en cada consumidor** — Verificar en processed_events. Si existe → descartar (CA2). Si no → procesar y registrar (CA1). *(S · 4 h)*
 4. **[G06] - [BACKEND] - Configurar Dead Letter Topic para eventos malformados** — Mensajes con errores de formato van a DLT sin bloquear el partition consumer (CA3). *(S · 4 h)*
 5. **[G06] - [TEST] - Desarrollar tests de integración: ingesta, deduplicación y DLT** — Testcontainers (Kafka + PostgreSQL). BDD Esc. 1 (nuevo → procesado), BDD Esc. 2 (duplicado → ignorado), BDD Esc. 3 (malformado → DLT). *(M · 8 h)*

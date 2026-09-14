@@ -14,7 +14,7 @@ El **Backoffice** es el **Tema 12** de la plataforma y se define como **consumid
 | Servicios propietarios | **2**: `administration-service` (configuración + gobernanza LLM) y `reporting-service` (reportes, métricas, export, alertas) |
 | Consume de | **T01** (identidad/auth/roles/auditoría/retención), **T02** (cohorte `course_id`, pertenencia docente) |
 | Lee (contratos de lectura) | **T02, T04, T05, T07, T08, T10** (RF-RPT-10) |
-| Provee | `GlobalConfigurationChanged` y `ModelProviderChanged` (eventos) a **T03/T05/T07/T08/T10** |
+| Provee | `GlobalConfigurationChanged` (PAR) a **T03** (montos) / **T09** (precios) / **T10** (rachas, pendiente) y `ModelProviderChanged` (evaluador) a **T07** |
 | Stack | Java 21 · Spring Boot 3 · Kafka · PostgreSQL · Docker Compose |
 
 ---
@@ -57,18 +57,20 @@ Toda API pública vive bajo `/api/{servicio}/**` (sin prefijo → 404). Nuestros
 
 ## 4. Contratos cross-team (estado)
 
-> Registro completo y detalle en `plan/CONTRATOS.md` y `plan/CONTRATOS_T01_SOLICITUD.md` / `CONTRATOS_T10_SOLICITUD.md`.
+> Registro completo y detalle en `plan/CONTRATOS.md` y las solicitudes en `plan/solicitudes/` (T01, T08, T10, T09, T11).
 
 | Tema | Relación | Estado |
 |---|---|---|
 | **T01 · Usuarios** | Consume (auth/roles/auditoría/retención/cuentas) + provee auditoría | ✅ **CERRADO** |
-| **T10 · Roadmap** | Consume (progreso/XP/niveles) + provee PAR-21 | 🟡 EN CURSO |
+| **T08 · Banco** | Consume (lectura REST: saldos/movimientos) · no consume PAR | 🟡 **ACUERDO PARCIAL** |
+| **T10 · Roadmap** | Consume (progreso/XP/niveles) | 🟡 EN CURSO |
+| **T09 · Mercado** | Provee (precios PAR-06/07) | 🟡 SOLICITUD LISTA |
+| **T11 · Notificaciones** | Coordina convención de eventos + consumimos avisos | 🟡 SOLICITUD LISTA |
 | **T02 · Cursos/Matrícula** | Consume (cohorte, pertenencia, `RosterUpdated`) | ⏳ PENDIENTE |
 | **T04 · Teóricos/Encuestas** | Consume (agregados anónimos CSAT) | ⏳ PENDIENTE |
 | **T05 · Prácticos** | Consume (entregas) + provee PAR-19/20 | ⏳ PENDIENTE |
 | **T07 · Evaluación LLM** | Consume (deriva/calibración) + provee `ModelProviderChanged` | ⏳ PENDIENTE |
-| **T08 · Banco** | Consume (XP/monedas) + provee PAR-21 | ⏳ PENDIENTE |
-| **T03 · Desafíos** | Provee PAR (economía) + lectura de métricas | ⏳ PENDIENTE |
+| **T03 · Desafíos** | Provee PAR-01/03 (deriva montos) + lectura de métricas | ⏳ PENDIENTE |
 
 ### Resumen de los contratos cerrados con T01
 - **JWT:** claims `sub`, `roles[]`, `type`, `jti`, `sid`, `est`, `pwd`, `onb`, `iat`, `exp` · RS256 · JWKS `/.well-known/jwks.json` · access ~10 min · **el gateway valida, Backoffice no valida firma**.
@@ -88,7 +90,7 @@ Toda API pública vive bajo `/api/{servicio}/**` (sin prefijo → 404). Nuestros
 - **PAR-01..18** ✅ confirmados (economía, tabla del PRD / RF-CFG-04): XP, monedas, vidas, calibración, retención, mínimo de encuesta, etc.
 - **PAR-19..23** 🟡 candidatos a validar con la cátedra (penalidad tardía, multiplicador, límite IA, frescura).
 - **PAR-24** 🔵 externo (T01).
-- Consumidores de la economía: **T03 / T05 / T08 / T10** (leen vía `GlobalConfigurationChanged`).
+- Consumidores de la economía: **T03** deriva montos (PAR-01/03) · **T09** arma catálogo (PAR-06/07) · **T10** rachas (PAR-21, pendiente). **Banco no consume PAR** (registra montos ya resueltos).
 
 ---
 

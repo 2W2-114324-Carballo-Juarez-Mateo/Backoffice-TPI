@@ -179,7 +179,7 @@ Estos valores deben tratarse como **configuración**, no como constantes hardcod
 |---|---|---|---|---|---|
 | **PAR-19** | `late_submission_penalty_pct` | FLOAT | 30% (`0.30`) | "Entrega tardía con penalidad del 30% en ventana de 48 h" | **T05** (Prácticos) |
 | **PAR-20** | `late_submission_window_hours` | INTEGER | 48 h | "…penalidad del 30% en ventana de 48 h" | **T03 / T05** (Desafíos) |
-| **PAR-21** | `event_multiplier_cap` | FLOAT | 3x (`3.0`) | "Multiplicador de eventos con techo de 3x" | **T08 / T10** (Banco / Gamificación) |
+| **PAR-21** | `event_multiplier_cap` | FLOAT | 3x (`3.0`) | "Multiplicador de eventos con techo de 3x" | **T10** (rachas, *pendiente*) |
 | **PAR-22** | `llm_custom_challenges_weekly_limit` | INTEGER | *propuesto*: 5/semana *(sin número oficial)* | "Desafíos personalizados por LLM… Límite semanal de generación" | **T03 / T07** |
 | **PAR-23** | `reporting_cache_freshness_minutes` | INTEGER | 15 min | "Frescura máxima de 15 minutos en los datos" | **T12** (Reporting) |
 
@@ -263,6 +263,8 @@ Si el evaluador cambia con curso activo, los desafíos evaluados con el modelo a
 ## 4.5 Reportes docentes, métricas de curso y exportación
 
 > Área oficial del Backoffice según `TUP_PIV_BE_PROPUESTA_ARQ.pdf`: reportes docentes, exportación, KPIs CSAT, panel del profesor, alertas.
+>
+> **Nota de trazabilidad:** los identificadores `RF-RPT-*` son **derivados del equipo** (el PRD no los numera; cubre esta área de forma descriptiva). Se usan como referencia interna. En particular, **la frescura ≤15 min (RF-RPT-06) es una decisión de arquitectura, no un RF del PRD** (aclarado por T08).
 
 ### RF-RPT-01 — Reportes docentes
 
@@ -968,7 +970,7 @@ Los eventos deberán incluir:
 | Topic | Eventos | Rol BackOffice | Consumer group por servicio |
 |---|---|---|---|
 | `identity.events` | AdminCreated, AdminDeleted, AdminRecoveryExecuted, RoleChanged | Publica | `audit`, `reporting`… |
-| `administration.events` | GlobalConfigurationChanged, ModelProviderChanged, ModelFunctionChanged | Publica | `gamification`, `challenges`, `bank`, `roadmap`… |
+| `administration.events` | GlobalConfigurationChanged, ModelProviderChanged, ModelFunctionChanged | Publica | `challenges`, `roadmap`, `market`… |
 | `audit.events` (v1) | eventos de auditoría (RF-AUD-*) | Publica | `audit` |
 | `retention.events` | RetentionDecisionCreated, DataAnonymized | Publica | `audit`, `reporting`… |
 | `course.events` | CourseCreated, CourseActivated, CourseArchived, RosterUpdated | **Consume** | `reporting` |
@@ -2294,8 +2296,9 @@ El equipo de BackOffice no debe implementar el frontend administrativo salvo que
 - **Mecanismo:** evento `ModelProviderChanged` / `GlobalConfigurationChanged` en `administration.events`; el T07 la consume.
 - **Regla:** solo ADMIN puede cambiarla (RF-IA-35).
 
-### 2. Parámetros de economía → los aplican T03, T05, T08, T10
+### 2. Parámetros de economía → los aplican T03 (montos), T09 (precios), T10 (rachas)
 - **Mecanismo:** evento `GlobalConfigurationChanged` (`{key, value, version}`) en `administration.events`; esos temas leen la configuración (no la tienen hardcodeada).
+- **Aclaración (negociación con T08):** **T03** deriva los montos de XP/monedas (PAR-01/03) y emite el monto ya resuelto; **T09 (Mercado)** decide los precios de catálogo (PAR-06/07); **T10** aplicaría PAR-21 (rachas, pendiente). **Banco (T08) NO consume parámetros**: solo registra el monto ya resuelto.
 - **Regla:** cambios hacia adelante (RF-CFG-06).
 
 ### 3. Contratos de lectura del Backoffice (consumidor puro)

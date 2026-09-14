@@ -39,7 +39,7 @@ sequenceDiagram
 | 04 Teóricos/Encuestas | agregados de encuestas (anónimos) | evento |
 | 05 Prácticos | entregas, resultados | evento |
 | 07 Evaluación LLM | estado de calibración/drift, scores | evento |
-| 08 Banco | saldos, movimientos | evento |
+| 08 Banco | saldos, movimientos | **REST** (`/api/bank/**`, polling ≤15 min) |
 | 10 Roadmap | progreso, XP, niveles | evento |
 
 ## 6. Modelo de datos

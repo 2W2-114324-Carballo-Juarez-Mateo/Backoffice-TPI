@@ -20,9 +20,9 @@
 **Qué hacer:** consumer group + un **adapter por tema** que transforma el payload en read model (Cursos/Matrícula, Teóricos/Encuestas, Prácticos).
 **CA relacionados:** CA1.
 
-### T2b — [BACKEND] Consumidores de Kafka para T06 / T07 / T08 / T10 · 6h
-**Descripción (plan/tareas.md):** Parte de US-08 T2: consumer groups + **adapter por tema** para **T06, T07, T08, T10** (transformar payload en read model).
-**Qué hacer:** idem para Sandbox (T06), Evaluación LLM (T07), Banco (T08), Roadmap (T10).
+### T2b — [BACKEND] Consumidores de Kafka para T06 / T07 / T10 · 6h
+**Descripción (plan/tareas.md):** Parte de US-08 T2: consumer groups + **adapter por tema** para **T06, T07, T10** (transformar payload en read model). **T08 (Banco) se ingesta por REST** (`/api/bank/**`, polling ≤15 min), no por Kafka (acordado con Banco).
+**Qué hacer:** idem para Sandbox (T06), Evaluación LLM (T07), Roadmap (T10). El adapter de **Banco (T08)** es un **cliente REST** que sincroniza read models por polling (no un consumer Kafka).
 **CA relacionados:** CA1.
 
 ### T3 — [BACKEND] Deduplicación por `eventId` en cada consumidor · 4h

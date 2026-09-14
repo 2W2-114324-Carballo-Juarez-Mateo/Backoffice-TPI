@@ -28,9 +28,11 @@ Broker elegido: **Kafka** (ADR-003). **RabbitMQ** queda como alternativa. Mismos
 | `identity.events` | AdminCreated/Deleted, AdminRecoveryExecuted, RoleChanged | Tema 01; payloads **pendientes de contrato** | por `actorId` |
 | `retention.events` | RetentionDecisionCreated, DataAnonymized | Tema 01; payload acordado, schema externo **pendiente** | por `courseId` |
 | `course.events` | CourseCreated/Activated/Archived, matrícula | **Consume** (lectura) | por `courseId` |
-| `survey.events`, `ranking.events`, `bank.events`, `roadmap.events`, `challenge.events` | eventos de los Temas 04/10/08/02/03/05/07 | **Consume** (lectura) | por `courseId` |
+| `survey.events`, `ranking.events`, `roadmap.events`, `challenge.events` | eventos de los Temas 04/10/03/05/07 | **Consume** (lectura) | por `courseId` |
 
-Cada **consumer group** pertenece a un consumidor. Idempotencia por `event_id` y `version` (descarta `v <= local`). Los read models se reconstruyen vía **contratos de lectura (REST)**. **Frescura de lectura ≤ 15 min.**
+> **T08 (Banco):** se integra por **REST** (`/api/bank/**`, polling ≤15 min), **no** por `bank.events` en el MVP (acordado con Banco). Si a futuro se agregan eventos, el naming se coordina con **T11**.
+
+Cada **consumer group** pertenece a un consumidor. Idempotencia por `event_id` y `version` (descarta `v <= local`). Los read models se reconstruyen vía **contratos de lectura (REST)**. **Frescura de lectura ≤ 15 min** (decisión de arquitectura).
 
 ## Outbox
 

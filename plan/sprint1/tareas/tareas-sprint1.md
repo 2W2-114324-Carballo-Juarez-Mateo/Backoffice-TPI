@@ -111,7 +111,7 @@
 |---|---|---|---|---:|
 | T1 | Crear migración Flyway y tabla de deduplicación `ProcessedEvent` | BACKEND | Dev 5 | 4 |
 | T2a | Consumidores de Kafka para T02 / T04 / T05 | BACKEND | Dev 6 | 6 |
-| T2b | Consumidores de Kafka para T06 / T07 / T08 / T10 | BACKEND | Dev 6 | 6 |
+| T2b | Consumidores de Kafka para T06 / T07 / T10 | BACKEND | Dev 6 | 6 |
 | T3 | Deduplicación por `eventId` en cada consumidor | BACKEND | Dev 6 | 4 |
 | T4 | Configurar Dead Letter Topic para eventos malformados | BACKEND | Dev 5 | 4 |
 | T5 | Tests de integración: ingesta, deduplicación y DLT | TEST | Dev 7 | 8 |
@@ -119,6 +119,8 @@
 | T7 | Peer review de consumidores y control en Taiga | REVISION | Dev 7 | 3 |
 
 **Subtotal:** 41h.
+
+> **Nota (acuerdo con T08):** los datos de **Banco** se ingieren por **REST** (`/api/bank/**`, polling ≤15 min), no por `bank.events`. Los consumidores Kafka cubren T02/T04/T05 (T2a) y T06/T07/T10 (T2b).
 
 ---
 
