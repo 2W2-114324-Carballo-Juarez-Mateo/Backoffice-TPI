@@ -26,8 +26,9 @@
   .b-sp { background:#3d6cff22; color:#7db4ff; border:1px solid #3d6cff; }
   .b-must { background:#a45cff22; color:#c9a3ff; border:1px solid #a45cff; }
   .b-cap { background:#00ffd522; color:#6fffd5; border:1px solid #00ffd5; }
-  .controls { display:grid; grid-template-columns:repeat(auto-fit,minmax(48px,1fr)); gap:6px; align-items:end; margin-top:12px; max-width:760px; }
-  .controls input { width:100%; padding:5px 2px; border-radius:8px; border:2px solid #3c417a; background:#0d0f26; color:#e6e4ff; text-align:center; }
+  .controls { display:grid; grid-template-columns:repeat(10, minmax(0,1fr)); gap:6px; align-items:end; margin-top:8px; }
+  .controls input { width:100%; padding:5px 2px; border-radius:8px; border:2px solid #3c417a; background:#0d0f26; color:#e6e4ff; text-align:center; -moz-appearance:textfield; }
+  .controls input::-webkit-outer-spin-button, .controls input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
   .controls label { font-size:10px; color:#8f97ff; display:flex; flex-direction:column; align-items:center; gap:2px; }
   button { padding:9px 16px; border-radius:8px; border:2px solid #00d4ff; background:#0d0f26; color:#00d4ff; font-weight:600; cursor:pointer; }
   button:hover { background:#00d4ff22; }
@@ -47,13 +48,14 @@
   <div class="card">
     <h2>Burndown — SP restantes vs estimado</h2>
     <div class="chart-box"><canvas id="burnup"></canvas></div>
+    <p class="legend-note" style="margin-top:14px;margin-bottom:2px"><b>SP completados por día</b> (lo que cerró el equipo cada día):</p>
     <div class="controls" id="controls"></div>
     <button onclick="updateChart()" style="margin-top:12px">Actualizar gráfico</button>
     <p class="legend-note">
       Línea violeta punteada = <b>estimado</b> (de 25 SP al inicio bajando a 0 al final del sprint).
-      Línea celeste = <b>real</b> (SP restantes por día): arranca <b>vacía</b> porque el sprint todavía no empezó;
-      se completa cargando los SP restantes de cada día y apretando "Actualizar" (si el equipo va más rápido que
-      el estimado, la línea queda por debajo). Sprint 1 = <b>25 SP</b>.
+      Línea celeste = <b>real</b> (SP restantes): arranca <b>vacía</b> porque el sprint todavía no empezó;
+      se completa cargando los <b>SP completados de cada día</b> (abajo) y apretando "Actualizar" — el gráfico
+      resta solo y dibuja cuánto falta (si van más rápido que el estimado, la línea queda por debajo). Sprint 1 = <b>25 SP</b>.
       Capacidad real del grupo ≈ 386 h vs 192 h del sprint → margen ~194 h.
     </p>
   </div>
@@ -125,8 +127,8 @@ const asignacion = [
   ['Dev 9','Bruno Gianoli','US-04 T7 (OpenAPI proveedores)','US-04 T2 + T5 + T6 + T7 + T8',22,36]
 ];
 
-// SP restantes por día (D1..D10) — VACÍO al inicio; se completa a medida que avanza el sprint
-let restantes = [null,null,null,null,null,null,null,null,null,null];
+// SP completados por día (D1..D10) — VACÍO al inicio; se completa a medida que avanza el sprint
+let completados = [null,null,null,null,null,null,null,null,null,null];
 
 // ---- Tabla integrantes ----
 (function(){
@@ -144,11 +146,11 @@ let restantes = [null,null,null,null,null,null,null,null,null,null];
   ).join('');
 })();
 
-// ---- Controles por día (SP restantes) ----
+// ---- Controles por día (SP completados ese día) ----
 (function(){
   const c = document.getElementById('controls');
   c.innerHTML = ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10'].map((d,i) =>
-    '<label>'+d+'<input id="sp'+i+'" type="number" min="0" max="'+SPRINT_SP+'" placeholder="—" value="">'
+    '<label>'+d+'<input id="sp'+i+'" type="text" inputmode="numeric" maxlength="2" placeholder="—" value="" title="SP completados el '+d+'"></label>'
   ).join('');
 })();
 
@@ -172,13 +174,16 @@ const chart = new Chart(ctx, {
 });
 
 function updateChart(){
-  const vals = ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10'].map((_,i)=>{
+  const dias = ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10'];
+  let acum = 0, stopped = false;
+  const restantes = dias.map((_,i)=>{
     const raw = document.getElementById('sp'+i).value;
-    if (raw === '' || raw === null) return null;
-    return Math.max(0, Math.min(SPRINT_SP, parseInt(raw)||0));
+    if (raw === '' || raw === null) { stopped = true; return null; }
+    if (stopped) return null;
+    acum += Math.max(0, Math.min(SPRINT_SP, parseInt(raw)||0));
+    return Math.max(0, SPRINT_SP - acum);
   });
-  restantes = vals;
-  chart.data.datasets[1].data = [null, ...vals];
+  chart.data.datasets[1].data = [SPRINT_SP, ...restantes];
   chart.update();
 }
 </script>
