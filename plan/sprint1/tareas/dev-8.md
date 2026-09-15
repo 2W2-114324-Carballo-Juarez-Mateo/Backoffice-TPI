@@ -2,7 +2,7 @@
 
 > **Total:** 20h · **Código (BE+TEST):** 16h · **Capacidad real:** 42,5h (5h/día · 0 ausencias · 85%)
 > **Primera tarea a arrancar (Day 1):** **US-04 T1** — migración `ModelProvider`/`LlmModel` (desbloquea a Dev 9).
-> **Ramas/PRs:** `feature/us-03-gateway-auth` (PR #2) · `feature/us-04-modelos-ia` (PR #5).
+> **Ramas/PRs:** `feature/us-03-gateway-auth` (PR a develop #2) · `feature/us-04-modelos-ia` (PR a develop #5).
 
 ## Cómo trabajar (obligatorio)
 - **RULES.md** (raíz del repo de trabajo `Repositorio/TPI---Backoffice-Demo-/`): validar ≠ autorizar, sin secretos (API Keys cifradas/enmascaradas).

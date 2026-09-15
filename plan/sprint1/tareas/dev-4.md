@@ -2,8 +2,8 @@
 
 > **Total:** 22h · **Código (BE+TEST):** 18h · **Capacidad real:** 35,2h (5h/día · 2 ausencias · 88%)
 > **Primera tarea a arrancar (Day 1):** **T9** — contrato OpenAPI + diagrama de secuencia (arranca mientras Dev 3 hace la entidad).
-> **Rama/PR:** `feature/us-01-parametros` (PR #4, merge Día 7).
-> **Depende de:** US-02 T1a (tabla `outbox_events`, merge Día 1 — Dev 1).
+> **Rama/PR:** `feature/us-01-parametros` (PR a develop #4, merge Día 7).
+> **Depende de:** US-02 T1a (tabla `outbox_message`, merge Día 1 — Dev 1).
 
 ## Cómo trabajar (obligatorio)
 - **RULES.md** (raíz del repo de trabajo `Repositorio/TPI---Backoffice-Demo-/`): configuración **solo hacia adelante** (RF-CFG-06), ADMIN-only, Outbox en la misma tx.
@@ -21,7 +21,7 @@
 **Qué hacer:** controladores GET y PUT con DTOs, `@Valid` y autorización (ADMIN escribe, PROFESOR solo lee).
 **CA relacionados:** CA1, CA3.
 
-### T4 — [BACKEND] Persistir el registro en `outbox_events` dentro de la misma transacción · 6h
+### T4 — [BACKEND] Persistir el registro en `outbox_message` dentro de la misma transacción · 6h
 **Descripción (plan/tareas.md):** Insertar OutboxMessage con payload GlobalConfigurationChanged en la misma tx (CA1). Requiere tabla de US-02.
 **Qué hacer:** insertar el `OutboxMessage` (payload `GlobalConfigurationChanged`) en la **misma tx** del cambio de parámetro.
 **CA relacionados:** CA1 (alimenta US-02).
@@ -64,7 +64,7 @@
 - **PR / commits:**
 - **Pendientes / deuda técnica:**
 
-### US-01 · T4 — [BACKEND] Persistir en outbox_events (misma tx)
+### US-01 · T4 — [BACKEND] Persistir en outbox_message (misma tx)
 - **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
 - **Qué se hizo:**
 - **Archivos/clases tocadas:**

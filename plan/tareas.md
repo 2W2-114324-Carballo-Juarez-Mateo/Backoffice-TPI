@@ -20,7 +20,7 @@
 1. **[G06] - [BACKEND] - Crear migración Flyway y entidad GlobalParameter con historial de versiones** — Script DDL, entidad JPA con key, value (jsonb), version (int). Seed de PAR-01..18. *(M · 6 h)*
 2. **[G06] - [BACKEND] - Implementar caso de uso UpdateParameterCommand con versionado y vigencia no retroactiva** — Incrementa versión, valida rango, rechaza fechas retroactivas (RF-CFG-06), soporta Idempotency-Key (CA2). *(M · 6 h)*
 3. **[G06] - [BACKEND] - Implementar endpoints REST GET/PUT de parámetros con autorización por rol** — Controladores GET y PUT con DTOs, @Valid, ADMIN escribe y PROFESOR solo lee (CA3). *(M · 6 h)*
-4. **[G06] - [BACKEND] - Persistir registro en outbox_events dentro de la misma transacción del cambio** — Insertar OutboxMessage con payload GlobalConfigurationChanged en la misma tx (CA1). Requiere tabla de US-02. *(M · 6 h)*
+4. **[G06] - [BACKEND] - Persistir registro en outbox_message dentro de la misma transacción del cambio** — Insertar OutboxMessage con payload GlobalConfigurationChanged en la misma tx (CA1). Requiere tabla de US-02. *(M · 6 h)*
 5. **[G06] - [FRONTEND] - Diseñar pantalla de catálogo y formulario reactivo de edición de parámetros** — Componente Angular Standalone. Tabla de parámetros, modal de edición con validación de rango, motivo obligatorio. WCAG AA. *(M · 8 h)*
 6. **[G06] - [FRONTEND] - Integrar servicio HTTP con BFF/Gateway y control visual de roles** — Servicio Angular que consume endpoints vía gateway. Ocultar edición para PROFESOR. Loading/error states. *(S · 4 h)*
 7. **[G06] - [TEST] - Desarrollar tests unitarios de dominio: versionado, idempotencia y vigencia** — Incremento de versión (CA1), idempotencia por clave repetida (CA2), rechazo de fecha retroactiva y rango (CA4). *(M · 6 h)*
@@ -36,7 +36,7 @@
 
 > Historia 100% backend. No requiere frontend.
 
-1. **[G06] - [BACKEND] - Crear tabla outbox_events con migración Flyway e implementar publisher programado** — DDL, entidad OutboxMessage, @Scheduled worker que lee pendientes, publica en topic administration.events y marca enviado. *(M · 8 h)*
+1. **[G06] - [BACKEND] - Crear tabla outbox_message con migración Flyway e implementar publisher programado** — DDL, entidad OutboxMessage, @Scheduled worker que lee pendientes, publica en topic administration.events y marca enviado. *(M · 8 h)*
 2. **[G06] - [BACKEND] - Definir envelope estándar del evento GlobalConfigurationChanged** — Clase del envelope: eventId, eventType, occurredAt, correlationId, actorId, source, payload {key, value, version}. *(S · 4 h)*
 3. **[G06] - [BACKEND] - Implementar reintentos con backoff exponencial y Dead Letter Topic** — Si Kafka no disponible, eventos quedan pendientes. Reintentos con backoff. Irrecuperables → DLT. Sin pérdida (CA2). *(M · 6 h)*
 4. **[G06] - [BACKEND] - Implementar lógica de idempotencia por eventId y versión en consumidor de referencia** — Tabla ProcessedEvent(event_id, consumer). Descartar duplicados (CA4). Componente reutilizable, NO implementación en otros equipos. *(S · 4 h)*

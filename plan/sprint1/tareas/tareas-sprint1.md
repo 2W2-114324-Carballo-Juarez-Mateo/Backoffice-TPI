@@ -1,12 +1,13 @@
 # Tareas Sprint 1 — Backlog del sprint ya dividido (9 devs)
 
 > **Alcance:** solo las historias priorizadas para este Sprint 1 → **US-01, US-02, US-03, US-04, US-08** + **Infra** (scaffolding).
+> **Flujo de ramas:** cada dev trabaja en `feature/<tema>` desde **`develop`** → **PR a `develop`** → `main` solo al final (detalle en `RULES.md` del repo de trabajo).
 > **Fuente:** `plan/tareas.md` (backlog general) + división de Luciano (`plan/sprint1/tareas divididas (luciano).md`).
 > **Convención:** `[G06] - [ROL] - [Descripción]` · **Estimación:** historia = SP (Fibonacci), tarea = horas.
 > **Solo Back:** las tareas FRONTEND van a **TH-03** (fuera de la capacidad del sprint de Back).
 >
 > **Cambios de esta división (respecto al backlog general):**
-> - **US-02 T1** se parte en **T1a** (migración `outbox_events`, merge Día 1) + **T1b** (publisher programado).
+> - **US-02 T1** se parte en **T1a** (migración `outbox_message`, merge Día 1) + **T1b** (publisher programado).
 > - **US-08 T2** se parte en **T2a** (consumidores T02/T04/T05) + **T2b** (T06/T07/T08/T10).
 > - Se elimina la dependencia **US-04 → outbox** (US-04 no publica eventos).
 > - Pasamos de **10 a 9 devs** (el Dev 10 no codifica).
@@ -32,11 +33,11 @@
 
 ## US-02 · Propagación del cambio de parámetro (Outbox + Kafka + Caché TTL)
 
-> **Rama:** `feature/foundation-outbox` · **PR #1 · Merge: Día 3** · **Flyway:** `admin_db → V1` · **Depende de:** Nada (fundacional).
+> **Rama:** `feature/foundation-outbox` · **PR a develop #1 · merge a develop: Día 3** · **Flyway:** `admin_db → V1` · **Depende de:** Nada (fundacional).
 
 | # | Tarea | Rol | Dev | Horas |
 |---|---|---|---|---:|
-| T1a | Crear migración Flyway de la tabla `outbox_events` | BACKEND | Dev 1 | 3 |
+| T1a | Crear migración Flyway de la tabla `outbox_message` | BACKEND | Dev 1 | 3 |
 | T1b | Implementar publisher programado (Outbox → Kafka) | BACKEND | Dev 1 | 5 |
 | T2 | Definir envelope estándar del evento `GlobalConfigurationChanged` | BACKEND | Dev 2 | 4 |
 | T3 | Implementar reintentos con backoff exponencial y Dead Letter Topic | BACKEND | Dev 2 | 6 |
@@ -53,14 +54,14 @@
 
 ## US-01 · Modificación y versionado de parámetros globales
 
-> **Rama:** `feature/us-01-parametros` · **PR #4 · Merge: Día 7** · **Flyway:** `admin_db → V2` · **Depende de:** US-02 T1a (tabla `outbox_events`).
+> **Rama:** `feature/us-01-parametros` · **PR a develop #4 · merge a develop: Día 7** · **Flyway:** `admin_db → V2` · **Depende de:** US-02 T1a (tabla `outbox_message`).
 
 | # | Tarea | Rol | Dev | Horas |
 |---|---|---|---|---:|
 | T1 | Crear migración Flyway y entidad `GlobalParameter` con historial de versiones | BACKEND | Dev 3 | 6 |
 | T2 | Caso de uso `UpdateParameterCommand` con versionado y vigencia no retroactiva | BACKEND | Dev 3 | 6 |
 | T3 | Endpoints REST GET/PUT de parámetros con autorización por rol | BACKEND | Dev 4 | 6 |
-| T4 | Persistir el registro en `outbox_events` dentro de la misma transacción | BACKEND | Dev 4 | 6 |
+| T4 | Persistir el registro en `outbox_message` dentro de la misma transacción | BACKEND | Dev 4 | 6 |
 | T7 | Tests unitarios de dominio: versionado, idempotencia y vigencia | TEST | Dev 3 | 6 |
 | T8 | Tests de integración con Testcontainers (PostgreSQL) | TEST | Dev 4 | 6 |
 | T9 | Congelar contrato OpenAPI 3 y diseñar diagrama de secuencia | DOCUMENTACION | Dev 4 | 4 |
@@ -72,7 +73,7 @@
 
 ## US-03 · Consola de gestión administrativa e integración de identidades (Tema 01)
 
-> **Rama:** `feature/us-03-gateway-auth` · **PR #2 · Merge: Día 5** · **Flyway:** Ninguno · **Depende de:** Nada.
+> **Rama:** `feature/us-03-gateway-auth` · **PR a develop #2 · merge a develop: Día 5** · **Flyway:** Ninguno · **Depende de:** Nada.
 
 | # | Tarea | Rol | Dev | Horas |
 |---|---|---|---|---:|
@@ -88,7 +89,7 @@
 
 ## US-04 · Registro de proveedores y modelos de IA
 
-> **Rama:** `feature/us-04-modelos-ia` · **PR #5 · Merge: Día 8** · **Flyway:** `admin_db → V3` · **Depende de:** Nada (se quitó la dependencia de outbox).
+> **Rama:** `feature/us-04-modelos-ia` · **PR a develop #5 · merge a develop: Día 8** · **Flyway:** `admin_db → V3` · **Depende de:** Nada (se quitó la dependencia de outbox).
 
 | # | Tarea | Rol | Dev | Horas |
 |---|---|---|---|---:|
@@ -106,7 +107,7 @@
 
 ## US-08 · Ingesta de datos de los temas con deduplicación
 
-> **Rama:** `feature/us-08-ingesta-kafka` · **PR #3 · Merge: Día 6** · **Flyway:** `reporting_db → V1` · **Depende de:** Nada (microservicio y BD aislados).
+> **Rama:** `feature/us-08-ingesta-kafka` · **PR a develop #3 · merge a develop: Día 6** · **Flyway:** `reporting_db → V1` · **Depende de:** Nada (microservicio y BD aislados).
 
 | # | Tarea | Rol | Dev | Horas |
 |---|---|---|---|---:|

@@ -35,7 +35,7 @@
 
 ## Notas de la división
 - Se pasó de **10 a 9 devs** (el Dev 10 no codifica).
-- **US-02 T1** partida en **T1a** (migración `outbox_events`, merge Día 1) + **T1b** (publisher).
+- **US-02 T1** partida en **T1a** (migración `outbox_message`, merge Día 1) + **T1b** (publisher).
 - **US-08 T2** partida en **T2a** (T02/T04/T05) + **T2b** (T06/T07/T08/T10).
 - Se eliminó la dependencia **US-04 → outbox** (US-04 no publica eventos).
 - Revisiones al final (no bloquean arranques).

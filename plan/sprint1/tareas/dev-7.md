@@ -2,7 +2,7 @@
 
 > **Total:** 21h · **Código (BE+TEST):** 18h · **Capacidad real:** 32,4h (6h/día · 4 ausencias · 90%)
 > **Primera tarea a arrancar (Day 1):** **US-03 T1** — filtro de seguridad/headers (sin BD).
-> **Ramas/PRs:** `feature/us-08-ingesta-kafka` (PR #3) · `feature/us-03-gateway-auth` (PR #2).
+> **Ramas/PRs:** `feature/us-08-ingesta-kafka` (PR a develop #3) · `feature/us-03-gateway-auth` (PR a develop #2).
 
 ## Cómo trabajar (obligatorio)
 - **RULES.md** (raíz del repo de trabajo `Repositorio/TPI---Backoffice-Demo-/`): validar ≠ autorizar, roles reales (`ADMIN`/`PROFESOR`), idempotencia.

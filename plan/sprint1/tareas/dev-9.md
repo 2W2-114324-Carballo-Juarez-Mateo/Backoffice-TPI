@@ -2,7 +2,7 @@
 
 > **Total:** 22h · **Código (BE+TEST):** 16h · **Capacidad real:** 36h (4h/día · 0 ausencias · 90%)
 > **Primera tarea a arrancar (Day 1):** **US-04 T7** — OpenAPI proveedores (arranca mientras Dev 8 hace la entidad).
-> **Rama/PR:** `feature/us-04-modelos-ia` (PR #5, merge Día 8).
+> **Rama/PR:** `feature/us-04-modelos-ia` (PR a develop #5, merge Día 8).
 
 ## Cómo trabajar (obligatorio)
 - **RULES.md** (raíz del repo de trabajo `Repositorio/TPI---Backoffice-Demo-/`): sin secretos (API Keys cifradas/enmascaradas), ADMIN-only.

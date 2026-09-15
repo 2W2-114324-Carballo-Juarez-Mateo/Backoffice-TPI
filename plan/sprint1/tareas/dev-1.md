@@ -1,8 +1,8 @@
 # Dev 1 (Luciano Paz) — Tareas Sprint 1
 
 > **Total:** 18h · **Código (BE+TEST):** 14h · **Capacidad real:** 47,5h (5h/día · 0 ausencias · 95%)
-> **Ramas/PRs:** `feature/foundation-outbox` (PR #1, merge Día 3) · Infra en `main`/rama de setup.
-> **Primera tarea a arrancar (Day 1):** **T1a** — migración `outbox_events` (merge Día 1, desbloquea al resto).
+> **Ramas/PRs:** `feature/foundation-outbox` (PR a develop #1, merge Día 3) · Infra en `main`/rama de setup.
+> **Primera tarea a arrancar (Day 1):** **T1a** — migración `outbox_message` (merge Día 1, desbloquea al resto).
 
 ## Cómo trabajar (obligatorio)
 - **RULES.md** (raíz del repo de trabajo `Repositorio/TPI---Backoffice-Demo-/`): respetar sus reglas (Outbox en la misma tx, sin secretos, idempotencia, etc.).
@@ -21,14 +21,14 @@
 
 ## US-02 · Propagación del cambio de parámetro (Outbox + Kafka + Caché TTL)
 
-### T1a — [BACKEND] Migración Flyway de `outbox_events` · 3h
-**Descripción (plan/tareas.md):** Parte de US-02 T1: **DDL y entidad `OutboxMessage`** (tabla `outbox_events`). El publisher va en T1b.
-**Qué hacer:** crear la tabla `outbox_events` (`id`, `event_type`, `payload`, `status`, `created_at`) en `administration_db` con una migración Flyway. **Prerequisito compartido → mergear Día 1** (desbloquea US-01 T4).
+### T1a — [BACKEND] Migración Flyway de `outbox_message` · 3h
+**Descripción (plan/tareas.md):** Parte de US-02 T1: **DDL y entidad `OutboxMessage`** (tabla `outbox_message`). El publisher va en T1b.
+**Qué hacer:** crear la tabla `outbox_message` (`id`, `event_type`, `payload`, `status`, `created_at`) en `administration_db` con una migración Flyway. **Prerequisito compartido → mergear Día 1** (desbloquea US-01 T4).
 **Refs:** SKILL-despliegue (Flyway).
 
 ### T1b — [BACKEND] Publisher programado (Outbox → Kafka) · 5h
 **Descripción (plan/tareas.md):** Parte de US-02 T1: **worker `@Scheduled`** que lee pendientes, publica en `administration.events` y marca enviado.
-**Qué hacer:** `@Scheduled` que lee los pendientes de `outbox_events`, publica en el topic `administration.events` y los marca como enviados.
+**Qué hacer:** `@Scheduled` que lee los pendientes de `outbox_message`, publica en el topic `administration.events` y los marca como enviados.
 **CA relacionados:** CA1, CA2 de US-02.
 
 ### T8 — [DOCUMENTACION] Envelope, catálogo de topics y contrato del consumidor · 4h
@@ -65,7 +65,7 @@
 - **PR / commits:**
 - **Pendientes / deuda técnica:**
 
-### US-02 · T1a — [BACKEND] Migración Flyway `outbox_events`
+### US-02 · T1a — [BACKEND] Migración Flyway `outbox_message`
 - **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
 - **Qué se hizo:**
 - **Archivos/clases tocadas:**

@@ -2,7 +2,7 @@
 
 > **Total:** 22h · **Código (BE+TEST):** 16h · **Capacidad real:** 42,5h (5h/día · 0 ausencias · 85%)
 > **Primera tarea a arrancar (Day 1):** **US-08 T6** — mapear contratos de lectura (primera de US-08).
-> **Rama/PR:** `feature/us-08-ingesta-kafka` (PR #3, merge Día 6).
+> **Rama/PR:** `feature/us-08-ingesta-kafka` (PR a develop #3, merge Día 6).
 > **Depende de:** Nada (microservicio y BD aislados).
 
 ## Cómo trabajar (obligatorio)

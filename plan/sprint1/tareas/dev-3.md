@@ -2,8 +2,8 @@
 
 > **Total:** 21h · **Código (BE+TEST):** 18h · **Capacidad real:** 40h (5h/día · 2 ausencias · 100%)
 > **Primera tarea a arrancar (Day 1):** **T1** — migración `GlobalParameter` + seed PAR-01..18 (desbloquea a Dev 4).
-> **Rama/PR:** `feature/us-01-parametros` (PR #4, merge Día 7).
-> **Depende de:** US-02 T1a (tabla `outbox_events`, merge Día 1 — Dev 1).
+> **Rama/PR:** `feature/us-01-parametros` (PR a develop #4, merge Día 7).
+> **Depende de:** US-02 T1a (tabla `outbox_message`, merge Día 1 — Dev 1).
 
 ## Cómo trabajar (obligatorio)
 - **RULES.md** (raíz del repo de trabajo `Repositorio/TPI---Backoffice-Demo-/`): configuración **solo hacia adelante** (RF-CFG-06), ADMIN-only, sin secretos.

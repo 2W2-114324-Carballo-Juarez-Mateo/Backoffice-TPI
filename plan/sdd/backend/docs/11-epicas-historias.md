@@ -7,7 +7,7 @@
 ## EP-01 · Parámetros Globales (administration-service · T-A)
 
 - **Objetivo:** centralizar, versionar y gobernar los parámetros de economía y operativos (PAR-01..24), con cambios solo hacia adelante (RF-CFG-06) y propagación confiable a los consumidores.
-- **Alcance técnico:** entidad `GlobalParameter` (versionada) · `Idempotency-Key` · auditoría hacia T01 · tabla `outbox_events` + publisher a Kafka (`administration.events`) · caché TTL 10 min en consumidores (Temas 03/05/08/10) con contrato publicado.
+- **Alcance técnico:** entidad `GlobalParameter` (versionada) · `Idempotency-Key` · auditoría hacia T01 · tabla `outbox_message` + publisher a Kafka (`administration.events`) · caché TTL 10 min en consumidores (Temas 03/05/08/10) con contrato publicado.
 - **Historias:** US-01 (5 SP) · US-02 (5 SP).
 - **Contratos:** evento `GlobalConfigurationChanged` (envelope estándar, definido en Sprint 0).
 - **Dependencias:** Temas 03/05/08/10 (consumidores) · T01 (auditoría) · Kafka.

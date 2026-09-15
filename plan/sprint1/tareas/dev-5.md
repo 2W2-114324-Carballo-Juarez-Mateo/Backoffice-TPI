@@ -2,7 +2,7 @@
 
 > **Total:** 21h · **Código (BE+TEST):** 18h · **Capacidad real:** 60h (6h/día · 0 ausencias · 100%)
 > **Primera tarea a arrancar (Day 1):** **US-08 T1** — migración `ProcessedEvent` (reporting aislado).
-> **Ramas/PRs:** `feature/foundation-outbox` (PR #1) · `feature/us-08-ingesta-kafka` (PR #3) · `feature/us-03-gateway-auth` (PR #2).
+> **Ramas/PRs:** `feature/foundation-outbox` (PR a develop #1) · `feature/us-08-ingesta-kafka` (PR a develop #3) · `feature/us-03-gateway-auth` (PR a develop #2).
 
 ## Cómo trabajar (obligatorio)
 - **RULES.md** (raíz del repo de trabajo `Repositorio/TPI---Backoffice-Demo-/`): idempotencia por `event_id`, DLT sin bloquear, Database per Service.

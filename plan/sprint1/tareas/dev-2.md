@@ -1,7 +1,7 @@
 # Dev 2 (Mateo Carballo Juarez) — Tareas Sprint 1
 
 > **Total:** 25h · **Código (BE+TEST):** 22h · **Capacidad real:** 50h (5h/día · 0 ausencias · 100%)
-> **Rama/PR:** `feature/foundation-outbox` (PR #1, merge Día 3).
+> **Rama/PR:** `feature/foundation-outbox` (PR a develop #1, merge Día 3).
 > **Primera tarea a arrancar (Day 1):** **T2** — envelope estándar `GlobalConfigurationChanged` (base del contrato de eventos; sin dependencias).
 
 ## Cómo trabajar (obligatorio)
