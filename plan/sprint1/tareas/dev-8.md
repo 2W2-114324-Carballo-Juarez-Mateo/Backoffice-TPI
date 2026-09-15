@@ -1,6 +1,7 @@
-# Dev 8 — Tareas Sprint 1
+# Dev 8 (Regina Loreta Cerasulo) — Tareas Sprint 1
 
-> **Total:** 20h · **Código (BE+TEST):** 16h
+> **Total:** 20h · **Código (BE+TEST):** 16h · **Capacidad real:** 42,5h (5h/día · 0 ausencias · 85%)
+> **Primera tarea a arrancar (Day 1):** **US-04 T1** — migración `ModelProvider`/`LlmModel` (desbloquea a Dev 9).
 > **Ramas/PRs:** `feature/us-03-gateway-auth` (PR #2) · `feature/us-04-modelos-ia` (PR #5).
 
 ## Cómo trabajar (obligatorio)

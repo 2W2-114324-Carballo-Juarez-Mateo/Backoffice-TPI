@@ -1,6 +1,7 @@
-# Dev 4 — Tareas Sprint 1
+# Dev 4 (Joaquin Cortez) — Tareas Sprint 1
 
-> **Total:** 22h · **Código (BE+TEST):** 18h
+> **Total:** 22h · **Código (BE+TEST):** 18h · **Capacidad real:** 35,2h (5h/día · 2 ausencias · 88%)
+> **Primera tarea a arrancar (Day 1):** **T9** — contrato OpenAPI + diagrama de secuencia (arranca mientras Dev 3 hace la entidad).
 > **Rama/PR:** `feature/us-01-parametros` (PR #4, merge Día 7).
 > **Depende de:** US-02 T1a (tabla `outbox_events`, merge Día 1 — Dev 1).
 

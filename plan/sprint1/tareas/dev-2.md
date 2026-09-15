@@ -1,7 +1,8 @@
-# Dev 2 — Tareas Sprint 1
+# Dev 2 (Mateo Carballo Juarez) — Tareas Sprint 1
 
-> **Total:** 21h · **Código (BE+TEST):** 18h
+> **Total:** 25h · **Código (BE+TEST):** 22h · **Capacidad real:** 50h (5h/día · 0 ausencias · 100%)
 > **Rama/PR:** `feature/foundation-outbox` (PR #1, merge Día 3).
+> **Primera tarea a arrancar (Day 1):** **T2** — envelope estándar `GlobalConfigurationChanged` (base del contrato de eventos; sin dependencias).
 
 ## Cómo trabajar (obligatorio)
 - **RULES.md** (raíz del repo de trabajo `Repositorio/TPI---Backoffice-Demo-/`): Outbox en la misma tx, idempotencia por `event_id`+versión, sin secretos.
@@ -12,6 +13,11 @@
 ---
 
 ## US-02 · Propagación del cambio de parámetro (Outbox + Kafka + Caché TTL)
+
+### T2 — [BACKEND] Envelope estándar `GlobalConfigurationChanged` · 4h
+**Descripción (plan/tareas.md):** Clase del envelope: eventId, eventType, occurredAt, correlationId, actorId, source, payload {key, value, version}.
+**Qué hacer:** definir el envelope `{eventId, eventType, occurredAt, correlationId, actorId, role, source, payload{key, value, version}}`.
+**Refs:** SKILL-evento · `plan/CONTRATOS.md`.
 
 ### T3 — [BACKEND] Reintentos con backoff exponencial y Dead Letter Topic · 6h
 **Descripción (plan/tareas.md):** Si Kafka no disponible, eventos quedan pendientes. Reintentos con backoff. Irrecuperables → DLT. Sin pérdida (CA2).
@@ -92,6 +98,6 @@
 - **Pendientes / deuda técnica:**
 
 ### Resumen del integrante
-- **Tareas completadas:** 0/4 · **Horas reales:** __ / __ h
+- **Tareas completadas:** 0/5 · **Horas reales:** __ / __ h
 - **Notas generales:**
 

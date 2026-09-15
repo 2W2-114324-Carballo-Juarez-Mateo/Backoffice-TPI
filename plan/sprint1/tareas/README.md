@@ -18,19 +18,20 @@
 
 ## Resumen de carga
 
-| Dev | Tareas | Total | Código (BE+TEST) |
-|---|---|---:|---:|
-| **Dev 1** | US-02 T1a + T1b + T2 + T8 · Infra | 22 | 18 |
-| **Dev 2** | US-02 T3 + T4 + T5 + T9 | 21 | 18 |
-| **Dev 3** | US-01 T1 + T2 + T7 + T10 | 21 | 18 |
-| **Dev 4** | US-01 T3 + T4 + T8 + T9 | 22 | 18 |
-| **Dev 5** | US-02 T6 + T7 · US-08 T1 + T4 · US-03 T8 | 21 | 18 |
-| **Dev 6** | US-08 T2a + T2b + T3 + T6 | 22 | 16 |
-| **Dev 7** | US-08 T5 + T7 · US-03 T1 + T5 | 21 | 18 |
-| **Dev 8** | US-03 T2 + T7 · US-04 T1 + T3 | 20 | 16 |
-| **Dev 9** | US-04 T2 + T5 + T6 + T7 + T8 | 22 | 16 |
+| Dev | Integrante | Tareas | Total | Código (BE+TEST) | Capacidad |
+|---|---|---|---:|---:|---:|
+| **Dev 1** | Luciano Paz | US-02 T1a + T1b + T8 · Infra | 18 | 14 | 47,5h |
+| **Dev 2** | Mateo Carballo Juarez | US-02 T2 + T3 + T4 + T5 + T9 | 25 | 22 | 50h |
+| **Dev 3** | Damian Gabriel Baigorria | US-01 T1 + T2 + T7 + T10 | 21 | 18 | 40h |
+| **Dev 4** | Joaquin Cortez | US-01 T3 + T4 + T8 + T9 | 22 | 18 | 35,2h |
+| **Dev 5** | Julieta Ariadna Disca | US-02 T6 + T7 · US-08 T1 + T4 · US-03 T8 | 21 | 18 | 60h |
+| **Dev 6** | Valentina Maldonado | US-08 T2a + T2b + T3 + T6 | 22 | 16 | 42,5h |
+| **Dev 7** | Maximo Cerquatti | US-08 T5 + T7 · US-03 T1 + T5 | 21 | 18 | 32,4h |
+| **Dev 8** | Regina Loreta Cerasulo | US-03 T2 + T7 · US-04 T1 + T3 | 20 | 16 | 42,5h |
+| **Dev 9** | Bruno Gianoli | US-04 T2 + T5 + T6 + T7 + T8 | 22 | 16 | 36h |
 
-**Total:** 192h · rango 20–22h totales · 16–18h de código.
+**Total:** 192h · **Capacidad real del grupo:** ≈ 386h (10 días hábiles) → sobra ~194h de margen.
+> **Ajuste:** US-02 **T2** (envelope) pasó a **Dev 2 (Mateo)** como primera tarea de arranque (Día 1).
 
 ## Notas de la división
 - Se pasó de **10 a 9 devs** (el Dev 10 no codifica).

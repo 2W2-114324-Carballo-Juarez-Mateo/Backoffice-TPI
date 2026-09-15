@@ -13,19 +13,20 @@
 
 ## Resumen de carga (balanceada)
 
-| Dev | Tareas | Total | Código (BE+TEST) |
-|---|---|---:|---:|
-| **Dev 1** | US-02 T1a + T1b + T2 + T8 · Infra | 22 | 18 |
-| **Dev 2** | US-02 T3 + T4 + T5 + T9 | 21 | 18 |
-| **Dev 3** | US-01 T1 + T2 + T7 + T10 | 21 | 18 |
-| **Dev 4** | US-01 T3 + T4 + T8 + T9 | 22 | 18 |
-| **Dev 5** | US-02 T6 + T7 · US-08 T1 + T4 · US-03 T8 | 21 | 18 |
-| **Dev 6** | US-08 T2a + T2b + T3 + T6 | 22 | 16 |
-| **Dev 7** | US-08 T5 + T7 · US-03 T1 + T5 | 21 | 18 |
-| **Dev 8** | US-03 T2 + T7 · US-04 T1 + T3 | 20 | 16 |
-| **Dev 9** | US-04 T2 + T5 + T6 + T7 + T8 | 22 | 16 |
+| Dev | Integrante | Tareas | Total | Código (BE+TEST) |
+|---|---|---|---:|---:|
+| **Dev 1** | Luciano Paz | US-02 T1a + T1b + T8 · Infra | 18 | 14 |
+| **Dev 2** | Mateo Carballo Juarez | US-02 T2 + T3 + T4 + T5 + T9 | 25 | 22 |
+| **Dev 3** | Damian Gabriel Baigorria | US-01 T1 + T2 + T7 + T10 | 21 | 18 |
+| **Dev 4** | Joaquin Cortez | US-01 T3 + T4 + T8 + T9 | 22 | 18 |
+| **Dev 5** | Julieta Ariadna Disca | US-02 T6 + T7 · US-08 T1 + T4 · US-03 T8 | 21 | 18 |
+| **Dev 6** | Valentina Maldonado | US-08 T2a + T2b + T3 + T6 | 22 | 16 |
+| **Dev 7** | Maximo Cerquatti | US-08 T5 + T7 · US-03 T1 + T5 | 21 | 18 |
+| **Dev 8** | Regina Loreta Cerasulo | US-03 T2 + T7 · US-04 T1 + T3 | 20 | 16 |
+| **Dev 9** | Bruno Gianoli | US-04 T2 + T5 + T6 + T7 + T8 | 22 | 16 |
 
-**Total:** 192h · rango 20–22h totales · 16–18h de código por dev.
+**Total:** 192h · rango 18–25h totales · 14–22h de código por dev.
+> **Ajuste:** US-02 **T2** (envelope) se movió de Dev 1 a **Dev 2 (Mateo)** como primera tarea de arranque (Día 1).
 
 ---
 
@@ -37,7 +38,7 @@
 |---|---|---|---|---:|
 | T1a | Crear migración Flyway de la tabla `outbox_events` | BACKEND | Dev 1 | 3 |
 | T1b | Implementar publisher programado (Outbox → Kafka) | BACKEND | Dev 1 | 5 |
-| T2 | Definir envelope estándar del evento `GlobalConfigurationChanged` | BACKEND | Dev 1 | 4 |
+| T2 | Definir envelope estándar del evento `GlobalConfigurationChanged` | BACKEND | Dev 2 | 4 |
 | T3 | Implementar reintentos con backoff exponencial y Dead Letter Topic | BACKEND | Dev 2 | 6 |
 | T4 | Idempotencia por `eventId` y versión en consumidor de referencia | BACKEND | Dev 2 | 4 |
 | T5 | Test de integración del ciclo completo Outbox → Kafka → consumo | TEST | Dev 2 | 8 |

@@ -1,6 +1,7 @@
-# Dev 7 — Tareas Sprint 1
+# Dev 7 (Maximo Cerquatti) — Tareas Sprint 1
 
-> **Total:** 21h · **Código (BE+TEST):** 18h
+> **Total:** 21h · **Código (BE+TEST):** 18h · **Capacidad real:** 32,4h (6h/día · 4 ausencias · 90%)
+> **Primera tarea a arrancar (Day 1):** **US-03 T1** — filtro de seguridad/headers (sin BD).
 > **Ramas/PRs:** `feature/us-08-ingesta-kafka` (PR #3) · `feature/us-03-gateway-auth` (PR #2).
 
 ## Cómo trabajar (obligatorio)

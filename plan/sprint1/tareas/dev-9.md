@@ -1,6 +1,7 @@
-# Dev 9 — Tareas Sprint 1
+# Dev 9 (Bruno Gianoli) — Tareas Sprint 1
 
-> **Total:** 22h · **Código (BE+TEST):** 16h
+> **Total:** 22h · **Código (BE+TEST):** 16h · **Capacidad real:** 36h (4h/día · 0 ausencias · 90%)
+> **Primera tarea a arrancar (Day 1):** **US-04 T7** — OpenAPI proveedores (arranca mientras Dev 8 hace la entidad).
 > **Rama/PR:** `feature/us-04-modelos-ia` (PR #5, merge Día 8).
 
 ## Cómo trabajar (obligatorio)

@@ -1,6 +1,7 @@
-# Dev 3 — Tareas Sprint 1
+# Dev 3 (Damian Gabriel Baigorria) — Tareas Sprint 1
 
-> **Total:** 21h · **Código (BE+TEST):** 18h
+> **Total:** 21h · **Código (BE+TEST):** 18h · **Capacidad real:** 40h (5h/día · 2 ausencias · 100%)
+> **Primera tarea a arrancar (Day 1):** **T1** — migración `GlobalParameter` + seed PAR-01..18 (desbloquea a Dev 4).
 > **Rama/PR:** `feature/us-01-parametros` (PR #4, merge Día 7).
 > **Depende de:** US-02 T1a (tabla `outbox_events`, merge Día 1 — Dev 1).
 

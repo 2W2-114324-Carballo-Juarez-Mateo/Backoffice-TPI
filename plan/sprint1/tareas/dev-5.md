@@ -1,6 +1,7 @@
-# Dev 5 — Tareas Sprint 1
+# Dev 5 (Julieta Ariadna Disca) — Tareas Sprint 1
 
-> **Total:** 21h · **Código (BE+TEST):** 18h
+> **Total:** 21h · **Código (BE+TEST):** 18h · **Capacidad real:** 60h (6h/día · 0 ausencias · 100%)
+> **Primera tarea a arrancar (Day 1):** **US-08 T1** — migración `ProcessedEvent` (reporting aislado).
 > **Ramas/PRs:** `feature/foundation-outbox` (PR #1) · `feature/us-08-ingesta-kafka` (PR #3) · `feature/us-03-gateway-auth` (PR #2).
 
 ## Cómo trabajar (obligatorio)
