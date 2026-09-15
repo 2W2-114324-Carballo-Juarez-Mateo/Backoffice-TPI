@@ -26,9 +26,9 @@
   .b-sp { background:#3d6cff22; color:#7db4ff; border:1px solid #3d6cff; }
   .b-must { background:#a45cff22; color:#c9a3ff; border:1px solid #a45cff; }
   .b-cap { background:#00ffd522; color:#6fffd5; border:1px solid #00ffd5; }
-  .controls { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:12px; }
-  .controls input { width:58px; padding:6px; border-radius:8px; border:2px solid #3c417a; background:#0d0f26; color:#e6e4ff; text-align:center; }
-  .controls label { font-size:11px; color:#8f97ff; display:flex; flex-direction:column; align-items:center; gap:3px; }
+  .controls { display:grid; grid-template-columns:repeat(auto-fit,minmax(48px,1fr)); gap:6px; align-items:end; margin-top:12px; max-width:760px; }
+  .controls input { width:100%; padding:5px 2px; border-radius:8px; border:2px solid #3c417a; background:#0d0f26; color:#e6e4ff; text-align:center; }
+  .controls label { font-size:10px; color:#8f97ff; display:flex; flex-direction:column; align-items:center; gap:2px; }
   button { padding:9px 16px; border-radius:8px; border:2px solid #00d4ff; background:#0d0f26; color:#00d4ff; font-weight:600; cursor:pointer; }
   button:hover { background:#00d4ff22; }
   .chart-box { position:relative; height:320px; }
