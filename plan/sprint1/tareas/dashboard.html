@@ -39,19 +39,21 @@
 <body>
 <header>
   <h1>Dashboard Sprint 1 — Backoffice (Tema 12)</h1>
-  <p>Burnup de SP · Integrantes y capacidad · US + tareas · Asignación por dev</p>
+  <p>Burndown de SP · Integrantes y capacidad · US + tareas · Asignación por dev</p>
 </header>
 <main>
 
-  <!-- ============ BURNUP ============ -->
+  <!-- ============ BURNDOWN ============ -->
   <div class="card">
-    <h2>Burnup — SP consumidos vs SP totales</h2>
+    <h2>Burndown — SP restantes vs estimado</h2>
     <div class="chart-box"><canvas id="burnup"></canvas></div>
     <div class="controls" id="controls"></div>
     <button onclick="updateChart()" style="margin-top:12px">Actualizar gráfico</button>
     <p class="legend-note">
-      Línea recta = <b>SP totales del sprint</b> (25 SP: US-01..04 + US-08, 5 SP c/u).
-      Línea "consumidos" = SP que va cerrando el equipo (editá los valores por día y actualizá).
+      Línea violeta punteada = <b>estimado</b> (de 25 SP al inicio bajando a 0 al final del sprint).
+      Línea celeste = <b>real</b> (SP restantes por día): arranca <b>vacía</b> porque el sprint todavía no empezó;
+      se completa cargando los SP restantes de cada día y apretando "Actualizar" (si el equipo va más rápido que
+      el estimado, la línea queda por debajo). Sprint 1 = <b>25 SP</b>.
       Capacidad real del grupo ≈ 386 h vs 192 h del sprint → margen ~194 h.
     </p>
   </div>
@@ -97,7 +99,7 @@
 
 <script>
 const SPRINT_SP = 25;
-const DIAS = ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10'];
+const DIAS = ['Inicio','D1','D2','D3','D4','D5','D6','D7','D8','D9','D10'];
 
 const integrantes = [
   ['Dev 1','Luciano Paz',5,0,'95%',10,47.5],
@@ -123,8 +125,8 @@ const asignacion = [
   ['Dev 9','Bruno Gianoli','US-04 T7 (OpenAPI proveedores)','US-04 T2 + T5 + T6 + T7 + T8',22,36]
 ];
 
-// valores por defecto (proyección de ejemplo; editables)
-let consumidos = [2,5,8,12,15,18,20,22,24,25];
+// SP restantes por día (D1..D10) — VACÍO al inicio; se completa a medida que avanza el sprint
+let restantes = [null,null,null,null,null,null,null,null,null,null];
 
 // ---- Tabla integrantes ----
 (function(){
@@ -142,27 +144,27 @@ let consumidos = [2,5,8,12,15,18,20,22,24,25];
   ).join('');
 })();
 
-// ---- Controles por día ----
+// ---- Controles por día (SP restantes) ----
 (function(){
   const c = document.getElementById('controls');
-  c.innerHTML = DIAS.map((d,i) =>
-    '<label>'+d+'<input id="sp'+i+'" type="number" min="0" max="'+SPRINT_SP+'" value="'+consumidos[i]+'"></label>'
+  c.innerHTML = ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10'].map((d,i) =>
+    '<label>'+d+'<input id="sp'+i+'" type="number" min="0" max="'+SPRINT_SP+'" placeholder="—" value="">'
   ).join('');
 })();
 
-// ---- Chart ----
+// ---- Chart (burndown) ----
 const ctx = document.getElementById('burnup').getContext('2d');
-const totalesData = DIAS.map(()=>SPRINT_SP);
+const ideal = DIAS.map((_,i)=> SPRINT_SP * (1 - i/(DIAS.length-1))); // 25 -> 0
 const chart = new Chart(ctx, {
   type:'line',
   data:{ labels:DIAS, datasets:[
-    { label:'SP totales (objetivo 25)', data:totalesData, borderColor:'#a45cff', borderWidth:3, borderDash:[6,5], pointRadius:0, tension:0 },
-    { label:'SP consumidos (real)', data:consumidos, borderColor:'#00d4ff', borderWidth:3, pointRadius:4, backgroundColor:'#00d4ff22', fill:true, tension:.25 }
+    { label:'Estimado (ideal)', data:ideal, borderColor:'#a45cff', borderWidth:3, borderDash:[6,5], pointRadius:0, tension:0 },
+    { label:'Real (SP restantes)', data:[null,null,null,null,null,null,null,null,null,null,null], borderColor:'#00d4ff', borderWidth:3, pointRadius:4, backgroundColor:'#00d4ff18', fill:false, tension:.25, spanGaps:true }
   ]},
   options:{
     responsive:true, maintainAspectRatio:false,
     scales:{
-      y:{ beginAtZero:true, max:SPRINT_SP, grid:{color:'#262a59'}, ticks:{color:'#8f97ff'} },
+      y:{ beginAtZero:true, max:SPRINT_SP, grid:{color:'#262a59'}, ticks:{color:'#8f97ff'}, title:{display:true,text:'SP restantes',color:'#8f97ff'} },
       x:{ grid:{color:'#1a1d42'}, ticks:{color:'#8f97ff'} }
     },
     plugins:{ legend:{ labels:{ color:'#e6e4ff' } }, tooltip:{ callbacks:{ label:(c)=>c.dataset.label+': '+c.parsed.y+' SP' } } }
@@ -170,9 +172,13 @@ const chart = new Chart(ctx, {
 });
 
 function updateChart(){
-  const vals = DIAS.map((_,i)=>Math.max(0,Math.min(SPRINT_SP, parseInt(document.getElementById('sp'+i).value)||0)));
-  consumidos = vals;
-  chart.data.datasets[1].data = vals;
+  const vals = ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10'].map((_,i)=>{
+    const raw = document.getElementById('sp'+i).value;
+    if (raw === '' || raw === null) return null;
+    return Math.max(0, Math.min(SPRINT_SP, parseInt(raw)||0));
+  });
+  restantes = vals;
+  chart.data.datasets[1].data = [null, ...vals];
   chart.update();
 }
 </script>
