@@ -27,7 +27,7 @@
 ## US-04 · Registro de proveedores y modelos de IA
 
 ### T1 — [BACKEND] Migración Flyway y entidades `ModelProvider` / `LlmModel` con cifrado de API Keys · 6h
-**Descripción (plan/tareas.md):** Tablas con status ACTIVE/RETIRED, cifrado simétrico. Modelo nuevo → PENDING_REVIEW (CA1).
+**Descripción (plan/tareas.md):** Tablas con status ACTIVE/RETIRED; la API Key se envía al Vault de T01 y se guarda una referencia enmascarada (RF-IA-ADM-08). Modelo nuevo → PENDING_REVIEW (CA1).
 **Qué hacer:** tablas con estado (`ACTIVE`/`RETIRED`/`PENDING_REVIEW`) y **cifrado simétrico** de las API Keys.
 **CA relacionados:** CA1.
 

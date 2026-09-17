@@ -20,7 +20,7 @@
 **CA relacionados:** CA1, CA2, CA3.
 
 ### T5 — [TEST] Seguridad: cifrado en BD y enmascaramiento en respuestas · 6h
-**Descripción (plan/tareas.md):** API Key persiste cifrada, NINGÚN endpoint la devuelve en texto plano (CA3).
+**Descripción (plan/tareas.md):** la API Key vive en Vault (T01); NINGÚN endpoint la devuelve en texto plano (CA3).
 **Qué hacer:** verificar que la API Key persiste **cifrada** y que ningún endpoint la devuelve en texto plano.
 **CA relacionados:** CA3.
 

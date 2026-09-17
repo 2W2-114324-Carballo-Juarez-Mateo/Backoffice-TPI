@@ -9,7 +9,7 @@ Modelo por servicio (campos/tipos JPA). **Solo los 2 servicios propietarios del 
 | Campo | Tipo | Notas |
 |---|---|---|
 | id | UUID | PK |
-| key | varchar(20) | PAR-01..PAR-23 (base PRD PAR-01..18; PAR-24 asignado a T01; registro extensible) |
+| key | varchar(20) | PAR-01..PAR-23 (sin **PAR-03/06/07**: externos, los gestiona T09 · PAR-24 → T01; registro extensible) |
 | value | jsonb | versionado (RF-CFG-06) |
 | version | int | incrementa por cambio |
 | updated_by / updated_at | UUID / timestamp | FK lógica → Tema 01 |
@@ -21,6 +21,7 @@ Modelo por servicio (campos/tipos JPA). **Solo los 2 servicios propietarios del 
 | id | UUID | PK |
 | name | varchar(100) | ej. OpenAI, Anthropic |
 | status | enum | ACTIVE \| RETIRED |
+| **secret_ref** | varchar | **referencia al secreto en Vault (T01)**; nunca la clave en BD (enmascarada) |
 | created_by / created_at | UUID / timestamp | auditado |
 
 **ModelFunctionAssignment** (RF-IA-23/24)
@@ -57,8 +58,21 @@ TeacherReportSnapshot   ← reportes docentes por cohorte
 AtRiskStudentSnapshot   ← panel del profesor: alumno en riesgo
 ConfigurationSnapshot   ← GlobalConfigurationChanged
 ModelProviderSnapshot   ← cambios de proveedores/modelos
+ReportTemplate          ← plantillas de reporte dinámico (RF-RPT-DYN-03)
 ```
 Reconstruibles vía **contratos de lectura (REST)** desde los dominios dueños. **Frescura ≤ 15 min.**
+
+**ReportTemplate** (reporting_db, RF-RPT-DYN)
+
+| Campo | Tipo | Notas |
+|---|---|---|
+| id | UUID | PK |
+| owner_id | UUID | PROFESOR que la crea (matrícula T02) |
+| course_id | UUID | ámbito (RLS) |
+| name | varchar | nombre de la plantilla |
+| config | jsonb | `{metrics, filters, period, columns, groupBy}` (whitelist) |
+| is_favorite | boolean | |
+| created_at / updated_at | timestamp | |
 
 ## Auditoría — persistida por el Tema 01
 

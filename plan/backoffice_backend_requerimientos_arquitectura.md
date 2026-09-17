@@ -223,6 +223,33 @@ El Backoffice solo necesita, vía **contratos de lectura**:
 
 El backend verifica que cada actor solo acceda a la información de su ámbito (ADMIN global; PROFESOR solo sus cohortes, validado contra matrícula del Tema 02).
 
+### Roles, niveles de acceso y panel de administración
+
+> **Los roles los define el Tema 01.** El Backoffice define la **matriz de acciones por rol** en su **panel de administración (Admin y Profesor)**. El profe plantea niveles **ADMIN → GESTOR → PROFESOR → PROFESOR con permiso de vista**: **GESTOR** y **"profesor con permiso de vista" no existen hoy en el contrato T01** (confirmó ADMIN/PROFESOR/ALUMNO + MS) → **a coordinar** si son **roles nuevos** (T01) o **permisos/scopes** propios del Backoffice.
+
+Matriz de acciones por rol en el Backoffice (base):
+
+| Acción en el Backoffice | ADMIN | GESTOR¹ | PROFESOR | PROFESOR vista¹ |
+|---|---|---|---|---|
+| Panel consolidado global | ✅ | (según alcance) | ❌ | ❌ |
+| Reportes de su cohorte | ✅ | (según alcance) | ✅ | ✅ (solo lectura) |
+| Editar parámetros globales (PAR) | ✅ | ❌ | ❌ | ❌ |
+| Gestionar proveedores LLM | ✅ | ❌ | ❌ | ❌ |
+| Gestionar cuentas/roles | ✅ (vía T01) | ❌ | ❌ | ❌ |
+| Exportar | ✅ | (según alcance) | ✅ (su cohorte) | ❌ |
+| Auditoría (lectura) | ✅ | ❌ | ❌ | ❌ |
+
+¹ **GESTOR** y **"PROFESOR con permiso de vista"**: roles propuestos → **a coordinar con T01** (rol nuevo o permiso). La gestión de roles es de T01.
+
+### Lista blanca de profesores (RF-USR-02)
+
+- **Dueño: T01** (alta de PROFESOR por whitelist, administrada por ADMIN).
+- Posible: el Backoffice la **administra desde el panel** consumiendo la API de T01. **A coordinar con T01** (¿la gestionan ellos o nosotros?).
+
+### Backoffice como grupo de soporte
+
+- Si otro microservicio necesita una **configuración o funcionalidad gestionable desde el panel** del Backoffice, el grupo la **analiza y da soporte** (implementarla). Criterio general del panel.
+
 ---
 
 ## 4.4 Gestión de proveedores de modelo (exclusiva de ADMIN)
@@ -257,6 +284,12 @@ Re-calibración periódica y ante cambio de versión del proveedor; si cae fuera
 ### RF-IA-ADM-07 — Trazabilidad de cohortes (RF-IA-33)
 
 Si el evaluador cambia con curso activo, los desafíos evaluados con el modelo anterior quedan marcados y se señaliza al PROFESOR.
+
+### RF-IA-ADM-08 — Secretos en Vault (a coordinar con T01)
+
+> **T01 implementa y administra el Vault.** El Backoffice **solo consume** el servicio: al registrar un proveedor/modelo, **envía la API Key a T01/Vault** para su almacenamiento y guarda en su BD una **referencia enmascarada** (path/id). El Backoffice **no persiste la clave en su BD** (reemplaza el diseño previo de "cifrado simétrico en BD").
+
+- **Pendiente:** API de envío de secretos de T01, formato de la referencia, y rotación (¿la hace T01?).
 
 ---
 
@@ -305,6 +338,16 @@ Al consumir resultados de encuestas, debe respetarse el anonimato 100% (RF-ENC-0
 ### RF-RPT-10 — Contratos de lectura con los seis temas
 
 El Backoffice depende de **contratos de lectura** con los temas que le proveen datos (02 Cursos, 04 Teóricos/Encuestas, 05 Prácticos, 07 Evaluación LLM, 08 Banco, 10 Roadmap). Sin esos contratos acordados en el sprint 1, el Backoffice no tiene nada demostrable (es consumidor puro).
+
+### RF-RPT-11 — Reportes docentes dinámicos (configurables)
+
+> Requisito del profe: **"Reportes Docentes Dinámicos"**. El PROFESOR **arma el reporte** eligiendo **métricas, filtros, período, columnas y agrupación**, y puede **guardar la configuración** (plantilla) para reusarla.
+
+- **RF-RPT-DYN-01 · Catálogo de métricas (whitelist):** CSAT, engagement, aprobación/abandono, promoción, alumnos en riesgo, distribución de XP, actividad semanal — calculadas sobre read models. **Sin expresiones arbitrarias** (seguridad).
+- **RF-RPT-DYN-02 · Filtros/periodo/columnas/agrupación:** configurables desde un **whitelist** validado (cohorte, rango de fechas, nivel de riesgo, campos a mostrar, agrupar por curso/alumno/fecha).
+- **RF-RPT-DYN-03 · Plantillas guardadas:** CRUD de configuraciones por docente (nombre, `config` jsonb, favoritas) en `reporting_db`.
+- **RF-RPT-DYN-04 · Reglas invariantes del motor:** matrícula T02 · RLS por `course_id` · **anti-comparación** (RF-RPT-07) · **anonimato** (encuestas solo agregados) · frescura ≤15 min.
+- **Endpoints:** CRUD `…/courses/{courseId}/templates` + ejecutar `POST …/reports/run` (con `templateId` o `config`).
 
 ---
 
@@ -563,6 +606,8 @@ Cada microservicio deberá generar:
 - Métricas básicas.
 - Health checks.
 - Correlation ID.
+
+> **Alcance (decisión con el profe):** el **producto** de observabilidad de microservicios — **salud y trazabilidad** (dashboards, monitoreo, trazas distribuidas, Prometheus/Grafana) — está **FUERA del alcance del Backoffice**. Solo se implementan estas **buenas prácticas de código** (logs, health, correlation) para operación/deploy. La **observabilidad institucional** (KPIs CSAT, reportes, panel, alertas) sigue siendo del Backoffice (tema "Analítica Institucional").
 
 ---
 
@@ -2163,7 +2208,7 @@ Esto permite responder:
 
 # 32. Observabilidad
 
-> **Alcance MVP:** health checks + logs estructurados (obligatorio). Dashboards (Prometheus/Grafana/OpenTelemetry) quedan **opcionales según tiempo disponible**; la instrumentación se deja preparada (métricas expuestas vía `/actuator/metrics`).
+> **Alcance (decisión con el profe):** health checks + logs estructurados (obligatorio, para deploy). **El producto de observabilidad (salud y trazabilidad de microservicios) queda FUERA de alcance**: no se implementan dashboards, monitoreo ni trazas distribuidas (Prometheus/Grafana/OpenTelemetry fuera). Se mantiene la instrumentación mínima (health + logs + correlation ID).
 
 Cada servicio expondrá:
 
@@ -2296,9 +2341,9 @@ El equipo de BackOffice no debe implementar el frontend administrativo salvo que
 - **Mecanismo:** evento `ModelProviderChanged` / `GlobalConfigurationChanged` en `administration.events`; el T07 la consume.
 - **Regla:** solo ADMIN puede cambiarla (RF-IA-35).
 
-### 2. Parámetros de economía → los aplican T03 (montos), T09 (precios), T10 (rachas)
+### 2. Parámetros de economía → los aplican T03 (montos), T10 (rachas)
 - **Mecanismo:** evento `GlobalConfigurationChanged` (`{key, value, version}`) en `administration.events`; esos temas leen la configuración (no la tienen hardcodeada).
-- **Aclaración (negociación con T08):** **T03** deriva los montos de XP/monedas (PAR-01/03) y emite el monto ya resuelto; **T09 (Mercado)** decide los precios de catálogo (PAR-06/07); **T10** aplicaría PAR-21 (rachas, pendiente). **Banco (T08) NO consume parámetros**: solo registra el monto ya resuelto.
+- **Aclaración (negociación con T08 y el profe):** **T03** deriva los montos de XP (PAR-01) y emite el monto ya resuelto; **T10** aplicaría PAR-21 (rachas, pendiente). **Banco (T08) NO consume parámetros** (solo registra montos ya resueltos). **PAR-03, PAR-06 y PAR-07 quedan FUERA del Backoffice**: los gestiona **T09 (Mercado)** o quien defina la cátedra/Hernán.
 - **Regla:** cambios hacia adelante (RF-CFG-06).
 
 ### 3. Contratos de lectura del Backoffice (consumidor puro)
@@ -2311,6 +2356,11 @@ El equipo de BackOffice no debe implementar el frontend administrativo salvo que
 
 ### 5. Retención (contrato cerrado con T01)
 - El Backoffice **no purga por su cuenta**; alinea sus read models al recibir `DataAnonymized`/`RetentionDecisionCreated` (payload con `entityType`/`entityId`). Lectura opcional de política: `GET /api/users/retention/*`.
+
+### 6. Vault, roles y lista blanca (a coordinar con T01)
+- **Vault (T01):** el Backoffice **envía los secretos** (API Keys LLM) a T01/Vault y guarda una **referencia enmascarada** en su BD. **Pendiente:** API de envío, refs, rotación.
+- **Roles (T01):** los roles los define T01. Propuestos por el profe: **GESTOR** y **"PROFESOR con permiso de vista"** → coordinar si son rol nuevo o permiso. El Backoffice define la **matriz de acciones por rol** en su panel.
+- **Lista blanca de profesores (RF-USR-02, T01):** coordinar si la administra T01 o el Backoffice desde el panel.
 
 > **Convención de eventos:** todos los eventos siguen `{eventId, eventType, occurredAt, correlationId, actorId, role, source, payload}` (ver §12; `role` propuesto como estándar de plataforma), con contrato versionado (§11/33.3).
 
@@ -2596,7 +2646,7 @@ Backlog **general** (no atado a un Sprint puntual) del Backoffice (Tema 12). Est
 ## Temas estratégicos
 
 - **T-A · Gobernanza y Configuración Institucional** — *quién puede actuar y bajo qué reglas* (ADMIN + modelos de IA) → `administration-service`. Épicas EP-01..03.
-- **T-B · Observabilidad y Soporte Académico** — *muestra en vez de gobernar* (PROFESOR consulta; ADMIN ve consolidado) → `reporting-service`. Épicas EP-04..05.
+- **T-B · Analítica Institucional** — *muestra en vez de gobernar* (PROFESOR consulta; ADMIN ve consolidado) → `reporting-service`. Épicas EP-04..05.
 
 ## Épicas e Historias (14)
 
@@ -2606,7 +2656,7 @@ Backlog **general** (no atado a un Sprint puntual) del Backoffice (Tema 12). Est
 | T-A | EP-02 · Administración de la Plataforma | US-03 | 5 | Must |
 | T-A | EP-03 · Modelos LLM y Golden Set | US-04, US-05, US-06, US-07 | 5+5+5+5 | Must |
 | T-B | EP-04 · Contratos de Lectura e Ingesta | US-08, US-10 | 5+3 | Must |
-| T-B | EP-05 · Observabilidad, Reportes y Panel | US-09, US-11, US-12, US-13, US-14 | 5+5+5+5+3 | Could / Should ×4 |
+| T-B | EP-05 · Analítica, Reportes y Panel | US-09, US-11, US-12, US-13, US-14 | 5+5+5+5+3 | Could / Should ×4 |
 
 > **Must = US-01..08 y US-10 (43 SP)** · **Should = US-11..14** · **Could = US-09**. Detalle por historia (template + tareas con horas) en `plan/sprint0/uh/` y `plan/tareas.md`.
 

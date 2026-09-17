@@ -17,7 +17,7 @@
 | **T07 · Evaluación LLM** | Consume (deriva/calibración) + provee (`ModelProviderChanged`, PAR-22) | ⏳ PENDIENTE | — |
 | **T03 · Desafíos** | Provee (PAR-01/03: deriva montos) + lectura de métricas | ⏳ PENDIENTE | — |
 
-> **Pendientes internos:** schema externo de `identity.events` y `retention.events` · confirmación formal del `role` en el envelope (T01) · naming de topics con T11 · exposición del estado 2FA (T01).
+> **Pendientes internos:** schema externo de `identity.events` y `retention.events` · confirmación formal del `role` en el envelope (T01) · naming de topics con T11 · exposición del estado 2FA (T01) · **API de Vault (T01)** · **GESTOR / "profesor con vista"** · **lista blanca de profesores** · **observabilidad de microservicios: FUERA de alcance** (solo logs/health/correlation).
 
 ---
 
@@ -51,6 +51,17 @@
 ### 9 · Convención de rutas
 - Toda API bajo `/api/{servicio}/**`. Backoffice: `/api/administration/**` y `/api/reports/**`. T01: `/api/users/**`.
 
+### 10 · Vault (secretos) — NUEVO, a coordinar con T01
+- **T01 implementa y administra el Vault.** El Backoffice **solo consume** el servicio para **enviar los secretos** (API Keys LLM) que T01 almacene; en nuestra BD guardamos una **referencia enmascarada** (path/id), no el secreto.
+- **Pendiente:** API de envío (write), refs, y rotación (¿la hace T01?).
+
+### 11 · GESTOR y "PROFESOR con permiso de vista" — a coordinar con T01
+- Los roles los define **T01** (confirmó ADMIN/PROFESOR/ALUMNO + MS; **no existe GESTOR**). El profe plantea niveles **GESTOR** y **"PROFESOR con permiso de vista"** → **coordinar** si son **roles nuevos** (T01) o **permisos/scopes** que modelamos nosotros en Backoffice.
+- Mientras tanto, el Backoffice define la **matriz de acciones por rol** (qué puede hacer cada uno en el panel) con los roles base.
+
+### 12 · Lista blanca de profesores (RF-USR-02) — a coordinar con T01
+- Dueño: **T01** (alta de PROFESOR por whitelist). Posible: Backoffice la **administra desde el panel** consumiendo la API de T01. **Pregunta a T01:** ¿la gestionan ellos o la administramos nosotros?
+
 ---
 
 ## T08 — Banco (ACUERDO PARCIAL)
@@ -62,7 +73,7 @@
 - **RF-RPT-06:** no es RF del PRD → pasa a "decisión de arquitectura (frescura ≤15 min)".
 
 ## T09 — Mercado (SOLICITUD LISTA)
-- Consume **PAR-06** (precio vida) y **PAR-07** (precio equipamiento) para armar el catálogo; mecanismo `GlobalConfigurationChanged` + caché TTL 10 min. → `solicitudes/CONTRATOS_T09_SOLICITUD.md`
+- **PAR-03 / PAR-06 / PAR-07 ya no son del Backoffice**: los gestiona **T09 (Mercado)** o quien defina la cátedra/Hernán. La solicitud `CONTRATOS_T09_SOLICITUD.md` se ajusta: **no** preguntamos consumo de PAR-06/07 (los administra T09); solo confirmar la lectura que T09 exponga (si aplica) y el mecanismo de caché si usa nuestros PAR.
 
 ## T11 — Social y Notificaciones (SOLICITUD LISTA)
 - Define la **convención de eventos** de la plataforma (naming de topics, envelope, versionado).

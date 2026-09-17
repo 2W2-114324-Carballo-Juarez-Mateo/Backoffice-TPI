@@ -10,8 +10,13 @@
 
 - **Dos niveles:** Gateway (valida JWT y propaga contexto) + microservicio propietario (**autoriza localmente** con `@PreAuthorize` sobre el rol propagado). **No existe** endpoint REST de autorización en T01.
 - **Contexto propagado (headers, anti-spoofing):** `X-Principal-Type`, `X-User-Id`, `X-Service-Id`, `X-User-Roles`, `X-Service-Scopes`, `traceparent` (W3C), `X-Request-Id`.
-- **Roles reales:** `ADMIN` / `PROFESOR` / `ALUMNO` (+ `MS` solo service-to-service). **No existe `AUDITOR`** (lectura de auditoría = `ADMIN`).
+- **Roles reales:** `ADMIN` / `PROFESOR` / `ALUMNO` (+ `MS` solo service-to-service). **No existe `AUDITOR`** (lectura de auditoría = `ADMIN`). Roles propuestos por el profe: **GESTOR** y **"PROFESOR con permiso de vista"** → **a coordinar con T01** (¿rol nuevo o permiso?). El Backoffice define la **matriz de acciones por rol** en su panel.
 - El alcance `course_id` **nunca** se acepta ciegamente: se valida contra la membresía real (T02). El alcance global `ALL` se **deriva server-side** del rol `ADMIN` (no viaja en token ni headers).
+
+## Vault (secretos — T01)
+
+- **T01 implementa y administra el Vault.** El Backoffice **solo envía los secretos** (API Keys LLM) a T01/Vault y guarda en su BD una **referencia enmascarada** (path/id). **No** se persiste la clave en la BD del Backoffice (reemplaza el diseño previo de "cifrado simétrico en BD").
+- **Pendiente:** API de envío de T01, formato de referencia, rotación (¿la hace T01?).
 
 ## Reglas de ADMIN
 

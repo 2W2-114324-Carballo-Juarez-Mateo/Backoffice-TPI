@@ -40,6 +40,12 @@ GET /api/reports/courses/{courseId}/teacher/risk    ← alumno en riesgo
 GET /api/reports/export/courses/{courseId}          ← CSV/PDF
 GET /api/reports/export/platform
 GET /api/reports/alerts                             ← alertas configurables
+
+GET    /api/reports/courses/{courseId}/templates    ← plantillas de reporte dinámico (PROFESOR: propias)
+POST   /api/reports/courses/{courseId}/templates    ← guardar configuración
+PUT    /api/reports/courses/{courseId}/templates/{templateId}
+DELETE /api/reports/courses/{courseId}/templates/{templateId}
+POST   /api/reports/courses/{courseId}/reports/run  ← ejecutar reporte dinámico (config o templateId)
 ```
 
 ## Endpoints consumidos del Tema 01

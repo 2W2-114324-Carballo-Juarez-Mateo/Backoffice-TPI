@@ -69,11 +69,11 @@
 
 #### US-04 · Registro de proveedores y modelos de IA
 
-1. **[G06] - [BACKEND] - Crear migración Flyway y entidades ModelProvider y LlmModel con cifrado de API Keys** — Tablas con status ACTIVE/RETIRED, cifrado simétrico. Modelo nuevo → PENDING_REVIEW (CA1). *(M · 6 h)*
+1. **[G06] - [BACKEND] - Crear migración Flyway y entidades ModelProvider y LlmModel con secretos vía Vault** — Tablas con status ACTIVE/RETIRED, la API Key se envía al Vault de T01 y se guarda una referencia enmascarada (RF-IA-ADM-08). Modelo nuevo → PENDING_REVIEW (CA1). *(M · 6 h)*
 2. **[G06] - [BACKEND] - Implementar endpoint de registro de proveedores y catálogo con enmascaramiento** — POST (CA1 → 201). GET (CA2 — listado con estado). Claves enmascaradas sk-**** (CA3). *(M · 6 h)*
 3. **[G06] - [BACKEND] - Implementar regla de estado inicial PENDING_REVIEW con bloqueo de activación** — Modelo recién registrado NO activable. Transición: PENDING_REVIEW → APPROVED → ACTIVE/STANDBY. *(S · 4 h)*
 4. **[G06] - [FRONTEND] - Diseñar pantalla de gestión de proveedores y catálogo de modelos** — Formulario alta con campo API Key protegido (type=password). Tabla catálogo con badges de estado. Solo ADMIN. *(M · 8 h)*
-5. **[G06] - [TEST] - Desarrollar tests de seguridad: cifrado en BD y enmascaramiento en respuestas** — API Key persiste cifrada, NINGÚN endpoint la devuelve en texto plano (CA3). *(M · 6 h)*
+5. **[G06] - [TEST] - Desarrollar tests de seguridad: Vault (T01) y enmascaramiento en respuestas** — la API Key vive en Vault (T01); NINGÚN endpoint la devuelve en texto plano (CA3). *(M · 6 h)*
 6. **[G06] - [TEST] - Validar bloqueo de activación para modelos en PENDING_REVIEW** — Intentar activar modelo recién registrado → rechazo. *(S · 4 h)*
 7. **[G06] - [DOCUMENTACION] - Documentar endpoints de proveedores/modelos en OpenAPI y actualizar SDD** — Spec springdoc con esquemas. Documentar máquina de estados del modelo. *(S · 3 h)*
 8. **[G06] - [REVISION] - Peer review de seguridad de credenciales y control en Taiga** — Que no se filtren API Keys en logs, respuestas ni repo. RULES-seguridad §3 y §5. *(S · 3 h)*
@@ -121,7 +121,7 @@
 
 ---
 
-## TH-02 · Observabilidad y Soporte Académico
+## TH-02 · Analítica Institucional
 
 ### EP-04 · Contratos de Lectura e Ingesta
 
@@ -150,7 +150,7 @@
 
 > **Orden:** BACKEND (1+2), DOCUMENTACION (5) y FRONTEND (3) pueden arrancar todos en paralelo. TEST (4) necesita (1+2). REVISION (6) al final. Depende de US-08 (consumidores funcionales).
 
-### EP-05 · Observabilidad, Reportes y Panel de Riesgo
+### EP-05 · Analítica, Reportes y Panel de Riesgo
 
 #### US-09 · Exportación de reportes
 
@@ -215,16 +215,31 @@
 
 > **Orden:** BACKEND (1), DOCUMENTACION (5) y FRONTEND (3) arrancan en paralelo. BACKEND (2) necesita (1) + indicadores de US-13. TEST (4) necesita (1+2). REVISION (6) al final. Depende de US-13 (indicadores calculados).
 
+#### US-15 · Reportes docentes dinámicos (configurables)
+
+> Requisito del profe: el PROFESOR arma reportes eligiendo **métricas, filtros, período, columnas y agrupación** y **guarda** la configuración (plantilla). SP: **8** · Back ≈ **48 h**.
+
+1. **[G06] - [BACKEND] - Catálogo de métricas permitidas (whitelist)** — CSAT, engagement, aprobación/abandono, promoción, riesgo, distribución XP, actividad semanal (sobre read models); sin expresiones arbitrarias. *(M · 8 h)*
+2. **[G06] - [BACKEND] - Motor de query dinámico (filtros/período/columnas/agrupación)** — Genera consulta validada sobre read models con RLS por `course_id`. *(L · 12 h)*
+3. **[G06] - [BACKEND] - CRUD de plantillas y favoritas** — Tabla `report_template` (owner_id, course_id, config jsonb, is_favorite). *(M · 8 h)*
+4. **[G06] - [BACKEND] - Ejecución `POST …/reports/run`** — Con `templateId` o `config`; reglas invariantes: matrícula T02, anti-comparación (RF-RPT-07), anonimato (encuestas solo agregados), frescura ≤15 min. *(M · 8 h)*
+5. **[G06] - [FRONTEND] - Vista report builder** — Panel: métricas/filtros/período/columnas + "Guardar plantilla". *(L · 12 h)* — TH-03
+6. **[G06] - [TEST] - Tests del motor dinámico** — RLS (PROFESOR A → cohorte A → 200; cohorte B → 403), anti-comparación, anonimato. *(M · 8 h)*
+7. **[G06] - [DOCUMENTACION] - OpenAPI de templates/run + catálogo de métricas** *(S · 4 h)*
+8. **[G06] - [REVISION] - Peer review de seguridad del motor (RLS/whitelist)** *(S · 3 h)*
+
+> **Orden:** BACKEND (1+3) → (2) → (4); TEST (6) necesita (2+4); FRONTEND (5) TH-03; DOC (7); REV (8).
+
 ## TH-03 · Experiencia de Usuario (Frontend, futura) — NO computa en la capacidad del sprint de Back
 
 > Estas tareas pertenecen a la **materia Front** (bloque propio a definir). Se listan acá para no perderlas; **no se suman a la capacidad del sprint de Back**.
 
-- **[FRONTEND]** Pantalla de catálogo y formulario de edición de parámetros (US-01) · Pantalla de gestión de administradores (US-03) · Pantalla de registro de proveedores/modelos (US-04) · Acción de activar modelo (US-05) · Pantalla de resultados de revisión (US-06) · Estado del modelo y aviso de deriva (US-07) · Botón de exportación y aviso de descarga (US-09) · Insignia de datos desactualizados (US-10) · Panel docente con semáforo (US-12) · Tablero de indicadores (US-13) · Configuración de umbrales y alertas (US-14).
+- **[FRONTEND]** Pantalla de catálogo y formulario de edición de parámetros (US-01) · Pantalla de gestión de administradores (US-03) · Pantalla de registro de proveedores/modelos (US-04) · Acción de activar modelo (US-05) · Pantalla de resultados de revisión (US-06) · Estado del modelo y aviso de deriva (US-07) · Botón de exportación y aviso de descarga (US-09) · Insignia de datos desactualizados (US-10) · Panel docente con semáforo (US-12) · Tablero de indicadores (US-13) · Configuración de umbrales y alertas (US-14) · Vista de report builder (US-15).
 
 ---
 ## Totales y Cadenas de Ejecución
 
-> **Totales:** 14 historias · **104 tareas** (distribuidas en 5 roles: BACKEND, FRONTEND, TEST, DOCUMENTACION, REVISION).
+> **Totales:** 15 historias · **112 tareas** (distribuidas en 5 roles: BACKEND, FRONTEND, TEST, DOCUMENTACION, REVISION).
 >
 > **Totales de Back (referencia):** **≈ 578 h** en tareas BACKEND/TEST/DOCUMENTACION/REVISION de las 14 UH (+ tareas FRONTEND en TH-03, fuera de capacidad). La capacidad real la define el Excel del equipo.
 >

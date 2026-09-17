@@ -4,8 +4,9 @@ El Backoffice (Tema 12) es **consumidor puro**: solo **2 servicios propietarios*
 
 ## Administration & Configuration Service
 
-- Registro de parámetros **PAR-01..PAR-23** (base PRD PAR-01..18; PAR-24 asignado al Tema 01; registro genérico/extensible), versionados, hacia adelante.
-- **Gestión de proveedores de LLM** (RF-IA-35): alta, sustitución, baja, auditada — exclusiva ADMIN.
+- Registro de parámetros **PAR-01..PAR-23** (base PRD PAR-01..18; **sin PAR-03/06/07** que gestiona T09 · PAR-24 → T01; registro genérico/extensible), versionados, hacia adelante.
+- **Gestión de proveedores de LLM** (RF-IA-35): alta, sustitución, baja, auditada — exclusiva ADMIN. **Secretos (API Keys) se envían al Vault de T01** y se guarda una referencia enmascarada (RF-IA-ADM-08).
+- **Panel de administración (Admin y Profesor):** el Backoffice define la **matriz de acciones por rol** en su panel; **GESTOR** y **"PROFESOR con permiso de vista"** a coordinar con T01. **Lista blanca de profesores** (RF-USR-02) a coordinar con T01. **Grupo de soporte**: analiza/implementa configuraciones que otros microservicios quieran gestionar desde el panel.
 - **Asignación modelo ↔ función** (RF-IA-23/24) y configuración del evaluador (RF-IA-25/28).
 - **Golden set base y calibración a nivel plataforma** (RF-IA-30/31) y **detección de deriva** (RF-IA-32).
 - Autoriza sus endpoints consumiendo roles del **Tema 01**.
@@ -19,6 +20,7 @@ El Backoffice (Tema 12) es **consumidor puro**: solo **2 servicios propietarios*
 - **Métricas de cohorte**: satisfacción (**KPIs CSAT 5★**, encuestas agregadas/anónimas), engagement, aprobación/abandono.
 - **Exportación de datos** (CSV/PDF) y **alertas configurables**.
 - **Frescura ≤ 15 minutos**; **sin comparación entre docentes**.
+- **Reportes docentes dinámicos (RF-RPT-DYN):** motor configurable (métricas/filtros/período/columnas) + plantillas guardadas en `report_template`.
 - Consume **contratos de lectura** de los temas 02/04/05/07/08/10 → read models.
 - **Base:** `reporting_db` (reconstruible por contratos de lectura (REST)).
 
