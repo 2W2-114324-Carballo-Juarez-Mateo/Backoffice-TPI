@@ -2,7 +2,7 @@
 
 > **De:** Equipo Backoffice (Tema 12)
 > **Para:** Equipo Mercado (Tema 09)
-> **Origen:** la negociación con T08 (Banco) dejó claro que **PAR-06 y PAR-07** (precios de catálogo) los decide **Mercado**, no Banco. Necesitamos alinear ese contrato con ustedes.
+> **Origen:** la negociación con T08 (Banco) y el profe dejaron claro que **PAR-03, PAR-06 y PAR-07** (monedas y precios de catálogo) **quedan fuera del Backoffice** y los gestiona **Mercado (T09)** o quien defina la cátedra/Hernán. Por eso **ya no les preguntamos por consumo de PAR-06/07** (los administran ustedes); solo confirmamos cómo se relacionan con el registro global.
 > **Cómo usar este documento:** es una **solicitud**; respondan marcando opciones y completando tablas.
 
 ---
@@ -11,18 +11,16 @@
 
 El **Backoffice (Tema 12)** es dueño de los **parámetros globales (PAR)**. Según el reparto, **Tema 09 (Mercado)** arma la **oferta/catálogo** con esos precios y le indica a **Banco** la reserva/descuento a ejecutar. Por eso necesitamos confirmar el contrato de **consumo de parámetros** de Mercado.
 
-## 1. Parámetros que Mercado consume del Backoffice
+## 1. Parámetros de economía que Mercado gestiona (fuera del Backoffice)
 
-| PAR | Concepto | Valor de referencia |
-|---|---|---|
-| **PAR-06** | Precio en monedas de 1 vida | 300 |
-| **PAR-07** | Precio en monedas de equipamiento | (default PRD) |
-
-**Mecanismo:** publicamos `GlobalConfigurationChanged` (`{key, value, version}`) en `administration.events` (Transactional Outbox, idempotencia por `event_id` + versión).
+| PAR | Concepto | Valor de referencia | Estado |
+|---|---|---|---|
+| **PAR-03** | Monedas por desafío obligatorio/opcional | 100 / 50 | **EXTERNO** → T09/Mercado |
+| **PAR-06** | Precio en monedas de 1 vida | 300 | **EXTERNO** → T09/Mercado |
+| **PAR-07** | Precio en monedas de equipamiento | (default PRD) | **EXTERNO** → T09/Mercado |
 
 **Confirmación que pedimos:**
-1. ¿Mercado efectivamente **consume PAR-06 y PAR-07** para armar su catálogo? ¿Hay **algún otro PAR-01..23** que deba leer (ej. PAR-12 vidas, PAR-03 monedas)?
-2. ¿Usan **caché local con TTL** (recomendamos 10 min) + invalidación por evento, como respaldo ante caída del Backoffice?
+1. ¿Mercado efectivamente **gestiona** PAR-03/06/07 (o los define la persona que mencionó Hernán)? ¿Dónde los mantienen (registro propio o siguen usando el `GlobalConfigurationChanged` del Backoffice)?
 
 ## 2. Lecturas de Mercado (opcional, para reporting)
 
