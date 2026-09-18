@@ -38,3 +38,31 @@ Hola Aylen, acá va lo que quedamos:
 4. **Nombres de los canales:** cuando **Notificaciones** publique la lista de canales por release, alineamos el nombre del evento con eso.
 
 En resumen: cuando me pases el nombre del evento y cómo viene, queda cerrado. 😄
+
+---
+
+## Adenda — PAR-12 (vidas iniciales/máximo) pasa a Banco
+
+Banco asume la gestión de **PAR-12** y propuso el evento PARAMETER_UPDATED. Propuesta corregida (envelope estándar de plataforma + ersion):
+
+```json
+{
+  "eventId": "uuid",
+  "eventType": "PARAMETER_UPDATED",
+  "occurredAt": "2026-09-17T14:32:00Z",
+  "correlationId": "uuid",
+  "actorId": "system:bank-service",
+  "role": "MS",
+  "source": "bank-service",
+  "payload": {
+    "parameterId": "PAR-12",
+    "version": 3,
+    "value": {
+      "initialLives": 3,
+      "maxLives": 3
+    }
+  }
+}
+```n
+- Topic: ank.events (naming con T11).
+- Backoffice **no almacena** PAR-12 (EXTERNO); solo lo consume si necesita vidas para reporting.

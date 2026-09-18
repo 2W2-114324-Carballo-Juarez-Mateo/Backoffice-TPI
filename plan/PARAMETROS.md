@@ -20,7 +20,7 @@
 | **PAR-09** | Curva de niveles | definida por PAR-09 | `curva_niveles` | 10 |
 | **PAR-10** | Muestreo de auditoría de IA | 10% | `muestreo_auditoria_ia_pct` | 07 |
 | **PAR-11** | Umbral anti-fuga | 70% | `umbral_antifuga_pct` | 07 |
-| **PAR-12** | Vidas iniciales / máximo | 3 / 3 | `vidas_iniciales_max` | 10 |
+| **PAR-12** | Vidas iniciales / máximo | 3 / 3 | `vidas_iniciales_max` | 🔵 EXTERNO (Banco) |
 | **PAR-13** | Máximo de reintentos | 3 | `reintentos_max` | 03 |
 | **PAR-14** | Tolerancia de calibración | ±5 prom. / ±10 por dimensión | `tolerancia_calibracion` | 07 |
 | **PAR-15** | Recalibración | mensual / ante cambio de modelo | `recalibracion_periodo` | 07 |
@@ -55,12 +55,12 @@
 
 | Estado | Significado | PAR |
 |---|---|---|
-| ✅ CONFIRMADO | Definido por el PRD (sin PAR-06/07) | PAR-01..05, PAR-08..18 |
+| ✅ CONFIRMADO | Definido por el PRD (sin PAR-06/07/12) | PAR-01..05, PAR-08..11, PAR-13..18 |
 | 🟡 CANDIDATO | Deducido, a validar con la cátedra | PAR-19..20, PAR-22, PAR-23, PAR-25 |
 | ⚪ SUSPENDIDO | Candidato sin respaldo en el PRD, depende de otro dominio | PAR-21 |
-| 🔵 EXTERNO | No es del Backoffice | PAR-06, PAR-07 (T09/Mercado) · PAR-24 (T01) |
+| 🔵 EXTERNO | No es del Backoffice | PAR-06, PAR-07 (T09/Mercado) · PAR-12 (Banco) · PAR-24 (T01) |
 
-> **PAR-03:** vuelve al Backoffice (T03 lo consume; decisión anticipada, a confirmar con Mercado). **PAR-06/07 (EXTERNOS):** precios de catálogo que gestiona **T09 (Mercado)**; el seed del Backoffice **no** los incluye. **PAR-25 (CANDIDATO):** plazo máximo de corrección/vencimiento de intento, propuesto por T03.
+> **PAR-03:** vuelve al Backoffice (T03 lo consume; decisión anticipada, a confirmar con Mercado). **PAR-06/07 (EXTERNOS):** precios de catálogo que gestiona **T09 (Mercado)**; el seed del Backoffice **no** los incluye. **PAR-12 (EXTERNO · Banco):** vidas iniciales/máximo las gestiona **Banco** (evento `PARAMETER_UPDATED` con envelope estándar + `version`); el seed no lo incluye. **PAR-25 (CANDIDATO):** plazo máximo de corrección/vencimiento de intento, propuesto por T03.
 
 > Detalle de la justificación de los candidatos: `sprint0/PAR-19-23-justificacion.md`.
 > Modelo de datos: `GlobalParameter` (`param_key` único, `value` jsonb, `version`, `updated_by/at`) — `sdd/backend/docs/04-modelo-datos.md`.
