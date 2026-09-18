@@ -76,7 +76,7 @@ Va al **Sprint 2 junto con US-07**, que es quien le da sentido.
 
 ### Total planificado
 
-**237 h sobre 362,1 h = 65,5 % de uso.** Queda ~125 h de margen para lo que no vimos venir.
+**241 h sobre 362,1 h = 66,6 % de uso.** Queda ~121 h de margen para lo que no vimos venir.
 
 | Bloque | Horas |
 |---|---:|
@@ -84,11 +84,11 @@ Va al **Sprint 2 junto con US-07**, que es quien le da sentido.
 | US-01 · Parámetros | 50 |
 | Frontend | 34 |
 | US-08 · Ingesta (acotada) | 30 |
-| US-03 · Borde de seguridad | 26 |
+| US-03 · Borde de seguridad + rol | 30 |
 | EP-04 · Contratos | 17 |
 | Documentación de diseño | 20 |
 | **Infra** | **6** |
-| **Total** | **237** |
+| **Total** | **241** |
 
 ---
 
@@ -115,10 +115,10 @@ O sea: la maqueta está hecha. Falta enchufarla.
 | FE-2 | Servicio de parámetros + **conectar la pantalla existente** (reemplazar los 18 PAR hardcodeados) | FRONTEND | Bruno | 8 |
 | FE-3 | **Guards por rol** + estado de sesión (ADMIN escribe, PROFESOR solo lee) | FRONTEND | Regina | 6 |
 | FE-4 | Pantalla de administración conectada (US-03) | FRONTEND | Bruno | 6 |
-| FE-5 | Feedback de operación: loading, error, confirmación de "el cambio aplica de ahora en adelante" | FRONTEND | Valentina | 4 |
+| FE-5 | Feedback de operación: loading, error, confirmación de "el cambio aplica de ahora en adelante" | FRONTEND | Joaquin | 4 |
 | FE-6 | **Smoke test E2E del flujo de la demo** | TEST | Máximo | 4 |
 
-> **Decisión pendiente:** hay **dos repos Angular divergentes** (`TPI---Backoffice-Demo-/FE/` y `backoffice-angular/`) con las mismas 9 pantallas y 13 archivos distintos. **Hay que elegir cuál es el canónico antes del Día 1.** Solo uno tiene proxy y deploy a Pages; solo el otro tiene Dockerfile y Nginx.
+> **Decisión tomada:** el repo **canónico del front es `TPI---Backoffice-Demo-/FE/`** (el que tiene proxy y deploy a Pages). `backoffice-angular/` (Dockerfile/Nginx) aporta solo si sacamos algo clave de ahí — se revisa el Día 1 sin bloquear el bloque FE.
 
 ---
 
@@ -188,24 +188,25 @@ public record EventoDTO(
 
 ---
 
-## 6 · Resumen de carga
+## 6 · Resumen de carga (división pareja — todos tocan varias capas)
 
-| Dev | Integrante | Rol | Capacidad | Horas | % uso |
-|---|---|---|---:|---:|---:|
-| **1** | Paz, Luciano | MSII+PIV | 39,4 | 24 | 60,9 % |
-| **2** | Carballo Juarez, Mateo | MSII+PIV | 41,5 | 26 | 62,7 % |
-| **3** | Baigorria, Damian Gabriel | PIV | 31,5 | 22 | 69,8 % |
-| **4** | Cortez, Joaquin | PIV | 27,7 | 19 | 68,6 % |
-| **5** | Disca, Julieta Ariadna | MSII+PIV | 51,5 | 34 | 66,0 % |
-| **6** | Maldonado, Valentina | MSII+PIV | 35,3 | 23 | 65,2 % |
-| **7** | Cerquatti, Máximo | MSII+PIV | 46,4 | 30 | 64,7 % |
-| **8** | Cerasulo, Regina Loreta | MSII+PIV | 35,3 | 22 | 62,3 % |
-| **9** | Gianoli, Bruno | PIV | 28,4 | 20 | 70,4 % |
-| **10** | Ducart, Ana Paula | MSII | 25,2 | 17 | 67,5 % |
+| Dev | Integrante | Rol | Capacidad | Horas | % uso | Capas |
+|---|---|---|---|---:|---:|---|
+| **1** | Paz, Luciano | MSII+PIV | 39,4 | 24 | 60,9 % | BACK/INFRA + DOC (camino crítico, liviano a propósito) |
+| **2** | Carballo Juarez, Mateo | MSII+PIV | 41,5 | 26 | 62,7 % | BACK + FRONT + DOC |
+| **3** | Baigorria, Damian Gabriel | PIV | 31,5 | 25 | 79,4 % | BACK + TEST + DOC |
+| **4** | Cortez, Joaquin | PIV | 27,7 | 23 | 83,0 % | BACK + DOC + FRONT |
+| **5** | Disca, Julieta Ariadna | MSII+PIV | 51,5 | 28 | 54,4 % | BACK + TEST + REV + DOC |
+| **6** | Maldonado, Valentina | MSII+PIV | 35,3 | 22 | 62,3 % | BACK + TEST + DOC |
+| **7** | Cerquatti, Máximo | MSII+PIV | 46,4 | 31 | 66,8 % | TEST + REV + BACK |
+| **8** | Cerasulo, Regina Loreta | MSII+PIV | 35,3 | 22 | 62,3 % | BACK + DOC + FRONT |
+| **9** | Gianoli, Bruno | PIV | 28,4 | 20 | 70,4 % | BACK + FRONT + REV |
+| **10** | Ducart, Ana Paula | MSII | 25,2 | 20 | 79,4 % | DOC (solo MSII) |
 
-**Total: 237 h / 362,1 h = 65,5 %.** Dispersión: **9,5 puntos** (60,9 %–70,4 %).
+**Total: 241 h / 362,1 h = 66,6 %.** Dispersión: **~54 %–83 %** (Julieta es el flexible; Joaquin y Ana Paula rozan el 80 % por su capacidad baja).
 
-> **Luciano queda en 60,9 %, el más bajo, y es a propósito.** Es quien tiene el camino crítico: Infra (PR #0, Día 2), la migración del outbox (PR #1, Día 2) y el filtro de seguridad que desbloquea a Joaquin y a Regina. Cargarlo al 70 % cuando todo el sprint depende de que él termine temprano sería el error clásico de planificación.
+> **Regla de la división pareja:** nadie queda en una sola capa (salvo Luciano por el camino crítico y Ana Paula por ser MSII pura). Todos tocan **BACK o FRONT + TEST + DOC** (o revisión cruzada). La cobertura por capas está en la columna "Capas".
+> **Luciano queda en 60,9 %, el más liviano, y es a propósito:** es quien tiene el camino crítico (Infra PR #0, migración del outbox PR #1, filtro de seguridad que desbloquea a Joaquin y Regina).
 
 ---
 
@@ -245,7 +246,7 @@ public record EventoDTO(
 | T3 | Endpoints REST GET/PUT con autorización por rol | BACKEND | Joaquin | 6 |
 | T4 | Persistir el registro en `outbox_message` en la misma transacción | BACKEND | Joaquin | 6 |
 | T7 | Tests unitarios de dominio: versionado y rango | TEST | Damian | 6 |
-| T8 | Tests de integración con Testcontainers | TEST | Julieta | 6 |
+| T8 | Tests de integración con Testcontainers | TEST | Valentina | 6 |
 | T9 | Congelar contrato OpenAPI 3 | DOCUMENTACION | Joaquin | 3 |
 | T10 | Peer review y validación de DoD | REVISION | Máximo | 3 |
 | **T11** | **NUEVA** · Emisión del evento de auditoría — contrato **cerrado** con T01 | BACKEND | Damian | 4 |
@@ -267,8 +268,9 @@ public record EventoDTO(
 | T7 | Matriz de delegación de identidades con Tema 01 | DOCUMENTACION | Regina | 4 |
 | T8 | Auditoría de fronteras de microservicios | REVISION | Julieta | 3 |
 | **T9** | **NUEVA** · `@RestControllerAdvice` sobre el DTO **`ErrorApi` de cátedra** | BACKEND | Regina | 3 |
+| **T10** | **NUEVA** · Gestión de rol desde el panel vía T01 (`/api/admin/accounts`): asignar/revocar rol, auto-revocación 400, último admin 409, aviso con admins restantes — **cubre los 4 CA de US-03** | BACKEND | Máximo | 4 |
 
-> ⚠️ **Decisión pendiente (bloqueante).** Las tareas de US-03 **no implementan ninguno de sus 4 CA** (asignar rol → 201, auto-revocación → 400, último admin → 409, aviso de admins restantes). O se renombra la historia a lo que realmente hace —borde de seguridad e integración con T01— o se le agregan las tareas de gestión de rol. Como está, no es demostrable.
+> ✅ **Decisión tomada:** se **agregan las tareas de gestión de rol** (T10) para que US-03 sea **demostrable** (cubre sus 4 CA: asignar rol → 201, auto-revocación → 400, último admin → 409, aviso de admins restantes). No se renombra la historia.
 
 > **Sobre T9:** el repo de cátedra ya provee `ErrorApi{timestamp, status, error, message}`. **Ese es el formato**, no el RFC 7807 del doc de arquitectura ni los otros dos que andan dando vueltas. Hay cuatro formatos de error documentados en el proyecto; gana el de cátedra.
 
@@ -306,7 +308,7 @@ public record EventoDTO(
 | # | Tarea | Rol | Dev | Horas |
 |---|---|---|---|---:|
 | **G1** | **Solicitud de contrato de mensajería a T11** — topics, envelope, tipo de `timestamp`, headers, artefacto compartido, naming del payload | DOCUMENTACION | Mateo | 4 |
-| G2 | Solicitud de contrato a **T05** — entregas/resultados, topic, PAR-19/20 | DOCUMENTACION | Máximo | 3 |
+| G2 | Solicitud de contrato a **T05** — entregas/resultados, topic, PAR-19/20 | DOCUMENTACION | Damian | 3 |
 | G3 | Solicitud de contrato a **T07** — proveedor de modelo, deriva/calibración, PAR-22 | DOCUMENTACION | Regina | 3 |
 | G4 | **Registro formal en `CONTRATOS.md`** — estado, fecha de acuerdo, responsable de cada lado, versión y evidencia | DOCUMENTACION | Julieta | 4 |
 | G5 | Tabla de mapeo topics oficiales ↔ Backoffice + plan de migración | DOCUMENTACION | Valentina | 3 |
@@ -341,7 +343,7 @@ public record EventoDTO(
 | #0 | `feature/infra-bootstrap` | pom, perfiles, compose, CI, adopción del repo | Día 2 |
 | #1 | `feature/us-02-outbox-ddl` | Solo la migración `outbox_message` | Día 2 |
 | #2 | `feature/us-02-outbox` | Publisher, envelope, DLT, idempotencia | Día 4 |
-| #3 | `feature/us-03-gateway-auth` | Filtro, cliente T01, manejo de errores | Día 5 |
+| #3 | `feature/us-03-gateway-auth` | Filtro, cliente T01, manejo de errores, **gestión de rol (CA1-4)** | Día 5 |
 | #4 | `feature/us-01-parametros` | Parámetros, outbox tx, auditoría, idempotencia | Día 7 |
 | #5 | `feature/us-08-ingesta-kafka` | Consumidores, dedup, DLT | Día 8 |
 | #6 | `feature/fe-conexion-backend` | Capa HTTP, guards, pantallas conectadas | Día 9 |
@@ -350,14 +352,15 @@ public record EventoDTO(
 
 ---
 
-## 14 · Decisiones abiertas antes del Día 1
+## 14 · Decisiones resueltas en planning
 
-1. **T11 — contrato de mensajería** (G1). Formalizar topics y registro en red.
-2. **¿Cuál de los dos repos Angular es el canónico?** Bloquea todo el bloque FE.
-4. **¿US-04 sale del sprint?** Recomendado por los motivos de §2.
-5. **¿US-03 se renombra o se le agregan las tareas de rol?**
-6. **¿Se acota el DoD Nivel 1 en «multitenancy + RLS»?** En US-01/02/08 no aplica.
-7. ~~¿Cobertura 80 % o 90 %?~~ **Decidido: 90 %, el de nuestro DoD.** El 80 % del PR template de cátedra es un piso, no un techo.
+1. **T11 — contrato de mensajería (G1):** se envía el Día 1; el formato de evento queda **PENDIENTE de confirmar con Usuarios/cátedra** (DTO oficial vs envelope actual).
+2. **Repo Angular canónico:** **`/FE` del Demo** (resuelto).
+3. **US-04:** **sale del Sprint 1** → va al Sprint 2 con US-07 (resuelto).
+4. **US-03:** se **agregan las tareas de gestión de rol (T10)** para cubrir los 4 CA (resuelto).
+5. **DoD Nivel 1 «multitenancy + RLS»:** **se acota** a historias con datos por `course_id` (reportes) (resuelto).
+6. ~~¿Cobertura 80 % o 90 %?~~ **Decidido: 90 %, el de nuestro DoD.** El 80 % del PR template de cátedra es un piso, no un techo.
+7. **División:** **pareja por capas** — nadie en una sola capa (ver §6).
 
 ---
 
