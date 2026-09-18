@@ -28,9 +28,12 @@ Broker elegido: **Kafka** (ADR-003). **RabbitMQ** queda como alternativa. Mismos
 | `identity.events` | AdminCreated/Deleted, AdminRecoveryExecuted, RoleChanged | Tema 01; payloads **pendientes de contrato** | por `actorId` |
 | `retention.events` | RetentionDecisionCreated, DataAnonymized | Tema 01; payload acordado, schema externo **pendiente** | por `courseId` |
 | `course.events` | CourseCreated/Activated/Archived, matrícula | **Consume** (lectura) | por `courseId` |
-| `survey.events`, `ranking.events`, `roadmap.events`, `challenge.events` | eventos de los Temas 02 (encuestas CSAT)/10/03/05/07 | **Consume** (lectura) | por `courseId` |
+| `challenge.events` | **IntentoDesafioFinalizado** (hecho único con XP/monedas y desglose) · **IntentoDesafioCerrado** | **Consume** (read models engagement) | por `courseId` |
+| `bank.events` | **AccountBalanceChanged** (saldo por alumno/curso) | **Consume** (frescura; REST para replay) | por `courseId` |
+| `survey.events`, `ranking.events`, `roadmap.events` | eventos de los Temas 02 (encuestas CSAT)/10 | **Consume** (lectura) | por `courseId` |
 
-> **T08 (Banco):** se integra por **REST** (`/api/bank/**`, polling ≤15 min), **no** por `bank.events` en el MVP (acordado con Banco). Si a futuro se agregan eventos, el naming se coordina con **T11**.
+> **T08 (Banco):** además del **REST** (`/api/bank/**`) para replay/inicial, **nos suscribimos** al evento de actualización de saldo por alumno/curso (nombre/payload a confirmar con Banco; naming alineado con la lista de canales que publica **T11**).
+> **T03 (Desafíos):** ingesta por **eventos** (`challenge.events` — hecho único), no por endpoints de agregación (acordado con T03).
 
 Cada **consumer group** pertenece a un consumidor. Idempotencia por `event_id` y `version` (descarta `v <= local`). Los read models se reconstruyen vía **contratos de lectura (REST)**. **Frescura de lectura ≤ 15 min** (decisión de arquitectura).
 

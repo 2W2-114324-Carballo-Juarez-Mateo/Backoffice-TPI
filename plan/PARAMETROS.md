@@ -11,16 +11,16 @@
 |---|---|---|---|---|
 | **PAR-01** | XP base por dificultad | 100 / 250 / 500 | `xp_base_dificultad` | 03 / 10 |
 | **PAR-02** | XP de desafíos personalizados | 10 / 20 / 30 | `xp_desafios_personalizados` | 03 / 07 |
-| **PAR-03** | Monedas por desafío obligatorio/opcional | 100 / 50 | `monedas_desafio` | 🔵 EXTERNO (T09) |
+| **PAR-03** | Monedas por desafío obligatorio/opcional | 100 / 50 | `monedas_desafio` | 03 |
 | **PAR-04** | Variación por calidad/tiempo | ±15% | `variacion_calidad_tiempo_pct` | 03 / 05 |
 | **PAR-05** | Bonus/penalidad por uso de IA | ±20% | `bonus_penalidad_ia_pct` | 03 / 05 / 07 |
 | **PAR-06** | Precio de una vida | 300 | `precio_vida` | 🔵 EXTERNO (T09) |
 | **PAR-07** | Precio de equipamiento | 500 | `precio_equipamiento` | 🔵 EXTERNO (T09) |
-| **PAR-08** | XP por defecto para desbloqueo | 500 | `xp_desbloqueo_default` | 03 |
+| **PAR-08** | XP por defecto para desbloqueo | 500 | `xp_desbloqueo_default` | 10 |
 | **PAR-09** | Curva de niveles | definida por PAR-09 | `curva_niveles` | 10 |
 | **PAR-10** | Muestreo de auditoría de IA | 10% | `muestreo_auditoria_ia_pct` | 07 |
 | **PAR-11** | Umbral anti-fuga | 70% | `umbral_antifuga_pct` | 07 |
-| **PAR-12** | Vidas iniciales / máximo | 3 / 3 | `vidas_iniciales_max` | 03 |
+| **PAR-12** | Vidas iniciales / máximo | 3 / 3 | `vidas_iniciales_max` | 10 |
 | **PAR-13** | Máximo de reintentos | 3 | `reintentos_max` | 03 |
 | **PAR-14** | Tolerancia de calibración | ±5 prom. / ±10 por dimensión | `tolerancia_calibracion` | 07 |
 | **PAR-15** | Recalibración | mensual / ante cambio de modelo | `recalibracion_periodo` | 07 |
@@ -37,10 +37,11 @@
 | PAR | Concepto | Valor de referencia | Clave (sugerida) | Consume | Estado |
 |---|---|---|---|---|---|
 | **PAR-19** | Penalidad por entrega tardía | 30% | `late_submission_penalty_pct` | 05 | CANDIDATO |
-| **PAR-20** | Ventana de gracia para entrega tardía | 48 h | `late_submission_window_hours` | 03 / 05 | CANDIDATO |
+| **PAR-20** | Ventana de gracia para entrega tardía | 48 h | `late_submission_window_hours` | 05 · T03 en suspenso | CANDIDATO |
 | **PAR-21** | Techo del multiplicador de eventos/rachas | 3x | `event_multiplier_cap` | 10 | SUSPENDIDO |
-| **PAR-22** | Límite semanal de desafíos personalizados IA | *propuesto* 5 | `llm_custom_challenges_weekly_limit` | 03 / 07 | CANDIDATO |
-| **PAR-23** | Frescura máxima de lectura en analítica | 15 min | `reporting_cache_freshness_minutes` | 12 (Reporting) | CANDIDATO |
+| **PAR-22** | Límite semanal de desafíos personalizados IA | *propuesto* 5 | `llm_custom_challenges_weekly_limit` | 07 | CANDIDATO |
+| **PAR-23** | Frescura máxima de lectura en analítica | 15 min | eporting_cache_freshness_minutes | 12 (Reporting) | CANDIDATO |
+| **PAR-25** | Plazo máximo de corrección / vencimiento de intento | *propuesto* 7 días | max_correccion_intento_dias | 03 | CANDIDATO |
 
 > **PAR-21 (SUSPENDIDO):** no aparece en la tabla del PRD (la sección 4.1 llega a PAR-18) y el mecanismo de **rachas/misiones** está "para más adelante" en T08/T10 (confirmado en la negociación). Se mantiene **documentado como candidato** dependiente de que T10 defina el mecanismo; no asumir consumo por ningún servicio hasta formalizarlo con la cátedra.
 
@@ -54,12 +55,12 @@
 
 | Estado | Significado | PAR |
 |---|---|---|
-| ✅ CONFIRMADO | Definido por el PRD (sin PAR-03/06/07) | PAR-01, PAR-02, PAR-04, PAR-05, PAR-08..18 |
-| 🟡 CANDIDATO | Deducido, a validar con la cátedra | PAR-19..20, PAR-22, PAR-23 |
+| ✅ CONFIRMADO | Definido por el PRD (sin PAR-06/07) | PAR-01..05, PAR-08..18 |
+| 🟡 CANDIDATO | Deducido, a validar con la cátedra | PAR-19..20, PAR-22, PAR-23, PAR-25 |
 | ⚪ SUSPENDIDO | Candidato sin respaldo en el PRD, depende de otro dominio | PAR-21 |
-| 🔵 EXTERNO | No es del Backoffice | PAR-03, PAR-06, PAR-07 (T09/Mercado) · PAR-24 (T01) |
+| 🔵 EXTERNO | No es del Backoffice | PAR-06, PAR-07 (T09/Mercado) · PAR-24 (T01) |
 
-> **PAR-03/06/07 (EXTERNOS):** monedas y precios de catálogo los gestiona **T09 (Mercado)** o quien defina la cátedra/Hernán. El **seed** del Backoffice **no** incluye estos 3 parámetros.
+> **PAR-03:** vuelve al Backoffice (T03 lo consume; decisión anticipada, a confirmar con Mercado). **PAR-06/07 (EXTERNOS):** precios de catálogo que gestiona **T09 (Mercado)**; el seed del Backoffice **no** los incluye. **PAR-25 (CANDIDATO):** plazo máximo de corrección/vencimiento de intento, propuesto por T03.
 
 > Detalle de la justificación de los candidatos: `sprint0/PAR-19-23-justificacion.md`.
 > Modelo de datos: `GlobalParameter` (`param_key` único, `value` jsonb, `version`, `updated_by/at`) — `sdd/backend/docs/04-modelo-datos.md`.

@@ -7,7 +7,7 @@
 | Tema | Relación con el Backoffice | Estado | Referencia |
 |---|---|---|---|
 | **T01 · Usuarios/Identidad** | Consume (auth/roles/auditoría/retención/cuentas) + provee (auditoría) | ✅ **CERRADO** | `solicitudes/CONTRATOS_T01_SOLICITUD.md` |
-| **T08 · Banco** | Consume (lectura REST: saldos/movimientos) · **NO consume PAR** | 🟡 **ACUERDO PARCIAL** (REST-only) | `solicitudes/CONTRATOS_T08_SOLICITUD.md` |
+| **T08 · Banco** | Consume (lectura REST + evento de saldo) · **NO consume PAR** | 🟡 **ACUERDO** | `solicitudes/CONTRATOS_T08_RESPUESTA.md` |
 | **T10 · Roadmap y Progreso** | Consume (progreso/XP/niveles) · PAR-21 pendiente de validación | 🟡 **EN CURSO** (solicitud enviada) | `solicitudes/CONTRATOS_T10_SOLICITUD.md` |
 | **T09 · Mercado** | Provee (dueño de precios **PAR-06/07**) | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T09_SOLICITUD.md` |
 | **T11 · Social y Notificaciones** | Coordina **convención de eventos** + consumimos avisos/alertas | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T11_SOLICITUD.md` |
@@ -15,7 +15,7 @@
 | **T04 · Teóricos y Encuestas** | **Sin lectura** — encuestas ahora de **T02**; no consumimos nada de T04 por el momento | ➖ SIN CONTRATO | — |
 | **T05 · Desafíos Prácticos** | Consume (entregas/resultados) + provee (PAR-19/20) | ⏳ PENDIENTE | — |
 | **T07 · Evaluación LLM** | Consume (deriva/calibración) + provee (`ModelProviderChanged`, PAR-22) | ⏳ PENDIENTE | — |
-| **T03 · Desafíos** | Provee (PAR-01: deriva montos, hecho único) + lectura de métricas | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T03_SOLICITUD.md` |
+| **T03 · Desafíos** | Provee (hecho único en `challenge.events`) + consume PAR (PAR-01/04/05, PAR-03 vuelve) | 🟡 **ACUERDO** | `solicitudes/CONTRATOS_T03_RESPUESTA.md` |
 
 > **Pendientes internos:** schema externo de `identity.events` y `retention.events` · confirmación formal del `role` en el envelope (T01) · naming de topics con T11 · exposición del estado 2FA (T01) · **API de Vault (T01)** · **GESTOR / "profesor con vista"** · **lista blanca de profesores** · **observabilidad de microservicios: FUERA de alcance** (solo logs/health/correlation).
 
@@ -66,17 +66,27 @@
 
 ## T08 — Banco (ACUERDO PARCIAL)
 
-- **Lectura:** REST-only (`/api/bank/**` — balances, balance por alumno, transactions, por `courseId`). Sin `bank.events` en el MVP.
+- **Lectura:** **REST (`/api/bank/**`) para replay/inicial + nos suscribimos al evento de actualización de saldo por alumno/curso** (decisión tomada; REST ya no es solo polling — el evento mejora recursos y frescura). → `solicitudes/CONTRATOS_T08_RESPUESTA.md`
 - **`distribution`:** a Banco solo **saldo en monedas**; la **distribución de XP** la expone **T10**.
-- **"Retención vs desafíos":** lo **integra el Backoffice** (cruce T03/05 + Banco); no se pide a Banco.
-- **Contract 3 (PAR):** **no aplica** → PAR-01/03 los deriva **T03**; PAR-06/07 los decide **T09 (Mercado)**; **PAR-21** no está en el PRD (candidato suspendido, depende de rachas/T10).
+- **"Retención vs desafíos":** **retención de monedas → Banco**, **retención de XP → Roadmap (T10)**; el **Backoffice integra ambos** en el agregado (no se pide a Banco).
+- **Contract 3 (PAR):** **no aplica** → los montos los deriva **T03**; **PAR-03 vuelve al Backoffice** (T03 lo consume); PAR-06/07 los decide **T09 (Mercado)**; **PAR-21** no está en el PRD (candidato suspendido).
+- **Naming:** el evento de saldo se alinea con la **lista de canales habilitados por release** que publica **T11**.
 - **RF-RPT-06:** no es RF del PRD → pasa a "decisión de arquitectura (frescura ≤15 min)".
 
+## T03 — Motor de Desafíos (ACUERDO)
+
+- **Hecho único ✅:** `IntentoDesafioFinalizado` (+ `IntentoDesafioCerrado`) en **`challenge.events`**, con desglose y `parametros_aplicados` (versión). Consumimos para read models de engagement.
+- **PAR que consume:** PAR-01, PAR-04, PAR-05 (+ PAR-02 no-MVP, PAR-13 como techo de reintentos). **No usa:** PAR-08/12/22 y el resto.
+- **PAR-03 vuelve al Backoffice** (decisión anticipada: T03 lo consume para el monto de monedas; a confirmar con Mercado).
+- **Necesita de nosotros:** `GET /api/administration/parameters` con `{key, value, version}` (confirmado) · snapshot por intento · aviso de cambios PAR-13.
+- **PAR-20:** en **suspenso** (definir comportamiento de la ventana de gracia) · **PAR-25 (nuevo candidato):** plazo máximo de corrección/vencimiento de intento.
+- **Métricas:** por **eventos** (`challenge.events`), no endpoints de agregación. → `solicitudes/CONTRATOS_T03_RESPUESTA.md`
+
 ## T09 — Mercado (SOLICITUD LISTA)
-- **PAR-03 / PAR-06 / PAR-07 ya no son del Backoffice**: los gestiona **T09 (Mercado)** o quien defina la cátedra/Hernán. La solicitud `CONTRATOS_T09_SOLICITUD.md` se ajusta: **no** preguntamos consumo de PAR-06/07 (los administra T09); solo confirmar la lectura que T09 exponga (si aplica) y el mecanismo de caché si usa nuestros PAR.
+- **PAR-03 / PAR-06 / PAR-07:** PAR-03 **vuelve al Backoffice** (decisión anticipada, a confirmar con Mercado); **PAR-06/07** los gestiona **T09 (Mercado)** o quien defina la cátedra/Hernán. La solicitud `CONTRATOS_T09_SOLICITUD.md` se ajusta.
 
 ## T11 — Social y Notificaciones (SOLICITUD LISTA)
-- Define la **convención de eventos** de la plataforma (naming de topics, envelope, versionado).
+- Define la **convención de eventos** de la plataforma (naming de topics, envelope, versionado) y **publica la lista de canales habilitados por release** (para alinear topics como `bank.events`).
 - Backoffice **emite** avisos/alertas hacia T11: `DataStaleDetected`, `DataFreshnessRestored`, `StudentAtHighRisk`, `ThresholdBreached`, `ExportReady`. → `solicitudes/CONTRATOS_T11_SOLICITUD.md`
 
 ---

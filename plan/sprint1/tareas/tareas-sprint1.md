@@ -8,7 +8,7 @@
 >
 > **Cambios de esta división (respecto al backlog general):**
 > - **US-02 T1** se parte en **T1a** (migración `outbox_message`, merge Día 1) + **T1b** (publisher programado).
-> - **US-08 T2** se parte en **T2a** (consumidores T02/T04/T05) + **T2b** (T06/T07/T08/T10).
+> - **US-08 T2** se parte en **T2a** (consumidores T02/T05/T03) + **T2b** (T06/T07/T10).
 > - Se elimina la dependencia **US-04 → outbox** (US-04 no publica eventos).
 > - Pasamos de **10 a 9 devs** (el Dev 10 no codifica).
 
@@ -112,7 +112,7 @@
 | # | Tarea | Rol | Dev | Horas |
 |---|---|---|---|---:|
 | T1 | Crear migración Flyway y tabla de deduplicación `ProcessedEvent` | BACKEND | Dev 5 | 4 |
-| T2a | Consumidores de Kafka para T02 / T05 | BACKEND | Dev 6 | 6 |
+| T2a | Consumidores de Kafka para T02 / T05 / T03 (`challenge.events`) | BACKEND | Dev 6 | 6 |
 | T2b | Consumidores de Kafka para T06 / T07 / T10 | BACKEND | Dev 6 | 6 |
 | T3 | Deduplicación por `eventId` en cada consumidor | BACKEND | Dev 6 | 4 |
 | T4 | Configurar Dead Letter Topic para eventos malformados | BACKEND | Dev 5 | 4 |
@@ -122,7 +122,7 @@
 
 **Subtotal:** 41h.
 
-> **Nota (acuerdo con T08):** los datos de **Banco** se ingieren por **REST** (`/api/bank/**`, polling ≤15 min), no por `bank.events`. Los consumidores Kafka cubren T02/T04/T05 (T2a) y T06/T07/T10 (T2b).
+> **Nota (acuerdos):** **T08 (Banco)** se ingiere por **evento de saldo + REST** (`/api/bank/**` para replay). **T03 (Desafíos)** se consume por `challenge.events` (hecho único). Los consumidores Kafka cubren T02/T05/T03 (T2a) y T06/T07/T10 (T2b).
 
 ---
 
