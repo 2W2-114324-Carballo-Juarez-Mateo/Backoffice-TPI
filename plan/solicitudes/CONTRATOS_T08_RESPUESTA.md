@@ -14,6 +14,8 @@ Para cerrar el contrato del evento, necesitamos que confirmen:
 - **Payload** sugerido: `{courseId, studentId, balance, delta, currency, occurredAt}` (+ envelope estándar `{eventId, eventType, occurredAt, correlationId, actorId, role, source, payload}`).
 - **Idempotencia:** `event_id` + versión.
 
+> **⏳ PENDIENTE DE CONFIRMAR:** este evento de **actualización de saldo/vidas por alumno** es el que aún falta cerrar con Banco (nombre del topic + payload final). Es el "otro parámetro" de vidas pendiente.
+
 ### 2. distribution — ✅ Confirmado
 A Banco le pedimos **saldo en monedas**; el **XP lo expone Roadmap (T10)**.
 
@@ -43,7 +45,9 @@ En resumen: cuando me pases el nombre del evento y cómo viene, queda cerrado. �
 
 ## Adenda — PAR-12 (vidas iniciales/máximo) pasa a Banco
 
-Banco asume la gestión de **PAR-12** y propuso el evento PARAMETER_UPDATED. Propuesta corregida (envelope estándar de plataforma + ersion):
+> **Estado: ✅ ACORDADO** — Banco confirmó que usa este payload (el que proponemos). PAR-12 queda **EXTERNO (Banco)**; el Backoffice no lo almacena.
+
+Banco asume la gestión de **PAR-12** y propuso el evento PARAMETER_UPDATED. Propuesta corregida (envelope estándar de plataforma + version):
 
 ```json
 {

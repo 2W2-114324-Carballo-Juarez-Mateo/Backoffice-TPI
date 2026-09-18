@@ -70,7 +70,7 @@
 - **`distribution`:** a Banco solo **saldo en monedas**; la **distribución de XP** la expone **T10**.
 - **"Retención vs desafíos":** **retención de monedas → Banco**, **retención de XP → Roadmap (T10)**; el **Backoffice integra ambos** en el agregado (no se pide a Banco).
 - **Contract 3 (PAR):** **no aplica** → los montos los deriva **T03**; **PAR-03 vuelve al Backoffice** (T03 lo consume); PAR-06/07 los decide **T09 (Mercado)**; **PAR-21** no está en el PRD (candidato suspendido).
-- **PAR-12 (vidas iniciales/máximo) → ahora de Banco:** Banco la gestiona y publica el evento **`PARAMETER_UPDATED`** (`bank.events`, **envelope estándar + `version`**) → Backoffice **no la almacena** (EXTERNO). Propuesta corregida del payload con envelope en `CONTRATOS_T08_RESPUESTA.md`.
+- **PAR-12 (vidas iniciales/máximo) → ahora de Banco:** Banco la gestiona y publica el evento **`PARAMETER_UPDATED`** (`bank.events`, **envelope estándar + `version`**) → **✅ acordado** (payload con envelope en `CONTRATOS_T08_RESPUESTA.md`). Backoffice **no la almacena** (EXTERNO). El **evento de saldo/vidas por alumno** queda **⏳ pendiente de confirmar** (topic + payload).
 - **Naming:** el evento de saldo se alinea con la **lista de canales habilitados por release** que publica **T11**.
 - **RF-RPT-06:** no es RF del PRD → pasa a "decisión de arquitectura (frescura ≤15 min)".
 
