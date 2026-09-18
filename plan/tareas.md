@@ -17,7 +17,7 @@
 
 #### US-01 · Modificación y versionado de parámetros globales
 
-1. **[G06] - [BACKEND] - Crear migración Flyway y entidad GlobalParameter con historial de versiones** — Script DDL, entidad JPA con key, value (jsonb), version (int). Seed de PAR-01..18. *(M · 6 h)*
+1. **[G06] - [BACKEND] - Crear migración Flyway y entidad GlobalParameter con historial de versiones** — Script DDL, entidad JPA con key, value (jsonb), version (int). Seed de PAR-01..18 (sin PAR-03/06/07). *(M · 6 h)*
 2. **[G06] - [BACKEND] - Implementar caso de uso UpdateParameterCommand con versionado y vigencia no retroactiva** — Incrementa versión, valida rango, rechaza fechas retroactivas (RF-CFG-06), soporta Idempotency-Key (CA2). *(M · 6 h)*
 3. **[G06] - [BACKEND] - Implementar endpoints REST GET/PUT de parámetros con autorización por rol** — Controladores GET y PUT con DTOs, @Valid, ADMIN escribe y PROFESOR solo lee (CA3). *(M · 6 h)*
 4. **[G06] - [BACKEND] - Persistir registro en outbox_message dentro de la misma transacción del cambio** — Insertar OutboxMessage con payload GlobalConfigurationChanged en la misma tx (CA1). Requiere tabla de US-02. *(M · 6 h)*

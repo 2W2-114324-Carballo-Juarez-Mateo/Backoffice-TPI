@@ -1,7 +1,7 @@
 # Dev 3 (Damian Gabriel Baigorria) — Tareas Sprint 1
 
 > **Total:** 21h · **Código (BE+TEST):** 18h · **Capacidad real:** 40h (5h/día · 2 ausencias · 100%)
-> **Primera tarea a arrancar (Day 1):** **T1** — migración `GlobalParameter` + seed PAR-01..18 (desbloquea a Dev 4).
+> **Primera tarea a arrancar (Day 1):** **T1** — migración `GlobalParameter` + seed PAR-01..18 (sin PAR-03/06/07) (desbloquea a Dev 4).
 > **Rama/PR:** `feature/us-01-parametros` (PR a develop #4, merge Día 7).
 > **Depende de:** US-02 T1a (tabla `outbox_message`, merge Día 1 — Dev 1).
 
@@ -17,8 +17,8 @@
 ## US-01 · Modificación y versionado de parámetros globales
 
 ### T1 — [BACKEND] Migración Flyway y entidad `GlobalParameter` con historial · 6h
-**Descripción (plan/tareas.md):** Script DDL, entidad JPA con key, value (jsonb), version (int). Seed de PAR-01..18.
-**Qué hacer:** tabla `global_parameter` (`key`, `value` jsonb, `version`, `updated_by/at`) + entidad JPA + repositorio, con **seed PAR-01..18** (defaults del PRD).
+**Descripción (plan/tareas.md):** Script DDL, entidad JPA con key, value (jsonb), version (int). Seed de PAR-01..18 (sin PAR-03/06/07).
+**Qué hacer:** tabla `global_parameter` (`key`, `value` jsonb, `version`, `updated_by/at`) + entidad JPA + repositorio, con **seed PAR-01..18 (sin PAR-03/06/07)** (defaults del PRD).
 **CA relacionados:** CA1.
 
 ### T2 — [BACKEND] Caso de uso `UpdateParameterCommand` con versionado y vigencia no retroactiva · 6h
