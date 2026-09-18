@@ -15,26 +15,28 @@ El **Backoffice (Tema 12)** es **consumidor puro** y dueño de los **parámetros
 
 T03 aplica la economía derivando montos desde el registro global:
 
-| PAR | Concepto | Valor de referencia | Estado |
-|---|---|---|---|
-| **PAR-01** | XP base por dificultad | 100 / 250 / 500 | ✅ Confirmado |
-| **PAR-02** | XP de desafíos personalizados | 10 / 20 / 30 | ✅ Confirmado |
-| **PAR-04** | Variación por calidad/tiempo | ±15% | ✅ Confirmado |
-| **PAR-05** | Bonus/penalidad por uso de IA | ±20% | ✅ Confirmado |
-| **PAR-08** | XP por defecto para desbloqueo | 500 | ✅ Confirmado |
-| **PAR-12** | Vidas iniciales / máximo | 3 / 3 | ✅ Confirmado |
-| **PAR-13** | Máximo de reintentos | 3 | ✅ Confirmado |
-| **PAR-20** | Ventana de gracia para entrega tardía | 48 h | 🟡 Candidato |
-| **PAR-22** | Límite semanal de desafíos personalizados IA | *propuesto* 5/sem | 🟡 Candidato |
+| PAR | Concepto | Valor de referencia | Estado | **¿Lo usás vos?** |
+|---|---|---|---|---|
+| **PAR-01** | XP base por dificultad | 100 / 250 / 500 | ✅ Confirmado | ☐ SÍ / ☐ NO |
+| **PAR-02** | XP de desafíos personalizados | 10 / 20 / 30 | ✅ Confirmado | ☐ SÍ / ☐ NO |
+| **PAR-04** | Variación por calidad/tiempo | ±15% | ✅ Confirmado | ☐ SÍ / ☐ NO |
+| **PAR-05** | Bonus/penalidad por uso de IA | ±20% | ✅ Confirmado | ☐ SÍ / ☐ NO |
+| **PAR-08** | XP por defecto para desbloqueo | 500 | ✅ Confirmado | ☐ SÍ / ☐ NO |
+| **PAR-12** | Vidas iniciales / máximo | 3 / 3 | ✅ Confirmado | ☐ SÍ / ☐ NO |
+| **PAR-13** | Máximo de reintentos | 3 | ✅ Confirmado | ☐ SÍ / ☐ NO |
+| **PAR-20** | Ventana de gracia para entrega tardía | 48 h | 🟡 Candidato | ☐ SÍ / ☐ NO |
+| **PAR-22** | Límite semanal de desafíos personalizados IA | *propuesto* 5/sem | 🟡 Candidato | ☐ SÍ / ☐ NO |
 
 > **Nota:** PAR-03/06/07 ya **no son del Backoffice** (los gestiona T09/Mercado).
 
 **Mecanismo:** publicamos `GlobalConfigurationChanged` (`{key, value, version}`) en `administration.events` (Transactional Outbox, idempotencia por `event_id` + versión). **Caché local con TTL 10 min** + invalidación por evento.
 
-**Confirmación que pedimos:**
-1. ¿T03 efectivamente **consume los PAR listados** para derivar montos y emitir el hecho único? ¿Hay algún otro PAR-01..23 que deba leer?
-2. ¿Usan **caché local con TTL 10 min** + invalidación por evento (respaldo ante caída del Backoffice)?
-3. ¿Emite el **monto ya resuelto** (hecho único) que Banco registra — así evitamos que Banco calcule?
+**Confirmación que pedimos (por favor, sea preciso):**
+1. **Marcá con exactitud qué parámetros usa T03** (tabla de arriba, columna "¿Lo usás vos?"). Para cada PAR que marques SÍ, confirmá también **cómo lo usás** (¿para derivar el monto del hecho único?).
+2. **Listá cualquier PAR-01..23 que usen y no figure** en la tabla (incluidos los que hoy están como candidatos: PAR-19/20/21/22/23).
+3. **¿Algún PAR de la lista NO lo usan?** Dilo explícito para no asumir consumo.
+4. ¿Usan **caché local con TTL 10 min** + invalidación por evento (respaldo ante caída del Backoffice)?
+5. ¿Emite el **monto ya resuelto** (hecho único) que Banco registra — así evitamos que Banco calcule?
 
 ## 2. Lectura de métricas de desafíos (opcional, para reporting)
 
