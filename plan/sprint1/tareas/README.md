@@ -19,20 +19,20 @@
 
 ## Resumen de carga (coincide con `tareas-sprint1.md` §6)
 
-| Dev | Integrante | Total | Capacidad | % | Capas |
-|---|---|---:|---:|---:|---|
-| Dev 1 | Luciano Paz | 24 h | 39,4h | 60,9 % | BACK/INFRA + DOC (camino crítico, liviano a propósito) |
-| Dev 2 | Mateo Carballo Juarez | 26 h | 41,5h | 62,7 % | BACK + FRONT + DOC |
-| Dev 3 | Damian Gabriel Baigorria | 25 h | 31,5h | 79,4 % | BACK + TEST + DOC |
-| Dev 4 | Joaquin Cortez | 23 h | 27,7h | 83,0 % | BACK + DOC + FRONT |
-| Dev 5 | Julieta Ariadna Disca | 28 h | 51,5h | 54,4 % | BACK + TEST + REV + DOC |
-| Dev 6 | Valentina Maldonado | 22 h | 35,3h | 62,3 % | BACK + TEST + DOC |
-| Dev 7 | Maximo Cerquatti | 31 h | 46,4h | 66,8 % | TEST + REV + BACK |
-| Dev 8 | Regina Loreta Cerasulo | 22 h | 35,3h | 62,3 % | BACK + DOC + FRONT |
-| Dev 9 | Bruno Gianoli | 20 h | 28,4h | 70,4 % | BACK + FRONT + REV |
-| Dev 10 | Ana Paula Ducart | 20 h | 25,2h | 79,4 % | DOC (solo MSII) |
+| Dev | Integrante | Total | Capacidad | % | Código (BACK+FRONT) | Capas |
+|---|---|---:|---:|---:|---:|---|
+| Dev 1 | Luciano Paz | 24 h | 39,4h | 60,9 % | 20 h | BACK/INFRA + DOC (camino crítico) |
+| Dev 2 | Mateo Carballo Juarez | 26 h | 41,5h | 62,7 % | 16 h | BACK + FRONT + TEST + DOC |
+| Dev 3 | Damian Gabriel Baigorria | 21 h | 31,5h | 66,7 % | 12 h | BACK + TEST + DOC |
+| Dev 4 | Joaquin Cortez | 19 h | 27,7h | 68,6 % | 16 h | BACK + FRONT + DOC |
+| Dev 5 | Julieta Ariadna Disca | 30 h | 51,5h | 58,3 % | 14 h | BACK + TEST + REV + DOC |
+| Dev 6 | Valentina Maldonado | 24 h | 35,3h | 68,0 % | 14 h | BACK + TEST + DOC |
+| Dev 7 | Maximo Cerquatti | 34 h | 46,4h | 73,3 % | 13 h | BACK + TEST + REV |
+| Dev 8 | Regina Loreta Cerasulo | 20 h | 35,3h | 56,7 % | 13 h | BACK + FRONT + DOC |
+| Dev 9 | Bruno Gianoli | 23 h | 28,4h | 81,0 % | 14 h | FRONT + TEST + REV |
+| Dev 10 | Ana Paula Ducart | 20 h | 25,2h | 79,4 % | 0 h | DOC (solo MSII) |
 
-**Total: 241 h / 362,1 h = 66,6 %.**
+**Total: 241 h / 362,1 h = 66,6 %.** Horas ~57-81% (dentro de capacidad) · código ~12-20h (parejo) · capas balanceadas.
 
 ## Decisiones resueltas en planning (ver `tareas-sprint1.md` §14)
 - **Repo de entrega:** `2026-P4-BE/tpi-backoffice` (mono-módulo, Boot 4). **1 datasource + 2 esquemas**.

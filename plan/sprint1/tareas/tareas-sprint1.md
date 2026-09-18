@@ -188,25 +188,25 @@ public record EventoDTO(
 
 ---
 
-## 6 · Resumen de carga (división pareja — todos tocan varias capas)
+## 6 · Resumen de carga (división pareja por horas, código y capas)
 
-| Dev | Integrante | Rol | Capacidad | Horas | % uso | Capas |
-|---|---|---|---|---:|---:|---|
-| **1** | Paz, Luciano | MSII+PIV | 39,4 | 24 | 60,9 % | BACK/INFRA + DOC (camino crítico, liviano a propósito) |
-| **2** | Carballo Juarez, Mateo | MSII+PIV | 41,5 | 26 | 62,7 % | BACK + FRONT + DOC |
-| **3** | Baigorria, Damian Gabriel | PIV | 31,5 | 25 | 79,4 % | BACK + TEST + DOC |
-| **4** | Cortez, Joaquin | PIV | 27,7 | 23 | 83,0 % | BACK + DOC + FRONT |
-| **5** | Disca, Julieta Ariadna | MSII+PIV | 51,5 | 28 | 54,4 % | BACK + TEST + REV + DOC |
-| **6** | Maldonado, Valentina | MSII+PIV | 35,3 | 22 | 62,3 % | BACK + TEST + DOC |
-| **7** | Cerquatti, Máximo | MSII+PIV | 46,4 | 31 | 66,8 % | TEST + REV + BACK |
-| **8** | Cerasulo, Regina Loreta | MSII+PIV | 35,3 | 22 | 62,3 % | BACK + DOC + FRONT |
-| **9** | Gianoli, Bruno | PIV | 28,4 | 20 | 70,4 % | BACK + FRONT + REV |
-| **10** | Ducart, Ana Paula | MSII | 25,2 | 20 | 79,4 % | DOC (solo MSII) |
+| Dev | Integrante | Rol | Capacidad | Horas | % uso | Código (BACK+FRONT) | Capas |
+|---|---|---:|---:|---:|---:|---|
+| **1** | Paz, Luciano | MSII+PIV | 39,4 | 24 | 60,9 % | 20 h | BACK/INFRA + DOC (camino crítico) |
+| **2** | Carballo Juarez, Mateo | MSII+PIV | 41,5 | 26 | 62,7 % | 16 h | BACK + FRONT + TEST + DOC |
+| **3** | Baigorria, Damian Gabriel | PIV | 31,5 | 21 | 66,7 % | 12 h | BACK + TEST + DOC |
+| **4** | Cortez, Joaquin | PIV | 27,7 | 19 | 68,6 % | 16 h | BACK + FRONT + DOC |
+| **5** | Disca, Julieta Ariadna | MSII+PIV | 51,5 | 30 | 58,3 % | 14 h | BACK + TEST + REV + DOC |
+| **6** | Maldonado, Valentina | MSII+PIV | 35,3 | 24 | 68,0 % | 14 h | BACK + TEST + DOC |
+| **7** | Cerquatti, Máximo | MSII+PIV | 46,4 | 34 | 73,3 % | 13 h | BACK + TEST + REV |
+| **8** | Cerasulo, Regina Loreta | MSII+PIV | 35,3 | 20 | 56,7 % | 13 h | BACK + FRONT + DOC |
+| **9** | Gianoli, Bruno | PIV | 28,4 | 23 | 81,0 % | 14 h | FRONT + TEST + REV |
+| **10** | Ducart, Ana Paula | MSII | 25,2 | 20 | 79,4 % | 0 h | DOC (solo MSII) |
 
-**Total: 241 h / 362,1 h = 66,6 %.** Dispersión: **~54 %–83 %** (Julieta es el flexible; Joaquin y Ana Paula rozan el 80 % por su capacidad baja).
+**Total: 241 h / 362,1 h = 66,6 %.** Dispersión de horas: **~57 %–81 %** (Bruno roza el 81 % por su capacidad baja; Julieta es el flexible). **Código:** ~12–20 h por persona (Luciano 20 h por ser el dueño de infra; el resto 12–16 h) → **parejo**.
 
-> **Regla de la división pareja:** nadie queda en una sola capa (salvo Luciano por el camino crítico y Ana Paula por ser MSII pura). Todos tocan **BACK o FRONT + TEST + DOC** (o revisión cruzada). La cobertura por capas está en la columna "Capas".
-> **Luciano queda en 60,9 %, el más liviano, y es a propósito:** es quien tiene el camino crítico (Infra PR #0, migración del outbox PR #1, filtro de seguridad que desbloquea a Joaquin y Regina).
+> **Regla de la división pareja:** nadie queda en una sola capa (salvo Luciano por el camino crítico y Ana Paula por ser MSII pura). **Horas, código (BACK+FRONT) y capas balanceados.** Tests de integración los hace una persona que **no escribió ese código**; solo los unitarios de dominio pueden ser del autor (US-01 T7).
+> **Luciano** lleva la mayor carga de código (infra, PR #0 y PR #1, el camino crítico) y se le deja 24 h a propósito para no bloquear a Joaquin/Regina.
 
 ---
 
@@ -219,15 +219,15 @@ public record EventoDTO(
 |---|---|---|---|---:|
 | T1a | Migración Flyway de `outbox_message` + **perfiles, datasource PostgreSQL y Flyway sobre dos esquemas** — **PR propio #1** | BACKEND | Luciano | 5 |
 | T1b | Publisher programado (Outbox → Kafka) **con clave de partición = clave del parámetro** | BACKEND | Luciano | 5 |
-| T2 | Adoptar el `EventoDTO` oficial y mapear `ParameterChanged` / `GlobalConfigurationChanged` | BACKEND | Mateo | 6 |
+| T2 | Adoptar el `EventoDTO` oficial y mapear `ParameterChanged` / `GlobalConfigurationChanged` | BACKEND | Julieta | 6 |
 | T3 | Reintentos con backoff exponencial y Dead Letter Topic | BACKEND | Mateo | 6 |
 | T4 | Idempotencia por `eventId` y versión en el consumidor de referencia | BACKEND | Mateo | 4 |
 | T5 | Test de integración del ciclo completo Outbox → Kafka → consumo | TEST | **Máximo** | 8 |
 | T6 | Validar resiliencia ante caída del broker | TEST | Julieta | 6 |
-| T7 | Validar descarte de duplicados y de versión anterior | TEST | Julieta | 4 |
+| T7 | Validar descarte de duplicados y de versión anterior | TEST | Valentina | 4 |
 | T8 | Documentar envelope, catálogo de topics y contrato del consumidor | DOCUMENTACION | Luciano | 4 |
 | T9 | Peer review de concurrencia y transaccionalidad | REVISION | Julieta | 3 |
-| **T11** | **NUEVA** · `X-Request-Id`/`traceparent` como **headers de Kafka** | BACKEND | Bruno | 3 |
+| **T11** | **NUEVA** · `X-Request-Id`/`traceparent` como **headers de Kafka** | BACKEND | Máximo | 3 |
 
 **Sin clave de partición, US-02 CA4 no se cumple:** Kafka reparte round-robin y se pierde el orden de versiones por parámetro.
 **T5 pasó de Mateo a Máximo** para que el test de integración no lo escriba quien escribió el código.
@@ -246,11 +246,11 @@ public record EventoDTO(
 | T3 | Endpoints REST GET/PUT con autorización por rol | BACKEND | Joaquin | 6 |
 | T4 | Persistir el registro en `outbox_message` en la misma transacción | BACKEND | Joaquin | 6 |
 | T7 | Tests unitarios de dominio: versionado y rango | TEST | Damian | 6 |
-| T8 | Tests de integración con Testcontainers | TEST | Valentina | 6 |
+| T8 | Tests de integración con Testcontainers | TEST | Mateo | 6 |
 | T9 | Congelar contrato OpenAPI 3 | DOCUMENTACION | Joaquin | 3 |
 | T10 | Peer review y validación de DoD | REVISION | Máximo | 3 |
-| **T11** | **NUEVA** · Emisión del evento de auditoría — contrato **cerrado** con T01 | BACKEND | Damian | 4 |
-| **T12** | **NUEVA** · `Idempotency-Key` en el endpoint + tabla de claves + TTL | BACKEND | Joaquin | 4 |
+| **T11** | **NUEVA** · Emisión del evento de auditoría — contrato **cerrado** con T01 | BACKEND | Regina | 4 |
+| **T12** | **NUEVA** · `Idempotency-Key` en el endpoint + tabla de claves + TTL | BACKEND | Valentina | 4 |
 
 > Insumo para el seed y validaciones: `plan/PARAMETROS.md`. Para valores compuestos como PAR-01 o curvas de niveles, se valida la estructura del JSON en el Command.
 
@@ -263,7 +263,7 @@ public record EventoDTO(
 | # | Tarea | Rol | Dev | Horas |
 |---|---|---|---|---:|
 | T1 | Filtro de seguridad e inspección de headers del Gateway | BACKEND | Luciano | 4 |
-| T2 | Cliente HTTP hacia Tema 01 vía Gateway (auditoría delegada) | BACKEND | Regina | 6 |
+| T2 | Cliente HTTP hacia Tema 01 vía Gateway (auditoría delegada) | BACKEND | Máximo | 6 |
 | T5 | Tests de integración del filtro y autorización por headers | TEST | Máximo | 6 |
 | T7 | Matriz de delegación de identidades con Tema 01 | DOCUMENTACION | Regina | 4 |
 | T8 | Auditoría de fronteras de microservicios | REVISION | Julieta | 3 |
@@ -287,7 +287,7 @@ public record EventoDTO(
 | T2a | Consumidores de **`challenge.events`** (T03) y **`course.events`** (T02) | BACKEND | Valentina | 6 |
 | T3 | Deduplicación por `eventId` | BACKEND | Valentina | 4 |
 | T4 | Dead Letter Topic para eventos malformados | BACKEND | Julieta | 4 |
-| T5 | Tests de integración: ingesta, deduplicación y DLT | TEST | Máximo | 6 |
+| T5 | Tests de integración: ingesta, deduplicación y DLT | TEST | Bruno | 6 |
 | T6 | Mapear contratos de lectura y esquemas de los temas con acuerdo | DOCUMENTACION | Valentina | 3 |
 | T7 | Peer review de consumidores | REVISION | Bruno | 3 |
 

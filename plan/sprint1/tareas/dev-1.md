@@ -2,7 +2,7 @@
 
 > **Capacidad:** 39.4 h - **Asignado:** 24 h - **Repo:** 2026-P4-BE/tpi-backoffice (mono-modulo, 1 datasource + 2 esquemas)
 > **Flujo:** feature/*|fix/* -> develop - release/*|hotfix/* -> main - PR con 1 aprobacion - sin push directo
-> **Division pareja:** todos tocan BACK o FRONT + TEST + DOC (o revision cruzada).
+> **Division pareja:** horas, codigo (BACK+FRONT) y capas balanceados - nadie en una sola capa.
 
 - **[BACK]** I0a - Infra: pom + Discovery Client + adopcion del repo (scaffolding, PR #0) - 3h
 - **[BACK]** I0b - Infra: docker-compose (PG + Kafka + app) - 2h
