@@ -11,7 +11,7 @@
 |---|---|---|---|---|
 | **PAR-01** | XP base por dificultad | 100 / 250 / 500 | `xp_base_dificultad` | 03 / 10 |
 | **PAR-02** | XP de desafíos personalizados | 10 / 20 / 30 | `xp_desafios_personalizados` | 03 / 07 |
-| **PAR-03** | Monedas por desafío obligatorio/opcional | 100 / 50 | `monedas_desafio` | 03 |
+| **PAR-03** | Monedas por desafío obligatorio/opcional | 100 / 50 | `monedas_desafio` | 🔵 EXTERNO (T09) |
 | **PAR-04** | Variación por calidad/tiempo | ±15% | `variacion_calidad_tiempo_pct` | 03 / 05 |
 | **PAR-05** | Bonus/penalidad por uso de IA | ±20% | `bonus_penalidad_ia_pct` | 03 / 05 / 07 |
 | **PAR-06** | Precio de una vida | 300 | `precio_vida` | 🔵 EXTERNO (T09) |
@@ -55,12 +55,12 @@
 
 | Estado | Significado | PAR |
 |---|---|---|
-| ✅ CONFIRMADO | Definido por el PRD (sin PAR-06/07/12) | PAR-01..05, PAR-08..11, PAR-13..18 |
+| ✅ CONFIRMADO | Definido por el PRD (sin PAR-03/06/07/12) | PAR-01, PAR-02, PAR-04, PAR-05, PAR-08..11, PAR-13..18 |
 | 🟡 CANDIDATO | Deducido, a validar con la cátedra | PAR-19..20, PAR-22, PAR-23, PAR-25 |
 | ⚪ SUSPENDIDO | Candidato sin respaldo en el PRD, depende de otro dominio | PAR-21 |
-| 🔵 EXTERNO | No es del Backoffice | PAR-06, PAR-07 (T09/Mercado) · PAR-12 (Banco) · PAR-24 (T01) |
+| 🔵 EXTERNO | No es del Backoffice | PAR-03, PAR-06, PAR-07 (T09/Mercado) · PAR-12 (Banco) · PAR-24 (T01) |
 
-> **PAR-03:** vuelve al Backoffice (T03 lo consume; decisión anticipada, a confirmar con Mercado). **PAR-06/07 (EXTERNOS):** precios de catálogo que gestiona **T09 (Mercado)**; el seed del Backoffice **no** los incluye. **PAR-12 (EXTERNO · Banco):** vidas iniciales/máximo las gestiona **Banco** (evento `PARAMETER_UPDATED` con envelope estándar + `version`); el seed no lo incluye. **PAR-25 (CANDIDATO):** plazo máximo de corrección/vencimiento de intento, propuesto por T03.
+> **PAR-03/06/07 (EXTERNOS · T09/Mercado):** monedas y precios de catálogo los gestiona **T09 (Mercado)** (confirmado como descartados del Backoffice). **T03** necesita que **Mercado exponga PAR-03** (evento + REST + versión) para el monto de monedas del hecho único — contrato **T03 ↔ Mercado**, no del Backoffice. El seed del Backoffice **no** los incluye. **PAR-12 (EXTERNO · Banco):** vidas iniciales/máximo las gestiona **Banco** (evento `PARAMETER_UPDATED` con envelope estándar + `version`); el seed no lo incluye. **PAR-25 (CANDIDATO):** plazo máximo de corrección/vencimiento de intento, propuesto por T03.
 
 > Detalle de la justificación de los candidatos: `sprint0/PAR-19-23-justificacion.md`.
 > Modelo de datos: `GlobalParameter` (`param_key` único, `value` jsonb, `version`, `updated_by/at`) — `sdd/backend/docs/04-modelo-datos.md`.

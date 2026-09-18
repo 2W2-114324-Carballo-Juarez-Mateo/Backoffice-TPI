@@ -21,6 +21,7 @@ El **Backoffice (Tema 12)** es dueño de los **parámetros globales (PAR)**. Seg
 
 **Confirmación que pedimos:**
 1. ¿Mercado efectivamente **gestiona** PAR-03/06/07 (o los define la persona que mencionó Hernán)? ¿Dónde los mantienen (registro propio o siguen usando el `GlobalConfigurationChanged` del Backoffice)?
+2. **PAR-03 debe quedar disponible para T03 (Motor de Desafíos)**: T03 necesita el valor de monedas por desafío para el monto del hecho único. ¿Mercado lo **expone** (evento + REST + versión) para que T03 lo consuma? (si no, el hecho único sale sin monedas).
 
 ## 2. Lecturas de Mercado (opcional, para reporting)
 

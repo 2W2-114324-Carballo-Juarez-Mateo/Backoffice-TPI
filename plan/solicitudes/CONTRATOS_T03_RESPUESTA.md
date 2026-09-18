@@ -15,7 +15,7 @@ Congelar **PAR-01/04/05 + `version`** al abrir el intento. Es lo que exige RF-CF
 `GET /api/administration/parameters` devuelve todos los PAR con `{key, value, version}` (para poblar caché en arranque en frío).
 
 ## 4. PAR-03 (monedas) — bloqueante desbloqueado
-**Decisión anticipada:** **PAR-03 vuelve al registro del Backoffice** y ustedes lo consumen por el canal ya acordado (evento + REST + versión). En paralelo coordinamos con **Mercado**; si finalmente Mercado lo gestiona, **lo exponemos igual** con el mismo mecanismo. Con esto el monto de monedas del hecho único queda cubierto.
+**PAR-03 es de Mercado** (está entre los parámetros descartados del Backoffice). El Backoffice **no lo almacena**: para el monto de monedas del hecho único, **T03 debe acordar con Mercado que lo exponga** con el mismo mecanismo (evento + REST + versión). Lo coordinamos junto con ustedes/Mercado.
 
 ## 5. PAR-20 (ventana de gracia) — en suspenso
 Lo dejamos en **suspenso** hasta definir qué hace exactamente una entrega dentro de la ventana (rechazar / aceptar con penalidad / solo marcar). Proponemos definirlo juntos y recién ahí confirmarlo como PAR-20. **No bloquea el MVP.**
