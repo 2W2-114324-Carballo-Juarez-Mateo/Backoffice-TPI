@@ -21,18 +21,18 @@
 
 | Dev | Integrante | Total | Capacidad | % | Código (BACK+FRONT) | Capas |
 |---|---|---:|---:|---:|---:|---|
-| Dev 1 | Luciano Paz | 24 h | 39,4h | 60,9 % | 20 h | BACK/INFRA + DOC (camino crítico) |
-| Dev 2 | Mateo Carballo Juarez | 26 h | 41,5h | 62,7 % | 16 h | BACK + FRONT + TEST + DOC |
-| Dev 3 | Damian Gabriel Baigorria | 21 h | 31,5h | 66,7 % | 12 h | BACK + TEST + DOC |
-| Dev 4 | Joaquin Cortez | 19 h | 27,7h | 68,6 % | 16 h | BACK + FRONT + DOC |
-| Dev 5 | Julieta Ariadna Disca | 30 h | 51,5h | 58,3 % | 14 h | BACK + TEST + REV + DOC |
-| Dev 6 | Valentina Maldonado | 24 h | 35,3h | 68,0 % | 14 h | BACK + TEST + DOC |
-| Dev 7 | Maximo Cerquatti | 34 h | 46,4h | 73,3 % | 13 h | BACK + TEST + REV |
-| Dev 8 | Regina Loreta Cerasulo | 20 h | 35,3h | 56,7 % | 13 h | BACK + FRONT + DOC |
-| Dev 9 | Bruno Gianoli | 23 h | 28,4h | 81,0 % | 14 h | FRONT + TEST + REV |
+| Dev 1 | Luciano Paz | 29 h | 39,4h | 73,6 % | 19 h | BACK + FRONT + TEST + REV + DOC |
+| Dev 2 | Mateo Carballo Juarez | 25 h | 41,5h | 60,2 % | 14 h | BACK + FRONT + TEST + REV + DOC |
+| Dev 3 | Damian Gabriel Baigorria | 25 h | 31,5h | 79,4 % | 14 h | BACK + FRONT + TEST + REV + DOC |
+| Dev 4 | Joaquin Cortez | 22 h | 27,7h | 79,4 % | 14 h | BACK + FRONT + TEST + REV + DOC |
+| Dev 5 | Julieta Ariadna Disca | 28 h | 51,5h | 54,4 % | 17 h | BACK + FRONT + TEST + REV + DOC |
+| Dev 6 | Valentina Maldonado | 27 h | 35,3h | 76,5 % | 17 h | BACK + FRONT + TEST + REV + DOC |
+| Dev 7 | Maximo Cerquatti | 26 h | 46,4h | 56,0 % | 17 h | BACK + FRONT + TEST + REV + DOC |
+| Dev 8 | Regina Loreta Cerasulo | 19 h | 35,3h | 53,8 % | 10 h | BACK + FRONT + TEST + REV + DOC |
+| Dev 9 | Bruno Gianoli | 20 h | 28,4h | 70,4 % | 10 h | BACK + FRONT + TEST + REV + DOC |
 | Dev 10 | Ana Paula Ducart | 20 h | 25,2h | 79,4 % | 0 h | DOC (solo MSII) |
 
-**Total: 241 h / 362,1 h = 66,6 %.** Horas ~57-81% (dentro de capacidad) · código ~12-20h (parejo) · capas balanceadas.
+**Total: 241 h / 362,1 h = 66,6 %.** Horas ~54-79% (dentro de capacidad) · código ~10-19h (parejo) · **los 9 devs cubren las 5 capas** (Ana Paula solo DOC).
 
 ## Decisiones resueltas en planning (ver `tareas-sprint1.md` §14)
 - **Repo de entrega:** `2026-P4-BE/tpi-backoffice` (mono-módulo, Boot 4). **1 datasource + 2 esquemas**.
@@ -44,11 +44,11 @@
 - **DoD Nivel 1:** RLS acotado a historias con datos por `course_id`.
 
 ## Notas de la división
-- **Pareja por capas**, no solo por horas (columna "Capas" de la tabla).
+- **Los 9 devs cubren las 5 capas** (BACK + FRONT + TEST + REV + DOC); Ana Paula (Dev 10) solo DOC/MSII.
 - **US-02 T1** partida en **T1a** (migración outbox + 2 esquemas, PR #1 Día 2) + **T1b** (publisher).
 - **US-08 T2a** = consumidores T03 (`challenge.events`) + T02 (`course.events`); no se consumen temas sin contrato.
-- **US-02 T5** (integración Outbox) y **US-01 T8** (Testcontainers) los testean personas que **no escribieron ese código**.
-- Revisiones cruzadas (US-02 T9, US-01 T10, US-08 T7, US-03 T8) sobre trabajo de **otro**.
+- **Tests y revisiones cruzadas:** nadie testea ni revisa su propio código. Front partido en 10 subtareas (FE-1a..FE-5b) para que todos toquen FRONT.
+- **US-02 T5** partida en **T5a** (publicación) + **T5b** (consumo); las revisiones también se partieron (T9a/T9b, T10a/T10b, T7a/T7b, T8a/T8b/T8c).
 
 ## Referencias obligatorias
 - **Auditoría:** `plan/AUDITORIA-SPRINT1.md` · **DoD:** `plan/sprint0/Sprint0-Propuesta.md` §2.

@@ -107,16 +107,21 @@ Ya existen **9 pantallas Angular** funcionando (Angular 21, standalone, signals,
 
 O sea: la maqueta está hecha. Falta enchufarla.
 
-### Bloque Frontend — 34 h
+### Bloque Frontend — 34 h (partido para que los 9 devs toquen FRONT)
 
 | # | Tarea | Rol | Dev | Horas |
 |---|---|---|---|---:|
-| FE-1 | **Capa HTTP:** `provideHttpClient`, interceptor de errores (mapea `ErrorApi` de cátedra), interceptor de headers (`Idempotency-Key`, correlación), `environment` con la URL del gateway | FRONTEND | Mateo | 6 |
-| FE-2 | Servicio de parámetros + **conectar la pantalla existente** (reemplazar los 18 PAR hardcodeados) | FRONTEND | Bruno | 8 |
-| FE-3 | **Guards por rol** + estado de sesión (ADMIN escribe, PROFESOR solo lee) | FRONTEND | Regina | 6 |
-| FE-4 | Pantalla de administración conectada (US-03) | FRONTEND | Bruno | 6 |
-| FE-5 | Feedback de operación: loading, error, confirmación de "el cambio aplica de ahora en adelante" | FRONTEND | Joaquin | 4 |
-| FE-6 | **Smoke test E2E del flujo de la demo** | TEST | Máximo | 4 |
+| FE-1a | **Capa HTTP:** interceptor de errores (mapea `ErrorApi` de cátedra) + `provideHttpClient` | FRONTEND | Luciano | 3 |
+| FE-1b | **Capa HTTP:** interceptor de headers (`Idempotency-Key`, correlación) + `environment` | FRONTEND | Máximo | 3 |
+| FE-2a | Servicio HTTP de parámetros (GET/PUT) | FRONTEND | Mateo | 4 |
+| FE-2b | **Conectar la pantalla existente** (reemplazar los 18 PAR hardcodeados) | FRONTEND | Bruno | 4 |
+| FE-3a | **Guard ADMIN** (escribe) | FRONTEND | Regina | 3 |
+| FE-3b | **Guard PROFESOR** (solo lectura) + estado de sesión | FRONTEND | Valentina | 3 |
+| FE-4a | Pantalla de administración: asignar/revocar rol | FRONTEND | Bruno | 3 |
+| FE-4b | Pantalla de administración: estado 2FA/sesión | FRONTEND | Julieta | 3 |
+| FE-5a | Feedback de operación: loading + error | FRONTEND | Damian | 2 |
+| FE-5b | Feedback de operación: confirmación "aplica de ahora en adelante" | FRONTEND | Joaquin | 2 |
+| FE-6 | **Smoke test E2E del flujo de la demo** | TEST | Regina | 4 |
 
 > **Decisión tomada:** el repo **canónico del front es `TPI---Backoffice-Demo-/FE/`** (el que tiene proxy y deploy a Pages). `backoffice-angular/` (Dockerfile/Nginx) aporta solo si sacamos algo clave de ahí — se revisa el Día 1 sin bloquear el bloque FE.
 
@@ -188,25 +193,25 @@ public record EventoDTO(
 
 ---
 
-## 6 · Resumen de carga (división pareja por horas, código y capas)
+## 6 · Resumen de carga (los 9 devs cubren las 5 capas)
 
 | Dev | Integrante | Rol | Capacidad | Horas | % uso | Código (BACK+FRONT) | Capas |
 |---|---|---:|---:|---:|---:|---|
-| **1** | Paz, Luciano | MSII+PIV | 39,4 | 24 | 60,9 % | 20 h | BACK/INFRA + DOC (camino crítico) |
-| **2** | Carballo Juarez, Mateo | MSII+PIV | 41,5 | 26 | 62,7 % | 16 h | BACK + FRONT + TEST + DOC |
-| **3** | Baigorria, Damian Gabriel | PIV | 31,5 | 21 | 66,7 % | 12 h | BACK + TEST + DOC |
-| **4** | Cortez, Joaquin | PIV | 27,7 | 19 | 68,6 % | 16 h | BACK + FRONT + DOC |
-| **5** | Disca, Julieta Ariadna | MSII+PIV | 51,5 | 30 | 58,3 % | 14 h | BACK + TEST + REV + DOC |
-| **6** | Maldonado, Valentina | MSII+PIV | 35,3 | 24 | 68,0 % | 14 h | BACK + TEST + DOC |
-| **7** | Cerquatti, Máximo | MSII+PIV | 46,4 | 34 | 73,3 % | 13 h | BACK + TEST + REV |
-| **8** | Cerasulo, Regina Loreta | MSII+PIV | 35,3 | 20 | 56,7 % | 13 h | BACK + FRONT + DOC |
-| **9** | Gianoli, Bruno | PIV | 28,4 | 23 | 81,0 % | 14 h | FRONT + TEST + REV |
-| **10** | Ducart, Ana Paula | MSII | 25,2 | 20 | 79,4 % | 0 h | DOC (solo MSII) |
+| **1** | Paz, Luciano | MSII+PIV | 39,4 | 29 | 73,6 % | 19 h | BACK + FRONT + TEST + REV + DOC (camino crítico) |
+| **2** | Carballo Juarez, Mateo | MSII+PIV | 41,5 | 25 | 60,2 % | 14 h | BACK + FRONT + TEST + REV + DOC |
+| **3** | Baigorria, Damian Gabriel | PIV | 31,5 | 25 | 79,4 % | 14 h | BACK + FRONT + TEST + REV + DOC |
+| **4** | Cortez, Joaquin | PIV | 27,7 | 22 | 79,4 % | 14 h | BACK + FRONT + TEST + REV + DOC |
+| **5** | Disca, Julieta Ariadna | MSII+PIV | 51,5 | 28 | 54,4 % | 17 h | BACK + FRONT + TEST + REV + DOC |
+| **6** | Maldonado, Valentina | MSII+PIV | 35,3 | 27 | 76,5 % | 17 h | BACK + FRONT + TEST + REV + DOC |
+| **7** | Cerquatti, Máximo | MSII+PIV | 46,4 | 26 | 56,0 % | 17 h | BACK + FRONT + TEST + REV + DOC |
+| **8** | Cerasulo, Regina Loreta | MSII+PIV | 35,3 | 19 | 53,8 % | 10 h | BACK + FRONT + TEST + REV + DOC |
+| **9** | Gianoli, Bruno | PIV | 28,4 | 20 | 70,4 % | 10 h | BACK + FRONT + TEST + REV + DOC |
+| **10** | Ducart, Ana Paula | MSII | 25,2 | 20 | 79,4 % | 0 h | DOC (solo MSII: diagramas, contratos, planificación) |
 
-**Total: 241 h / 362,1 h = 66,6 %.** Dispersión de horas: **~57 %–81 %** (Bruno roza el 81 % por su capacidad baja; Julieta es el flexible). **Código:** ~12–20 h por persona (Luciano 20 h por ser el dueño de infra; el resto 12–16 h) → **parejo**.
+**Total: 241 h / 362,1 h = 66,6 %.** Horas ~54–79 % (dentro de capacidad) · código ~10–19 h · **los 9 devs cubren las 5 capas (BACK + FRONT + TEST + REV + DOC)**; Ana Paula solo DOC (MSII).
 
-> **Regla de la división pareja:** nadie queda en una sola capa (salvo Luciano por el camino crítico y Ana Paula por ser MSII pura). **Horas, código (BACK+FRONT) y capas balanceados.** Tests de integración los hace una persona que **no escribió ese código**; solo los unitarios de dominio pueden ser del autor (US-01 T7).
-> **Luciano** lleva la mayor carga de código (infra, PR #0 y PR #1, el camino crítico) y se le deja 24 h a propósito para no bloquear a Joaquin/Regina.
+> **Regla de la división pareja:** los 9 que codifican tocan **las 5 capas** (BACK, FRONT, TEST, REV, DOC). Para alcanzar a todos se **partieron** FE-1/2/3/4/5 (10 subtareas de front), US-02 T5 (T5a/T5b) y las revisiones (T9a/T9b, T10a/T10b, T7a/T7b, T8a/T8b/T8c) — **nadie revisa ni testea su propio código**. Solo los unitarios de dominio pueden ser del autor (US-01 T7). **Ana Paula (Dev 10)** solo MSII: docs, diagramas y contratos.
+> **Luciano** lleva el camino crítico (Infra PR #0, migración PR #1, publisher) y aun así cubre las 5 capas.
 
 ---
 
@@ -222,12 +227,14 @@ public record EventoDTO(
 | T2 | Adoptar el `EventoDTO` oficial y mapear `ParameterChanged` / `GlobalConfigurationChanged` | BACKEND | Julieta | 6 |
 | T3 | Reintentos con backoff exponencial y Dead Letter Topic | BACKEND | Mateo | 6 |
 | T4 | Idempotencia por `eventId` y versión en el consumidor de referencia | BACKEND | Mateo | 4 |
-| T5 | Test de integración del ciclo completo Outbox → Kafka → consumo | TEST | **Máximo** | 8 |
+| T5a | Test de integración del ciclo **Outbox → publicación** | TEST | Máximo | 4 |
+| T5b | Test de integración del ciclo **consumo** (deduplicación) | TEST | Luciano | 4 |
 | T6 | Validar resiliencia ante caída del broker | TEST | Julieta | 6 |
-| T7 | Validar descarte de duplicados y de versión anterior | TEST | Valentina | 4 |
+| T7 | Validar descarte de duplicados y de versión anterior | TEST | Joaquin | 4 |
 | T8 | Documentar envelope, catálogo de topics y contrato del consumidor | DOCUMENTACION | Luciano | 4 |
-| T9 | Peer review de concurrencia y transaccionalidad | REVISION | Julieta | 3 |
-| **T11** | **NUEVA** · `X-Request-Id`/`traceparent` como **headers de Kafka** | BACKEND | Máximo | 3 |
+| T9a | Peer review de **concurrencia** del outbox (revista trabajo de otro) | REVISION | Damian | 2 |
+| T9b | Peer review de **transaccionalidad** del outbox (revista trabajo de otro) | REVISION | Joaquin | 1 |
+| **T11** | **NUEVA** · `X-Request-Id`/`traceparent` como **headers de Kafka** | BACKEND | Bruno | 3 |
 
 **Sin clave de partición, US-02 CA4 no se cumple:** Kafka reparte round-robin y se pierde el orden de versiones por parámetro.
 **T5 pasó de Mateo a Máximo** para que el test de integración no lo escriba quien escribió el código.
@@ -248,7 +255,8 @@ public record EventoDTO(
 | T7 | Tests unitarios de dominio: versionado y rango | TEST | Damian | 6 |
 | T8 | Tests de integración con Testcontainers | TEST | Mateo | 6 |
 | T9 | Congelar contrato OpenAPI 3 | DOCUMENTACION | Joaquin | 3 |
-| T10 | Peer review y validación de DoD | REVISION | Máximo | 3 |
+| T10a | Peer review y validación de **DoD/CA de US-01** (revista trabajo de otro) | REVISION | Luciano | 2 |
+| T10b | Peer review del **versionado/no retroactividad** de US-01 (revista trabajo de otro) | REVISION | Julieta | 1 |
 | **T11** | **NUEVA** · Emisión del evento de auditoría — contrato **cerrado** con T01 | BACKEND | Regina | 4 |
 | **T12** | **NUEVA** · `Idempotency-Key` en el endpoint + tabla de claves + TTL | BACKEND | Valentina | 4 |
 
@@ -262,11 +270,13 @@ public record EventoDTO(
 
 | # | Tarea | Rol | Dev | Horas |
 |---|---|---|---|---:|
-| T1 | Filtro de seguridad e inspección de headers del Gateway | BACKEND | Luciano | 4 |
+| T1 | Filtro de seguridad e inspección de headers del Gateway | BACKEND | Máximo | 4 |
 | T2 | Cliente HTTP hacia Tema 01 vía Gateway (auditoría delegada) | BACKEND | Máximo | 6 |
-| T5 | Tests de integración del filtro y autorización por headers | TEST | Máximo | 6 |
+| T5 | Tests de integración del filtro y autorización por headers | TEST | Valentina | 6 |
 | T7 | Matriz de delegación de identidades con Tema 01 | DOCUMENTACION | Regina | 4 |
-| T8 | Auditoría de fronteras de microservicios | REVISION | Julieta | 3 |
+| T8a | Auditoría de **fronteras de seguridad** (revista trabajo de otro) | REVISION | Valentina | 1 |
+| T8b | Auditoría del **manejo de errores** (`ErrorApi`, revista trabajo de otro) | REVISION | Mateo | 1 |
+| T8c | Auditoría de la **gestión de rol** (revista trabajo de otro) | REVISION | Regina | 1 |
 | **T9** | **NUEVA** · `@RestControllerAdvice` sobre el DTO **`ErrorApi` de cátedra** | BACKEND | Regina | 3 |
 | **T10** | **NUEVA** · Gestión de rol desde el panel vía T01 (`/api/admin/accounts`): asignar/revocar rol, auto-revocación 400, último admin 409, aviso con admins restantes — **cubre los 4 CA de US-03** | BACKEND | Máximo | 4 |
 
@@ -289,7 +299,8 @@ public record EventoDTO(
 | T4 | Dead Letter Topic para eventos malformados | BACKEND | Julieta | 4 |
 | T5 | Tests de integración: ingesta, deduplicación y DLT | TEST | Bruno | 6 |
 | T6 | Mapear contratos de lectura y esquemas de los temas con acuerdo | DOCUMENTACION | Valentina | 3 |
-| T7 | Peer review de consumidores | REVISION | Bruno | 3 |
+| T7a | Peer review de consumidores — **idempotencia** (revista trabajo de otro) | REVISION | Máximo | 2 |
+| T7b | Peer review de consumidores — **Dead Letter Topic** (revista trabajo de otro) | REVISION | Bruno | 1 |
 
 > ✅ **Reparto resuelto.** Había **tres versiones contradictorias** de qué consumidores construir. Queda una sola:
 > - **Entran:** T03 (`challenge.events`) y T02 (`course.events`) — los únicos topics con contrato acordado/en curso.
@@ -309,9 +320,9 @@ public record EventoDTO(
 |---|---|---|---|---:|
 | **G1** | **Solicitud de contrato de mensajería a T11** — topics, envelope, tipo de `timestamp`, headers, artefacto compartido, naming del payload | DOCUMENTACION | Mateo | 4 |
 | G2 | Solicitud de contrato a **T05** — entregas/resultados, topic, PAR-19/20 | DOCUMENTACION | Damian | 3 |
-| G3 | Solicitud de contrato a **T07** — proveedor de modelo, deriva/calibración, PAR-22 | DOCUMENTACION | Regina | 3 |
+| G3 | Solicitud de contrato a **T07** — proveedor de modelo, deriva/calibración, PAR-22 | DOCUMENTACION | Máximo | 3 |
 | G4 | **Registro formal en `CONTRATOS.md`** — estado, fecha de acuerdo, responsable de cada lado, versión y evidencia | DOCUMENTACION | Julieta | 4 |
-| G5 | Tabla de mapeo topics oficiales ↔ Backoffice + plan de migración | DOCUMENTACION | Valentina | 3 |
+| G5 | Tabla de mapeo topics oficiales ↔ Backoffice + plan de migración | DOCUMENTACION | Bruno | 3 |
 
 **G1 se manda el Día 1, antes que nada.**
 
@@ -360,7 +371,7 @@ public record EventoDTO(
 4. **US-03:** se **agregan las tareas de gestión de rol (T10)** para cubrir los 4 CA (resuelto).
 5. **DoD Nivel 1 «multitenancy + RLS»:** **se acota** a historias con datos por `course_id` (reportes) (resuelto).
 6. ~~¿Cobertura 80 % o 90 %?~~ **Decidido: 90 %, el de nuestro DoD.** El 80 % del PR template de cátedra es un piso, no un techo.
-7. **División:** **pareja por capas** — nadie en una sola capa (ver §6).
+7. **División:** **los 9 devs cubren las 5 capas** (BACK + FRONT + TEST + REV + DOC); Ana Paula solo MSII/DOC (ver §6).
 
 ---
 

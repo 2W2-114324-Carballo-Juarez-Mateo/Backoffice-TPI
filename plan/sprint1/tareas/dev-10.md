@@ -2,7 +2,7 @@
 
 > **Capacidad:** 25.2 h - **Asignado:** 20 h - **Repo:** 2026-P4-BE/tpi-backoffice (mono-modulo, 1 datasource + 2 esquemas)
 > **Flujo:** feature/*|fix/* -> develop - release/*|hotfix/* -> main - PR con 1 aprobacion - sin push directo
-> **Division pareja:** horas, codigo (BACK+FRONT) y capas balanceados - nadie en una sola capa.
+> **Division pareja:** los 9 devs cubren las 5 capas (BACK + FRONT + TEST + REV + DOC) - nadie testea/revisa lo suyo.
 
 - **[DOC]** AP-1 - BPMN: cambio de parametro global end-to-end - 5h
 - **[DOC]** AP-2 - Diagrama de Microservicios: Tema 12 y sus topics en la red - 4h
