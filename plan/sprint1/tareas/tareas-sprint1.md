@@ -131,7 +131,7 @@ O sea: la maqueta está hecha. Falta enchufarla.
 
 El scaffolding es **inicial**: trae el esqueleto y la calidad, y lo demás lo configuramos nosotros.
 
-> **Dueño inicial del PR #0: Luciano.** Centralizar la línea base del `pom.xml` el Día 1 evita que múltiples desarrolladores choquen con merge conflicts en Git y colisiones de versiones (Classpath Hell). Una vez mergeado este cimiento común, cualquier compañero puede sumar librerías puntuales en su rama si su tarea lo requiere.
+> **Dueño inicial del PR #0: Luciano.** Centralizar la línea base del `pom.xml` el Día 1 evita que múltiples desarrolladores choquen con merge conflicts en Git y colisiones de versiones (Classpath Hell). **El scaffolding inicial lo hace Luciano; una vez mergeado el cimiento común (PR #0/#1), la configuración, dependencias y el resto las puede editar cualquiera** con el flujo normal `feature/* → PR → review → develop`, cuando la tarea lo requiera.
 > **Rama:** `feature/infra-bootstrap` · **PR #0 · merge Día 2** · **Bloquea a todo el resto.**
 
 | # | Tarea | Rol | Dev | Horas |
