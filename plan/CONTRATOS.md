@@ -15,7 +15,7 @@
 | **T04 · Teóricos y Encuestas** | **Sin lectura** — encuestas ahora de **T02**; no consumimos nada de T04 por el momento | ➖ SIN CONTRATO | — |
 | **T05 · Desafíos Prácticos** | Consume (entregas/resultados) + provee (PAR-19/20) | ⏳ PENDIENTE | — |
 | **T07 · Evaluación LLM** | Consume (deriva/calibración) + provee (`ModelProviderChanged`, PAR-22) | ⏳ PENDIENTE | — |
-| **T03 · Desafíos** | Provee (PAR-01: deriva montos) + lectura de métricas | ⏳ PENDIENTE | — |
+| **T03 · Desafíos** | Provee (PAR-01: deriva montos, hecho único) + lectura de métricas | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T03_SOLICITUD.md` |
 
 > **Pendientes internos:** schema externo de `identity.events` y `retention.events` · confirmación formal del `role` en el envelope (T01) · naming de topics con T11 · exposición del estado 2FA (T01) · **API de Vault (T01)** · **GESTOR / "profesor con vista"** · **lista blanca de profesores** · **observabilidad de microservicios: FUERA de alcance** (solo logs/health/correlation).
 
@@ -89,7 +89,7 @@
 | **T02** | `course_id`/cohorte, pertenencia docente, `RosterUpdated`, **encuestas CSAT anónimas**, PAR-18 | `solicitudes/CONTRATOS_T02_SOLICITUD.md` |
 | **T05** | Entregas/resultados, topic, PAR-19/20 | a generar |
 | **T07** | `ModelProviderChanged` (nosotros→ellos), deriva/calibración/golden set (ellos→nosotros), PAR-22 | a generar |
-| **T03** | Consumo de PAR-01, lectura de métricas de desafíos | a generar |
+| **T03** | Consumo de PAR-01 (y otros de XP), lectura de métricas de desafíos | `solicitudes/CONTRATOS_T03_SOLICITUD.md` |
 
 > **T04 · Teóricos/Encuestas:** quedó **sin lectura** — las encuestas ahora son de **T02 (Cursos)**; no hay contrato con T04 por el momento.
 
