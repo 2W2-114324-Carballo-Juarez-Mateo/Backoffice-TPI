@@ -13,9 +13,11 @@
 | [CONTRATOS_T11_SOLICITUD.md](CONTRATOS_T11_SOLICITUD.md) | **T11 · Social y Notificaciones** | ⏳ SIN RESPONDER (nueva) |
 | [CONTRATOS_T02_SOLICITUD.md](CONTRATOS_T02_SOLICITUD.md) | **T02 · Cursos y Matrícula** | ⏳ SIN RESPONDER (nueva — incluye **encuestas CSAT**) |
 | [CONTRATOS_T03_RESPUESTA.md](CONTRATOS_T03_RESPUESTA.md) | **T03 · Motor de Desafíos** | 🟡 **ACUERDO** (hecho único) |
+| [CONTRATOS_T07_SOLICITUD.md](CONTRATOS_T07_SOLICITUD.md) | **T07 · Evaluación LLM** | 🟡 **EN CURSO** (doc de ellos recibido + nuestra solicitud) |
+| [CONTRATOS_T07_LLM_LIMITES.md](CONTRATOS_T07_LLM_LIMITES.md) | **T07 · Doc de ellos:** "Explicación de Límites y Uso" (4 capas, presupuesto USD 20/mes, alerta 70%→Backoffice) | 📥 REFERENCIA |
 
 ## Pendientes por generar
-- **T05 · Prácticos** · **T07 · Evaluación LLM** (prioridad: T07 y T05).
+- **T05 · Prácticos** · (T07 ya tiene solicitud + doc recibido).
 - **T04 · Teóricos/Encuestas:** **quedó sin lectura** — las **encuestas ahora son de Cursos (T02)**; no consumimos nada más de T04 por el momento.
 
 > Registro consolidado: `plan/CONTRATOS.md` · Parámetros: `plan/PARAMETROS.md`.

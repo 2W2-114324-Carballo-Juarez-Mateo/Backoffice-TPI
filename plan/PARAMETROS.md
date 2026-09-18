@@ -39,11 +39,13 @@
 | **PAR-19** | Penalidad por entrega tardía | 30% | `late_submission_penalty_pct` | 05 | CANDIDATO |
 | **PAR-20** | Ventana de gracia para entrega tardía | 48 h | `late_submission_window_hours` | 05 · T03 en suspenso | CANDIDATO |
 | **PAR-21** | Techo del multiplicador de eventos/rachas | 3x | `event_multiplier_cap` | 10 | SUSPENDIDO |
-| **PAR-22** | Límite semanal de desafíos personalizados IA | *propuesto* 5 | `llm_custom_challenges_weekly_limit` | 07 | CANDIDATO |
+| **PAR-22** | Límite de desafíos personalizados IA | 🔄 **a reconciliar** (T07 define **3/día**; era propuesto 5/semana) | `llm_custom_challenges_daily_limit` | 07 | CANDIDATO / EXTERNO T07 |
 | **PAR-23** | Frescura máxima de lectura en analítica | 15 min | eporting_cache_freshness_minutes | 12 (Reporting) | CANDIDATO |
 | **PAR-25** | Plazo máximo de corrección / vencimiento de intento | *propuesto* 7 días | max_correccion_intento_dias | 03 | CANDIDATO |
 
 > **PAR-21 (SUSPENDIDO):** no aparece en la tabla del PRD (la sección 4.1 llega a PAR-18) y el mecanismo de **rachas/misiones** está "para más adelante" en T08/T10 (confirmado en la negociación). Se mantiene **documentado como candidato** dependiente de que T10 defina el mecanismo; no asumir consumo por ningún servicio hasta formalizarlo con la cátedra.
+
+> **Límites del tutor LLM (doc de T07, `solicitudes/CONTRATOS_T07_LLM_LIMITES.md`):** T07 los define como **"Parámetro Fijo"** (800 tokens/msg · 10 msgs o 25k tokens/ejercicio · 40 consultas/día · 3 desafíos/día · techo USD 20/mes con umbrales 70/90/100%). **Pendiente de aclarar** si el Backoffice los **solo visualiza** (recomendado) o los **configura** (→ serían EXTERNOS T07). El **PAR-22** (desafíos IA) se **reconcilia** con este doc: **3/día** vs el candidato semanal de 5. La **alerta de presupuesto al 70% → Backoffice** es un **evento** (`LLMBudgetAlert`, a contratar con T07), no un PAR.
 
 ## PAR-24 — Asignado al Tema 01 (fuera del Backoffice)
 
@@ -58,7 +60,7 @@
 | ✅ CONFIRMADO | Definido por el PRD (sin PAR-03/06/07/12) | PAR-01, PAR-02, PAR-04, PAR-05, PAR-08..11, PAR-13..18 |
 | 🟡 CANDIDATO | Deducido, a validar con la cátedra | PAR-19..20, PAR-22, PAR-23, PAR-25 |
 | ⚪ SUSPENDIDO | Candidato sin respaldo en el PRD, depende de otro dominio | PAR-21 |
-| 🔵 EXTERNO | No es del Backoffice | PAR-03, PAR-06, PAR-07 (T09/Mercado) · PAR-12 (Banco) · PAR-24 (T01) |
+| 🔵 EXTERNO | No es del Backoffice | PAR-03, PAR-06, PAR-07 (T09/Mercado) · PAR-12 (Banco) · PAR-24 (T01) · (PAR-22 → posible EXTERNO T07 según respuesta) |
 
 > **PAR-03/06/07 (EXTERNOS · T09/Mercado):** monedas y precios de catálogo los gestiona **T09 (Mercado)** (confirmado como descartados del Backoffice). **T03** necesita que **Mercado exponga PAR-03** (evento + REST + versión) para el monto de monedas del hecho único — contrato **T03 ↔ Mercado**, no del Backoffice. El seed del Backoffice **no** los incluye. **PAR-12 (EXTERNO · Banco):** vidas iniciales/máximo las gestiona **Banco** (evento `PARAMETER_UPDATED` con envelope estándar + `version`); el seed no lo incluye. **PAR-25 (CANDIDATO):** plazo máximo de corrección/vencimiento de intento, propuesto por T03.
 

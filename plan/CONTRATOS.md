@@ -14,7 +14,7 @@
 | **T02 · Cursos y Matrícula** | Consume (cohorte `course_id`, pertenencia docente, `RosterUpdated`, **encuestas CSAT anónimas**) + provee (PAR-18) | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T02_SOLICITUD.md` |
 | **T04 · Teóricos y Encuestas** | **Sin lectura** — encuestas ahora de **T02**; no consumimos nada de T04 por el momento | ➖ SIN CONTRATO | — |
 | **T05 · Desafíos Prácticos** | Consume (entregas/resultados) + provee (PAR-19/20) | ⏳ PENDIENTE | — |
-| **T07 · Evaluación LLM** | Consume (deriva/calibración) + provee (`ModelProviderChanged`, PAR-22) | ⏳ PENDIENTE | — |
+| **T07 · Evaluación LLM** | Consume (deriva/calibración) + provee (`ModelProviderChanged`, PAR-22) + recibe **alerta de presupuesto** (70%→Backoffice) | 🟡 **EN CURSO** — recibimos su doc de límites y uso | `solicitudes/CONTRATOS_T07_SOLICITUD.md` · `solicitudes/CONTRATOS_T07_LLM_LIMITES.md` |
 | **T03 · Desafíos** | Provee (hecho único en `challenge.events`) + consume PAR (PAR-01/04/05; PAR-03 vía Mercado) | 🟡 **ACUERDO** | `solicitudes/CONTRATOS_T03_RESPUESTA.md` |
 
 > **Pendientes internos:** schema externo de `identity.events` y `retention.events` · confirmación formal del `role` en el envelope (T01) · naming de topics con T11 · exposición del estado 2FA (T01) · **API de Vault (T01)** · **GESTOR / "profesor con vista"** · **lista blanca de profesores** · **observabilidad de microservicios: FUERA de alcance** (solo logs/health/correlation).
@@ -90,6 +90,14 @@
 - Define la **convención de eventos** de la plataforma (naming de topics, envelope, versionado) y **publica la lista de canales habilitados por release** (para alinear topics como `bank.events`).
 - Backoffice **emite** avisos/alertas hacia T11: `DataStaleDetected`, `DataFreshnessRestored`, `StudentAtHighRisk`, `ThresholdBreached`, `ExportReady`. → `solicitudes/CONTRATOS_T11_SOLICITUD.md`
 
+## T07 — Evaluación LLM (EN CURSO — doc recibido)
+- **Recibimos** `CONTRATOS_T07_LLM_LIMITES.md` (Explicación de Límites y Uso): 4 capas (mensaje 800 tokens / ejercicio 10 msgs-25k tokens / diaria 40 consultas-3 desafíos / presupuesto USD 20 mes con semáforo 70-90-100%). Todo consistente con **PAR-05, PAR-10, PAR-11, PAR-14, PAR-15**.
+- **Nuevo punto de integración:** **alerta de presupuesto al 70% → Backoffice** (evento `LLMBudgetAlert` propuesto en `llm.budget.events`). **Sprint 2** (se integra al retomar US-04/US-07; no bloquea Sprint 1).
+- **Pendiente de aclarar (T07):** (a) los límites de las 4 capas son **solo visualización** desde Backoffice, o (b) **configurables** (→ parámetros EXTERNOS T07). Recomendamos (a) por ser "Parámetro Fijo" en su doc.
+- **PAR-22:** nuestro candidato era **semanal (5)**; T07 define **3 desafíos/día** y **40 consultas/día** → **reconciliar** (ajustar a diario o marcar EXTERNO T07).
+- **Moderador de Chat:** modelo **a probar / sujeto a cambios** → no es dependencia dura para Sprint 1.
+- Contratos ya previstos: `ModelProviderChanged` (nosotros→ellos) · deriva/calibración/golden set (ellos→nosotros) · PAR-22. → `solicitudes/CONTRATOS_T07_SOLICITUD.md`
+
 ---
 
 ## Pendientes por tema (para avanzar)
@@ -99,7 +107,7 @@
 | **T10** | `roadmap.events` (naming con T11), lecturas `/api/roadmap/**`, promoción/abandono y alumno en riesgo, PAR-21 (pendiente de validación) | `solicitudes/CONTRATOS_T10_SOLICITUD.md` |
 | **T02** | `course_id`/cohorte, pertenencia docente, `RosterUpdated`, **encuestas CSAT anónimas**, PAR-18 | `solicitudes/CONTRATOS_T02_SOLICITUD.md` |
 | **T05** | Entregas/resultados, topic, PAR-19/20 | a generar |
-| **T07** | `ModelProviderChanged` (nosotros→ellos), deriva/calibración/golden set (ellos→nosotros), PAR-22 | a generar |
+| **T07** | **Alerta de presupuesto (70%→Backoffice): topic + payload** · ¿límites configurables o fijos? · PAR-22 (diario 3 vs semanal 5) · deriva/calibración/golden set · PAR-22 | `solicitudes/CONTRATOS_T07_SOLICITUD.md` |
 | **T03** | Consumo de PAR-01 (y otros de XP), lectura de métricas de desafíos | `solicitudes/CONTRATOS_T03_SOLICITUD.md` |
 
 > **T04 · Teóricos/Encuestas:** quedó **sin lectura** — las encuestas ahora son de **T02 (Cursos)**; no hay contrato con T04 por el momento.
