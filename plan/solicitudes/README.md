@@ -11,8 +11,10 @@
 | [CONTRATOS_T10_SOLICITUD.md](CONTRATOS_T10_SOLICITUD.md) | **T10 · Roadmap y Progreso** | 🟡 EN CURSO |
 | [CONTRATOS_T09_SOLICITUD.md](CONTRATOS_T09_SOLICITUD.md) | **T09 · Mercado** | ⏳ SIN RESPONDER (nueva) |
 | [CONTRATOS_T11_SOLICITUD.md](CONTRATOS_T11_SOLICITUD.md) | **T11 · Social y Notificaciones** | ⏳ SIN RESPONDER (nueva) |
+| [CONTRATOS_T02_SOLICITUD.md](CONTRATOS_T02_SOLICITUD.md) | **T02 · Cursos y Matrícula** | ⏳ SIN RESPONDER (nueva — incluye **encuestas CSAT**) |
 
 ## Pendientes por generar
-- **T02 · Cursos/Matrícula** · **T04 · Teóricos/Encuestas** · **T05 · Prácticos** · **T07 · Evaluación LLM** (prioridad: T07 y T02).
+- **T05 · Prácticos** · **T07 · Evaluación LLM** (prioridad: T07 y T05).
+- **T04 · Teóricos/Encuestas:** **quedó sin lectura** — las **encuestas ahora son de Cursos (T02)**; no consumimos nada más de T04 por el momento.
 
 > Registro consolidado: `plan/CONTRATOS.md` · Parámetros: `plan/PARAMETROS.md`.

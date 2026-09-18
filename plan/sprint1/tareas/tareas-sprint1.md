@@ -112,7 +112,7 @@
 | # | Tarea | Rol | Dev | Horas |
 |---|---|---|---|---:|
 | T1 | Crear migración Flyway y tabla de deduplicación `ProcessedEvent` | BACKEND | Dev 5 | 4 |
-| T2a | Consumidores de Kafka para T02 / T04 / T05 | BACKEND | Dev 6 | 6 |
+| T2a | Consumidores de Kafka para T02 / T05 | BACKEND | Dev 6 | 6 |
 | T2b | Consumidores de Kafka para T06 / T07 / T10 | BACKEND | Dev 6 | 6 |
 | T3 | Deduplicación por `eventId` en cada consumidor | BACKEND | Dev 6 | 4 |
 | T4 | Configurar Dead Letter Topic para eventos malformados | BACKEND | Dev 5 | 4 |

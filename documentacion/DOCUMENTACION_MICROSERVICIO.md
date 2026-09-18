@@ -13,7 +13,7 @@ El **Backoffice** es el **Tema 12** de la plataforma y se define como **consumid
 |---|---|
 | Servicios propietarios | **2**: `administration-service` (configuración + gobernanza LLM) y `reporting-service` (reportes, métricas, export, alertas) |
 | Consume de | **T01** (identidad/auth/roles/auditoría/retención), **T02** (cohorte `course_id`, pertenencia docente) |
-| Lee (contratos de lectura) | **T02, T04, T05, T07, T08, T10** (RF-RPT-10) |
+| Lee (contratos de lectura) | **T02 (cohorte + encuestas CSAT), T05, T07, T08, T10** (RF-RPT-10) |
 | Provee | `GlobalConfigurationChanged` (PAR) a **T03** (montos) / **T09** (precios) / **T10** (rachas, pendiente) y `ModelProviderChanged` (evaluador) a **T07** |
 | Stack | Java 21 · Spring Boot 3 · Kafka · PostgreSQL · Docker Compose |
 

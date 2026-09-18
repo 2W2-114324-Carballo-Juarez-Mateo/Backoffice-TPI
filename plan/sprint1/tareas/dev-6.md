@@ -16,7 +16,7 @@
 
 ## US-08 · Ingesta de datos de los temas con deduplicación
 
-### T2a — [BACKEND] Consumidores de Kafka para T02 / T04 / T05 · 6h
+### T2a — [BACKEND] Consumidores de Kafka para T02 / T05 · 6h
 **Descripción (plan/tareas.md):** Parte de US-08 T2: consumer groups + **adapter por tema** para **T02, T04, T05** (transformar payload en read model).
 **Qué hacer:** consumer group + un **adapter por tema** que transforma el payload en read model (Cursos/Matrícula, Teóricos/Encuestas, Prácticos).
 **CA relacionados:** CA1.

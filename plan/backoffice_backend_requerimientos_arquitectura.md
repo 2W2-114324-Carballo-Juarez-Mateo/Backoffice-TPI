@@ -337,7 +337,7 @@ Al consumir resultados de encuestas, debe respetarse el anonimato 100% (RF-ENC-0
 
 ### RF-RPT-10 — Contratos de lectura con los seis temas
 
-El Backoffice depende de **contratos de lectura** con los temas que le proveen datos (02 Cursos, 04 Teóricos/Encuestas, 05 Prácticos, 07 Evaluación LLM, 08 Banco, 10 Roadmap). Sin esos contratos acordados en el sprint 1, el Backoffice no tiene nada demostrable (es consumidor puro).
+El Backoffice depende de **contratos de lectura** con los temas que le proveen datos (02 Cursos/Matrícula (incl. encuestas CSAT), 05 Prácticos, 07 Evaluación LLM, 08 Banco, 10 Roadmap). Sin esos contratos acordados en el sprint 1, el Backoffice no tiene nada demostrable (es consumidor puro).
 
 ### RF-RPT-11 — Reportes docentes dinámicos (configurables)
 

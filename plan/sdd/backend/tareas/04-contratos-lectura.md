@@ -35,12 +35,13 @@ sequenceDiagram
 ## 5. Contrato API (de lectura)
 | Tema | Datos que provee | Mecanismo |
 |---|---|---|
-| 02 Cursos/Matrícula | cohorte, matrícula, pertenencia docente | evento + API (gateway) |
-| 04 Teóricos/Encuestas | agregados de encuestas (anónimos) | evento |
+| 02 Cursos/Matrícula | cohorte, matrícula, pertenencia docente, **encuestas CSAT anónimas** | evento + API (gateway) |
 | 05 Prácticos | entregas, resultados | evento |
 | 07 Evaluación LLM | estado de calibración/drift, scores | evento |
 | 08 Banco | saldos, movimientos | **REST** (`/api/bank/**`, polling ≤15 min) |
 | 10 Roadmap | progreso, XP, niveles | evento |
+
+> **T04 · Teóricos/Encuestas:** sin lectura — las encuestas ahora las provee **T02 (Cursos)**.
 
 ## 6. Modelo de datos
 Read models en `reporting_db`: `CohortMetricsSnapshot`, `TeacherReportSnapshot`, `ConfigurationSnapshot`, `ModelProviderSnapshot` (jsonb, reconstruibles por replay).

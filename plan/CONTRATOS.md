@@ -11,11 +11,11 @@
 | **T10 · Roadmap y Progreso** | Consume (progreso/XP/niveles) · PAR-21 pendiente de validación | 🟡 **EN CURSO** (solicitud enviada) | `solicitudes/CONTRATOS_T10_SOLICITUD.md` |
 | **T09 · Mercado** | Provee (dueño de precios **PAR-06/07**) | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T09_SOLICITUD.md` |
 | **T11 · Social y Notificaciones** | Coordina **convención de eventos** + consumimos avisos/alertas | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T11_SOLICITUD.md` |
-| **T02 · Cursos y Matrícula** | Consume (cohorte `course_id`, pertenencia docente, `RosterUpdated`) | ⏳ PENDIENTE | — |
-| **T04 · Teóricos y Encuestas** | Consume (agregados anónimos CSAT) | ⏳ PENDIENTE | — |
+| **T02 · Cursos y Matrícula** | Consume (cohorte `course_id`, pertenencia docente, `RosterUpdated`, **encuestas CSAT anónimas**) + provee (PAR-18) | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T02_SOLICITUD.md` |
+| **T04 · Teóricos y Encuestas** | **Sin lectura** — encuestas ahora de **T02**; no consumimos nada de T04 por el momento | ➖ SIN CONTRATO | — |
 | **T05 · Desafíos Prácticos** | Consume (entregas/resultados) + provee (PAR-19/20) | ⏳ PENDIENTE | — |
 | **T07 · Evaluación LLM** | Consume (deriva/calibración) + provee (`ModelProviderChanged`, PAR-22) | ⏳ PENDIENTE | — |
-| **T03 · Desafíos** | Provee (PAR-01/03: deriva montos) + lectura de métricas | ⏳ PENDIENTE | — |
+| **T03 · Desafíos** | Provee (PAR-01: deriva montos) + lectura de métricas | ⏳ PENDIENTE | — |
 
 > **Pendientes internos:** schema externo de `identity.events` y `retention.events` · confirmación formal del `role` en el envelope (T01) · naming de topics con T11 · exposición del estado 2FA (T01) · **API de Vault (T01)** · **GESTOR / "profesor con vista"** · **lista blanca de profesores** · **observabilidad de microservicios: FUERA de alcance** (solo logs/health/correlation).
 
@@ -86,11 +86,12 @@
 | Tema | Qué falta acordar | Solicitud |
 |---|---|---|
 | **T10** | `roadmap.events` (naming con T11), lecturas `/api/roadmap/**`, promoción/abandono y alumno en riesgo, PAR-21 (pendiente de validación) | `solicitudes/CONTRATOS_T10_SOLICITUD.md` |
-| **T02** | `course_id`/cohorte, contrato de pertenencia docente, `RosterUpdated`, lectura de matrícula | a generar |
-| **T04** | Agregados anónimos de encuestas (CSAT), topic `survey.events` | a generar |
+| **T02** | `course_id`/cohorte, pertenencia docente, `RosterUpdated`, **encuestas CSAT anónimas**, PAR-18 | `solicitudes/CONTRATOS_T02_SOLICITUD.md` |
 | **T05** | Entregas/resultados, topic, PAR-19/20 | a generar |
 | **T07** | `ModelProviderChanged` (nosotros→ellos), deriva/calibración/golden set (ellos→nosotros), PAR-22 | a generar |
-| **T03** | Consumo de PAR-01/03, lectura de métricas de desafíos | a generar |
+| **T03** | Consumo de PAR-01, lectura de métricas de desafíos | a generar |
+
+> **T04 · Teóricos/Encuestas:** quedó **sin lectura** — las encuestas ahora son de **T02 (Cursos)**; no hay contrato con T04 por el momento.
 
 ## Convenciones transversales (aplican a todos)
 
