@@ -76,11 +76,11 @@ Cada épica está definida con el **template del equipo** (`templateEpicas.md`) 
 - **[G06] Épica 02 · Administración de la Plataforma** → [epicas/EP-02.md](epicas/EP-02.md)
 - **[G06] Épica 03 · Modelos LLM y Golden Set** → [epicas/EP-03.md](epicas/EP-03.md)
 
-### TH-02 · Observabilidad y Soporte Académico
+### TH-02 · Analítica Institucional
 *Muestra información en vez de gobernarla: el PROFESOR solo consulta, el ADMIN ve el consolidado.*
 
 - **[G06] Épica 04 · Contratos de Lectura e Ingesta** → [epicas/EP-04.md](epicas/EP-04.md)
-- **[G06] Épica 05 · Observabilidad, Reportes y Panel de Riesgo** → [epicas/EP-05.md](epicas/EP-05.md)
+- **[G06] Épica 05 · Analítica, Reportes y Panel de Riesgo** → [epicas/EP-05.md](epicas/EP-05.md)
 
 > **Futura:** TH-03 · Experiencia de Usuario (frontend Angular + BFF) — a definir.
 
@@ -115,6 +115,6 @@ Cada historia está en `uh/` con el **template del equipo** (`templateUH.md`): D
 | EP-02 · Administración de la Plataforma | US-03 | 5 | Must |
 | EP-03 · Modelos LLM y Golden Set | US-04, US-05, US-06, US-07 | 5+5+5+5 | Must |
 | EP-04 · Contratos de Lectura e Ingesta | US-08, US-10 | 5+3 | Must |
-| EP-05 · Observabilidad, Reportes y Panel | US-09, US-11, US-12, US-13, US-14 | 5+5+5+5+3 | Could / Should / Should / Should / Should |
+| EP-05 · Analítica, Reportes y Panel | US-09, US-11, US-12, US-13, US-14 | 5+5+5+5+3 | Could / Should / Should / Should / Should |
 
 > **Backlog general:** las historias **Must** suman **43 SP**; la capacidad efectiva define cuántas se toman por Sprint.

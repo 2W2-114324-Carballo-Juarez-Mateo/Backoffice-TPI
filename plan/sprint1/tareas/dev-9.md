@@ -1,111 +1,13 @@
-# Dev 9 (Bruno Gianoli) — Tareas Sprint 1
+# dev-9.md (Gianoli, Bruno) - Tareas Sprint 1
 
-> **Total:** 22h · **Código (BE+TEST):** 16h · **Capacidad real:** 36h (4h/día · 0 ausencias · 90%)
-> **Primera tarea a arrancar (Day 1):** **US-04 T7** — OpenAPI proveedores (arranca mientras Dev 8 hace la entidad).
-> **Rama/PR:** `feature/us-04-modelos-ia` (PR a develop #5, merge Día 8).
+> **Capacidad:** 28.4 h - **Asignado:** ~21 h - **Repo:** 2026-P4-BE/tpi-backoffice (mono-modulo, 1 datasource + 2 esquemas)
+> **Flujo:** feature/*|fix/* -> develop - release/*|hotfix/* -> main - PR con 1 aprobacion - sin push directo
 
-## Cómo trabajar (obligatorio)
-- **RULES.md** (raíz del repo de trabajo `Repositorio/TPI---Backoffice-Demo-/`): sin secretos (API Keys cifradas/enmascaradas), ADMIN-only.
-- **SKILLS.md**: `SKILL-endpoint`, `SKILL-caso-uso`.
-- **DoD** (`plan/sprint0/Sprint0-Propuesta.md` §2): Nivel 0 y Nivel 1.
-- **SDD:** `plan/sdd/backend/docs/05-endpoints.md`, `07-seguridad.md`.
+- **[BACK]** US-02 T11 - X-Request-Id/traceparent como headers de Kafka - 3h
+- **[BACK]** US-08 T7 - Peer review de consumidores - 3h
+- **[FRONT]** FE-2 - Conectar pantalla de parametros (reemplazar signal hardcodeado) - 8h
+- **[TEST]** TS-8 - Unit tests del front: servicio + interceptores (Vitest) - 3h
+- **[DOC]** DOC-9 - Documentar front/conexion (sdd frontend) - 4h
 
----
-
-## US-04 · Registro de proveedores y modelos de IA
-
-### T2 — [BACKEND] Endpoint de registro de proveedores y catálogo con enmascaramiento · 6h
-**Descripción (plan/tareas.md):** POST (CA1 → 201). GET (CA2 — listado con estado). Claves enmascaradas sk-**** (CA3).
-**Qué hacer:** `POST` de registro (→ 201) y `GET` de catálogo con estado; claves enmascaradas `sk-****`.
-**CA relacionados:** CA1, CA2, CA3.
-
-### T5 — [TEST] Seguridad: cifrado en BD y enmascaramiento en respuestas · 6h
-**Descripción (plan/tareas.md):** la API Key vive en Vault (T01); NINGÚN endpoint la devuelve en texto plano (CA3).
-**Qué hacer:** verificar que la API Key persiste **cifrada** y que ningún endpoint la devuelve en texto plano.
-**CA relacionados:** CA3.
-
-### T6 — [TEST] Validar bloqueo de activación para modelos en `PENDING_REVIEW` · 4h
-**Descripción (plan/tareas.md):** Intentar activar modelo recién registrado → rechazo.
-**Qué hacer:** intentar activar un modelo recién registrado → rechazo.
-**CA relacionados:** CA1.
-
-### T7 — [DOCUMENTACION] Documentar endpoints en OpenAPI y actualizar SDD · 3h
-**Descripción (plan/tareas.md):** Spec springdoc con esquemas. Documentar máquina de estados del modelo.
-**Qué hacer:** spec springdoc + máquina de estados del modelo.
-
-### T8 — [REVISION] Peer review de seguridad de credenciales y control en Taiga · 3h
-**Descripción (plan/tareas.md):** Que no se filtren API Keys en logs, respuestas ni repo. RULES-seguridad §3 y §5.
-**Qué hacer:** que no se filtren API Keys en logs, respuestas ni repo.
-
-## Criterios de aceptación (US-04)
-- **CA1:** registrar un modelo válido → 201, queda "pendiente de revisión" y no se puede activar.
-- **CA2:** el catálogo muestra el estado de cada modelo.
-- **CA3:** las claves nunca aparecen completas en ninguna respuesta.
-
-## DoD (Nivel 0 — Tarea) — checklist
-- [ ] Compila y pasa lint/estilo.
-- [ ] Tests de seguridad verdes.
-- [ ] Sin secretos ni hardcodes; cumple RULES.md.
-- [ ] PR con ≥1 review aprobado.
-- [ ] OpenAPI/sdd actualizados.
-
----
-
-## Registro de trabajo / trazabilidad (feedback de la IA)
-
-> Completar al terminar cada tarea, para dejar constancia de qué se hizo y cómo. Formato definido en el [README](README.md#registro-de-trabajo--trazabilidad-feedback-de-la-ia).
-
-### US-04 · T2 — [BACKEND] Endpoint de registro y catálogo con enmascaramiento
-- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
-- **Qué se hizo:**
-- **Archivos/clases tocadas:**
-- **Decisiones / supuestos:**
-- **CA / RF cubiertos:**
-- **Tests agregados:**
-- **PR / commits:**
-- **Pendientes / deuda técnica:**
-
-### US-04 · T5 — [TEST] Seguridad: cifrado en BD y enmascaramiento
-- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
-- **Qué se hizo:**
-- **Archivos/clases tocadas:**
-- **Decisiones / supuestos:**
-- **CA / RF cubiertos:**
-- **Tests agregados:**
-- **PR / commits:**
-- **Pendientes / deuda técnica:**
-
-### US-04 · T6 — [TEST] Bloqueo de activación en PENDING_REVIEW
-- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
-- **Qué se hizo:**
-- **Archivos/clases tocadas:**
-- **Decisiones / supuestos:**
-- **CA / RF cubiertos:**
-- **Tests agregados:**
-- **PR / commits:**
-- **Pendientes / deuda técnica:**
-
-### US-04 · T7 — [DOCUMENTACION] OpenAPI de proveedores/modelos
-- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
-- **Qué se hizo:**
-- **Archivos/clases tocadas:**
-- **Decisiones / supuestos:**
-- **CA / RF cubiertos:**
-- **Tests agregados:**
-- **PR / commits:**
-- **Pendientes / deuda técnica:**
-
-### US-04 · T8 — [REVISION] Peer review de seguridad de credenciales
-- **Estado:** ⬜ pendiente / 🟡 en curso / ✅ hecho
-- **Qué se hizo:**
-- **Archivos/clases tocadas:**
-- **Decisiones / supuestos:**
-- **CA / RF cubiertos:**
-- **Tests agregados:**
-- **PR / commits:**
-- **Pendientes / deuda técnica:**
-
-### Resumen del integrante
-- **Tareas completadas:** 0/5 · **Horas reales:** __ / __ h
-- **Notas generales:**
+> **DoD Nivel 0:** tarea terminada - tests verdes - PR con review - sdd/docs actualizados. **Nivel 1:** historia testeada, cobertura 90%, sin deuda, documentada (RLS solo donde aplica).
 

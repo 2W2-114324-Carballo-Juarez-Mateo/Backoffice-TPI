@@ -1932,6 +1932,8 @@ Los secretos deberán sobrescribirse mediante variables de entorno o Secret Mana
 
 # 27. Docker Compose
 
+> **ADR (2026-09-18):** el diagrama conceptual mantiene los **2 dominios lógicos** (administration / reporting), pero la **entrega en el repo oficial `2026-P4-BE/tpi-backoffice` es MONO-MÓDULO** (Boot 4) con **1 datasource y 2 esquemas** (`administration` / `reporting`) dentro de una misma base. El compose local del espejo es: **1 PostgreSQL + Kafka (KRaft)**. La lógica de *database-per-service* se preserva a nivel de esquema.
+
 Infraestructura local:
 
 ```text

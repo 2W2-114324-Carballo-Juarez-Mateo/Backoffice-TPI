@@ -36,7 +36,7 @@
 - **Contratos:** topics de los 6 temas (acordados en Sprint 0) · evento de degradación de frescura a T11.
 - **Dependencias:** Temas 02/04/05/07/08/10 (productores) · T11. **Habilitador del tema T-B.**
 
-## EP-05 · Observabilidad, Reportes y Panel de Riesgo (reporting-service · T-B)
+## EP-05 · Analítica, Reportes y Panel de Riesgo (reporting-service · T-B)
 
 - **Objetivo:** mostrar reportes y métricas (docente por cohorte · ADMIN consolidado), con privacidad (anonimato, sin rankings) y exportación.
 - **Alcance técnico:** read model por alumno/cohorte + cálculo de riesgo (ROJO/AMARILLO/VERDE) · panel docente con **RLS** (`course_id` + sentinel `ALL` para ADMIN) · indicadores con bloqueo de anonimato · umbrales + alertas · exportación asíncrona (PDF/CSV).
