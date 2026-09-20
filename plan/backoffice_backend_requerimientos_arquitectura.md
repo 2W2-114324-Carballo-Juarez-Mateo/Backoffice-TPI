@@ -996,34 +996,36 @@ RetentionDecisionCreated
 DataAnonymized
 ```
 
-Los eventos deberán incluir:
+Los eventos deberán incluir (estándar **Drive oficial**):
 
 ```json
 {
-  "eventId": "uuid",
-  "eventType": "CourseArchived",
-  "occurredAt": "2026-08-28T12:00:00Z",
-  "correlationId": "uuid",
-  "actorId": "uuid",
-  "source": "course-service",
+  "eventId": "123e4567-e89b-12d3-a456-426614174000",
+  "eventType": "NOMBRE_DEL_EVENTO",
+  "timestamp": "2026-09-02T19:30:00Z",
+  "producer": "tema-12-backoffice",
   "payload": {}
 }
 ```
 
-### Topics y particiones (convención Kafka)
+> **ADR 2026-09 (CERRADO):** el envelope oficial es **`EventoDTO{eventId, eventType, timestamp, producer, payload}`** (5 campos). `correlationId/actorId/role` → **headers de Kafka** (trazabilidad/auditoría). `eventType` en español. Los ejemplos con `occurredAt`/`source` en este documento son **legacy** y quedan superados por el estándar. El **Kafka/topics lo gestiona T11** (Social y Notificaciones) → todo contrato de mensajería se **ratifica con T11 (G1)**.
+
+### Topics y particiones (convención Kafka — a ratificar con T11)
 
 | Topic | Eventos | Rol BackOffice | Consumer group por servicio |
 |---|---|---|---|
-| `identity.events` | AdminCreated, AdminDeleted, AdminRecoveryExecuted, RoleChanged | Publica | `audit`, `reporting`… |
-| `administration.events` | GlobalConfigurationChanged, ModelProviderChanged, ModelFunctionChanged | Publica | `challenges`, `roadmap`, `market`… |
+| `sistema.notificaciones` | **VENCIMIENTO_DATOS_ACADEMICOS** (+ avisos a confirmar con T11) | Publica | `notificaciones` |
+| config del Backoffice *(nombre a fijar en G1)* | `CAMBIO_CONFIGURACION_GLOBAL` (antes `GlobalConfigurationChanged`) | Publica | `challenges`, `roadmap`, `market`… |
 | `audit.events` (v1) | eventos de auditoría (RF-AUD-*) | Publica | `audit` |
-| `retention.events` | RetentionDecisionCreated, DataAnonymized | Publica | `audit`, `reporting`… |
-| `course.events` | CourseCreated, CourseActivated, CourseArchived, RosterUpdated | **Consume** | `reporting` |
-| `gamification.events` / `ranking.events` / `survey.events` | eventos de otros equipos | **Consume** | `reporting` |
+| `identity.events` | AdminCreated, AdminDeleted, AdminRecoveryExecuted, RoleChanged | Publica (T01) | `audit`, `reporting`… |
+| `retention.events` | RetentionDecisionCreated, DataAnonymized | Publica (T01) | `audit`, `reporting`… |
+| `cursos.ciclo-vida` | NUEVO_CURSO_DISPONIBLE, CURSO_EN_RIESGO, CURSO_ARCHIVADO, matrícula | **Consume** | `reporting` |
+| `desafios.resultados` | **hecho único T03** (resultado de desafío, XP/monedas y desglose) | **Consume** | `reporting` |
+| `bank.events` / `survey.events` / `ranking.events` / `roadmap.events` | eventos de otros equipos | **Consume** | `reporting` |
 
 Cada **consumer group** pertenece a un consumidor (un servicio). **Idempotencia por `event_id` y por `version`** (el consumidor descarta `v ≤ local`). Los **read models de Reporting se reconstruyen vía contratos de lectura REST** (no dependen del historial del broker). Los consumidores de parámetros usan **caché local con TTL 10 min** que el evento invalida antes (respaldo ante caída del Backoffice).
 
-> **Envelope estándar:** acordado con T01 agregar el campo `role` al envelope base (`eventId, eventType, occurredAt, correlationId, actorId, role, source, payload`) — propuesto como estándar de plataforma; T01 lo confirma formalmente. **Pendientes de contrato externo:** payloads de `identity.events` (AdminCreated/AdminDeleted/AdminRecoveryExecuted/RoleChanged) y `retention.events` (RetentionDecisionCreated/DataAnonymized) — mismo mecanismo outbox de T01, schema a cerrar.
+> **Envelope estándar:** `EventoDTO` oficial (Drive) — ver ADR arriba. **Pendientes de contrato externo:** payloads de `identity.events` (AdminCreated/AdminDeleted/AdminRecoveryExecuted/RoleChanged) y `retention.events` (RetentionDecisionCreated/DataAnonymized) — mismo mecanismo outbox de T01, schema a cerrar; nombres/topics a ratificar con **T11**.
 
 ### Payloads concretos de eventos cross-team
 
@@ -2364,7 +2366,7 @@ El equipo de BackOffice no debe implementar el frontend administrativo salvo que
 - **Roles (T01):** los roles los define T01. Propuestos por el profe: **GESTOR** y **"PROFESOR con permiso de vista"** → coordinar si son rol nuevo o permiso. El Backoffice define la **matriz de acciones por rol** en su panel.
 - **Lista blanca de profesores (RF-USR-02, T01):** coordinar si la administra T01 o el Backoffice desde el panel.
 
-> **Convención de eventos:** todos los eventos siguen `{eventId, eventType, occurredAt, correlationId, actorId, role, source, payload}` (ver §12; `role` propuesto como estándar de plataforma), con contrato versionado (§11/33.3).
+> **Convención de eventos:** todos los eventos siguen el **`EventoDTO` oficial** `{eventId, eventType, timestamp, producer, payload}` (Drive, ✅ cerrado; `correlationId/actorId/role` → headers de Kafka, `eventType` en español — ver §12 y ADR 2026-09), con contrato versionado (§11/33.3) y **ratificación con T11** (dueño del Kafka).
 
 ---
 

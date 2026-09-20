@@ -1,6 +1,8 @@
 # Registro de Contratos Cross-Team — Backoffice (Tema 12)
 
 > **Fuente única de verdad** del estado de los contratos de integración. Cada contrato indica: tema, relación (consumimos / proveemos), estado y dónde está definido. Las solicitudes viven en `plan/solicitudes/`. Los detalles acordados con **T01** están consolidados abajo; el resto quedan **pendientes**.
+>
+> **✅ Estándar de eventos CERRADO (Drive oficial, 2026-09):** `EventoDTO{eventId, eventType, timestamp, producer, payload}` (5 campos; `correlationId/actorId/role` → **headers de Kafka**), `eventType` en español, `producer = tema-XX-nombre`, topics en español (`cursos.ciclo-vida`, `desafios.resultados`, `sistema.notificaciones`, `sistema.moderacion`). Backoffice emite `VENCIMIENTO_DATOS_ACADEMICOS` → `sistema.notificaciones`. Queda coordinar con cada tema: topics de emisión propios (config/auditoría), payloads por evento y confirmación de headers.
 
 ## Estado por tema
 
@@ -17,7 +19,7 @@
 | **T07 · Evaluación LLM** | Consume (deriva/calibración) + provee (`ModelProviderChanged`, PAR-22) + recibe **alerta de presupuesto** (70%→Backoffice) | 🟡 **EN CURSO** — recibimos su doc de límites y uso | `solicitudes/CONTRATOS_T07_SOLICITUD.md` · `solicitudes/CONTRATOS_T07_LLM_LIMITES.md` |
 | **T03 · Desafíos** | Provee (hecho único en `challenge.events`) + consume PAR (PAR-01/04/05; PAR-03 vía Mercado) | 🟡 **ACUERDO** | `solicitudes/CONTRATOS_T03_RESPUESTA.md` |
 
-> **Pendientes internos:** schema externo de `identity.events` y `retention.events` · confirmación formal del `role` en el envelope (T01) · naming de topics con T11 · exposición del estado 2FA (T01) · **API de Vault (T01)** · **GESTOR / "profesor con vista"** · **lista blanca de profesores** · **observabilidad de microservicios: FUERA de alcance** (solo logs/health/correlation).
+> **Pendientes internos:** schema externo de `identity.events` y `retention.events` · topics de emisión propios del Backoffice (config/auditoría) a fijar vs Drive · confirmación de `correlationId/actorId/role` como **headers** (T01/T11) · naming de topics restantes con T11 · exposición del estado 2FA (T01) · **API de Vault (T01)** · **GESTOR / "profesor con vista"** · **lista blanca de profesores** · **observabilidad de microservicios: FUERA de alcance** (solo logs/health/correlation).
 
 ---
 
@@ -87,8 +89,24 @@
 - **PAR-03 / PAR-06 / PAR-07:** los gestiona **T09 (Mercado)** (descartados del Backoffice). Pendiente: que **Mercado confirme que gestiona PAR-03 y lo expone a T03** (evento + REST + versión). La solicitud `CONTRATOS_T09_SOLICITUD.md` se ajusta.
 
 ## T11 — Social y Notificaciones (SOLICITUD LISTA)
-- Define la **convención de eventos** de la plataforma (naming de topics, envelope, versionado) y **publica la lista de canales habilitados por release** (para alinear topics como `bank.events`).
-- Backoffice **emite** avisos/alertas hacia T11: `DataStaleDetected`, `DataFreshnessRestored`, `StudentAtHighRisk`, `ThresholdBreached`, `ExportReady`. → `solicitudes/CONTRATOS_T11_SOLICITUD.md`
+- Define la **convención de eventos** de la plataforma: **basada en el Drive oficial** (`EventoDTO` 5 campos + topics en español). Publica la **lista de canales habilitados por release**.
+- Backoffice **emite a `sistema.notificaciones`:** **`VENCIMIENTO_DATOS_ACADEMICOS`** (payload `{cohortId, courseName, closingDate, expirationDate, daysRemaining}` — preaviso de retención PAR-16/17). El resto de avisos que habíamos previsto (`DataStaleDetected`, `StudentAtHighRisk`, `ThresholdBreached`, `ExportReady`, `DataFreshnessRestored`) **no están en el Drive** → a confirmar con T11 si se emiten o se descartan. → `solicitudes/CONTRATOS_T11_SOLICITUD.md`
+
+---
+
+## Estándar de eventos de plataforma (Drive oficial) — ✅ CERRADO
+
+| Ítem | Valor oficial |
+|---|---|
+| Envelope | **`EventoDTO{eventId, eventType, timestamp, producer, payload}`** (5 campos; **nada más en el body**) |
+| `correlationId/actorId/role` | **Headers de Kafka** (trazabilidad/auditoría; a confirmar formalmente con T01/T11) |
+| `eventType` | **Español** SCREAMING_SNAKE_CASE (`CURSO_ARCHIVADO`, `DESAFIO_APROBADO`, `VENCIMIENTO_DATOS_ACADEMICOS`…) |
+| `producer` | `tema-XX-nombre` (Backoffice: **`tema-12-backoffice`**) |
+| `timestamp` | ISO 8601 UTC |
+| Topics | `cursos.ciclo-vida` · `desafios.resultados` · `sistema.notificaciones` · `sistema.moderacion` (español) |
+| Arquitectura | 1 topic · consumer groups paralelos (T08/T10/T11 escuchan `desafios.resultados`) |
+
+> **Impacto en Backoffice:** consumimos **`desafios.resultados`** (T03 hecho único) y **`cursos.ciclo-vida`** (T02) — reemplazan a `challenge.events`/`course.events`. Nuestros topics de emisión (config/auditoría) y nombres de eventos propios (`GlobalConfigurationChanged`, `ParameterChanged`…) **a fijar** en español y coordinar en G1/G4. La **auditoría** sigue en `audit.events` (T01 persiste) — confirmar nombre/topic vs Drive.
 
 ## T07 — Evaluación LLM (EN CURSO — doc recibido)
 - **Recibimos** `CONTRATOS_T07_LLM_LIMITES.md` (Explicación de Límites y Uso): 4 capas (mensaje 800 tokens / ejercicio 10 msgs-25k tokens / diaria 40 consultas-3 desafíos / presupuesto USD 20 mes con semáforo 70-90-100%). Todo consistente con **PAR-05, PAR-10, PAR-11, PAR-14, PAR-15**.
@@ -114,8 +132,8 @@
 
 ## Convenciones transversales (aplican a todos)
 
-- **Envelope estándar:** `{eventId, eventType, occurredAt, correlationId, actorId, role, source, payload}` (rol propuesto como estándar, T01 lo confirma).
-- **Topics:** `{dominio}.events` (naming con T11), versionados. **Idempotencia:** `event_id` + `version`.
+- **Envelope estándar (Drive oficial):** **`EventoDTO{eventId, eventType, timestamp, producer, payload}`**. `correlationId/actorId/role` → **headers de Kafka**. `eventType` en español. `producer = tema-XX-nombre`.
+- **Topics:** en español (`cursos.ciclo-vida`, `desafios.resultados`, `sistema.notificaciones`…), versionados. **Idempotencia:** `event_id` + `version`.
 - **Rutas:** `/api/{servicio}/**`. **Frescura de lectura:** ≤ 15 min (decisión de arquitectura).
 - **Caché de parámetros en consumidores:** TTL 10 min + invalidación por evento.
 

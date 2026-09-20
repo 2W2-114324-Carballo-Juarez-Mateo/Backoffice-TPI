@@ -2,7 +2,7 @@
 
 > **Decisiones confirmadas en planning:**
 > - **Repo de entrega:** `2026-P4-BE/tpi-backoffice` — mono-módulo, Spring Boot 4.0.0, Java 21. **1 datasource + 2 esquemas** (`administration` / `reporting`).
-> - **Mensajería:** el formato oficial de cátedra (`EventoDTO` 5 campos + headers Kafka) queda **PENDIENTE de confirmar con Usuarios/cátedra**; mientras tanto se mantiene el envelope actual.
+> - **Mensajería:** **RESUELTA (Drive oficial):** `EventoDTO` de 5 campos (`eventId, eventType, timestamp, producer, payload`) + `correlationId/actorId/role` como headers de Kafka; eventos y topics en **español** (`desafios.resultados`, `cursos.ciclo-vida`, `sistema.notificaciones`). Pendiente ratificar con **T11 (G1)** nuestros topics de emisión y nombres de eventos.
 > - **Frontend canónico:** el repo **`/FE` del Demo** (`TPI---Backoffice-Demo-/FE/`); si `backoffice-angular` aporta algo clave (Docker/Nginx) se suma.
 > - **US-03:** se **agregan las tareas de gestión de rol** (consumir `/api/admin/accounts` de T01) para cubrir sus 4 CA.
 > - **DoD Nivel 1:** el criterio **"multitenancy + RLS" se acota** a historias con datos por `course_id` (reportes), no a todas.
@@ -183,13 +183,13 @@ public record EventoDTO(
 
 | Lo que decía el plan | Lo que corresponde |
 |---|---|
-| `EventEnvelope` propio | Consumir `com.utn.tpi.common.dto.EventoDTO` |
-| `occurredAt` · `source` | `timestamp` · `producer` |
+| `EventEnvelope` propio | Consumir **`EventoDTO` oficial** (Drive, `com.utn.tpi.common.dto.EventoDTO`) |
+| `occurredAt` · `source` | `timestamp` · `producer` (`tema-12-backoffice`) |
 | `correlationId`, `actorId`, `role` en el envelope | **Headers de Kafka** (metadatos de transporte) |
-| Eventos en inglés (`ParameterChanged`, `GlobalConfigurationChanged`) | **Ratificado en inglés** por cátedra |
-| Topics en inglés (`challenge.events`, `course.events`, `administration.events`) | **Ratificado en inglés** por cátedra |
+| Eventos en inglés (`ParameterChanged`, `GlobalConfigurationChanged`) | **En ESPAÑOL** (Drive oficial: `CURSO_ARCHIVADO`, `VENCIMIENTO_DATOS_ACADEMICOS`…); nuestros nombres a definir en G1 |
+| Topics en inglés (`challenge.events`, `course.events`, `administration.events`) | **En español** (Drive: `desafios.resultados`, `cursos.ciclo-vida`, `sistema.notificaciones`) |
 
-> **G1 es la tarea más urgente del sprint.** Enviar a T11 para formalizar la registración en la red.
+> **G1 es la tarea más urgente del sprint.** Enviar a T11 (dueño del Kafka/topics) para ratificar topics, envelope y payloads según el **Drive oficial**. **CERRADO el estándar** (`EventoDTO` 5 campos); pendiente ratificar nuestros topics de emisión y nombres de eventos en español.
 
 ---
 
@@ -294,7 +294,7 @@ public record EventoDTO(
 | # | Tarea | Rol | Dev | Horas |
 |---|---|---|---|---:|
 | T1 | Migración y tabla de deduplicación `processed_event` | BACKEND | Julieta | 4 |
-| T2a | Consumidores de **`challenge.events`** (T03) y **`course.events`** (T02) | BACKEND | Valentina | 6 |
+| T2a | Consumidores de **`desafios.resultados`** (T03) y **`cursos.ciclo-vida`** (T02) | BACKEND | Valentina | 6 |
 | T3 | Deduplicación por `eventId` | BACKEND | Valentina | 4 |
 | T4 | Dead Letter Topic para eventos malformados | BACKEND | Julieta | 4 |
 | T5 | Tests de integración: ingesta, deduplicación y DLT | TEST | Bruno | 6 |
@@ -365,7 +365,7 @@ public record EventoDTO(
 
 ## 14 · Decisiones resueltas en planning
 
-1. **T11 — contrato de mensajería (G1):** se envía el Día 1; el formato de evento queda **PENDIENTE de confirmar con Usuarios/cátedra** (DTO oficial vs envelope actual).
+1. **T11 — contrato de mensajería (G1):** el **estándar está CERRADO** (Drive oficial: `EventoDTO` 5 campos + topics en español). G1 se envía el Día 1 para **ratificar con T11** nuestros topics de emisión y nombres de eventos en español.
 2. **Repo Angular canónico:** **`/FE` del Demo** (resuelto).
 3. **US-04:** **sale del Sprint 1** → va al Sprint 2 con US-07 (resuelto).
 4. **US-03:** se **agregan las tareas de gestión de rol (T10)** para cubrir los 4 CA (resuelto).

@@ -10,8 +10,8 @@
 Decisión tomada: además del **REST** (`/api/bank/**`) para **replay/inicial**, vamos a **suscribirnos** a tu evento de **actualización de saldo por alumno/curso** (mejor en recursos y frescura, como recomendás).
 
 Para cerrar el contrato del evento, necesitamos que confirmen:
-- **Nombre del topic** (¿`bank.events`?).
-- **Payload** sugerido: `{courseId, studentId, balance, delta, currency, occurredAt}` (+ envelope estándar `{eventId, eventType, occurredAt, correlationId, actorId, role, source, payload}`).
+- **Nombre del topic** (¿`bank.events`? · a ratificar con **T11**).
+- **Payload** sugerido: `{courseId, studentId, balance, delta, currency}` (+ **`EventoDTO` oficial** `{eventId, eventType, timestamp, producer, payload}`; `correlationId/actorId/role` → headers de Kafka).
 - **Idempotencia:** `event_id` + versión.
 
 > **⏳ PENDIENTE DE CONFIRMAR:** este evento de **actualización de saldo/vidas por alumno** es el que aún falta cerrar con Banco (nombre del topic + payload final). Es el "otro parámetro" de vidas pendiente.

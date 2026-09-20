@@ -27,6 +27,6 @@ Lo incorporamos como **candidato** del Backoffice (a validar con la cátedra) y 
 Los cambios no son retroactivos (RF-CFG-06); el nuevo techo aplica a altas/ediciones posteriores.
 
 ## 8. Métricas — ✅ Aceptamos eventos
-`challenge.events` para read models de engagement; usaremos `GET /api/challenges/courses/{courseId}` y `/progress` como complemento. Replay desde su outbox en **Sprint 2**: de acuerdo.
+**`desafios.resultados`** (topic Drive oficial; antes `challenge.events`) para read models de engagement; usaremos `GET /api/challenges/courses/{courseId}` y `/progress` como complemento. Replay desde su outbox en **Sprint 2**: de acuerdo. **Envelope:** `EventoDTO` oficial (5 campos + headers).
 
 Con esto, de nuestro lado el contrato con Motor de Desafíos queda cerrado (salvo PAR-20, a definir).

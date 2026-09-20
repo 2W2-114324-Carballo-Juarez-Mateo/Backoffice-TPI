@@ -17,7 +17,7 @@ Su doc indica que al **70% ($14,00)** llm-service **"manda alerta a Backoffice"*
 
 - **Topic** propuesto: `llm.budget.events` (naming final con T11).
 - **Evento** propuesto: `LLMBudgetAlert` con `{porcentaje, umbral (70/90/100), saldo_usd, techo_usd, fecha}`.
-- **Envelope estándar** (T11 lo define): `{eventId, eventType, occurredAt, correlationId, actorId, role, source, payload}`.
+- **Envelope estándar (Drive oficial):** **`EventoDTO{eventId, eventType, timestamp, producer, payload}`** (5 campos; `correlationId/actorId/role` → headers de Kafka).
 - **Nivel de consumo:** el Backoffice consume para **mostrar el estado del presupuesto LLM en el panel ADMIN** (y, si T11 lo define, derivar una notificación). No administramos la plataforma de pagos.
 
 ### 2.2 · ¿Los límites de las 4 capas se **configuran desde Backoffice** o son fijos?

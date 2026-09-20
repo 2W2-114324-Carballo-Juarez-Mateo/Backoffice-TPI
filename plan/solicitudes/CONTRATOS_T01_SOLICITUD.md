@@ -22,8 +22,8 @@
 
 **2.1 Publicación (nosotros → T01)**
 
-- **Topic propuesto:** `audit.events` (v1).
-- **Envelope:** el estándar ya acordado (`eventId, eventType, occurredAt, correlationId, actorId, source, payload`), con `role` agregado.
+- **Topic propuesto:** `audit.events` (v1, a ratificar con T11).
+- **Envelope (Drive oficial, ✅):** **`EventoDTO{eventId, eventType, timestamp, producer, payload}`** (5 campos). `correlationId/actorId/role` → **headers de Kafka**. `eventType` en español (a definir los nombres de los eventos de auditoría en G1/G4).
 - **Eventos que el Backoffice emitirá:**
   - `ParameterChanged` (alta/modificación de parámetro global)
   - `ModelProviderChanged` (alta/baja/sustitución de proveedor LLM)

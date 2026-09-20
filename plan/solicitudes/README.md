@@ -2,6 +2,8 @@
 
 > Solicitudes de integración enviadas a cada equipo para definir los contratos. Estado actualizado en `plan/CONTRATOS.md`.
 
+> **⚠️ Estándar de eventos (Drive oficial, 2026-09):** el envelope es **`EventoDTO{eventId, eventType, timestamp, producer, payload}`** (5 campos; `correlationId/actorId/role` → **headers de Kafka**), `eventType` en español, `producer = tema-XX-nombre`, topics en español (`cursos.ciclo-vida`, `desafios.resultados`, `sistema.notificaciones`). Las solicitudes que citan `occurredAt`/`correlationId`/`role` en el body quedan como **borradores a reconciliar en G1** (con T11/T01).
+
 ## Solicitudes por tema
 
 | Archivo | Tema | Estado |

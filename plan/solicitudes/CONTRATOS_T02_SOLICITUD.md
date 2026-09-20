@@ -24,13 +24,13 @@ El **Backoffice (Tema 12)** es **consumidor puro**. De **Cursos (Tema 02)** cons
 |---|---|---|
 | Cohorte (`course_id`) | REST | `GET /api/courses/{courseId}` |
 | Pertenencia del PROFESOR a la cohorte | REST | `GET /api/courses/{courseId}/teacher-membership` → `{isMember}` |
-| Padrón/matrícula | Evento | `RosterUpdated` en `course.events` |
+| Padrón/matrícula | Evento | `RosterUpdated` en **`cursos.ciclo-vida`** (topic Drive) |
 | Ciclo de vida de la cohorte | Evento | `CourseCreated`, `CourseActivated`, `CourseArchived` |
 
 - Los IDs (`courseId`, `teacherId`) son los **UUIDs de plataforma** (T01/T02).
 - Acceso de Backoffice: token **MS** service-to-service vía gateway (`/api/courses/**`).
 
-**Envelope estándar (si aplica eventos):** `{eventId, eventType, occurredAt, correlationId, actorId, role, source, payload}`.
+**Envelope estándar (Drive oficial):** **`EventoDTO{eventId, eventType, timestamp, producer, payload}`**; `correlationId/actorId/role` → headers de Kafka; `eventType` en español.
 
 ## 2. Encuestas anónimas (CSAT) — ahora de Cursos
 
