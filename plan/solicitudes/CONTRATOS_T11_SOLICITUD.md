@@ -1,52 +1,58 @@
 # Solicitud de Contratos — Tema 12 (Backoffice) → Tema 11 (Social y Notificaciones)
 
 > **De:** Equipo Backoffice (Tema 12)
-> **Para:** Equipo Social y Notificaciones (Tema 11)
-> **Propósito:** (a) alinear la **convención de eventos** de la plataforma y (b) acordar cómo el Backoffice **emite avisos/alertas** hacia el sistema de notificaciones.
+> **Para:** Equipo Social y Notificaciones (Tema 11) — *dueños del Kafka y de la convención de topics*
+> **Propósito:** ratificar con ustedes la **convención de eventos** (basada en el **Drive oficial**) y los **topics/eventos** que el Backoffice emite y consume, antes de implementar la capa de mensajería (Sprint 1).
 
 ---
 
 ## 0. Contexto
 
-- **T08 (Banco)** nos indicó que el **naming/convención de eventos** lo define **T11** (no se cierra bilateral). Necesitamos conocer la convención oficial para `{dominio}.events`.
-- El Backoffice **publica** eventos de aviso/notificación que T11 debe consumir (frescura, riesgo, umbrales, exportación lista).
+- El **Drive oficial (2026-09)** fija el estándar: **`EventoDTO{eventId, eventType, timestamp, producer, payload}`** (5 campos), `eventType` y topics en **español**, `producer = tema-XX-nombre`, `correlationId/actorId/role` como **headers de Kafka**.
+- Como T11 gestiona el Kafka y el catálogo de topics, **todos nuestros topics/eventos se ratifican con ustedes antes de implementarse**.
 
-## 1. Convención de eventos de la plataforma
+## 1. Convención de eventos — confirmaciones que pedimos
 
-**Confirmación que pedimos:**
-1. ¿Cuál es la **convención oficial** de topics/eventos? (ej. `{dominio}.events`, versionado, partición por clave).
-2. **Envelope estándar:** confirmen el formato base. Nosotros usamos `{eventId, eventType, occurredAt, correlationId, actorId, role, source, payload}` (en curso con T01).
-3. ¿Los topic names de **`bank.events`**, **`roadmap.events`** y **`administration.events`** los definen ustedes o cada dominio? (Banco dice que ustedes fijan la convención).
+1. **`EventoDTO` de 5 campos** (Drive): ¿lo confirmamos como el envelope obligatorio para todo evento de la plataforma? ¿`correlationId`/`actorId`/`role` van como **headers de Kafka** (así lo entendemos), o hay algún header adicional (ej. `traceparent`, `X-Request-Id`)?
+2. **Nuestros topics de emisión** — necesitamos el nombre oficial (en español) para:
+   - Mutación de configuración global / parámetros (antes `administration.events`).
+   - Auditoría hacia T01 (antes `audit.events`; T01 persiste).
+   - Avisos de Backoffice hacia notificaciones (ver §2).
+3. **Nuestros topics de consumo** — confirmar que consumimos:
+   - **`desafios.resultados`** (T03 — hecho único de resultado de desafío).
+   - **`cursos.ciclo-vida`** (T02 — matrícula/ciclo de vida).
+   - Otros que T11 publique como habilitados por release (lista de canales).
+4. **`eventType` en español**: confirmar la convención de nombres (SCREAMING_SNAKE_CASE en castellano) para nuestros eventos de configuración/auditoría.
 
-## 2. Eventos de aviso/notificación que el Backoffice emite → T11
+## 2. Eventos que el Backoffice emite → T11
 
-El Backoffice **produce** los siguientes avisos que T11 debería consumir:
+### Confirmado por el Drive
+- **`VENCIMIENTO_DATOS_ACADEMICOS`** → **`sistema.notificaciones`** (preaviso de vencimiento de datos académicos / retención, PAR-16/17):
+  `{cohortId, courseName, closingDate, expirationDate, daysRemaining}`.
+
+### A confirmar con ustedes
+El Backoffice también puede emitir alertas operativas. ¿Las consumen en `sistema.notificaciones` o las descartamos?
 
 | Evento propuesto | Cuándo se emite | Datos mínimos |
 |---|---|---|
-| `DataStaleDetected` | Reportes desactualizados (>15 min, US-10) | `courseId`, `reportType`, `minutesStale` |
-| `DataFreshnessRestored` | El tema vuelve a enviar datos (US-10) | `courseId`, `reportType` |
-| `StudentAtHighRisk` | Alumno pasa a riesgo ROJO (US-12) | `courseId`, `studentId`, `riskLevel` |
+| `StudentAtHighRisk` | Alumno pasa a riesgo académico crítico (US-12) | `courseId`, `studentId`, `riskLevel` |
+| `DataStaleDetected` | Reportes desactualizados (>15 min) | `courseId`, `reportType`, `minutesStale` |
 | `ThresholdBreached` | Indicador bajo el umbral configurado (US-14) | `indicator`, `value`, `threshold` |
-| `ExportReady` | Exportación asíncrona lista (US-09) | `exportId`, `courseId`, `urlExpiresAt` |
+| `ExportReady` | Exportación asíncrona lista | `exportId`, `courseId`, `urlExpiresAt` |
 
-**Confirmación que pedimos:**
-1. ¿Consumen estos eventos/avisos? ¿En qué **topic** (`{dominio}.events` de Backoffice) o vía **endpoint**?
-2. ¿El **payload** propuesto les cierra, o esperan otro formato (ej. con `notificationType`)?
-3. ¿Emisión por **evento (Kafka)** o por **REST a T11**? (preferimos eventos si su convención lo soporta).
+**Preguntas:**
+1. ¿`VENCIMIENTO_DATOS_ACADEMICOS` va sí o sí a `sistema.notificaciones`, o a un topic de Backoffice que ustedes registren?
+2. ¿Las alertas operativas (`StudentAtHighRisk`, `DataStaleDetected`, `ThresholdBreached`, `ExportReady`) entran en su catálogo? ¿En qué topic?
+3. ¿Los eventos van con el **`EventoDTO`** + headers (`traceparent`, `X-Request-Id`, `correlationId`, `actorId`, `role`)?
 
-## 3. Parámetros (si aplica)
-
-¿Hay **algún PAR-01..23** del Backoffice que T11 deba consumir (ej. umbrales de notificación)? Si no, no aplica.
-
-## 4. Formato de respuesta
+## 3. Formato de respuesta
 
 ```markdown
 ## Contrato — <nombre>
 - **¿Confirmado?** SÍ / NO / Requiere ajuste
-- **Convención/topic:** ... | **Envelope:** ...
-- **Payload/endpoint:** ...
+- **Topic:** ... | **eventType (español):** ... | **Envelope/headers:** ...
+- **Payload:** ...
 - **Notas:** ...
 ```
 
-¡Gracias! Con esto alineamos la convención de eventos y el canal de avisos del Backoffice.
+¡Gracias! Con esto cerramos la convención y ratificamos nuestros topics/eventos antes de implementar la mensajería.

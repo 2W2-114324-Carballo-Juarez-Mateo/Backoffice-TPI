@@ -12,7 +12,7 @@
 | [CONTRATOS_T08_RESPUESTA.md](CONTRATOS_T08_RESPUESTA.md) | **T08 · Banco** | 🟡 **ACUERDO** (REST + evento de saldo) |
 | [CONTRATOS_T10_SOLICITUD.md](CONTRATOS_T10_SOLICITUD.md) | **T10 · Roadmap y Progreso** | 🟡 EN CURSO |
 | [CONTRATOS_T09_SOLICITUD.md](CONTRATOS_T09_SOLICITUD.md) | **T09 · Mercado** | ⏳ SIN RESPONDER (nueva) |
-| [CONTRATOS_T11_SOLICITUD.md](CONTRATOS_T11_SOLICITUD.md) | **T11 · Social y Notificaciones** | ⏳ SIN RESPONDER (nueva) |
+| [CONTRATOS_T11_SOLICITUD.md](CONTRATOS_T11_SOLICITUD.md) | **T11 · Social y Notificaciones** | 🟡 **G1 listo** (borrador alineado al Drive; ratificar topics/eventos) |
 | [CONTRATOS_T02_SOLICITUD.md](CONTRATOS_T02_SOLICITUD.md) | **T02 · Cursos y Matrícula** | ⏳ SIN RESPONDER (nueva — incluye **encuestas CSAT**) |
 | [CONTRATOS_T03_RESPUESTA.md](CONTRATOS_T03_RESPUESTA.md) | **T03 · Motor de Desafíos** | 🟡 **ACUERDO** (hecho único) |
 | [CONTRATOS_T07_SOLICITUD.md](CONTRATOS_T07_SOLICITUD.md) | **T07 · Evaluación LLM** | 🟡 **EN CURSO** (doc de ellos recibido + nuestra solicitud) |
