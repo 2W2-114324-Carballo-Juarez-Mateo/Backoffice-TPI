@@ -1,61 +1,144 @@
 # Solicitud de Contratos — Tema 12 (Backoffice) → Tema 05 (Desafíos Prácticos)
 
-> **De:** Equipo Backoffice (Tema 12)
-> **Para:** Equipo Desafíos Prácticos (Tema 05)
-> **Propósito:** acordar (a) los **eventos de entregas/resultados** que el Backoffice consume y (b) que consuman los **PAR-19/20** desde el registro del Backoffice.
-> **Envelope (estándar PDF de T11):** `EventoDTO{eventId, eventType, timestamp, producer, payload}` (5 campos) + headers (`traceparent`, `X-Request-Id`, `correlationId`, `actorId`, `role`). **Todo en inglés**, `producer = spring.application.name` (**`backoffice-service`**). **No se crean topics nuevos: se registran con T11.**
+> **De:** Equipo Backoffice (Tema 12)  
+> **Para:** Equipo Desafíos Prácticos (Tema 05)  
+> **Propósito:** Definir los contratos de integración bidireccionales con el microservicio de **Desafíos Prácticos (Tema 05)**:  
+> 1. **T05 consume y aplica los parámetros globales** del Backoffice (`PAR-04`, `PAR-05`, `PAR-19`, `PAR-20`).  
+> 2. **Backoffice consume las entregas y evaluaciones de desafíos prácticos** para consolidar métricas de desempeño, reportes docentes y alertas de alumnos en riesgo.  
+> **Cómo usar este documento:** Es una **solicitud formal**; respondan completando las casillas y campos de confirmación.
+> **Estándar (PDF de T11, 2026-09):** todo en inglés, `producer` = `spring.application.name`, y **los topics se registran con T11** (no se crean por cuenta propia).
 
 ---
 
-## 1 · Entregas / resultados (lo que el Backoffice necesita de T05)
+## 0. Contexto de la Integración
 
-**Lo que necesitamos:** los eventos de **entrega y resultado/corrección** de los desafíos prácticos, para nuestros read models de engagement y reportes.
+El **Backoffice (Tema 12)** es el microservicio responsable de la **gobernanza global de la plataforma** y la **consolidación de analíticas y reportes docentes**:
+* **Administra y versiona los parámetros globales:** Cualquier cambio en porcentajes de variación, penalizaciones o ventanas de entrega se propaga automáticamente hacia los servicios operativos.
+* **Consolida indicadores de cohorte:** Ingiere eventos y lecturas de entregas de código para generar dashboards de progreso y rendimiento sin realizar cálculos de ejecución en tiempo real.
 
-**Confirmación que pedimos:**
+---
 
-1. ¿Qué **topic** emiten para entregas/resultados? (sugerido: `practical.challenges`).
-2. ¿Qué **eventos** emiten? (sugerido: `SUBMISSION_SUBMITTED`, `SUBMISSION_GRADED`).
-3. **Payload** que necesitamos (sugerido):
+## 1. Parámetros que T05 consume del Backoffice
 
-```json
-{
-  "submissionId": "sub-1234",
-  "challengeId": "pra-prog4-001",
-  "studentId": "alu-9843",
-  "courseId": "cur-2026-2w2",
-  "result": "PASSED",
-  "submittedAt": "2026-09-20T15:30:00Z",
-  "gradedAt": "2026-09-20T16:10:00Z",
-  "lateSubmission": true,
-  "feedbackSummary": "Resolución correcta con observaciones menores"
-}
-```
+El Backoffice provee los siguientes parámetros de configuración que impactan en la lógica de entrega y evaluación práctica:
 
-4. ¿El evento va con el **`EventoDTO`** de 5 campos + headers (`traceparent`, `X-Request-Id`, `correlationId`, `actorId`, `role`)?
+| PAR | Concepto | Valor de Referencia | Estado | ¿Lo utiliza T05? | Comentarios / Uso en T05 |
+|---|---|---|---|---|---|
+| **PAR-04** | Variación por calidad y tiempo | $\pm 15\%$ | ✅ Confirmado (PRD) | ☐ SÍ / ☐ NO | Ajuste porcentual de recompensa por calidad de solución |
+| **PAR-05** | Bonus / penalidad por uso de IA | $\pm 20\%$ | ✅ Confirmado (PRD) | ☐ SÍ / ☐ NO | Ponderación según nivel de asistencia de IA registrado |
+| **PAR-19** | Penalidad por entrega tardía | $30\%$ | 🟡 Candidato | ☐ SÍ / ☐ NO | Descuento aplicado si la entrega es posterior al deadline |
+| **PAR-20** | Ventana de gracia para entrega tardía | $48\text{ h}$ | 🟡 Candidato | ☐ SÍ / ☐ NO | Margen temporal máximo permitido tras el vencimiento |
 
-## 2 · PAR-19 / PAR-20 (lo que el Backoffice les provee)
+### Mecanismo de Propagación y Consumo:
+1. **Emisión de Eventos:** El Backoffice emite el evento `GLOBAL_CONFIGURATION_CHANGED` en el topic `administration.events` (a **registrar con T11**) a través de un **Transactional Outbox**.
+   * **Clave de partición Kafka:** `param_key` (ej. `PAR-19`) para garantizar orden estricto de versiones.
+2. **Formato de Payload (`EventoDTO`):**
+   ```json
+   {
+     "eventId": "uuid-v4",
+     "eventType": "GLOBAL_CONFIGURATION_CHANGED",
+     "timestamp": "2026-09-20T12:00:00Z",
+     "producer": "backoffice-service",
+     "payload": {
+       "key": "PAR-19",
+       "name": "late_submission_penalty_pct",
+       "value": 30,
+       "version": 2,
+       "updatedAt": "2026-09-20T12:00:00Z"
+     }
+   }
+   ```
+3. **Estrategia en Consumidor:** Se recomienda mantener una **caché local en T05 con TTL de 10 minutos**, invalidada ante la recepción del evento Kafka (garantiza resiliencia si Backoffice no estuviera disponible).
 
-Los **PAR-19/20** son **candidatos** del Backoffice (a validar con la cátedra):
+### Confirmaciones solicitadas a T05:
+1. ¿Confirman el consumo de **PAR-04**, **PAR-05**, **PAR-19** y **PAR-20**?
+2. ¿Requieren algún parámetro adicional de configuración para desafíos prácticos que deba ser incorporado al catálogo global?
+3. ¿Confirman la adopción de caché local con fallback al último valor conocido?
 
-| PAR | Concepto | Valor de referencia | Clave sugerida |
-|---|---|---|---|
-| **PAR-19** | Penalidad por entrega tardía | 30% | `late_submission_penalty_pct` |
-| **PAR-20** | Ventana de gracia para entrega tardía | 48 h | `late_submission_window_hours` |
+---
 
-**Confirmación que pedimos:**
+## 2. Eventos que el Backoffice consume de T05 (Ingesta de Reporting)
 
-1. ¿Consumen **PAR-19/20**? Si sí, los van a leer del **registro del Backoffice** (`GET /api/administration/parameters` + evento de cambio), no hardcodeados.
-2. ¿Los valores de referencia les cierran, o proponen otros?
-3. **PAR-20**: T03 lo tiene "en suspenso" — ¿ustedes lo usan sí o sí?
+Para alimentar los reportes docentes y los indicadores de deserción/riesgo académico, el Backoffice necesita suscribirse a los eventos de actividad práctica.
 
-## 3 · Formato de respuesta
+### Topic propuesto: `practical.challenge.events` *(a registrar formalmente con T11)*
 
-```markdown
-## Contrato — <nombre>
-- **¿Confirmado?** SÍ / NO / Requiere ajuste
-- **Topic:** ... | **eventType:** ... | **Envelope/headers:** ...
-- **Payload:** ...
-- **Notas:** ...
-```
+### Eventos de Interés:
 
-¡Gracias! Con esto cerramos el contrato de entregas/resultados y los PAR que consumen de nosotros.
+#### A. `PracticalChallengeSubmitted` (Entrega realizada por un alumno)
+* **Cuándo se emite:** En el momento exacto en que un alumno envía su solución.
+* **Payload sugerido:**
+  ```json
+  {
+    "eventId": "uuid-v4",
+    "eventType": "PRACTICAL_CHALLENGE_SUBMITTED",
+    "timestamp": "2026-09-20T12:30:00Z",
+    "producer": "practical-challenges-service",
+    "payload": {
+      "submissionId": "sub-12345",
+      "challengeId": "ch-9876",
+      "studentId": "usr-student-01",
+      "courseId": "crs-2026-2w2",
+      "submittedAt": "2026-09-20T12:30:00Z",
+      "deadline": "2026-09-20T10:00:00Z",
+      "isLate": true,
+      "graceWindowApplied": true
+    }
+  }
+  ```
+
+#### B. `PracticalChallengeEvaluated` (Resultado y calificación de la entrega)
+* **Cuándo se emite:** Tras la ejecución de los tests automáticos y/o revisión docente.
+* **Payload sugerido:**
+  ```json
+  {
+    "eventId": "uuid-v4",
+    "eventType": "PRACTICAL_CHALLENGE_EVALUATED",
+    "timestamp": "2026-09-20T12:35:00Z",
+    "producer": "practical-challenges-service",
+    "payload": {
+      "submissionId": "sub-12345",
+      "challengeId": "ch-9876",
+      "studentId": "usr-student-01",
+      "courseId": "crs-2026-2w2",
+      "score": 85.0,
+      "passed": true,
+      "testsPassed": 8,
+      "totalTests": 10,
+      "penaltyPercentageApplied": 30.0,
+      "parametersApplied": {
+        "PAR-04_version": 1,
+        "PAR-05_version": 1,
+        "PAR-19_version": 2
+      }
+    }
+  }
+  ```
+
+---
+
+## 3. Endpoints REST de Respaldo y Replay (Lectura)
+
+En caso de desincronización, inicialización de réplicas o caída de mensajería, el Backoffice requiere endpoints de lectura REST para reconstruir sus *read models* (criterio de frescura máxima $\le 15\text{ min}$):
+
+| Endpoint sugerido | Método | Descripción / Qué devuelve |
+|---|---|---|
+| `/api/practical-challenges/courses/{courseId}/submissions` | GET | Listado paginado de entregas por curso/cohorte |
+| `/api/practical-challenges/courses/{courseId}/summary` | GET | Resumen consolidado: total entregas, aprobados, tasa de éxito y entregas tardías |
+
+### Confirmación solicitada a T05:
+- ¿Exponen o tienen planificados estos endpoints bajo el prefijo `/api/practical-challenges/**`?
+
+---
+
+## 4. Formalización y Registro del Acuerdo
+
+| Rol / Responsabilidad | Responsable Tema 12 (Backoffice) | Responsable Tema 05 (Desafíos Prácticos) |
+|---|---|---|
+| **Nombre y Apellido** | Damian Gabriel Baigorria (Dev 3) | ___________________________ |
+| **Fecha de Revisión** | 20/09/2026 | _____ / _____ / 2026 |
+| **Estado del Acuerdo** | 🟡 SOLICITUD LISTA | ☐ APROBADO / ☐ CON CAMBIOS |
+| **Versión de Contrato**| v1.0.0 | v_____ |
+
+### Observaciones y notas de coordinación:
+*(Espacio reservado para comentarios del equipo de Tema 05)*
