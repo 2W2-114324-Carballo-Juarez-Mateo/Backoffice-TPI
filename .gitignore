@@ -11,3 +11,4 @@ docs-site/docs/.vitepress/dist/
 # Temporales / logs
 *.tmp
 *.log
+CONTRATOS_JSON.md
