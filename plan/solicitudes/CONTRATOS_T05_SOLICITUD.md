@@ -3,7 +3,7 @@
 > **De:** Equipo Backoffice (Tema 12)
 > **Para:** Equipo Desafíos Prácticos (Tema 05)
 > **Propósito:** acordar (a) los **eventos de entregas/resultados** que el Backoffice consume y (b) que consuman los **PAR-19/20** desde el registro del Backoffice.
-> **Envelope (Drive oficial):** `EventoDTO{eventId, eventType, timestamp, producer, payload}` (5 campos) + headers (`traceparent`, `X-Request-Id`, `correlationId`, `actorId`, `role`). Identificadores en inglés.
+> **Envelope (estándar PDF de T11):** `EventoDTO{eventId, eventType, timestamp, producer, payload}` (5 campos) + headers (`traceparent`, `X-Request-Id`, `correlationId`, `actorId`, `role`). **Todo en inglés**, `producer = spring.application.name` (**`backoffice-service`**). **No se crean topics nuevos: se registran con T11.**
 
 ---
 

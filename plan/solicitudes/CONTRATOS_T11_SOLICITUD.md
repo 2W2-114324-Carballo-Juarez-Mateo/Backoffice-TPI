@@ -1,58 +1,60 @@
 # Solicitud de Contratos — Tema 12 (Backoffice) → Tema 11 (Social y Notificaciones)
 
 > **De:** Equipo Backoffice (Tema 12)
-> **Para:** Equipo Social y Notificaciones (Tema 11) — *dueños del Kafka y de la convención de topics*
-> **Propósito:** ratificar con ustedes la **convención de eventos** (basada en el **Drive oficial**) y los **topics/eventos** que el Backoffice emite y consume, antes de implementar la capa de mensajería (Sprint 1).
+> **Para:** Equipo Social y Notificaciones (Tema 11) — *dueños del Kafka, de la convención de eventos y del registro de topics*
+> **Propósito:** ratificar con ustedes la **convención de eventos** (según su **PDF oficial**) y que **registren los topics del Backoffice** antes de implementar la mensajería (Sprint 1).
 
 ---
 
-## 0. Contexto
+## 0 · Contexto
 
-- El **Drive oficial (2026-09)** fija el estándar: **`EventoDTO{eventId, eventType, timestamp, producer, payload}`** (5 campos), `eventType` y topics en **español**, `producer = tema-XX-nombre`, `correlationId/actorId/role` como **headers de Kafka**.
-- Como T11 gestiona el Kafka y el catálogo de topics, **todos nuestros topics/eventos se ratifican con ustedes antes de implementarse**.
+- Su **PDF de eventos (2026-09)** fija el estándar: **`EventoDTO{eventId, eventType, timestamp, producer, payload}`** (5 campos, genérico `Event<T>`), **todo en inglés**, `producer = spring.application.name`, serialización `JsonSerializer`/`JsonDeserializer` + consumer tipado, y **no se crean topics nuevos sin avisarles**.
+- Como T11 gestiona el Kafka y el catálogo de topics, les pedimos **registrar nuestros topics** y ratificar los que consumimos.
 
-## 1. Convención de eventos — confirmaciones que pedimos
+## 1 · Convención — confirmaciones que pedimos
 
-1. **`EventoDTO` de 5 campos** (Drive): ¿lo confirmamos como el envelope obligatorio para todo evento de la plataforma? ¿`correlationId`/`actorId`/`role` van como **headers de Kafka** (así lo entendemos), o hay algún header adicional (ej. `traceparent`, `X-Request-Id`)?
-2. **Nuestros topics de emisión** — necesitamos el nombre oficial (en español) para:
-   - Mutación de configuración global / parámetros (antes `administration.events`).
-   - Auditoría hacia T01 (antes `audit.events`; T01 persiste).
-   - Avisos de Backoffice hacia notificaciones (ver §2).
-3. **Nuestros topics de consumo** — confirmar que consumimos:
-   - **`desafios.resultados`** (T03 — hecho único de resultado de desafío).
-   - **`cursos.ciclo-vida`** (T02 — matrícula/ciclo de vida).
-   - Otros que T11 publique como habilitados por release (lista de canales).
-4. **`eventType` en español**: confirmar la convención de nombres (SCREAMING_SNAKE_CASE en castellano) para nuestros eventos de configuración/auditoría.
+1. **`EventoDTO` / `Event<T>` de 5 campos** (su PDF): ¿lo confirmamos como el envelope obligatorio? ¿`correlationId`/`actorId`/`role` van como **headers de Kafka** (además de `traceparent`, `X-Request-Id`)?
+2. **`producer`**: confirmamos que usamos el `spring.application.name` → **`backoffice-service`** (como su ejemplo `challenges-service`).
+3. **Serialización**: ¿confirmamos `JsonSerializer`/`JsonDeserializer` + `spring.json.trusted.packages` + consumer tipado `Event<Payload>`?
 
-## 2. Eventos que el Backoffice emite → T11
+## 2 · Registro de topics del Backoffice (les pedimos el alta)
 
-### Confirmado por el Drive
-- **`VENCIMIENTO_DATOS_ACADEMICOS`** → **`sistema.notificaciones`** (preaviso de vencimiento de datos académicos / retención, PAR-16/17):
+| Topic | Uso | Tipo |
+|---|---|---|
+| `administration.events` | Mutación de configuración global / parámetros | emisión (Backoffice) |
+| `audit.events` | Auditoría hacia T01 (T01 persiste) | emisión (Backoffice) |
+| `administration.events.dlt` | Dead Letter del outbox (reintentos agotados) | emisión (Backoffice) |
+
+## 3 · Topics que consumimos (ratificar)
+
+- **`challenges.results`** (T03 — resultado de desafío, hecho único).
+- **`courses.lifecycle`** (T02 — matrícula/ciclo de vida).
+- **`bank.events`** (T08 — saldo) · **`roadmap.events`** (T10 — progreso) · **`identity.events`**/`retention.events` (T01).
+
+## 4 · Eventos que el Backoffice emite → T11
+
+### A registrar/ratificar
+- **`ACADEMIC_DATA_EXPIRING`** → **`system.notifications`** (preaviso de vencimiento de datos académicos / retención, PAR-16/17):
   `{cohortId, courseName, closingDate, expirationDate, daysRemaining}`.
 
 ### A confirmar con ustedes
-El Backoffice también puede emitir alertas operativas. ¿Las consumen en `sistema.notificaciones` o las descartamos?
+¿Consumen estas alertas operativas en `system.notifications` o las descartamos?
 
 | Evento propuesto | Cuándo se emite | Datos mínimos |
 |---|---|---|
-| `StudentAtHighRisk` | Alumno pasa a riesgo académico crítico (US-12) | `courseId`, `studentId`, `riskLevel` |
-| `DataStaleDetected` | Reportes desactualizados (>15 min) | `courseId`, `reportType`, `minutesStale` |
-| `ThresholdBreached` | Indicador bajo el umbral configurado (US-14) | `indicator`, `value`, `threshold` |
-| `ExportReady` | Exportación asíncrona lista | `exportId`, `courseId`, `urlExpiresAt` |
+| `STUDENT_AT_HIGH_RISK` | Alumno pasa a riesgo crítico | `courseId`, `studentId`, `riskLevel` |
+| `DATA_STALE_DETECTED` | Reportes desactualizados (>15 min) | `courseId`, `reportType`, `minutesStale` |
+| `THRESHOLD_BREACHED` | Indicador bajo el umbral | `indicator`, `value`, `threshold` |
+| `EXPORT_READY` | Exportación asíncrona lista | `exportId`, `courseId`, `urlExpiresAt` |
 
-**Preguntas:**
-1. ¿`VENCIMIENTO_DATOS_ACADEMICOS` va sí o sí a `sistema.notificaciones`, o a un topic de Backoffice que ustedes registren?
-2. ¿Las alertas operativas (`StudentAtHighRisk`, `DataStaleDetected`, `ThresholdBreached`, `ExportReady`) entran en su catálogo? ¿En qué topic?
-3. ¿Los eventos van con el **`EventoDTO`** + headers (`traceparent`, `X-Request-Id`, `correlationId`, `actorId`, `role`)?
-
-## 3. Formato de respuesta
+## 5 · Formato de respuesta
 
 ```markdown
 ## Contrato — <nombre>
 - **¿Confirmado?** SÍ / NO / Requiere ajuste
-- **Topic:** ... | **eventType (español):** ... | **Envelope/headers:** ...
+- **Topic:** ... | **eventType (inglés):** ... | **Envelope/headers:** ...
 - **Payload:** ...
 - **Notas:** ...
 ```
 
-¡Gracias! Con esto cerramos la convención y ratificamos nuestros topics/eventos antes de implementar la mensajería.
+¡Gracias! Con esto cerramos la convención, registramos nuestros topics y ratificamos los que consumimos.
