@@ -61,7 +61,7 @@ Cada evento lleva `event_id`; el consumidor registra los procesados en `Processe
 ### Consumidor de referencia (US-02 T4) — validación del ciclo
 
 - El Backoffice tiene un **consumidor de referencia** (`@KafkaListener` sobre `administration.events`) que valida el ciclo **Outbox → Kafka → consumo** y aplica **idempotencia por `eventId` + versión** (descarta duplicados y versiones no más nuevas por parámetro).
-- El dedup del consumidor de referencia es **in-memory** (`ProcessedEventRegistry`); la persistencia durable `reporting.processed_event` es de **US-08** (Julieta).
+- El dedup del consumidor de referencia es **in-memory** (`ProcessedEventRegistry`); la persistencia durable `reporting.processed_event` es de **US-08** (tabla `processed_event`, PR #9).
 - Serialización actual: `String` + `ObjectMapper` (el wire JSON es idéntico al `EventoDTO`); a alinear con `EventEnvelope<T>` + `JsonDeserializer` tipado si el equipo lo decide (patrón del PDF de T11).
 
 ## Retención (acuerdo con T01)
