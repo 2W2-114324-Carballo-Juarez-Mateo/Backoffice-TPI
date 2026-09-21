@@ -53,3 +53,14 @@
 | **PR / commits** | `8c296b9` (idempotencia) + `369a1ec` (adaptación a `EventEnvelope<T>`, producer `tema-12-backoffice-service`) — rama `feature/us-02-reliability`, sin PR todavía |
 | **Pendientes / deuda** | Alinear a `Event<T>` + `JsonDeserializer` tipado si el equipo lo decide (hoy String+ObjectMapper, mismo wire JSON) · topic a **registrar con T11 (G1)** |
 
+
+
+### G1 - Solicitud de contrato de mensajeria a T11 - CERRADO
+
+| Campo | Registro |
+|---|---|
+| **Estado** | CERRADO (G1) - T11 confirmo el acuerdo (analisis-brechas-t12.md, 2026-09-21); T12 puede emitir |
+| **Que se hizo** | Solicitud enviada a T11 (envelope, headers, producer, registro de topics, alertas) + respuesta de confirmacion (CONTRATOS_T11_RESPUESTA.md) + cierre documental |
+| **Acuerdo** | EventEnvelope<T> 6 campos (eventVersion=1) - solo traceparent como header - producer tema-12-backoffice-service - administration.events OK + DLT en mayusculas - consumidos mapeados (economy.transactions, sandbox.events, identity.audit) - ACADEMIC_DATA_EXPIRING / STUDENT_AT_HIGH_RISK / EXPORT_READY emitidos - DATA_STALE / THRESHOLD no |
+| **Pendientes** | Coordinar con T01: confluir auditoria en identity.audit - topics de T11 uncommitted en su rama (materializar broker) - adaptar audit publisher (Regina) y topics de US-08 (Valentina) |
+| **PR / commits** | plan/solicitudes/ (T11_SOLICITUD, T11_RESPUESTA, analisis-brechas) - docs pusheados

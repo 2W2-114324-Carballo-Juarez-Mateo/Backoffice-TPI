@@ -2,7 +2,7 @@
 
 > Solicitudes de integración enviadas a cada equipo para definir los contratos. Estado actualizado en `plan/CONTRATOS.md`.
 
-> **⚠️ Estándar de eventos (T11/cátedra, 2026-09):** el envelope es **`EventEnvelope<T>{eventId, eventType, eventVersion, timestamp, producer, payload}`** (6 campos, payload tipado; `correlationId/actorId/role` → **headers de Kafka**), **todo en inglés**, `producer = spring.application.name` (`tema-12-backoffice-service`), topics en inglés y **registrados con T11**. Las solicitudes que citan `occurredAt`/`correlationId`/`role` en el body quedan como **borradores a reconciliar en G1** (con T11/T01).
+> **⚠️ Estándar de eventos (T11/cátedra, 2026-09 — ✅ cerrado):** el envelope es **`EventEnvelope<T>{eventId, eventType, eventVersion, timestamp, producer, payload}`** (6 campos, payload tipado; `correlationId/actorId/role` → **dentro del payload**, solo `traceparent` como header), **todo en inglés**, `producer = tema-12-backoffice-service`, topics en inglés y **registrados con T11**. Las solicitudes que citan `occurredAt`/`correlationId`/`role` en el body quedan como **borradores** a reconciliar.
 
 ## Solicitudes por tema
 
@@ -12,8 +12,9 @@
 | [CONTRATOS_T08_RESPUESTA.md](CONTRATOS_T08_RESPUESTA.md) | **T08 · Banco** | 🟡 **ACUERDO** (REST + evento de saldo) |
 | [CONTRATOS_T10_SOLICITUD.md](CONTRATOS_T10_SOLICITUD.md) | **T10 · Roadmap y Progreso** | 🟡 EN CURSO |
 | [CONTRATOS_T09_SOLICITUD.md](CONTRATOS_T09_SOLICITUD.md) | **T09 · Mercado** | ⏳ SIN RESPONDER (nueva) |
-| [CONTRATOS_T11_SOLICITUD.md](CONTRATOS_T11_SOLICITUD.md) | **T11 · Social y Notificaciones** | 🟡 **G1** (solicitud enviada + **respuesta recibida**) |
-| [CONTRATOS_T11_RESPUESTA.md](CONTRATOS_T11_RESPUESTA.md) | **T11 · Respuesta de confirmación** (envelope 6 campos, topics ratificados/corregidos, DLT mayúsculas, alertas) | ✅ **ACUERDO** — único pendiente: audit → `identity.audit` (con T01) |
+| [CONTRATOS_T11_SOLICITUD.md](CONTRATOS_T11_SOLICITUD.md) | **T11 · Social y Notificaciones** | ✅ **CERRADO (G1)** |
+| [CONTRATOS_T11_RESPUESTA.md](CONTRATOS_T11_RESPUESTA.md) | **T11 · Respuesta de confirmación** (envelope 6 campos, topics ratificados/corregidos, DLT mayúsculas, alertas) | ✅ **ACUERDO** |
+| [analisis-brechas-t12.md](analisis-brechas-t12.md) | **T11 · Análisis de brechas** (cierre formal G1; T12 puede emitir; auditoría → `identity.audit`) | 📥 EVIDENCIA |
 | [CONTRATOS_T02_SOLICITUD.md](CONTRATOS_T02_SOLICITUD.md) | **T02 · Cursos y Matrícula** | ⏳ SIN RESPONDER (nueva — incluye **encuestas CSAT**) |
 | [CONTRATOS_T03_RESPUESTA.md](CONTRATOS_T03_RESPUESTA.md) | **T03 · Motor de Desafíos** | 🟡 **ACUERDO** (hecho único) |
 | [CONTRATOS_T07_SOLICITUD.md](CONTRATOS_T07_SOLICITUD.md) | **T07 · Evaluación LLM** | 🟡 **EN CURSO** (doc de ellos recibido + nuestra solicitud) |

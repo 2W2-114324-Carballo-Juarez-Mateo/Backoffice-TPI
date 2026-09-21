@@ -12,14 +12,14 @@
 | **T08 · Banco** | Consume (lectura REST + evento de saldo) · **NO consume PAR** | 🟡 **ACUERDO** | `solicitudes/CONTRATOS_T08_RESPUESTA.md` |
 | **T10 · Roadmap y Progreso** | Consume (progreso/XP/niveles) · PAR-21 pendiente de validación | 🟡 **EN CURSO** (solicitud enviada) | `solicitudes/CONTRATOS_T10_SOLICITUD.md` |
 | **T09 · Mercado** | Provee (dueño de precios **PAR-06/07**) | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T09_SOLICITUD.md` |
-| **T11 · Social y Notificaciones** | Coordina **convención de eventos** + consumimos avisos/alertas | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T11_SOLICITUD.md` |
+| **T11 · Social y Notificaciones** | Coordina **convención de eventos** + consumimos avisos/alertas | ✅ **CERRADO (G1)** | `solicitudes/CONTRATOS_T11_SOLICITUD.md` · `solicitudes/CONTRATOS_T11_RESPUESTA.md` · `solicitudes/analisis-brechas-t12.md` |
 | **T02 · Cursos y Matrícula** | Consume (cohorte `course_id`, pertenencia docente, `RosterUpdated`, **encuestas CSAT anónimas**) + provee (PAR-18) | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T02_SOLICITUD.md` |
 | **T04 · Teóricos y Encuestas** | **Sin lectura** — encuestas ahora de **T02**; no consumimos nada de T04 por el momento | ➖ SIN CONTRATO | — |
 | **T05 · Desafíos Prácticos** | Consume (entregas/resultados) + provee (PAR-19/20) | ⏳ PENDIENTE | — |
 | **T07 · Evaluación LLM** | Consume (deriva/calibración) + provee (`ModelProviderChanged`, PAR-22) + recibe **alerta de presupuesto** (70%→Backoffice) | 🟡 **EN CURSO** — recibimos su doc de límites y uso | `solicitudes/CONTRATOS_T07_SOLICITUD.md` · `solicitudes/CONTRATOS_T07_LLM_LIMITES.md` |
 | **T03 · Desafíos** | Provee (hecho único en `challenge.events`) + consume PAR (PAR-01/04/05; PAR-03 vía Mercado) | 🟡 **ACUERDO** | `solicitudes/CONTRATOS_T03_RESPUESTA.md` |
 
-> **Pendientes internos:** schema externo de `identity.audit` y `retention.events` · topics de emisión propios del Backoffice (config/auditoría) a fijar vs Drive · confirmación de `correlationId/actorId/role` como **headers** (T01/T11) · naming de topics restantes con T11 · exposición del estado 2FA (T01) · **API de Vault (T01)** · **GESTOR / "profesor con vista"** · **lista blanca de profesores** · **observabilidad de microservicios: FUERA de alcance** (solo logs/health/correlation).
+> **Pendientes internos:** schema externo de `identity.audit` y `retention.events` (confluir nuestra auditoría en `identity.audit`, coordinar con **T01**) · materializar los topics del Backoffice en el broker (T11 los tiene **uncommitted** en `fix/contract-alignment`) · exposición del estado 2FA (T01) · **API de Vault (T01)** · **GESTOR / "profesor con vista"** · **lista blanca de profesores** · **observabilidad de microservicios: FUERA de alcance** (solo logs/health/correlation).
 
 ---
 
@@ -88,12 +88,13 @@
 ## T09 — Mercado (SOLICITUD LISTA)
 - **PAR-03 / PAR-06 / PAR-07:** los gestiona **T09 (Mercado)** (descartados del Backoffice). Pendiente: que **Mercado confirme que gestiona PAR-03 y lo expone a T03** (evento + REST + versión). La solicitud `CONTRATOS_T09_SOLICITUD.md` se ajusta.
 
-## T11 — Social y Notificaciones (✅ ACUERDO — respuesta recibida 2026-09-21)
-- **Convención ratificada:** `EventEnvelope<T>` 6 campos, `eventVersion = 1`, solo `traceparent` como header obligatorio (**`correlationId`/`actorId`/`role` → dentro del `payload`**), `producer = tema-12-tema-12-backoffice-service`, `JsonSerializer`/`JsonDeserializer` + consumer tipado.
-- **Topics emitidos:** `administration.events` ✅ (3 particiones) · DLT = **`administration.events.DLT`** (mayúsculas, auto-aprovisionado por T11, no se pide aparte) · **auditoría → `identity.audit`** (decisión: no stream separado; coordinar con T01).
-- **Topics consumidos (catálogo oficial):** `challenges.results` ✅ · `courses.lifecycle` ✅ · `economy.transactions` (antes `economy.transactions`) · `sandbox.events` (T10, antes `sandbox.events`) · `identity.audit` (antes `identity.audit`/`audit.events`). **`group.id` = `tema-12-backoffice-group`**.
-- **Emisiones a `system.notifications`:** `ACADEMIC_DATA_EXPIRING` ✅ · `STUDENT_AT_HIGH_RISK` ✅ · `EXPORT_READY` ✅ · `DATA_STALE_DETECTED` y `THRESHOLD_BREACHED` ❌ **no** (operativas internas). → `solicitudes/CONTRATOS_T11_RESPUESTA.md`
-- **Pendiente:** coordinar con **T01** que la auditoría del Backoffice confluya en `identity.audit`.
+## T11 — Social y Notificaciones (✅ CERRADO — G1, análisis de brechas 2026-09-21)
+- **Convención ratificada:** `EventEnvelope<T>` 6 campos, `eventVersion = 1`, solo `traceparent` como header obligatorio (**`correlationId`/`actorId`/`role` → dentro del `payload`**), `producer = tema-12-backoffice-service`, `JsonSerializer`/`JsonDeserializer` + consumer tipado. **T11 confirma que T12 puede emitir hoy.**
+- **Topics emitidos:** `administration.events` ✅ (3 particiones) · DLT = **`administration.events.DLT`** (mayúsculas, auto-aprovisionado) · **auditoría → `identity.audit`** (sin stream separado; coordinar con T01).
+- **Topics consumidos (catálogo oficial):** `challenges.results` ✅ · `courses.lifecycle` ✅ · `economy.transactions` (antes `bank.events`) · `sandbox.events` (T10) · `identity.audit`. **`group.id` = `tema-12-backoffice-group`**.
+- **Emisiones a `system.notifications`:** `ACADEMIC_DATA_EXPIRING` ✅ · `STUDENT_AT_HIGH_RISK` ✅ · `EXPORT_READY` ✅ · `DATA_STALE_DETECTED`/`THRESHOLD_BREACHED` ❌ (no, operativas internas).
+- **Nota de T11:** los topics del Backoffice están provisionados pero **uncommitted** en su rama `fix/contract-alignment` (materializar el broker = commitear + recrear `kafka-init`). Referencias: `solicitudes/CONTRATOS_T11_RESPUESTA.md` · `solicitudes/analisis-brechas-t12.md`.
+- **Pendiente (coordinación):** confluir la auditoría en **`identity.audit`** del lado de **T01**.
 
 ---
 
