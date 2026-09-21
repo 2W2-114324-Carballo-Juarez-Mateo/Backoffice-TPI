@@ -28,6 +28,18 @@
 | **PR / commits** | `05530f4` (rama `feature/us-02-reliability`, sin PR todavía) |
 | **Pendientes / deuda** | T5 (Máximo) integra el ciclo completo Outbox→Kafka→consumo · topic DLT (`administration.events.dlt`) a **registrar con T11 (G1)** |
 
+### US-03 T8b · REV — Auditoría del manejo de errores (ErrorApi, trabajo de otro) - ✅ HECHO
+
+**Objeto revisado:** `GlobalExceptionHandler.java` + `GlobalExceptionHandlerTest.java` + `MATRIZ_DELEGACION_IDENTIDADES_T01.md` + `auditoria-fronteras-seguridad-taiga.md` (rama `feature/us-03-gateway-auth`, de Regina).
+
+| Campo | Registro |
+|---|---|
+| **Estado** | ✅ review hecho (APROBADO con observaciones menores) |
+| **Qué se revisó** | `@RestControllerAdvice` centralizado conforme al `ErrorApi` de cátedra: 400 (validation/constraint/illegal), 403 (AccessDenied), 404 (NoSuchElement), ResponseStatusException y catch-all 500. Logs WARN/ERROR sin exponer stack al cliente (500 con mensaje genérico). Test unitario cubre 400/403 (+404/500). |
+| **Hallazgos** | 1) Peticiones malformadas (JSON inválido `HttpMessageNotReadable`, path var de tipo incorrecto `MethodArgumentTypeMismatch`, `MissingServletRequestParameter`) caen al catch-all → **500 en vez de 400** → sugerir handlers dedicados. 2) `timestamp` usa `LocalDateTime.now()` local → el estándar es **UTC (ISO 8601)** → sugerir `Instant.now()`. 3) `IllegalStateException` mapeada a 400 junto a `IllegalArgumentException` → revisar si alguna debería ser 409/500. 4) `ConstraintViolationException`/`ResponseStatusException` exponen el detalle en el mensaje → aceptable, revisar en producción. |
+| **Veredicto** | ✅ Aprobado con las observaciones 1-3 para la corrección final |
+| **PR / commits** | Revisión sobre `origin/feature/us-03-gateway-auth` (`5196cec`) — pendiente que Regina aplique las observaciones antes del merge |
+
 ### US-02 T4 - Idempotencia por eventId y version en el consumidor de referencia - ✅ HECHO
 
 | Campo | Registro |
