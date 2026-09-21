@@ -1,16 +1,18 @@
-# dev-5.md (Disca, Julieta Ariadna) - Tareas Sprint 1
+# dev-5.md (Disca, Julieta Ariadna) — FUERA DEL GRUPO
 
-> **Capacidad:** 51.5 h - **Asignado:** 28 h - **Repo:** 2026-P4-BE/tpi-backoffice (mono-modulo, 1 datasource + 2 esquemas)
-> **Flujo:** feature/*|fix/* -> develop - release/*|hotfix/* -> main - PR con 1 aprobacion - sin push directo
-> **Division pareja:** los 9 devs cubren las 5 capas (BACK + FRONT + TEST + REV + DOC) - nadie testea/revisa lo suyo.
+> **Estado:** Julieta Disca **se cambió de grupo** (2026-09). Ya no forma parte del microservicio.
+> **Tareas que realizó (quedan como hechas por ella):**
+> - **[BACK]** US-08 T1 · Migración y tabla de deduplicación `processed_event` (reporting) — **HECHA** (rama `feature/us-08-processed-event`, **PR #9 abierto** — falta review/merge)
+> - **[DOC]** G4 · Registro formal en CONTRATOS.md — **HECHA** (mergeada a develop, PR #10)
 
-- **[BACK]** US-08 T1 - Migracion y tabla de deduplicacion processed_event (esquema reporting) - 4h
-- **[BACK]** US-08 T4 - Dead Letter Topic para eventos malformados - 4h
-- **[BACK]** US-02 T2 - Adoptar el EventoDTO oficial + mapear ParameterChanged / GlobalConfigurationChanged - 6h
-- **[FRONT]** FE-4b - Pantalla de administracion: estado 2FA/sesion - 3h
-- **[TEST]** US-02 T6 - Validar resiliencia ante caida del broker - 6h
-- **[REV]** US-01 T10b - Peer review del versionado/no retroactividad de US-01 (trabajo de otro) - 1h
-- **[DOC]** G4 - Registro formal en CONTRATOS.md: estado, fecha, responsable, version y evidencia - 4h
+## Reasignación de sus tareas pendientes
 
-> **DoD Nivel 0:** tarea terminada - tests verdes - PR con review - sdd/docs actualizados. **Nivel 1:** historia testeada, cobertura 90%, sin deuda, documentada (RLS solo donde aplica).
+| Tarea pendiente | Reasignada a |
+|---|---|
+| US-02 T2 · Adoptar el EventoDTO oficial + mapear ParameterChanged/GlobalConfigurationChanged | **Mateo (Dev 2)** — HECHA (`feature/us-02-envelope`) |
+| US-08 T4 · Dead Letter Topic para eventos malformados | **Valentina (Dev 6)** |
+| FE-4b · Pantalla de administración: estado 2FA/sesión | **Regina (Dev 8)** |
+| US-02 T6 · Validar resiliencia ante caída del broker | **Máximo (Dev 7)** |
+| US-01 T10b · Peer review del versionado/no retroactividad de US-01 | **Luciano (Dev 1)** |
 
+> **Nota:** la división pasa a **9 devs activos** (Ana Paula sigue solo MSII/docs). La redistribución es **equitativa** (horas y capas) y **no toca** las tareas ya asignadas: solo se sumaron las de Julieta.

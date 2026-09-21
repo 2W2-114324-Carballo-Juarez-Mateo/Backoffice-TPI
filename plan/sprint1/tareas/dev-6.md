@@ -1,11 +1,12 @@
 # dev-6.md (Maldonado, Valentina) - Tareas Sprint 1
 
-> **Capacidad:** 35.3 h - **Asignado:** 27 h - **Repo:** 2026-P4-BE/tpi-backoffice (mono-modulo, 1 datasource + 2 esquemas)
+> **Capacidad:** 35.3 h - **Asignado:** 31 h - **Repo:** 2026-P4-BE/tpi-backoffice (mono-modulo, 1 datasource + 2 esquemas)
 > **Flujo:** feature/*|fix/* -> develop - release/*|hotfix/* -> main - PR con 1 aprobacion - sin push directo
 > **Division pareja:** los 9 devs cubren las 5 capas (BACK + FRONT + TEST + REV + DOC) - nadie testea/revisa lo suyo.
 
-- **[BACK]** US-08 T2a - Consumidores de challenge.events (T03) y course.events (T02) - 6h
+- **[BACK]** US-08 T2a - Consumidores de challenges.results (T03) y courses.lifecycle (T02) - 6h
 - **[BACK]** US-08 T3 - Deduplicacion por eventId - 4h
+- **[BACK]** US-08 T4 - Dead Letter Topic para eventos malformados (**reasignada de Julieta**) - 4h
 - **[BACK]** US-01 T12 - Idempotency-Key: tabla de claves + TTL + endpoint - 4h
 - **[FRONT]** FE-3b - Guard PROFESOR (solo lectura) + estado de sesion - 3h
 - **[TEST]** US-03 T5 - Tests de integracion del filtro y autorizacion por headers - 6h

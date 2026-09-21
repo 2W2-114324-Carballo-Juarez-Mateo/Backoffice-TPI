@@ -10,27 +10,29 @@
 | **[dev-2.md](dev-2.md)** | Mateo Carballo Juarez — Envelope/mapeo + reintentos + HTTP front (BACK/FRONT/DOC) |
 | **[dev-3.md](dev-3.md)** | Damian Gabriel Baigorria — US-01 dominio + unit tests + auditoría T01 (BACK/TEST/DOC) |
 | **[dev-4.md](dev-4.md)** | Joaquin Cortez — US-01 endpoints + outbox + Idempotency-Key + FE-5 (BACK/DOC/FRONT) |
-| **[dev-5.md](dev-5.md)** | Julieta Ariadna Disca — Ingresa + tests resiliencia + revisiones + G4 (BACK/TEST/REV/DOC) |
+| **[dev-5.md](dev-5.md)** | ~~Julieta Ariadna Disca~~ **FUERA DEL GRUPO** - hechas: US-08 T1, G4 - pendientes reasignadas |
 | **[dev-6.md](dev-6.md)** | Valentina Maldonado — Consumidores T03/T02 + dedup + tests US-01 (BACK/DOC/TEST) |
 | **[dev-7.md](dev-7.md)** | Maximo Cerquatti — Tests de integración + rol vía T01 (TEST/REV/BACK) |
 | **[dev-8.md](dev-8.md)** | Regina Loreta Cerasulo — Cliente T01 + ErrorApi + guards + G3 (BACK/DOC/FRONT) |
 | **[dev-9.md](dev-9.md)** | Bruno Gianoli — Headers Kafka + pantallas conectadas (BACK/REV/FRONT) |
 | **[dev-10.md](dev-10.md)** | Ana Paula Ducart — MSII: docs, diagramas, contratos (solo no-código) |
 
-## Resumen de carga (coincide con `tareas-sprint1.md` §6)
+## Resumen de carga (9 devs activos · coincide con `tareas-sprint1.md` §6)
 
 | Dev | Integrante | Total | Capacidad | % | Código (BACK+FRONT) | Capas |
 |---|---|---:|---:|---:|---:|---|
-| Dev 1 | Luciano Paz | 29 h | 39,4h | 73,6 % | 19 h | BACK + FRONT + TEST + REV + DOC |
-| Dev 2 | Mateo Carballo Juarez | 25 h | 41,5h | 60,2 % | 14 h | BACK + FRONT + TEST + REV + DOC |
+| Dev 1 | Luciano Paz | 30 h | 39,4h | 76,1 % | 19 h | BACK + FRONT + TEST + REV + DOC |
+| Dev 2 | Mateo Carballo Juarez | 31 h | 41,5h | 74,7 % | 14 h | BACK + FRONT + TEST + REV + DOC |
 | Dev 3 | Damian Gabriel Baigorria | 25 h | 31,5h | 79,4 % | 14 h | BACK + FRONT + TEST + REV + DOC |
 | Dev 4 | Joaquin Cortez | 22 h | 27,7h | 79,4 % | 14 h | BACK + FRONT + TEST + REV + DOC |
-| Dev 5 | Julieta Ariadna Disca | 28 h | 51,5h | 54,4 % | 17 h | BACK + FRONT + TEST + REV + DOC |
-| Dev 6 | Valentina Maldonado | 27 h | 35,3h | 76,5 % | 17 h | BACK + FRONT + TEST + REV + DOC |
-| Dev 7 | Maximo Cerquatti | 26 h | 46,4h | 56,0 % | 17 h | BACK + FRONT + TEST + REV + DOC |
-| Dev 8 | Regina Loreta Cerasulo | 19 h | 35,3h | 53,8 % | 10 h | BACK + FRONT + TEST + REV + DOC |
+| Dev 6 | Valentina Maldonado | 31 h | 35,3h | 87,8 % | 17 h | BACK + FRONT + TEST + REV + DOC |
+| Dev 7 | Maximo Cerquatti | 32 h | 46,4h | 69,0 % | 17 h | BACK + FRONT + TEST + REV + DOC |
+| Dev 8 | Regina Loreta Cerasulo | 22 h | 35,3h | 62,3 % | 10 h | BACK + FRONT + TEST + REV + DOC |
 | Dev 9 | Bruno Gianoli | 20 h | 28,4h | 70,4 % | 10 h | BACK + FRONT + TEST + REV + DOC |
 | Dev 10 | Ana Paula Ducart | 20 h | 25,2h | 79,4 % | 0 h | DOC (solo MSII) |
+
+**Total activo: 233 h / 310,7 h (9 devs) = 75 %.** + 8 h completadas por Julieta (US-08 T1, G4) = 241 h.
+> **Julieta (Dev 5) se cambió de grupo.** Sus tareas pendientes se reasignaron: US-02 T2 → Mateo (hecha) · US-08 T4 → Valentina · FE-4b → Regina · US-02 T6 → Máximo · US-01 T10b → Luciano.
 
 **Total: 241 h / 362,1 h = 66,6 %.** Horas ~54-79% (dentro de capacidad) · código ~10-19h (parejo) · **los 9 devs cubren las 5 capas** (Ana Paula solo DOC).
 
