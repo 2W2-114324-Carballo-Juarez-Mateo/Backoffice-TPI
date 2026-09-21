@@ -27,6 +27,18 @@
 | `administration.events.DLT` | **AUTO-APROVISIONADO** (T11 crea `{topic}` + `{topic}.DLT`) | Usamos el sufijo **mayúsculas**; no lo pedimos por separado |
 | `audit.events` | **CONFLICTO con `identity.audit`** | **Decisión:** confluimos en **`identity.audit`** (evitamos duplicado). Coordinamos con T01 que nuestros eventos de auditoría van a ese tópico |
 
+### Qué tópicos necesitamos y para qué
+
+| Tópico | Dirección | Para qué lo necesitamos (requisito) |
+|---|---|---|
+| `administration.events` | Emitimos | **Propagación de configuración global** (RF-CFG-04/06): al modificar un parámetro (PAR-XX), notificamos a los consumidores (T03/T05/T07/T08/T10) para que actualicen su caché. No es notificación de usuario. |
+| `identity.audit` (antes `audit.events`) | Emitimos | **Auditoría** (RF-AUD-*): el Backoffice registra `ParameterChanged` y T01 persiste la bitácora. No es notificación de usuario. |
+| `system.notifications` | Emitimos | **Notificaciones a usuarios/tutores** con respaldo en requisitos: `ACADEMIC_DATA_EXPIRING` (preaviso de retención, RF-NFR-10), `STUDENT_AT_HIGH_RISK` (alerta de alumno en riesgo) y `EXPORT_READY` (exportación asíncrona lista, US-09). |
+| `challenges.results` | Consumimos | Ingesta del hecho único de resultado de desafío (T03) para nuestros read models de engagement. |
+| `courses.lifecycle` | Consumimos | Matrícula y ciclo de vida de cursos (T02) para mantener cohortes y encuestas CSAT. |
+| `economy.transactions` | Consumimos | Saldo de monedas por alumno (T08) para frescura en el panel. |
+| `sandbox.events` | Consumimos | Progreso/niveles (T10) para analíticas y alertas de riesgo. |
+
 ## 3 · Tópicos que consumimos — CONFIRMADO (mapeo al catálogo oficial)
 
 | Tópico oficial | Uso Backoffice | Estado |
