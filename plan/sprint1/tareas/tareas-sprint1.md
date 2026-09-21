@@ -169,27 +169,27 @@ El workflow de cátedra corre solo en PRs a `main` y `release/**`. Todo nuestro 
 
 ## 5 · Mensajería — el contrato cambia
 
-El `EventoDTO` oficial de cátedra, **compartido por todos los microservicios**:
+El `EventEnvelope<T>` oficial de cátedra, **compartido por todos los microservicios**:
 
 ```java
-public record EventoDTO(
-    String eventId,
-    String eventType,        // SCREAMING_SNAKE_CASE, en castellano
-    LocalDateTime timestamp, // ISO 8601 UTC
-    String producer,         // "tema-12-backoffice"
-    Map<String, Object> payload
-) {}
+public record EventEnvelope<T>(
+    UUID eventId,
+    String eventType,     // SCREAMING_SNAKE_CASE, en inglés
+    int eventVersion,     // versión del contrato del evento
+    Instant timestamp,    // ISO 8601 UTC
+    String producer,      // "backoffice-service"
+    T payload) {}         // tipado
 ```
 
 | Lo que decía el plan | Lo que corresponde |
 |---|---|
-| `EventEnvelope` propio | Consumir **`EventoDTO` oficial** (Drive, `com.utn.tpi.common.dto.EventoDTO`) |
-| `occurredAt` · `source` | `timestamp` · `producer` (`tema-12-backoffice`) |
+| `EventEnvelope` propio | Consumir **`EventEnvelope<T>` oficial** (T11/cátedra, `com.utn.tpi.common.dto.EventEnvelope<T>`) |
+| `occurredAt` · `source` | `timestamp` · `producer` (`backoffice-service`) |
 | `correlationId`, `actorId`, `role` en el envelope | **Headers de Kafka** (metadatos de transporte) |
-| Eventos en inglés (`ParameterChanged`, `GlobalConfigurationChanged`) | **En ESPAÑOL** (Drive oficial: `CURSO_ARCHIVADO`, `VENCIMIENTO_DATOS_ACADEMICOS`…); nuestros nombres a definir en G1 |
-| Topics en inglés (`challenge.events`, `course.events`, `administration.events`) | **En español** (Drive: `desafios.resultados`, `cursos.ciclo-vida`, `sistema.notificaciones`) |
+| Eventos y topics en inglés | **Todo en inglés** (T11/cátedra: `CHALLENGE_COMPLETED`, `challenges.results`…); nombres de nuestros eventos a definir/registrar en G1 |
+| Sin `eventVersion` | **`eventVersion` (int)** = versión del contrato del evento (nuevo, 6º campo) |
 
-> **G1 es la tarea más urgente del sprint.** Enviar a T11 (dueño del Kafka/topics) para ratificar topics, envelope y payloads según el **Drive oficial**. **CERRADO el estándar** (`EventoDTO` 5 campos); pendiente ratificar nuestros topics de emisión y nombres de eventos en español.
+> **G1 es la tarea más urgente del sprint** (sin respuesta de T11). Enviar a T11 (dueño del Kafka/topics) para ratificar topics, envelope y payloads. **CERRADO el estándar** (`EventEnvelope<T>` 6 campos); pendiente **registrar con T11** nuestros topics (`administration.events`, `audit.events`, `administration.events.dlt`) y confirmar nombres de eventos.
 
 ---
 

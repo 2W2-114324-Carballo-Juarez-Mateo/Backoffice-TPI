@@ -35,9 +35,9 @@
 | **Estado** | ✅ hecho - pusheado a `feature/us-02-reliability` |
 | **Qué se hizo** | Consumidor de referencia (`@KafkaListener` sobre `administration.events`) que valida el ciclo Outbox→Kafka→consumo y descarta duplicados por `eventId` y versiones no más nuevas por parámetro |
 | **Archivos/clases** | `ProcessedEventRegistry` (interfaz) · `InMemoryProcessedEventRegistry` (dedup in-memory, `synchronized`) · `ReferenceConfigConsumer` · `KafkaConsumerConfig` (`@EnableKafka`) · `application.properties`/test (`outbox.consumer.group-id`, `auto-startup=false` en tests) |
-| **Decisiones / supuestos** | Dedup **in-memory** (el store durable `reporting.processed_event` es de US-08/Julieta; este registry valida el ciclo sin depender de esa tabla) · se parsea el envelope con Jackson (`eventId` + `payload.paramKey/version`) para no depender del mapeo exacto de T2 |
+| **Decisiones / supuestos** | Dedup **in-memory** (el store durable `reporting.processed_event` es de US-08/Julieta; este registry valida el ciclo sin depender de esa tabla) · se parsea el envelope con Jackson (`eventId` + `payload.paramKey/version`) para no depender del mapeo exacto de T2 · **envelope adaptado al nuevo `EventEnvelope<T>` (6 campos: `eventVersion` + payload tipado)** |
 | **CA / RF cubiertos** | US-02 idempotencia (`event_id` + versión) · RULES-eventos 3 |
 | **Tests agregados** | `InMemoryProcessedEventRegistryTest` (duplicado por eventId, versión vieja/igual, versión nueva, parámetros independientes, eventId vacío/null) · `ReferenceConfigConsumerTest` (envelope válido → registry; malformado → no llega al registry) |
-| **PR / commits** | `8c296b9` (rama `feature/us-02-reliability`, sin PR todavía) |
+| **PR / commits** | `8c296b9` (idempotencia) + `369a1ec` (adaptación a `EventEnvelope<T>`, producer `backoffice-service`) — rama `feature/us-02-reliability`, sin PR todavía |
 | **Pendientes / deuda** | Alinear a `Event<T>` + `JsonDeserializer` tipado si el equipo lo decide (hoy String+ObjectMapper, mismo wire JSON) · topic a **registrar con T11 (G1)** |
 

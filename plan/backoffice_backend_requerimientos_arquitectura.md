@@ -1008,7 +1008,7 @@ Los eventos deberán incluir (estándar **Drive oficial**):
 }
 ```
 
-> **ADR 2026-09 (CERRADO):** el envelope oficial es **`EventoDTO{eventId, eventType, timestamp, producer, payload}`** (5 campos). `correlationId/actorId/role` → **headers de Kafka** (trazabilidad/auditoría). `eventType` en español. Los ejemplos con `occurredAt`/`source` en este documento son **legacy** y quedan superados por el estándar. El **Kafka/topics lo gestiona T11** (Social y Notificaciones) → todo contrato de mensajería se **ratifica con T11 (G1)**.
+> **ADR 2026-09 (CERRADO, actualizado al nuevo Kafka):** el envelope oficial es **`EventEnvelope<T>{eventId (UUID), eventType, eventVersion (int), timestamp, producer, payload (T)}`** (6 campos, genérico con payload tipado). `correlationId/actorId/role` → **headers de Kafka** (trazabilidad/auditoría). **Todo en inglés.** Los ejemplos con `occurredAt`/`source` en este documento son **legacy** y quedan superados por el estándar. El **Kafka/topics lo gestiona T11** (Social y Notificaciones) → todo contrato de mensajería se **ratifica con T11 (G1)** y **no se crean topics nuevos**.
 
 ### Topics y particiones (convención Kafka — a ratificar con T11)
 
@@ -2366,7 +2366,7 @@ El equipo de BackOffice no debe implementar el frontend administrativo salvo que
 - **Roles (T01):** los roles los define T01. Propuestos por el profe: **GESTOR** y **"PROFESOR con permiso de vista"** → coordinar si son rol nuevo o permiso. El Backoffice define la **matriz de acciones por rol** en su panel.
 - **Lista blanca de profesores (RF-USR-02, T01):** coordinar si la administra T01 o el Backoffice desde el panel.
 
-> **Convención de eventos:** todos los eventos siguen el **`EventoDTO` oficial** `{eventId, eventType, timestamp, producer, payload}` (Drive, ✅ cerrado; `correlationId/actorId/role` → headers de Kafka, `eventType` en español — ver §12 y ADR 2026-09), con contrato versionado (§11/33.3) y **ratificación con T11** (dueño del Kafka).
+> **Convención de eventos:** todos los eventos siguen el **`EventEnvelope<T>` oficial** `{eventId, eventType, eventVersion, timestamp, producer, payload}` (6 campos, ✅ cerrado; `correlationId/actorId/role` → headers de Kafka, `eventVersion` = versión del contrato, **todo en inglés** — ver §12 y ADR 2026-09), con contrato versionado (§11/33.3) y **ratificación con T11** (dueño del Kafka).
 
 ---
 

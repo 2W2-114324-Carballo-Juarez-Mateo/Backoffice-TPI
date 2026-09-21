@@ -2,7 +2,7 @@
 
 > **Fuente única de verdad** del estado de los contratos de integración. Cada contrato indica: tema, relación (consumimos / proveemos), estado y dónde está definido. Las solicitudes viven en `plan/solicitudes/`. Los detalles acordados con **T01** están consolidados abajo; el resto quedan **pendientes**.
 >
-> **✅ Estándar de eventos CERRADO (PDF de T11, 2026-09):** `EventoDTO{eventId, eventType, timestamp, producer, payload}` (5 campos; `correlationId/actorId/role` → **headers de Kafka**). **Todo en inglés.** `producer` = `spring.application.name` → **`backoffice-service`**. **No se crean topics nuevos: se registran con T11.** Backoffice emite `ACADEMIC_DATA_EXPIRING` → `system.notifications`. Queda coordinar con cada tema: **registrar nuestros topics** (config/auditoría/DLT) con T11 (G1), payloads por evento y confirmación de headers.
+> **✅ Estándar de eventos CERRADO (T11/cátedra, 2026-09):** **`EventEnvelope<T>{eventId (UUID), eventType, eventVersion (int), timestamp, producer, payload (T)}`** (6 campos; `correlationId/actorId/role` → **headers de Kafka**). **Todo en inglés.** `producer` = `spring.application.name` → **`backoffice-service`**. **No se crean topics nuevos: se registran con T11.** Backoffice emite `ACADEMIC_DATA_EXPIRING` → `system.notifications`. Queda coordinar con cada tema: **registrar nuestros topics** (config/auditoría/DLT) con T11 (G1), payloads por evento y confirmación de headers.
 
 ## Estado por tema
 
@@ -99,7 +99,8 @@
 
 | Ítem | Valor oficial |
 |---|---|
-| Envelope | **`EventoDTO{eventId, eventType, timestamp, producer, payload}`** (5 campos, todos obligatorios; **nada más en el body**) — genérico `Event<T>` |
+| Envelope | **`EventEnvelope<T>{eventId, eventType, eventVersion, timestamp, producer, payload}`** (6 campos, todos obligatorios; **nada más en el body**) — genérico con payload tipado |
+| `eventVersion` | `int` — **versión del contrato del evento** (evolución del schema; no es la versión de negocio del payload) |
 | `correlationId/actorId/role` | **Headers de Kafka** (trazabilidad/auditoría; a confirmar formalmente con T01/T11) |
 | Idioma | **Todo en inglés** (literal del PDF de T11) |
 | `eventType` | Inglés SCREAMING_SNAKE_CASE (`CHALLENGE_COMPLETED`, `ACADEMIC_DATA_EXPIRING`…) |
@@ -135,8 +136,8 @@
 
 ## Convenciones transversales (aplican a todos)
 
-- **Envelope estándar (PDF de T11):** **`EventoDTO{eventId, eventType, timestamp, producer, payload}`** (genérico `Event<T>`). `correlationId/actorId/role` → **headers de Kafka**. **Todo en inglés**. `producer = spring.application.name` (**`backoffice-service`**).
-- **Topics:** en inglés (`challenges.results`, `courses.lifecycle`, `system.notifications`…), versionados. **No se crean topics nuevos: se registran con T11.** **Idempotencia:** `event_id` + `version`.
+- **Envelope estándar (T11/cátedra):** **`EventEnvelope<T>{eventId (UUID), eventType, eventVersion (int), timestamp, producer, payload (T)}`** (genérico, payload tipado). `correlationId/actorId/role` → **headers de Kafka**. **Todo en inglés**. `producer = spring.application.name` (**`backoffice-service`**).
+- **Topics:** en inglés (`challenges.results`, `courses.lifecycle`, `system.notifications`…), versionados. **No se crean topics nuevos: se registran con T11.** **Idempotencia:** `event_id` + versión.
 - **Rutas:** `/api/{servicio}/**`. **Frescura de lectura:** ≤ 15 min (decisión de arquitectura).
 - **Caché de parámetros en consumidores:** TTL 10 min + invalidación por evento.
 

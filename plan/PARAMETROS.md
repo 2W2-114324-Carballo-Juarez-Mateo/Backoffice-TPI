@@ -1,6 +1,6 @@
 # Registro de Parámetros Globales (PAR) — Backoffice (Tema 12)
 
-> **Registro único** de los parámetros de configuración global del Backoffice. El registro es **genérico y extensible** (`key` + `value` jsonb + `version`), versionado y con cambios **solo hacia adelante** (RF-CFG-06). La modificación es **exclusiva de ADMIN** (RF-CFG-05) y se propaga por evento (**`EventoDTO` de 5 campos del PDF de T11**, `producer = backoffice-service`; nombre de evento y topic de emisión a **registrar con T11** en G1/G4) vía Outbox + caché TTL 10 min en consumidores.
+> **Registro único** de los parámetros de configuración global del Backoffice. El registro es **genérico y extensible** (`key` + `value` jsonb + `version`), versionado y con cambios **solo hacia adelante** (RF-CFG-06). La modificación es **exclusiva de ADMIN** (RF-CFG-05) y se propaga por evento (**`EventEnvelope<T>` de 6 campos** de T11/cátedra, `producer = backoffice-service`; nombre de evento y topic de emisión a **registrar con T11** en G1/G4) vía Outbox + caché TTL 10 min en consumidores.
 > Los consumidores de la economía: **T03 (Desafíos)** deriva los montos de XP (PAR-01) y emite el monto ya resuelto; **T05/T10** según su dominio. **Banco no consume PAR** (solo registra montos ya resueltos) — confirmado con T08. **PAR-03, PAR-06 y PAR-07 quedan fuera del Backoffice**: los gestiona **T09 (Mercado)** o quien defina la cátedra/Hernán → se marcan **EXTERNOS** y el seed del Backoffice **no** los crea.
 
 ## PAR-01..PAR-18 — Confirmados (tabla del PRD, RF-CFG-04)

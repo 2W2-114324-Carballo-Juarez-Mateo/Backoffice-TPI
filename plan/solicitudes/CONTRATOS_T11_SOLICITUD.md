@@ -8,12 +8,12 @@
 
 ## 0 · Contexto
 
-- Su **PDF de eventos (2026-09)** fija el estándar: **`EventoDTO{eventId, eventType, timestamp, producer, payload}`** (5 campos, genérico `Event<T>`), **todo en inglés**, `producer = spring.application.name`, serialización `JsonSerializer`/`JsonDeserializer` + consumer tipado, y **no se crean topics nuevos sin avisarles**.
+- Su **estándar de eventos (2026-09)** fija el envelope: **`EventEnvelope<T>{eventId, eventType, eventVersion, timestamp, producer, payload}`** (6 campos, genérico con payload tipado), **todo en inglés**, `producer = spring.application.name`, serialización `JsonSerializer`/`JsonDeserializer` + consumer tipado, y **no se crean topics nuevos sin avisarles**.
 - Como T11 gestiona el Kafka y el catálogo de topics, les pedimos **registrar nuestros topics** y ratificar los que consumimos.
 
 ## 1 · Convención — confirmaciones que pedimos
 
-1. **`EventoDTO` / `Event<T>` de 5 campos** (su PDF): ¿lo confirmamos como el envelope obligatorio? ¿`correlationId`/`actorId`/`role` van como **headers de Kafka** (además de `traceparent`, `X-Request-Id`)?
+1. **`EventEnvelope<T>` de 6 campos**: ¿lo confirmamos como el envelope obligatorio? ¿`correlationId`/`actorId`/`role` van como **headers de Kafka** (además de `traceparent`, `X-Request-Id`)? ¿`eventVersion` es la **versión del contrato del evento**?
 2. **`producer`**: confirmamos que usamos el `spring.application.name` → **`backoffice-service`** (como su ejemplo `challenges-service`).
 3. **Serialización**: ¿confirmamos `JsonSerializer`/`JsonDeserializer` + `spring.json.trusted.packages` + consumer tipado `Event<Payload>`?
 

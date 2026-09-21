@@ -2,7 +2,7 @@
 
 ## Publicar (productor)
 
-1. En el **dominio**: definí el evento (ej. `CAMBIO_CONFIGURACION_GLOBAL`) en `domain/events` como **`EventoDTO{eventId, eventType, timestamp, producer, payload}`** (5 campos, `eventType` en español).
+1. En el **dominio**: definí el evento (ej. `CAMBIO_CONFIGURACION_GLOBAL`) en `domain/events` como **`EventEnvelope<T>{eventId, eventType, eventVersion, timestamp, producer, payload}`** (6 campos, `eventType` en inglés, `payload` tipado).
 2. En el **caso de uso**: tras persistir el cambio, creá el `OutboxMessage` (`eventType`, `payload` como JSON) **dentro de la misma transacción**.
 3. En **infraestructura**: el publisher lee los `OutboxMessage` pendientes y los envía al topic correcto, marcándolos como publicados.
 4. `correlationId/actorId/role` van como **headers de Kafka**. El topic debe estar **ratificado por T11 (G1)** (naming por dominio y partición por `key` — ver `docs/08-eventos-kafka.md`).

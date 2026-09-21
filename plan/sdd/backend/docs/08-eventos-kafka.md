@@ -2,20 +2,22 @@
 
 Broker elegido: **Kafka** (ADR-003). **RabbitMQ** queda como alternativa. Mismos patrones de confiabilidad: **Outbox + at-least-once + idempotencia**.
 
-## Envelope común — `EventoDTO` (PDF de T11, ✅ CERRADO)
+## Envelope común — `EventEnvelope<T>` (T11/cátedra, ✅ CERRADO)
 
 ```json
 {
-  "eventId": "123e4567-e89b-12d3-a456-426614174000",
+  "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "eventType": "EVENT_NAME_IN_ENGLISH",
+  "eventVersion": 1,
   "timestamp": "2026-09-02T19:30:00Z",
   "producer": "backoffice-service",
   "payload": {}
 }
 ```
 
-- **5 campos** (todos obligatorios) y nada más en el body; es el genérico `Event<T>` de T11. **Todo en inglés.** `producer` = `spring.application.name` (**`backoffice-service`**).
-- **Serialización (T11):** `JsonSerializer`/`JsonDeserializer` + `spring.json.trusted.packages` + consumer tipado `Event<Payload>`.
+- **6 campos** (todos obligatorios) y nada más en el body; es el genérico **`EventEnvelope<T>`** con **payload tipado** (`eventId` UUID · `eventType` · `eventVersion` int · `timestamp` · `producer` · `payload`). **Todo en inglés.** `producer` = `spring.application.name` (**`backoffice-service`**).
+- **`eventVersion`**: versión del **contrato del evento** (evolución del schema). No es la versión de negocio del payload.
+- **Serialización (T11):** `JsonSerializer`/`JsonDeserializer` + `spring.json.trusted.packages` + consumer tipado `EventEnvelope<Payload>`.
 - **`correlationId` / `actorId` / `role` → headers de Kafka** (trazabilidad y auditoría; a confirmar formalmente con T01/T11). No viajan en el body.
 - **Regla de topics:** **no se crean topics nuevos — se registran con T11 (G1).** Topics a registrar: `administration.events` (config), `audit.events`, `administration.events.dlt` (DLT).
 - Backoffice emite a **`system.notifications`**: **`ACADEMIC_DATA_EXPIRING`** `{cohortId, courseName, closingDate, expirationDate, daysRemaining}` (preaviso de retención, PAR-16/17).

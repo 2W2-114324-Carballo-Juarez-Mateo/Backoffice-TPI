@@ -6,7 +6,7 @@
 > 1. **T05 consume y aplica los parámetros globales** del Backoffice (`PAR-04`, `PAR-05`, `PAR-19`, `PAR-20`).  
 > 2. **Backoffice consume las entregas y evaluaciones de desafíos prácticos** para consolidar métricas de desempeño, reportes docentes y alertas de alumnos en riesgo.  
 > **Cómo usar este documento:** Es una **solicitud formal**; respondan completando las casillas y campos de confirmación.
-> **Estándar (PDF de T11, 2026-09):** todo en inglés, `producer` = `spring.application.name`, y **los topics se registran con T11** (no se crean por cuenta propia).
+> **Estándar (T11/cátedra, 2026-09):** envelope **`EventEnvelope<T>{eventId, eventType, eventVersion, timestamp, producer, payload}`** (6 campos, payload tipado), todo en inglés, `producer` = `spring.application.name`, y **los topics se registran con T11** (no se crean por cuenta propia).
 
 ---
 
@@ -33,10 +33,11 @@ El Backoffice provee los siguientes parámetros de configuración que impactan e
 1. **Emisión de Eventos:** El Backoffice emite el evento `GLOBAL_CONFIGURATION_CHANGED` en el topic `administration.events` (a **registrar con T11**) a través de un **Transactional Outbox**.
    * **Clave de partición Kafka:** `param_key` (ej. `PAR-19`) para garantizar orden estricto de versiones.
 2. **Formato de Payload (`EventoDTO`):**
-   ```json
+```json
    {
-     "eventId": "uuid-v4",
+     "eventId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
      "eventType": "GLOBAL_CONFIGURATION_CHANGED",
+     "eventVersion": 1,
      "timestamp": "2026-09-20T12:00:00Z",
      "producer": "backoffice-service",
      "payload": {
@@ -72,6 +73,7 @@ Para alimentar los reportes docentes y los indicadores de deserción/riesgo acad
   {
     "eventId": "uuid-v4",
     "eventType": "PRACTICAL_CHALLENGE_SUBMITTED",
+    "eventVersion": 1,
     "timestamp": "2026-09-20T12:30:00Z",
     "producer": "practical-challenges-service",
     "payload": {
@@ -94,6 +96,7 @@ Para alimentar los reportes docentes y los indicadores de deserción/riesgo acad
   {
     "eventId": "uuid-v4",
     "eventType": "PRACTICAL_CHALLENGE_EVALUATED",
+    "eventVersion": 1,
     "timestamp": "2026-09-20T12:35:00Z",
     "producer": "practical-challenges-service",
     "payload": {
