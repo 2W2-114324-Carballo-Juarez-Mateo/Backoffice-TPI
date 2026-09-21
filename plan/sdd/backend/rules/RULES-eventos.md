@@ -1,9 +1,9 @@
 # RULES — Eventos (Kafka)
 
-1. **Envelope obligatorio (T11/cátedra):** todo evento usa **`EventEnvelope<T>{eventId, eventType, eventVersion, timestamp, producer, payload}`** (6 campos, genérico con payload tipado). **Todo en inglés** (SCREAMING_SNAKE_CASE). `eventVersion` = versión del contrato del evento. `producer = spring.application.name` (**`backoffice-service`**). `correlationId/actorId/role` → **headers de Kafka**. Ver `docs/08-eventos-kafka.md`.
+1. **Envelope obligatorio (T11/cátedra):** todo evento usa **`EventEnvelope<T>{eventId, eventType, eventVersion, timestamp, producer, payload}`** (6 campos, genérico con payload tipado). **Todo en inglés** (SCREAMING_SNAKE_CASE). `eventVersion` = versión del contrato del evento. `producer = spring.application.name` (**`tema-12-backoffice-service`**). `correlationId/actorId/role` → **dentro del `payload`** (solo `traceparent` como header). Ver `docs/08-eventos-kafka.md`.
 2. **Outbox:** publicar el evento **en la misma transacción** que el cambio (tabla `OutboxMessage`). Nunca publiques a Kafka directo tras un commit sin outbox.
 3. **Idempotencia:** el consumidor registra `event_id` procesados y **ignora duplicados** (at-least-once).
-4. **Topic + consumer group por servicio.** El BackOffice **publica** en `system.notifications` (ACADEMIC_DATA_EXPIRING), `audit.events` y topic de config; **consume** `challenges.results`, `courses.lifecycle`, `bank.events`, `roadmap.events`, `survey.events`, `ranking.events`. **NO se crean topics nuevos: se registran con T11 (G1)** (`administration.events`, `audit.events`, `administration.events.dlt`).
+4. **Topic + consumer group por servicio.** El BackOffice **publica** en `system.notifications` (ACADEMIC_DATA_EXPIRING), `audit.events` y topic de config; **consume** `challenges.results`, `courses.lifecycle`, `economy.transactions`, `sandbox.events`, `survey.events`, `ranking.events`. **NO se crean topics nuevos: se registran con T11 (G1)** (`administration.events`, `audit.events`, `administration.events.DLT`).
 5. **No reenviar credenciales del usuario** en eventos; solo IDs y payload de negocio.
 6. El evento debe ser **descriptivo y estable**: cambiar el `eventType` o el payload rompe consumidores (contract).
 7. Audit y Reporting consumen eventos; un cambio de payload debe respetar el contrato versionado.

@@ -177,19 +177,19 @@ public record EventEnvelope<T>(
     String eventType,     // SCREAMING_SNAKE_CASE, en inglés
     int eventVersion,     // versión del contrato del evento
     Instant timestamp,    // ISO 8601 UTC
-    String producer,      // "backoffice-service"
+    String producer,      // "tema-12-backoffice-service"
     T payload) {}         // tipado
 ```
 
 | Lo que decía el plan | Lo que corresponde |
 |---|---|
 | `EventEnvelope` propio | Consumir **`EventEnvelope<T>` oficial** (T11/cátedra, `com.utn.tpi.common.dto.EventEnvelope<T>`) |
-| `occurredAt` · `source` | `timestamp` · `producer` (`backoffice-service`) |
+| `occurredAt` · `source` | `timestamp` · `producer` (`tema-12-backoffice-service`) |
 | `correlationId`, `actorId`, `role` en el envelope | **Headers de Kafka** (metadatos de transporte) |
 | Eventos y topics en inglés | **Todo en inglés** (T11/cátedra: `CHALLENGE_COMPLETED`, `challenges.results`…); nombres de nuestros eventos a definir/registrar en G1 |
 | Sin `eventVersion` | **`eventVersion` (int)** = versión del contrato del evento (nuevo, 6º campo) |
 
-> **G1 es la tarea más urgente del sprint** (sin respuesta de T11). Enviar a T11 (dueño del Kafka/topics) para ratificar topics, envelope y payloads. **CERRADO el estándar** (`EventEnvelope<T>` 6 campos); pendiente **registrar con T11** nuestros topics (`administration.events`, `audit.events`, `administration.events.dlt`) y confirmar nombres de eventos.
+> **G1 es la tarea más urgente del sprint** (sin respuesta de T11). Enviar a T11 (dueño del Kafka/topics) para ratificar topics, envelope y payloads. **CERRADO el estándar** (`EventEnvelope<T>` 6 campos); pendiente **registrar con T11** nuestros topics (`administration.events`, `audit.events`, `administration.events.DLT`) y confirmar nombres de eventos.
 
 ---
 

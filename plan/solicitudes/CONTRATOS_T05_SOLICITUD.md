@@ -39,7 +39,7 @@ El Backoffice provee los siguientes parámetros de configuración que impactan e
      "eventType": "GLOBAL_CONFIGURATION_CHANGED",
      "eventVersion": 1,
      "timestamp": "2026-09-20T12:00:00Z",
-     "producer": "backoffice-service",
+     "producer": "tema-12-backoffice-service",
      "payload": {
        "key": "PAR-19",
        "name": "late_submission_penalty_pct",

@@ -2,7 +2,7 @@
 
 > **Fuente única de verdad** del estado de los contratos de integración. Cada contrato indica: tema, relación (consumimos / proveemos), estado y dónde está definido. Las solicitudes viven en `plan/solicitudes/`. Los detalles acordados con **T01** están consolidados abajo; el resto quedan **pendientes**.
 >
-> **✅ Estándar de eventos CERRADO (T11/cátedra, 2026-09):** **`EventEnvelope<T>{eventId (UUID), eventType, eventVersion (int), timestamp, producer, payload (T)}`** (6 campos; `correlationId/actorId/role` → **headers de Kafka**). **Todo en inglés.** `producer` = `spring.application.name` → **`backoffice-service`**. **No se crean topics nuevos: se registran con T11.** Backoffice emite `ACADEMIC_DATA_EXPIRING` → `system.notifications`. Queda coordinar con cada tema: **registrar nuestros topics** (config/auditoría/DLT) con T11 (G1), payloads por evento y confirmación de headers.
+> **✅ Estándar de eventos CERRADO (T11/cátedra, 2026-09):** **`EventEnvelope<T>{eventId (UUID), eventType, eventVersion (int), timestamp, producer, payload (T)}`** (6 campos; `correlationId/actorId/role` → **dentro del `payload`**). **Todo en inglés.** `producer` = `spring.application.name` → **`tema-12-backoffice-service`**. **No se crean topics nuevos: se registran con T11.** Backoffice emite `ACADEMIC_DATA_EXPIRING` → `system.notifications`. Queda coordinar con cada tema: **registrar nuestros topics** (config/auditoría/DLT) con T11 (G1), payloads por evento y confirmación del producer.
 
 ## Estado por tema
 
@@ -19,7 +19,7 @@
 | **T07 · Evaluación LLM** | Consume (deriva/calibración) + provee (`ModelProviderChanged`, PAR-22) + recibe **alerta de presupuesto** (70%→Backoffice) | 🟡 **EN CURSO** — recibimos su doc de límites y uso | `solicitudes/CONTRATOS_T07_SOLICITUD.md` · `solicitudes/CONTRATOS_T07_LLM_LIMITES.md` |
 | **T03 · Desafíos** | Provee (hecho único en `challenge.events`) + consume PAR (PAR-01/04/05; PAR-03 vía Mercado) | 🟡 **ACUERDO** | `solicitudes/CONTRATOS_T03_RESPUESTA.md` |
 
-> **Pendientes internos:** schema externo de `identity.events` y `retention.events` · topics de emisión propios del Backoffice (config/auditoría) a fijar vs Drive · confirmación de `correlationId/actorId/role` como **headers** (T01/T11) · naming de topics restantes con T11 · exposición del estado 2FA (T01) · **API de Vault (T01)** · **GESTOR / "profesor con vista"** · **lista blanca de profesores** · **observabilidad de microservicios: FUERA de alcance** (solo logs/health/correlation).
+> **Pendientes internos:** schema externo de `identity.audit` y `retention.events` · topics de emisión propios del Backoffice (config/auditoría) a fijar vs Drive · confirmación de `correlationId/actorId/role` como **headers** (T01/T11) · naming de topics restantes con T11 · exposición del estado 2FA (T01) · **API de Vault (T01)** · **GESTOR / "profesor con vista"** · **lista blanca de profesores** · **observabilidad de microservicios: FUERA de alcance** (solo logs/health/correlation).
 
 ---
 
@@ -42,7 +42,7 @@
 - Backoffice **no purga por su cuenta**; alinea read models ante `DataAnonymized`/`RetentionDecisionCreated`. Lectura opcional postergada: `GET /api/users/retention/*`.
 
 ### 6 · Gestión de cuentas ADMIN
-- `/api/auth/*` y `/api/admin/accounts/*` son de T01. Último ADMIN y baja 2FA validadas 100% en users-service. `identity.events` payloads pendientes.
+- `/api/auth/*` y `/api/admin/accounts/*` son de T01. Último ADMIN y baja 2FA validadas 100% en users-service. `identity.audit` payloads pendientes.
 
 ### 7 · 2FA
 - Hoy OTP por email; evaluando TOTP. Exposición del estado sin definir → front usa mock.
@@ -72,7 +72,7 @@
 - **`distribution`:** a Banco solo **saldo en monedas**; la **distribución de XP** la expone **T10**.
 - **"Retención vs desafíos":** **retención de monedas → Banco**, **retención de XP → Roadmap (T10)**; el **Backoffice integra ambos** en el agregado (no se pide a Banco).
 - **Contract 3 (PAR):** **no aplica** → los montos los deriva **T03**; **PAR-03/06/07 los gestiona T09 (Mercado)** (descartados del Backoffice); T03 toma PAR-03 de Mercado; **PAR-21** no está en el PRD (candidato suspendido).
-- **PAR-12 (vidas iniciales/máximo) → ahora de Banco:** Banco la gestiona y publica el evento **`PARAMETER_UPDATED`** (`bank.events`, **envelope estándar + `version`**) → **✅ acordado** (payload con envelope en `CONTRATOS_T08_RESPUESTA.md`). Backoffice **no la almacena** (EXTERNO). El **evento de saldo/vidas por alumno** queda **⏳ pendiente de confirmar** (topic + payload).
+- **PAR-12 (vidas iniciales/máximo) → ahora de Banco:** Banco la gestiona y publica el evento **`PARAMETER_UPDATED`** (`economy.transactions`, **envelope estándar + `version`**) → **✅ acordado** (payload con envelope en `CONTRATOS_T08_RESPUESTA.md`). Backoffice **no la almacena** (EXTERNO). El **evento de saldo/vidas por alumno** queda **⏳ pendiente de confirmar** (topic + payload).
 - **Naming:** el evento de saldo se alinea con la **lista de canales habilitados por release** que publica **T11**.
 - **RF-RPT-06:** no es RF del PRD → pasa a "decisión de arquitectura (frescura ≤15 min)".
 
@@ -88,10 +88,12 @@
 ## T09 — Mercado (SOLICITUD LISTA)
 - **PAR-03 / PAR-06 / PAR-07:** los gestiona **T09 (Mercado)** (descartados del Backoffice). Pendiente: que **Mercado confirme que gestiona PAR-03 y lo expone a T03** (evento + REST + versión). La solicitud `CONTRATOS_T09_SOLICITUD.md` se ajusta.
 
-## T11 — Social y Notificaciones (SOLICITUD LISTA)
-- Define la **convención de eventos** de la plataforma: **basada en el PDF de T11** (`EventoDTO`/`Event<T>` 5 campos, **todo en inglés**, `producer = spring.application.name`, serialización JsonSerializer/JsonDeserializer). Publica la **lista de canales habilitados por release** y **registra los topics** (no se crean sin avisarles).
-- **Topics del Backoffice a registrar con T11 (G1):** `administration.events` (config), `audit.events`, `administration.events.dlt` (DLT).
-- Backoffice **emite a `system.notifications`:** **`ACADEMIC_DATA_EXPIRING`** (payload `{cohortId, courseName, closingDate, expirationDate, daysRemaining}` — preaviso de retención PAR-16/17). El resto de avisos que habíamos previsto (`DataStaleDetected`, `StudentAtHighRisk`, `ThresholdBreached`, `ExportReady`, `DataFreshnessRestored`) **no están en el estándar** → a confirmar con T11 si se emiten o se descartan. → `solicitudes/CONTRATOS_T11_SOLICITUD.md`
+## T11 — Social y Notificaciones (✅ ACUERDO — respuesta recibida 2026-09-21)
+- **Convención ratificada:** `EventEnvelope<T>` 6 campos, `eventVersion = 1`, solo `traceparent` como header obligatorio (**`correlationId`/`actorId`/`role` → dentro del `payload`**), `producer = tema-12-tema-12-backoffice-service`, `JsonSerializer`/`JsonDeserializer` + consumer tipado.
+- **Topics emitidos:** `administration.events` ✅ (3 particiones) · DLT = **`administration.events.DLT`** (mayúsculas, auto-aprovisionado por T11, no se pide aparte) · **auditoría → `identity.audit`** (decisión: no stream separado; coordinar con T01).
+- **Topics consumidos (catálogo oficial):** `challenges.results` ✅ · `courses.lifecycle` ✅ · `economy.transactions` (antes `economy.transactions`) · `sandbox.events` (T10, antes `sandbox.events`) · `identity.audit` (antes `identity.audit`/`audit.events`). **`group.id` = `tema-12-backoffice-group`**.
+- **Emisiones a `system.notifications`:** `ACADEMIC_DATA_EXPIRING` ✅ · `STUDENT_AT_HIGH_RISK` ✅ · `EXPORT_READY` ✅ · `DATA_STALE_DETECTED` y `THRESHOLD_BREACHED` ❌ **no** (operativas internas). → `solicitudes/CONTRATOS_T11_RESPUESTA.md`
+- **Pendiente:** coordinar con **T01** que la auditoría del Backoffice confluya en `identity.audit`.
 
 ---
 
@@ -101,16 +103,16 @@
 |---|---|
 | Envelope | **`EventEnvelope<T>{eventId, eventType, eventVersion, timestamp, producer, payload}`** (6 campos, todos obligatorios; **nada más en el body**) — genérico con payload tipado |
 | `eventVersion` | `int` — **versión del contrato del evento** (evolución del schema; no es la versión de negocio del payload) |
-| `correlationId/actorId/role` | **Headers de Kafka** (trazabilidad/auditoría; a confirmar formalmente con T01/T11) |
+| `correlationId/actorId/role` | **Dentro del `payload`** (trazabilidad/auditoría; a confirmar formalmente con T01/T11) |
 | Idioma | **Todo en inglés** (literal del PDF de T11) |
 | `eventType` | Inglés SCREAMING_SNAKE_CASE (`CHALLENGE_COMPLETED`, `ACADEMIC_DATA_EXPIRING`…) |
-| `producer` | `spring.application.name` (Backoffice: **`backoffice-service`**) |
+| `producer` | `spring.application.name` (Backoffice: **`tema-12-backoffice-service`**) |
 | `timestamp` | ISO 8601 UTC |
-| Topics | Inglés: `challenges.results` · `courses.lifecycle` · `system.notifications` · `bank.events`… |
+| Topics | Inglés: `challenges.results` · `courses.lifecycle` · `system.notifications` · `economy.transactions`… |
 | Serialización | `JsonSerializer`/`JsonDeserializer` + `spring.json.trusted.packages` + consumer tipado `Event<Payload>` |
 | Regla de topics | **No se crean topics nuevos: se avisa a T11 para registrarlos** |
 
-> **Impacto en Backoffice:** consumimos **`challenges.results`** (T03) y **`courses.lifecycle`** (T02). **Topics a registrar con T11 (G1):** `administration.events` (config), `audit.events`, `administration.events.dlt` (DLT). Nombres de eventos propios (`GLOBAL_CONFIGURATION_CHANGED`, `PARAMETER_CHANGED`…) a fijar en inglés y coordinar en G1/G4. La **auditoría** sigue en `audit.events` (T01 persiste).
+> **Impacto en Backoffice:** consumimos **`challenges.results`** (T03) y **`courses.lifecycle`** (T02). **Topics a registrar con T11 (G1):** `administration.events` (config), `audit.events`, `administration.events.DLT` (DLT). Nombres de eventos propios (`GLOBAL_CONFIGURATION_CHANGED`, `PARAMETER_CHANGED`…) a fijar en inglés y coordinar en G1/G4. La **auditoría** sigue en `audit.events` (T01 persiste).
 
 ## T07 — Evaluación LLM (EN CURSO — doc recibido)
 - **Recibimos** `CONTRATOS_T07_LLM_LIMITES.md` (Explicación de Límites y Uso): 4 capas (mensaje 800 tokens / ejercicio 10 msgs-25k tokens / diaria 40 consultas-3 desafíos / presupuesto USD 20 mes con semáforo 70-90-100%). Todo consistente con **PAR-05, PAR-10, PAR-11, PAR-14, PAR-15**.
@@ -126,7 +128,7 @@
 
 | Tema | Qué falta acordar | Solicitud |
 |---|---|---|
-| **T10** | `roadmap.events` (naming con T11), lecturas `/api/roadmap/**`, promoción/abandono y alumno en riesgo, PAR-21 (pendiente de validación) | `solicitudes/CONTRATOS_T10_SOLICITUD.md` |
+| **T10** | `sandbox.events` (naming con T11), lecturas `/api/roadmap/**`, promoción/abandono y alumno en riesgo, PAR-21 (pendiente de validación) | `solicitudes/CONTRATOS_T10_SOLICITUD.md` |
 | **T02** | `course_id`/cohorte, pertenencia docente, `RosterUpdated`, **encuestas CSAT anónimas**, PAR-18 | `solicitudes/CONTRATOS_T02_SOLICITUD.md` |
 | **T05** | Entregas/resultados, topic, PAR-19/20 | a generar |
 | **T07** | **Alerta de presupuesto (70%→Backoffice): topic + payload** · ¿límites configurables o fijos? · PAR-22 (diario 3 vs semanal 5) · deriva/calibración/golden set · PAR-22 | `solicitudes/CONTRATOS_T07_SOLICITUD.md` |
@@ -136,7 +138,7 @@
 
 ## Convenciones transversales (aplican a todos)
 
-- **Envelope estándar (T11/cátedra):** **`EventEnvelope<T>{eventId (UUID), eventType, eventVersion (int), timestamp, producer, payload (T)}`** (genérico, payload tipado). `correlationId/actorId/role` → **headers de Kafka**. **Todo en inglés**. `producer = spring.application.name` (**`backoffice-service`**).
+- **Envelope estándar (T11/cátedra):** **`EventEnvelope<T>{eventId (UUID), eventType, eventVersion (int), timestamp, producer, payload (T)}`** (genérico, payload tipado). `correlationId/actorId/role` → **dentro del `payload`**. **Todo en inglés**. `producer = spring.application.name` (**`tema-12-backoffice-service`**).
 - **Topics:** en inglés (`challenges.results`, `courses.lifecycle`, `system.notifications`…), versionados. **No se crean topics nuevos: se registran con T11.** **Idempotencia:** `event_id` + versión.
 - **Rutas:** `/api/{servicio}/**`. **Frescura de lectura:** ≤ 15 min (decisión de arquitectura).
 - **Caché de parámetros en consumidores:** TTL 10 min + invalidación por evento.

@@ -1017,15 +1017,15 @@ Los eventos deberán incluir (estándar **Drive oficial**):
 | `sistema.notificaciones` | **VENCIMIENTO_DATOS_ACADEMICOS** (+ avisos a confirmar con T11) | Publica | `notificaciones` |
 | config del Backoffice *(nombre a fijar en G1)* | `CAMBIO_CONFIGURACION_GLOBAL` (antes `GlobalConfigurationChanged`) | Publica | `challenges`, `roadmap`, `market`… |
 | `audit.events` (v1) | eventos de auditoría (RF-AUD-*) | Publica | `audit` |
-| `identity.events` | AdminCreated, AdminDeleted, AdminRecoveryExecuted, RoleChanged | Publica (T01) | `audit`, `reporting`… |
+| `identity.audit` | AdminCreated, AdminDeleted, AdminRecoveryExecuted, RoleChanged | Publica (T01) | `audit`, `reporting`… |
 | `retention.events` | RetentionDecisionCreated, DataAnonymized | Publica (T01) | `audit`, `reporting`… |
 | `cursos.ciclo-vida` | NUEVO_CURSO_DISPONIBLE, CURSO_EN_RIESGO, CURSO_ARCHIVADO, matrícula | **Consume** | `reporting` |
 | `desafios.resultados` | **hecho único T03** (resultado de desafío, XP/monedas y desglose) | **Consume** | `reporting` |
-| `bank.events` / `survey.events` / `ranking.events` / `roadmap.events` | eventos de otros equipos | **Consume** | `reporting` |
+| `economy.transactions` / `survey.events` / `ranking.events` / `sandbox.events` | eventos de otros equipos | **Consume** | `reporting` |
 
 Cada **consumer group** pertenece a un consumidor (un servicio). **Idempotencia por `event_id` y por `version`** (el consumidor descarta `v ≤ local`). Los **read models de Reporting se reconstruyen vía contratos de lectura REST** (no dependen del historial del broker). Los consumidores de parámetros usan **caché local con TTL 10 min** que el evento invalida antes (respaldo ante caída del Backoffice).
 
-> **Envelope estándar:** `EventoDTO` oficial (Drive) — ver ADR arriba. **Pendientes de contrato externo:** payloads de `identity.events` (AdminCreated/AdminDeleted/AdminRecoveryExecuted/RoleChanged) y `retention.events` (RetentionDecisionCreated/DataAnonymized) — mismo mecanismo outbox de T01, schema a cerrar; nombres/topics a ratificar con **T11**.
+> **Envelope estándar:** `EventoDTO` oficial (Drive) — ver ADR arriba. **Pendientes de contrato externo:** payloads de `identity.audit` (AdminCreated/AdminDeleted/AdminRecoveryExecuted/RoleChanged) y `retention.events` (RetentionDecisionCreated/DataAnonymized) — mismo mecanismo outbox de T01, schema a cerrar; nombres/topics a ratificar con **T11**.
 
 ### Payloads concretos de eventos cross-team
 
@@ -1544,7 +1544,7 @@ Tema 01 — Identidad y Usuarios
      Outbox Event
         │
         ▼
-     Kafka · topic identity.events
+     Kafka · topic identity.audit
         │
         ▼
      Tema 01 persiste auditoría

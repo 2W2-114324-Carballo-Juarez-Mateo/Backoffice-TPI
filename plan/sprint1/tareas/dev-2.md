@@ -26,7 +26,7 @@
 | **CA / RF cubiertos** | US-02 (CA4 orden por `param_key` preservado; resiliencia del publisher) · RULES "Outbox obligatorio" |
 | **Tests agregados** | `OutboxPublisherServiceImplTest`: backoff dentro del presupuesto, envío a DLT al agotar retries, DLT no disponible → queda PENDING, interrupt flag, no propaga excepciones |
 | **PR / commits** | `05530f4` (rama `feature/us-02-reliability`, sin PR todavía) |
-| **Pendientes / deuda** | T5 (Máximo) integra el ciclo completo Outbox→Kafka→consumo · topic DLT (`administration.events.dlt`) a **registrar con T11 (G1)** |
+| **Pendientes / deuda** | T5 (Máximo) integra el ciclo completo Outbox→Kafka→consumo · topic DLT (`administration.events.DLT`) a **registrar con T11 (G1)** |
 
 ### US-03 T8b · REV — Auditoría del manejo de errores (ErrorApi, trabajo de otro) - ✅ HECHO
 
@@ -50,6 +50,6 @@
 | **Decisiones / supuestos** | Dedup **in-memory** (el store durable `reporting.processed_event` es de US-08/Julieta; este registry valida el ciclo sin depender de esa tabla) · se parsea el envelope con Jackson (`eventId` + `payload.paramKey/version`) para no depender del mapeo exacto de T2 · **envelope adaptado al nuevo `EventEnvelope<T>` (6 campos: `eventVersion` + payload tipado)** |
 | **CA / RF cubiertos** | US-02 idempotencia (`event_id` + versión) · RULES-eventos 3 |
 | **Tests agregados** | `InMemoryProcessedEventRegistryTest` (duplicado por eventId, versión vieja/igual, versión nueva, parámetros independientes, eventId vacío/null) · `ReferenceConfigConsumerTest` (envelope válido → registry; malformado → no llega al registry) |
-| **PR / commits** | `8c296b9` (idempotencia) + `369a1ec` (adaptación a `EventEnvelope<T>`, producer `backoffice-service`) — rama `feature/us-02-reliability`, sin PR todavía |
+| **PR / commits** | `8c296b9` (idempotencia) + `369a1ec` (adaptación a `EventEnvelope<T>`, producer `tema-12-backoffice-service`) — rama `feature/us-02-reliability`, sin PR todavía |
 | **Pendientes / deuda** | Alinear a `Event<T>` + `JsonDeserializer` tipado si el equipo lo decide (hoy String+ObjectMapper, mismo wire JSON) · topic a **registrar con T11 (G1)** |
 

@@ -12,7 +12,7 @@
 1. Anotá el listener con el consumer group del servicio (ej. `reporting`).
 2. **Idempotencia:** antes de procesar, verificá `ProcessedEvent`; si ya se procesó el `event_id`, ignorá.
 3. Convertí el payload a DTO y actualizá tu read model (Reporting) o registrá auditoría (Audit).
-4. Para consumir dominios ajenos (`desafios.resultados`, `cursos.ciclo-vida`, `bank.events`, `survey.events`, `ranking.events`, `roadmap.events`), usá el topic **sin** escribir en sus bases.
+4. Para consumir dominios ajenos (`desafios.resultados`, `cursos.ciclo-vida`, `economy.transactions`, `survey.events`, `ranking.events`, `sandbox.events`), usá el topic **sin** escribir en sus bases.
 
 ## Reglas
 
