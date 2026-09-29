@@ -39,7 +39,8 @@
 | Modelos IA — fachada real a T07 | US-04 | 25 | S1 entregó la UI (slices 09/10) y el stub; falta el cliente real (`llm-service` v2.0.0, Skill Hub, contrato cerrado) |
 | Conmutación de modelos | US-05 | 25 | Da valor a US-04 (activar → ACTIVE/RESERVE + evento `MODEL_PROVIDER_CHANGED`) |
 | Umbrales de aviso | US-14 | 22 | Depende de los indicadores de US-13; cierra el pipeline de alertas |
-| **Total** | | **≈ 187 h** | **65 % de 285,5 h** |
+| **Reportes docentes dinámicos** | **US-15** | **63** | **Requisito del profe** (SP 8 · back ≈ 36 h): whitelist de métricas + motor dinámico + plantillas + `POST /reports/run` + builder FE |
+| **Total** | | **≈ 250 h** | **88 % de 285,5 h** ⚠️ <br> *Si la planning quiere margen, se recorta US-14 (22 h) o US-10 (20 h); US-15 no se toca (P0 del profe).* |
 
 ### 🔶 Sale / se difiere
 
@@ -48,7 +49,6 @@
 | **US-06 · Golden set + calibración** | ⚠️ **BLOQUEADO**: el contrato de calibración con T07 no está cerrado (quién ejecuta el golden set). **No cargar hasta coordinar con T07/cátedra.** |
 | **US-07 · Aprobación por tolerancia + deriva** | Depende de US-06 (calibración funcional). Entra cuando T07 habilite la corrida. |
 | **US-09 · Exportación asíncrona PDF/CSV** | **Could.** La UI de export (slice 07) ya existe; el backend asíncrono queda para cuando haya margen. |
-| **US-15 · Reportes docentes dinámicos** | Requisito del profe (SP 8 · back ≈ 48 h). No entra por capacidad; candidato fuerte para Sprint 3 o bloque propio. |
 
 ### 🧹 Cierre del Sprint 1 (no cuenta como código)
 
@@ -156,26 +156,42 @@
 | T5 | Documentar catálogo de umbrales + evento `ThresholdBreached` | DOCUMENTACION | Ana Paula | 2 |
 | T6 | Peer review de consistencia del backlog de reporting | REVISION | Joaquin | 2 |
 
+### US-15 · Reportes docentes dinámicos (configurables) — 63 h · 🔴 P0 (requisito del profe)
+
+> **Rama:** `feature/us-15-dynamic-reports` · **Depende de:** US-11 (read models) + pertenencia T02 + anti-comparación.
+> El PROFESOR arma reportes eligiendo **métricas, filtros, período, columnas y agrupación** y **guarda** la configuración (plantilla).
+
+| # | Tarea | Rol | Dev | Horas |
+|---|---|---|---:|---:|
+| T1 | Catálogo de métricas permitidas (whitelist): CSAT, engagement, aprobación/abandono, promoción, riesgo, distribución XP, actividad semanal — **sin expresiones arbitrarias** | BACKEND | Damian | 8 |
+| T2 | Motor de query dinámico (filtros/período/columnas/agrupación) sobre read models con **RLS por `course_id`** | BACKEND | Máximo | 12 |
+| T3 | CRUD de plantillas y favoritas (`report_template(owner_id, course_id, config jsonb, is_favorite)`) | BACKEND | Valentina | 8 |
+| T4 | Ejecución `POST /api/reports/run` (con `templateId` o `config`) + invariantes: matrícula T02, anti-comparación (RF-RPT-07), anonimato (encuestas solo agregados), frescura ≤ 15 min | BACKEND | Mateo | 8 |
+| T5 | FE: vista report builder (panel métricas/filtros/período/columnas + "Guardar plantilla") | FRONTEND | Luciano | 12 |
+| T6 | Tests del motor dinámico: RLS (PROFESOR A → cohorte A 200 · cohorte B 403), anti-comparación, anonimato | TEST | Regina | 8 |
+| T7 | OpenAPI de templates/run + catálogo de métricas | DOCUMENTACION | Ana Paula | 4 |
+| T8 | Peer review de seguridad del motor (RLS/whitelist) | REVISION | Joaquin | 3 |
+
 ---
 
 ## 4 · Resumen de carga por integrante
 
 | Dev | Integrante | BACK | FRONT | TEST | REV | **Total** | Capacidad | % uso |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | Luciano | — | 8 (US-10, US-14) | 6 (US-12) | 4 (US-04, US-13) | **18** | 39,4 | 46 % |
-| 2 | Mateo | 8 (US-12, US-14) | 6 (US-13) | 2 (US-04) | 2 (US-10) | **18** | 41,5 | 43 % |
-| 3 | Damian | 14 (US-05, US-11) | 6 (US-12) | — | — | **20** | 31,5 | 63 % |
-| 4 | Joaquin | 10 (US-05, US-11) | — | 8 (US-04, US-10) | 2 (US-14) | **20** | 27,7 | 72 % |
-| 6 | Valentina | 10 (US-05, US-10, US-12, US-13) | — | — | 2 (US-11) | **18** | 35,3 | 51 % |
-| 7 | Máximo | 12 (US-04, US-13) | — | 14 (US-05, US-11, US-12, US-14) | — | **28** | 46,4 | 60 % |
-| 8 | Regina | 14 (US-04, US-12, US-14) | 3 (US-05) | 6 (US-13) | — | **23** | 35,3 | 65 % |
-| 9 | Bruno | 20 (US-04, US-10, US-11, US-13) | — | — | 4 (US-05, US-12) | **24** | 28,4 | 85 % |
-| 10 | Ana Paula | — | — | — | — | **18 (DOC)** | 25,2 | MSII |
+| 1 | Luciano | — | 20 (US-10, US-14, US-15) | 6 (US-12) | 4 (US-04, US-13) | **30** | 39,4 | 76 % |
+| 2 | Mateo | 16 (US-12, US-14, US-15) | 6 (US-13) | 2 (US-04) | 2 (US-10) | **26** | 41,5 | 63 % |
+| 3 | Damian | 22 (US-05, US-11, US-15) | 6 (US-12) | — | — | **28** | 31,5 | 89 % |
+| 4 | Joaquin | 10 (US-05, US-11) | — | 8 (US-04, US-10) | 5 (US-14, US-15) | **23** | 27,7 | 83 % |
+| 6 | Valentina | 18 (US-05, US-10, US-12, US-13, US-15) | — | — | 2 (US-11) | **26** | 35,3 | 74 % |
+| 7 | Máximo | 24 (US-04, US-13, US-15) | — | 14 (US-05, US-11, US-12, US-14) | — | **40** | 46,4 | 86 % |
+| 8 | Regina | 14 (US-04, US-12, US-14) | 3 (US-05) | 14 (US-13, US-15) | — | **31** | 35,3 | 88 % |
+| 9 | Bruno | 20 (US-04, US-10, US-11, US-13) | — | — | 4 (US-05, US-12) | **22** | 28,4 | 77 % |
+| 10 | Ana Paula | — | — | — | — | **22 (DOC)** | 25,2 | MSII |
 
-> **Total código: 169 h + 18 h DOC = 187 h · 65 % de 285,5 h.**
-> **Frontend acotado** (4 tareas: US-05, US-10, US-12, US-13): el resto de la UI ya se entregó en S1 (slices 01–14).
+> **Total código: 226 h + 22 h DOC = 248 h · 87 % de 285,5 h.** ⚠️ Apretado pero **nadie supera su capacidad** (pico: Damian 89 %, Regina 88 %, Máximo 86 %).
+> **Frontend acotado** (5 tareas: US-05, US-10, US-12, US-13, US-15 builder): el resto de la UI ya se entregó en S1 (slices 01–14).
 > **Luciano** suma coordinación/ops (no cuenta como horas): compose, M2M T07, gateway/proxy y reviews de integración.
-> **Bruno roza el 85 %** por el algoritmo de riesgo (US-11) — si sobra, se mueve la test de US-14 a Máximo.
+> **Si la planning quiere margen** (recomendado: bajar a ~80 %): se recorta **US-14** (22 h, candidato a Sprint 3) o **US-10** (20 h); US-15 es P0 del profe y no se toca.
 
 ---
 
@@ -191,6 +207,7 @@
 | 5 | `feature/us-13-kpis` | indicadores + anonimato | Día 8 |
 | 6 | `feature/us-12-teacher-panel` | panel + RLS (CRÍTICO) | Día 9 |
 | 7 | `feature/us-14-thresholds` | umbrales + alertas | Día 10 |
+| 8 | `feature/us-15-dynamic-reports` | whitelist + motor + plantillas + `reports/run` + builder | Día 10–11 |
 
 > Los FE van en sus propias ramas (`feature/<us>-ui`) y se integran antes de cada merge de backend.
 > **Regla:** nadie abre un PR sin `mvn clean verify` en verde (gate local, como S1); el revisor lo re-corre.
@@ -201,10 +218,10 @@
 
 | # | Decisión | Recomiendo |
 |---|---|---|
-| D1 | ¿US-15 (reportes dinámicos, profe) entra este sprint? | No por capacidad; candidato Sprint 3 |
+| D1 | ¿US-15 (reportes dinámicos, profe) entra este sprint? | **Sí — P0** (requisito del profe). El uso sube a ~87 %; si hay que bajar, se recorta US-14 o US-10 |
 | D2 | ¿M2M real a T07 depende del token de T01? | Sí — Máximo lo desbloquea; hasta entonces el stub queda detrás del cliente real |
 | D3 | ¿US-06/US-07 quedan bloqueadas? | Sí, hasta cerrar contrato de calibración con T07 |
-| D4 | ¿Frontend alcanza con 4 tareas? | Sí, el resto ya está entregado |
+| D4 | ¿Frontend alcanza con 5 tareas? | Sí, el resto ya está entregado |
 | D5 | ¿Ana carga Taiga y documenta todo? | Sí (única con DOC) |
 
 ---
