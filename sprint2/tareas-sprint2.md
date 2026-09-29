@@ -194,11 +194,10 @@
 
 ---
 
-## 6 · US-15 (nueva) · Reportes docentes dinámicos — **fase 1 backend** — 5 SP · 36 h · 🔴 P0 (requisito del profe)
+## 6 · US-15 (nueva) · Reportes docentes dinámicos (completo: fase 1 backend + fase 2 builder FE) — 8 SP · 63 h · 🔴 P0 (requisito del profe)
 
 > **Rama:** `feature/tema-12-us15-dynamic-reports` · **Depende de:** HU11 (read models) + pertenencia T02 + anti-comparación.
 > El PROFESOR arma reportes eligiendo **métricas, filtros, período, columnas y agrupación** y **guarda** la configuración (plantilla).
-> **Fase 2 (Sprint 3):** builder FE + specs del builder (~27 h).
 
 | ID | Tarea | Tipo | Dev | h |
 |---|---|---|---:|
@@ -214,7 +213,7 @@
 | 15-T10 | **Fase 2:** OpenAPI + documentación de la vista builder | DOCUMENTACION | Ana | 3 |
 | 15-T11 | **Fase 2:** peer review del builder | REVISION | Regina | 2 |
 
-> **Reserva Flyway:** US-15 usa `V20__report_template.sql`.
+> **Reserva Flyway:** US-15 usa `V20__reporting_custom_templates.sql` (Joaquín).
 
 ---
 
@@ -337,10 +336,20 @@
 
 ---
 
-## 10 · Secuencia de merges
+## 10 · Ruta crítica y priorización
+
+| # | Punto crítico | Mitigación |
+|---|---|---|
+| PC1 | **15-T2 (motor dinámico, Bruno) es la ruta crítica de US-15** — de él dependen los tests de Máximo (15-T5) y el builder de Luciano (15-T8) | **Bruno arranca con 15-T2 el Día 1.** Si el motor se demora, **#3540 (pantalla de corridas) y T08-1 se postergan** o se apoyan en otro dev |
+| PC2 | **HU04/05/06/07 dependen de la API de T07** | **Máximo arma 04-T1 con WireMock desde el Día 1** (no espera C1). Si T07 no entrega el contrato, las historias quedan **funcionales con stubs/mocks bajo flag** y la demo usa el stub |
+| PC3 | **Migraciones Flyway concurrentes** | Versiones + dueños reservados (§ secuencia de merges): **V18 → Damián · V19 → Máximo · V20 → Joaquín** |
+
+---
+
+## 11 · Secuencia de merges
 
 **Día 1:** se mandan C1, C2 y C3. Las interfaces LLM ya están congeladas, así que Regina, Mateo, Bruno y Joaquín arrancan con mocks.
-**Versiones de Flyway reservadas:** **V18** (HU11) · **V19** (HU12 RLS) · **V20** (US-15 plantillas). Nadie usa otro número sin avisar.
+**Versiones de Flyway reservadas (dueño):** **V18** `reporting_cohort_student_summary` → **Damián** (HU11) · **V19** `reporting_teacher_course_rls` → **Máximo** (HU12 RLS) · **V20** `reporting_custom_templates` → **Joaquín** (US-15). Nadie usa otro número sin avisar.
 
 | Día | Backend (PR a `develop`) | Frontend |
 |---|---|---|
@@ -355,11 +364,11 @@
 
 ---
 
-## 11 · Riesgos y dependencias externas
+## 12 · Riesgos y dependencias externas
 
 | # | Equipo | Dependencia | Bloquea | Mitigación |
 |---|---|---|---|---|
-| R1 | **T07** | Ruta, autenticación y scopes de `/api/llm/admin/*` (contradicción handoff "sin M2M/Eureka" vs skill "token propio + Gateway") | 04-T2, 05-T1, **HU06, HU07**, 15-T2 | C1 el Día 1; tests con WireMock; stub con flag. Si no hay respuesta el Día 5, la demo usa el stub y HU06/07 quedan con la fachada parcial |
+| R1 | **T07** | Ruta, autenticación y scopes de `/api/llm/admin/*` (contradicción handoff "sin M2M/Eureka" vs skill "token propio + Gateway") | 04-T2, 05-T1, **HU06, HU07**, 15-T2 | **Máximo arma 04-T1 con WireMock desde el Día 1 (no espera C1).** Si T07 no responde el Día 5, HU04–07 quedan **funcionales con stubs/mocks bajo flag** y la demo usa el stub |
 | R2 | **T01** | Permiso de lectura para PROFESSOR, estado de 2FA, `GET /api/users/audit`, secreto del Gateway, token de servicio | #3331, #1657, 06B-T3/T4, pantalla 11 | Tareas aisladas; si no hay respuesta el Día 6, pasan a "Necesita información" |
 | R3 | **T11** | Topics de auditoría y notificaciones, `eventType` de `StudentAtHighRisk` | #312, 06B-T4 | El topic va en configuración; el outbox guarda igual |
 | R4 | T02 | Pertenencia docente y fuente del CSAT | #310, #319 | Puerto con flag; el CSAT muestra "muestra insuficiente" |
@@ -373,7 +382,7 @@
 
 ---
 
-## 12 · DoD (igual para los 9)
+## 13 · DoD (igual para los 9)
 
 - **Nivel 0 · Tarea:** `mvn -B verify` en verde (tests, Checkstyle, **PMD 3.26**, **JaCoCo ≥ 0,90**); en el frontend, `npm run verify` (lint:all y Vitest) **sin `ng build` local**.
 - **Nivel 1 · Historia:** cumple los CA; integración con Testcontainers donde haya eventos o BD; autorización 200/403 con roles del Gateway v3 (`ADMIN`, `GESTOR`, `PROFESSOR`, `STUDENT`, `MS`); **RLS verificado** en HU11/12/13 y US-15; OpenAPI actualizado; PR revisada por otra persona; sin secretos; docs y sitio sincronizados (D3).
@@ -382,7 +391,7 @@
 
 ---
 
-## 13 · Fuera del Sprint 2 (solo Could)
+## 14 · Fuera del Sprint 2 (solo Could)
 
 | Historia | Horas | Nota |
 |---|---:|---|
