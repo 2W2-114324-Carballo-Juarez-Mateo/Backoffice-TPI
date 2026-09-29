@@ -1,5 +1,7 @@
 # Tareas Sprint 2 — Backlog dividido (9 integrantes) · PROPUESTA UNIFICADA
 
+> ⚠️ **SUPERADA por `sprint2 (2)/` (plan corregido y auditado).** Esta carpeta es la propuesta original del grupo, conservada como referencia histórica; **no se usa para el Sprint 2**. El plan canónico es **`sprint2 (2)/tareas-sprint2.md`** (+ `dev-01..09`). Los ajustes por Skill Hub (PAR del Backoffice, PAR-14 `average`, decisiones R-1/R-2/P-12) están solo en `sprint2 (2)`.
+
 > **Base:** propuesta de planning del grupo (Sprint 28/09 → 11/10/2026, 10 días hábiles) + ajustes del equipo: **US-15 (reportes docentes, requisito del profe) entra por fases**, **US-14 y calibración (HU06/HU07) pasan al Sprint 3**, regla de riesgo según `uh/US-11.md`.
 > **Repos:** `2026-P4-BE/tpi-backoffice` · `2026-P4-FE/2026-PIV-TPI-FE`.
 > **Flujo:** `feature/tema-12-*` o `fix/tema-12-*` desde `develop` → PR a `develop` con ≥ 1 aprobación. Commits: backend en español (`AGENTS.md`), frontend en inglés.
