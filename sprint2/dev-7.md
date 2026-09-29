@@ -1,9 +1,12 @@
 # dev-7.md (Cerquatti, Maximo) - Tareas Sprint 2
 
-> **Capacidad:** 46.4 h - **Asignado:** 39 h - **Repo:** 2026-P4-BE/tpi-backoffice + 2026-P4-FE/2026-PIV-TPI-FE
+> **Capacidad:** 46.4 h - **Asignado:** 50 h - **Repo:** 2026-P4-BE/tpi-backoffice + 2026-P4-FE/2026-PIV-TPI-FE
 > **Flujo:** feature/tema-12-*|fix/tema-12-* -> develop - PR con >= 1 aprobacion - sin push directo
 > **Division pareja:** los 8 que programan cubren las 5 capas - nadie testea/revisa lo suyo.
 
+- **[TEST]** 06-T5 - Tests de integracion con WireMock de la fachada de calibracion (HU06) - 4h
+- **[TEST]** 07-T4 - Tests del estado de calibracion y de la validacion de PAR-14 (HU07) - 3h
+- **[TEST]** 14-T4 - Tests: evaluacion en el limite y 1 punto abajo + no-ADMIN 403 (HU14) - 4h
 - **[BACK]** 04-T1 - Infraestructura del cliente HTTP hacia T07 (`RestClient` administrado, auth segun C1, `problem+json` -> excepciones, URL base tipada; stub como fallback con flag) (HU04) - 6h
 - **[BACK]** 06B-T3 - Verificar `GATEWAY_SHARED_SECRET` (`GatewayTrustProperties`) con el mecanismo que acuerde T01 (HT06) - 3h
 - **[BACK]** 06B-T4 - Configurar el topic de auditoria confirmado (C2) y la auditoria delegada en T01 (pantalla 11 sin 502) (HT06) - 2h

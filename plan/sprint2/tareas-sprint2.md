@@ -10,19 +10,17 @@
 
 ## Decisiones del planning (ajustadas)
 
-1. **Capacidad:** se mantiene la tabla del Sprint 1 (sin Julieta). **Pedido del PO:** más carga para **Máximo, Regina, Damián y Bruno**.
+1. **Capacidad:** se mantiene la tabla del Sprint 1 (sin Julieta). **Decisión del equipo: sprint de MÁXIMA capacidad** — entra todo el backlog pendiente (HU04, HU05, HU06, HU07, HU08, HU11, HU12, HU13, HU14, US-15, deuda HT05/06/07, backfill). La carga nominal supera el 100 % por persona; el equipo asume entrega acelerada con IA y la regla de corte (§ corte) para lo que no alcance.
 2. **Opción A (EP-03):** el Backoffice es **fachada del ADMIN sobre `/admin/*` de T07** — sin tablas LLM, sin calcular MAE. T07 decide `PASSED`/`FAILED`; **el Backoffice es dueño del valor de PAR-14**.
-3. **Corte de alcance por capacidad (con US-15):**
-   - **US-15 (reportes docentes dinámicos) entra en S2 por fases:** backend (whitelist + motor + plantillas + `run`) en S2; **builder FE + tests del builder → Sprint 3**.
-   - **HU14 (umbrales, #34) → Sprint 3** (Should).
-   - **HU06 (calibración #27) y HU07 (PAR-14/deriva #29) → Sprint 3** como fachada, **gated por C1** (respuesta de T07 a `/api/llm/admin/*`). Liberan ~44 h para US-15.
-4. **Regla de riesgo (HU11) — `uh/US-11.md` (la que tiene CA):**
+3. **HU06 (calibración) y HU07 (PAR-14/deriva):** entran al S2 como fachada sobre T07, **gated por C1** (si T07 no confirma `/api/llm/admin/*`, esas tareas quedan con stub + flag y se cortan).
+4. **US-15 (reportes docentes, profe) entra completo:** fase 1 backend + **fase 2 (builder FE + specs)** en el mismo sprint.
+5. **Regla de riesgo (HU11) — `uh/US-11.md` (la que tiene CA):**
    - **ROJO:** > 10 días de inactividad O reprobación > 60 %;
    - **AMARILLO:** 5–10 días, o reprobación 40–60 %;
    - **VERDE:** aprobación ≥ 70 %.
    - Umbrales en configuración tipada. "Vidas agotadas" detrás de un flag hasta que haya datos de T08.
-5. **Historias Done con tareas reabiertas (#17, #28, #182)** → sus pendientes (#3331, #291, #3512) + #1657 pasan a **HT05** (deuda técnica frontend).
-6. **HU09 (#20) → backlog (Could).** Sin US-15 en Taiga aún: se crea (historia + DoR) en la carga inicial.
+6. **Historias Done con tareas reabiertas (#17, #28, #182)** → sus pendientes (#3331, #291, #3512) + #1657 pasan a **HT05** (deuda técnica frontend).
+7. **HU09 (#20) → backlog (Could).** US-15 se crea en Taiga (historia + DoR) en la carga inicial.
 
 ---
 
@@ -30,18 +28,18 @@
 
 | Dev | Integrante | Rol | h/día | Días | Aus. | Teóricas | Efectivas | % | **Ajustada** | Plan | % uso |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | Paz, Luciano | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 95 % | **39,4** | 34 | 86 % |
-| 2 | Carballo Juarez, Mateo | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 100 % | **41,5** | 35 | 84 % |
-| 3 | Baigorria, Damián ★ | PIV | 5 | 10 | 2 | 40 | 31,5 | 100 % | **31,5** | 30 | 95 % |
-| 4 | Cortez, Joaquín | PIV | 5 | 10 | 2 | 40 | 31,5 | 88 % | **27,7** | 23 | 83 % |
-| 6 | Maldonado, Valentina | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 85 % | **35,3** | 32 | 91 % |
-| 7 | Cerquatti, Máximo ★ | MSII+PIV | 6 | 10 | 0 | 60 | 51,5 | 90 % | **46,4** | 39 | 84 % |
-| 8 | Cerasulo, Regina ★ | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 85 % | **35,3** | 31 | 88 % |
-| 9 | Gianoli, Bruno ★ | PIV | 4 | 10 | 0 | 40 | 31,5 | 90 % | **28,4** | 26 | 92 % |
-| 10 | Ducart, Ana Paula | MSII | 5 | 10 | 2 | 40 | 31,5 | 80 % | **25,2** | 23 | 91 % |
-| | **Total** | | | | **6** | **420** | **343,5** | | **310,6** | **273** | **88 %** |
+| 1 | Paz, Luciano | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 95 % | **39,4** | 50 | 127 % |
+| 2 | Carballo Juarez, Mateo | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 100 % | **41,5** | 42 | 101 % |
+| 3 | Baigorria, Damián ★ | PIV | 5 | 10 | 2 | 40 | 31,5 | 100 % | **31,5** | 41 | 130 % |
+| 4 | Cortez, Joaquín | PIV | 5 | 10 | 2 | 40 | 31,5 | 88 % | **27,7** | 35 | 126 % |
+| 6 | Maldonado, Valentina | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 85 % | **35,3** | 35 | 99 % |
+| 7 | Cerquatti, Máximo ★ | MSII+PIV | 6 | 10 | 0 | 60 | 51,5 | 90 % | **46,4** | 50 | 108 % |
+| 8 | Cerasulo, Regina ★ | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 85 % | **35,3** | 38 | 108 % |
+| 9 | Gianoli, Bruno ★ | PIV | 4 | 10 | 0 | 40 | 31,5 | 90 % | **28,4** | 42 | 148 % |
+| 10 | Ducart, Ana Paula | MSII | 5 | 10 | 2 | 40 | 31,5 | 80 % | **25,2** | 31 | 123 % |
+| | **Total** | | | | **6** | **420** | **343,5** | | **310,6** | **364** | **117 %** |
 
-> ★ **Foco del PO:** Máximo, Regina, Damián y Bruno 84–95 %. **273 h = 88 %** es alto (sin margen): **todas las tareas con flag (T10, presupuesto LLM, T08) y el monitor de frescura son las primeras que se cortan** si el sprint se atrasa; HU13 (#322) le sigue.
+> ⚠️ **Carga nominal 117 % — decisión del equipo de máxima capacidad (entrega acelerada con IA).** Si la realidad no acompaña, se corta en este orden: **flags (T10-1, B-AL, T08-1) → 10-M1 → HU13 (#322) → HU14 → HU06/07 (si C1 no llega, ya quedan con stub)**.
 
 ---
 
@@ -51,25 +49,24 @@
 |---|---|---|---|---:|
 | Must | HU04 · Proveedores y modelos (fachada T07) | #18 | 5 | 24 |
 | Must | HU05 · Conmutación de modelos (fachada T07) | #26 | 5 | 21 |
+| Must | HU06 · Calibración institucional (golden set) sobre T07 | #27 | 5 | 28 |
+| Must | HU07 · PAR-14, veredicto y deriva sobre T07 | #29 | 5 | 16 |
 | Must | HU08 · Ingesta: consumidores de T07 y T05 con flags | #1628 | 5 | 11 |
 | Must | HT01 · Contratos entre temas | #1629 | 3 | 9 |
 | Must | **HT05** · Frontend: acceso por rol, rutas `/backoffice` y deuda del S1 | nueva | 5 | 22 |
 | Must | **HT06** · Backend: orden del outbox por `param_key` y confianza en el Gateway | nueva | 3 | 18 |
 | Must | **HT07** · Documentación y proceso del Sprint 2 | nueva | 3 | 8 |
-| Must | **US-15 (fase 1)** · Reportes dinámicos: **backend** (whitelist + motor + plantillas + `run`) | nueva | 5 | 36 |
+| Must | **US-15** · Reportes dinámicos (fase 1 backend + fase 2 builder FE) | nueva | 8 | 63 |
 | Should | HU11 · Read model y riesgo por cohorte | #25 | 5 | 27 |
 | Should | HU12 · Panel docente con RLS | #24 | 5 | 37 |
 | Should | HU13 · Indicadores con anonimato | #111 | 5 | 26 |
-| Should | **US-10 backfill · Monitor `@Scheduled` de frescura** | #28 (reabierta) | 3 | 8 |
+| Should | HU14 · Umbrales de aviso | #34 | 3 | 22 |
+| Should | **US-10 backfill** · Monitor `@Scheduled` de frescura | #28 (reabierta) | 3 | 8 |
 | Should | **Alerta de presupuesto LLM (70 % → Backoffice, flag)** | nueva | 2 | 2 |
 | Should | **Consumidor T10 (`sandbox.events`, flag)** | nueva | 2 | 4 |
 | Should | **Ingesta T08 por REST (verificar/completar)** | nueva | 2 | 2 |
 | Must | **HT07+ · Guion de la demo del S2 + E2E** | nueva | 2 | 3 |
-| | **Total** | | **58** | **273** |
-| → Sprint 3 | HU06 · Calibración sobre T07 (gated C1) | #27 | 5 | 28 |
-| → Sprint 3 | HU07 · PAR-14, veredicto y deriva sobre T07 (gated C1) | #29 | 5 | 16 |
-| → Sprint 3 | HU14 · Umbrales y alertas | #34 | 3 | 22 |
-| → Sprint 3 | US-15 fase 2 · Builder FE + tests del builder | nueva | 5 | ~27 |
+| | **Total** | | **72** | **364** |
 | Could | HU09 · Exportación | #20 | 5 | fuera |
 
 **Por qué este corte:**
@@ -108,7 +105,32 @@
 | 05-T6 | Peer review de la fachada de modelos (mapeo de errores, unicidad delegada en T07) | REVISION | Joaquín | 1 |
 | 05-T7 | Specs de las pantallas 09 y 10 conectadas | TEST | Valentina | 3 |
 
-> **HU06 (calibración #27) y HU07 (PAR-14/deriva #29) → Sprint 3** (fachada sobre T07, gated por C1). Las tareas redefinidas #3537–#3540 y #286 quedan en backlog S3.
+> **HU06 y HU07 entran al Sprint 2** (fachada sobre T07, gated por C1). Si C1 no responde, quedan con stub + flag y son de las primeras en cortarse.
+
+### HU06 #27 · Calibración institucional sobre T07 (fachada) — 28 h
+> Rama: `feature/tema-12-calibration-facade` · merge Día 6.
+
+| ID | Tarea | Tipo | Dev | h |
+|---|---|---|---:|
+| #3537 | **Redefinida:** fachada del perfil de calibración institucional (golden set y rúbrica) sobre T07 | BACKEND | Joaquín | 4 |
+| #3539 | **Redefinida:** fachada de corridas de calibración (crear, listar, detalle; `maeFinal`, `maxIndividualError` y veredicto de T07) | BACKEND | Bruno | 5 |
+| #3538 | **Redefinida:** pantalla del perfil de calibración (parte 12) | FRONTEND | Joaquín | 5 |
+| #3540 | **Redefinida:** pantalla de corridas de calibración (parte 13) | FRONTEND | Bruno | 5 |
+| 06-T5 | Tests de integración con WireMock de la fachada de calibración | TEST | Máximo | 4 |
+| 06-T6 | Diagrama de secuencia ADMIN → Backoffice → T07 (calibración) | DOCUMENTACION | Ana | 3 |
+| 06-T7 | Peer review de la fachada de calibración | REVISION | Regina | 1 |
+| 06-T8 | OpenAPI de la fachada de calibración | DOCUMENTACION | Joaquín | 1 |
+
+### HU07 #29 · PAR-14, veredicto y deriva sobre T07 — 16 h
+
+| ID | Tarea | Tipo | Dev | h |
+|---|---|---|---:|
+| 07-T1 | PAR-14 como fuente de la tolerancia: validar rango y formato en el registro, y comprobar que T07 lo lea con `backoffice.parameters.read` | BACKEND | Damián | 3 |
+| 07-T2 | Endpoint del estado de calibración del modelo activo (último veredicto y marca de deriva, leídos de T07) | BACKEND | Bruno | 4 |
+| #284 | Indicador de veredicto y deriva, y banner de conmutación automática | FRONTEND | Valentina | 3 |
+| 07-T4 | Tests del estado de calibración y de la validación de PAR-14 | TEST | Máximo | 3 |
+| #286 | **Redefinida:** T07 calcula el MAE y el veredicto; el Backoffice gobierna PAR-14; la deriva la emite T07 | DOCUMENTACION | Bruno | 2 |
+| 07-T6 | Peer review | REVISION | Mateo | 1 |
 
 ---
 
@@ -187,6 +209,10 @@
 | 15-T5 | Tests del motor dinámico: RLS (PROFESOR A → cohorte A 200 · cohorte B 403), anti-comparación, anonimato | TEST | Máximo | 8 |
 | 15-T6 | OpenAPI de templates/run + catálogo de métricas | DOCUMENTACION | Ana | 4 |
 | 15-T7 | Peer review de seguridad del motor (RLS/whitelist) | REVISION | Valentina | 3 |
+| 15-T8 | **Fase 2:** FE report builder — panel métricas/filtros/período/columnas/agrupación + "Guardar plantilla" (WCAG AA) | FRONTEND | Luciano | 12 |
+| 15-T9 | **Fase 2:** specs del builder (crear/editar/correr plantilla, validaciones, 403 no-ADMIN/gestor) | TEST | Damián | 8 |
+| 15-T10 | **Fase 2:** OpenAPI + documentación de la vista builder | DOCUMENTACION | Ana | 3 |
+| 15-T11 | **Fase 2:** peer review del builder | REVISION | Regina | 2 |
 
 > **Reserva Flyway:** US-15 usa `V20__report_template.sql`.
 
@@ -234,6 +260,18 @@
 | #324 | Políticas de privacidad y fórmulas | DOCUMENTACION | Joaquín | 2 |
 | #325 | Peer review de privacidad | REVISION | Damián | 1 |
 
+### HU14 #34 · Umbrales de aviso y acceso al tablero — 22 h
+> Rama: `feature/tema-12-hu14-thresholds` · merge Día 9 · **Depende de:** HU13 (indicadores calculados).
+
+| # | Tarea | Tipo | Dev | h |
+|---|---|---|---:|
+| #326 | Modelo `alert_thresholds(indicator, min_value, max_value, enabled)` + CRUD exclusivo ADMIN | BACKEND | Regina | 4 |
+| #330 | Evaluador periódico de métricas contra umbrales + `ThresholdBreached` (baja → alerta) | BACKEND | Mateo | 6 |
+| 14-T3 | FE: panel de configuración de umbrales + lista de alertas activas | FRONTEND | Luciano | 4 |
+| 14-T4 | Tests: evaluación en el límite y 1 punto abajo + no-ADMIN 403 | TEST | Máximo | 4 |
+| 14-T5 | Documentar catálogo de umbrales + evento `ThresholdBreached` | DOCUMENTACION | Ana | 2 |
+| 14-T6 | Peer review de consistencia del backlog de reporting | REVISION | Joaquín | 2 |
+
 ---
 
 ## 7bis · Pendientes adicionales (backfill — no queda trabajo sin listar) — 19 h
@@ -273,6 +311,10 @@
 | T10-1 (Luciano) | — | Joaquín |
 | T08-1 (Bruno) | — | Regina |
 | D-DEMO (Ana) | — | Luciano (exactitud técnica) |
+| #3537/#3538 (Joaquín) · #3539/#3540 (Bruno) | Máximo (06-T5) | Regina (06-T7) |
+| 07-T1 (Damián) · 07-T2/#286 (Bruno) · #284 (Valentina) | Máximo (07-T4) | Mateo (07-T6) |
+| #326 (Regina) · #330 (Mateo) · 14-T3 (Luciano) | Máximo (14-T4) | Joaquín (14-T6) |
+| 15-T8 (Luciano) | Damián (15-T9) | Regina (15-T11) |
 
 ---
 
@@ -280,18 +322,18 @@
 
 | Dev | Integrante | Capacidad | Horas | % uso | BACK | FRONT | TEST | REV | DOC |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | Luciano Paz | 39,4 | 34 | 86 % | 12 | 4 | 14 | 3 | 1 |
-| 2 | Mateo Carballo Juarez | 41,5 | 35 | 84 % | 18 | 6 | 3 | 2 | 6 |
-| 3 | Damián Baigorria ★ | 31,5 | 30 | 95 % | 20 | 5 | 4 | 1 | — |
-| 4 | Joaquín Cortez | 27,7 | 23 | 83 % | 16 | — | 2 | 4 | 2 |
-| 6 | Valentina Maldonado | 35,3 | 32 | 91 % | 12 | 12 | 3 | 3 | 2 |
-| 7 | Máximo Cerquatti ★ | 46,4 | 39 | 84 % | 19 | 2 | 16 | 2 | — |
-| 8 | Regina Cerasulo ★ | 35,3 | 31 | 88 % | 15 | 7 | 7 | — | 2 |
-| 9 | Bruno Gianoli ★ | 28,4 | 26 | 92 % | 21 | — | 3 | 2 | — |
-| 10 | Ana Paula Ducart | 25,2 | 23 | 91 % | — | — | — | — | 23 |
-| | **Total** | **310,6** | **273** | **88 %** | | | | | |
+| 1 | Luciano Paz | 39,4 | 50 | 127 % | 16 | 16 | 14 | 3 | 1 |
+| 2 | Mateo Carballo Juarez | 41,5 | 42 | 101 % | 24 | 6 | 3 | 3 | 6 |
+| 3 | Damián Baigorria ★ | 31,5 | 41 | 130 % | 23 | 5 | 12 | 1 | — |
+| 4 | Joaquín Cortez | 27,7 | 35 | 126 % | 20 | 5 | 2 | 4 | 4 |
+| 6 | Valentina Maldonado | 35,3 | 35 | 99 % | 12 | 15 | 3 | 3 | 2 |
+| 7 | Máximo Cerquatti ★ | 46,4 | 50 | 108 % | 19 | 2 | 27 | 2 | — |
+| 8 | Regina Cerasulo ★ | 35,3 | 38 | 108 % | 19 | 7 | 7 | 3 | 2 |
+| 9 | Bruno Gianoli ★ | 28,4 | 42 | 148 % | 30 | 5 | 3 | 2 | 2 |
+| 10 | Ana Paula Ducart | 25,2 | 31 | 123 % | — | — | — | — | 31 |
+| | **Total** | **310,6** | **364** | **117 %** | | | | | |
 
-> **Cambios vs la propuesta unificada anterior:** se sumaron los pendientes que no estaban en ninguna tabla: monitor de frescura (US-10, 8 h), alerta de presupuesto LLM (2 h, flag), consumidor T10 (4 h, flag), ingesta T08 REST (2 h, flag) y guion de demo S2 (3 h). **Con esto, el backlog del S2 no deja trabajo sin listar** (lo que no entra está en Sprint 3 o es Could/flag).
+> **Sprint de máxima capacidad:** entra todo el backlog pendiente (incluye HU06, HU07, HU14 y US-15 fase 2). La carga nominal supera la capacidad — asumido por el equipo (IA acelerada). **Orden de corte si la realidad no acompaña:** flags (T10-1, B-AL, T08-1) → 10-M1 → HU13 (#322) → HU14 → HU06/07 (si C1 no llega, quedan con stub).
 
 ---
 
@@ -305,12 +347,11 @@
 | 2 | — | #3512 guards |
 | 3 | `fix/tema-12-outbox-key-ordering` (HT06) · `feature/tema-12-llm-admin-client` (04-T1) · `feature/tema-12-hu11-read-model` (V18) | 05-N1, migración a `/backoffice` |
 | 5 | `feature/tema-12-llm-providers-models-real` (HU04) | integración `feature/tema-12-backoffice` → `develop` (Luciano) |
-| 6 | `feature/tema-12-hu11-risk` · `feature/tema-12-us15-dynamic-reports` (base V18) | pantallas 09 y 10 conectadas, #276 |
+| 6 | `feature/tema-12-hu11-risk` · `feature/tema-12-calibration-facade` (HU06) · `feature/tema-12-us15-dynamic-reports` (base V18) | pantallas 09 y 10 conectadas, #276, #284 |
 | 7 | `feature/tema-12-hu08-consumers` · `fix/tema-12-gateway-trust` (si T01 respondió) | #291, 05-N2 |
-| 8 | `feature/tema-12-hu12-teacher-panel` (V19) · `feature/tema-12-hu13-indicators` | #3331 y #1657 (si T01 respondió) · #313, #322 |
-| 9–10 | ajustes y cierre · US-15 `run` (V20) · **10-M1 monitor (si sobra margen)** · **flags T10-1/B-AL/T08-1 (solo si llegó el contrato)** | integración final |
-
-> **Backfill (Día 9–10, solo si el margen lo permite):** `feature/tema-12-freshness-monitor` (10-M1) · `feature/tema-12-hu08-extra-consumers` (T10-1, B-AL, T08-1 detrás de flags). Primero en cortarse.
+| 8 | `feature/tema-12-hu12-teacher-panel` (V19) · `feature/tema-12-hu13-indicators` · `feature/tema-12-hu07-verdict-drift` (HU07, si C1) | #3331 y #1657 (si T01 respondió) · #313, #322 · partes 12 y 13 (HU06) |
+| 9 | `feature/tema-12-hu14-thresholds` · **10-M1 monitor** · US-15 `run` (V20) | #313, #322, builder US-15 (15-T8) |
+| 10–11 | ajustes y cierre · **flags T10-1/B-AL/T08-1 (solo si llegó el contrato)** | integración final + demo |
 
 ---
 
@@ -318,15 +359,15 @@
 
 | # | Equipo | Dependencia | Bloquea | Mitigación |
 |---|---|---|---|---|
-| R1 | **T07** | Ruta, autenticación y scopes de `/api/llm/admin/*` (contradicción handoff "sin M2M/Eureka" vs skill "token propio + Gateway") | 04-T2, 05-T1, 15-T2 (RLS no, pero sí el cliente) | C1 el Día 1; tests con WireMock; stub con flag. Si no hay respuesta el Día 5, la demo usa el stub |
-| R2 | **T01** | Permiso de lectura para PROFESSOR, estado de 2FA, `GET /api/users/audit`, secreto del Gateway, token de servicio | #3331, #1657, 06B-T3/T4, pantalla 11 | Tareas aisladas; si no hay respuesta el Día 6, pasan a "Necesita información" → S3 |
+| R1 | **T07** | Ruta, autenticación y scopes de `/api/llm/admin/*` (contradicción handoff "sin M2M/Eureka" vs skill "token propio + Gateway") | 04-T2, 05-T1, **HU06, HU07**, 15-T2 | C1 el Día 1; tests con WireMock; stub con flag. Si no hay respuesta el Día 5, la demo usa el stub y HU06/07 quedan con la fachada parcial |
+| R2 | **T01** | Permiso de lectura para PROFESSOR, estado de 2FA, `GET /api/users/audit`, secreto del Gateway, token de servicio | #3331, #1657, 06B-T3/T4, pantalla 11 | Tareas aisladas; si no hay respuesta el Día 6, pasan a "Necesita información" |
 | R3 | **T11** | Topics de auditoría y notificaciones, `eventType` de `StudentAtHighRisk` | #312, 06B-T4 | El topic va en configuración; el outbox guarda igual |
 | R4 | T02 | Pertenencia docente y fuente del CSAT | #310, #319 | Puerto con flag; el CSAT muestra "muestra insuficiente" |
 | R5 | T05 | Topic de entregas (G2) | 08-T1 | Flag apagado y documentado |
 | R6 | **T10** | Topic `sandbox.events` y formato del read model | T10-1 | Flag apagado; si no responde, T10-1 se corta |
 | R7 | **T07** | Topic `llm.budget.events` y payload de `LLMBudgetAlert` | B-AL | Flag apagado; se corta si no llega |
 | R8 | **T08** | Replay REST `/api/bank/**` y evento de saldo | T08-1 | Verificación aislada; se corta si no confirma |
-| I1 | Interno | Carga al 88 %, con un integrante menos | Todo el sprint | **Corte primero:** flags (T10-1, B-AL, T08-1) → monitor (10-M1) → HU13 (#322) |
+| I1 | Interno | **Carga nominal 117 %** (sprint de máxima capacidad) | Todo el sprint | **Corte primero:** flags (T10-1, B-AL, T08-1) → 10-M1 → HU13 (#322) → HU14 → HU06/07 (si C1) |
 | I2 | Interno | Colisión de versiones de Flyway | Todas las migraciones | Versiones reservadas V18/V19/V20 (§10) |
 | I3 | Interno | Archivos protegidos del frontend (`angular.json`, `package*.json`, `tsconfig*`) | Todas las PRs del frontend | No tocarlos |
 
@@ -341,12 +382,10 @@
 
 ---
 
-## 13 · Sprint 3 (backlog confirmado)
+## 13 · Fuera del Sprint 2 (solo Could)
 
 | Historia | Horas | Nota |
 |---|---:|---|
-| HU06 · Calibración sobre T07 (fachada) | 28 | gated por C1 |
-| HU07 · PAR-14, veredicto y deriva sobre T07 | 16 | gated por C1 |
-| HU14 · Umbrales y alertas | 22 | dependía de HU13 |
-| US-15 fase 2 · Builder FE + specs | ~27 | cierra el requisito del profe |
-| HU09 · Exportación | Could | — |
+| HU09 · Exportación asíncrona PDF/CSV | Could | La UI de export (slice 07) ya existe; el backend asíncrono queda fuera por ser Could |
+
+> **Todo el resto del backlog (US-04/05/06/07/08/10/11/12/13/14/15 + deuda + backfill) está en el Sprint 2.** Solo HU09 queda como Could fuera del sprint.

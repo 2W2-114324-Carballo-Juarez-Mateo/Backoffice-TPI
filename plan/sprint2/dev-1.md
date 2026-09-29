@@ -1,11 +1,13 @@
 # dev-1.md (Paz, Luciano) - Tareas Sprint 2
 
-> **Capacidad:** 39.4 h - **Asignado:** 34 h - **Repo:** 2026-P4-BE/tpi-backoffice (mono-modulo) + 2026-P4-FE/2026-PIV-TPI-FE
+> **Capacidad:** 39.4 h - **Asignado:** 50 h - **Repo:** 2026-P4-BE/tpi-backoffice (mono-modulo) + 2026-P4-FE/2026-PIV-TPI-FE
 > **Flujo:** feature/tema-12-*|fix/tema-12-* -> develop - PR con >= 1 aprobacion - sin push directo
 > **Division pareja:** los 8 que programan cubren las 5 capas - nadie testea/revisa lo suyo.
 
 - **[BACK]** 06B-T1 - Orden estricto del outbox por `param_key` (HT06, US-02 CA4) - 4h
 - **[BACK]** T10-1 - Consumidor de T10 (`sandbox.events`): dedup + read model de progreso/niveles, detras de flag (contrato con T10) - 4h
+- **[FRONT]** 14-T3 - Panel de configuracion de umbrales + lista de alertas activas (HU14) - 4h
+- **[FRONT]** 15-T8 - US-15 fase 2: FE report builder (panel metricas/filtros/periodo/columnas/agrupacion + "Guardar plantilla", WCAG AA) - 12h
 - **[FRONT]** 05-N1 - Migrar partes 01/02/04/06 de `/api/administration` y `/api/reports` a `/api/backoffice/...` + retirar parche de `proxy.conf.backoffice-gateway.cjs` (HT05) - 4h
 - **[BACK]** #312 - Evento `StudentAtHighRisk` por outbox al pasar a ROJO (HU12, topic segun C2) - 4h
 - **[TEST]** 04-T4 - Tests WireMock del cliente de proveedores: exito, 404, 409, 503, key enmascarada (HU04) - 5h
