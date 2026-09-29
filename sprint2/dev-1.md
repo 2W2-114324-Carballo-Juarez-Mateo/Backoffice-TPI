@@ -1,32 +1,18 @@
-# dev-1.md (Paz, Luciano) — Tareas del Sprint 2
+# dev-1.md (Paz, Luciano) - Tareas Sprint 2
 
-> **Capacidad:** 39,4 h · **Asignado:** 30 h (76 %) · **Capas:** BACK + FRONT + TEST + REV + DOC
-> **Rol extra:** integra `feature/tema-12-backoffice` → `develop` en el frontend (Días 5 y 10).
-> **Flujo:** `feature/tema-12-*` o `fix/tema-12-*` → PR a `develop` con 1 aprobación · sin push directo · commits del backend en español.
-> Incluye tareas que eran de Julieta: 04-T4, #312 y 06B-T7.
+> **Capacidad:** 39.4 h - **Asignado:** 34 h - **Repo:** 2026-P4-BE/tpi-backoffice (mono-modulo) + 2026-P4-FE/2026-PIV-TPI-FE
+> **Flujo:** feature/tema-12-*|fix/tema-12-* -> develop - PR con >= 1 aprobacion - sin push directo
+> **Division pareja:** los 8 que programan cubren las 5 capas - nadie testea/revisa lo suyo.
 
-## Tareas, en orden
+- **[BACK]** 06B-T1 - Orden estricto del outbox por `param_key` (HT06, US-02 CA4) - 4h
+- **[BACK]** T10-1 - Consumidor de T10 (`sandbox.events`): dedup + read model de progreso/niveles, detras de flag (contrato con T10) - 4h
+- **[FRONT]** 05-N1 - Migrar partes 01/02/04/06 de `/api/administration` y `/api/reports` a `/api/backoffice/...` + retirar parche de `proxy.conf.backoffice-gateway.cjs` (HT05) - 4h
+- **[BACK]** #312 - Evento `StudentAtHighRisk` por outbox al pasar a ROJO (HU12, topic segun C2) - 4h
+- **[TEST]** 04-T4 - Tests WireMock del cliente de proveedores: exito, 404, 409, 503, key enmascarada (HU04) - 5h
+- **[TEST]** 05-T4 - Tests WireMock de la activacion: 200, 409, 503 (HU05) - 4h
+- **[TEST]** #314 - Tests de RLS: A->A 200, A->B 403, ALL 403, ADMIN 200 (HU12, Testcontainers) - 5h
+- **[REV]** 08-T5 - Peer review de los consumidores (HU08) - 1h
+- **[REV]** 06B-T7 - Peer review de las PRs abiertas #47, #48 y #50 (HT06) - 2h
+- **[DOC]** 06B-T6 - Documentar el orden por key en el contrato del consumidor (HT06) - 1h
 
-| Día | ID | Tipo | Tarea | h | Depende de |
-|---|---|---|---|---:|---|
-| 1–2 | 06B-T7 | REV | Peer review de las PRs abiertas del backend #47 (topics de T11 v3), #48 y #50 (de Mateo) | 2 | — |
-| 1–3 | 06B-T1 | BACK | Orden estricto por `param_key` en `OutboxMessageRepository.findReadyToPublish`: no tomar una fila si hay una `PENDING` más vieja de la misma key. Rama `fix/tema-12-outbox-key-ordering` | 4 | — |
-| 3 | 06B-T6 | DOC | Documentar el orden por key en el contrato del consumidor | 1 | 06B-T1 |
-| 2–3 | 05-N1 | FRONT | Migrar las partes 01, 02, 04 y 06 a `/api/backoffice/...` y retirar el parche de `proxy.conf.backoffice-gateway.cjs` | 4 | — |
-| 4–5 | 04-T4 | TEST | Tests de integración con WireMock del cliente de proveedores: éxito, 404, 409, 503 y key enmascarada (nunca en logs ni en respuestas) | 5 | 04-T1, 04-T2 |
-| 4–5 | 05-T4 | TEST | Tests con WireMock de la activación de modelos: 200, 409 (no aprobado) y 503 (T07 caído) | 4 | 05-T1 (Mateo) |
-| 5–7 | #312 | BACK | `StudentAtHighRisk` por outbox al pasar a ROJO, en la misma transacción (topic según C2) | 4 | #304, C2 |
-| 7 | 08-T5 | REV | Peer review de los consumidores de T07 y T05 (idempotencia, DLT, flags) | 1 | 08-T1 (Valentina) |
-| 8–9 | #314 | TEST | Tests de RLS: PROFESSOR A → A 200, A → B 403, `ALL` 403, ADMIN 200 (Testcontainers con PostgreSQL) | 5 | #310, #311 |
-
-**Revisan tu trabajo:** Máximo testea 06B-T1 (06B-T2) y Valentina lo revisa (06B-T5); Joaquín revisa 05-N1 (05-N4); Damián testea #312 (#315) y Mateo lo revisa (#317).
-
-## Checklist de DoD
-
-- [ ] `mvn -B verify` en verde (Checkstyle, PMD, JaCoCo ≥ 90 %) · `npm run verify` en el frontend, sin `ng build`
-- [ ] Tests de integración con Testcontainers donde haya BD o Kafka · 200/403 por rol · outbox en la misma transacción
-- [ ] PR revisada por otra persona · sin secretos · OpenAPI y docs actualizados
-- [ ] Tarjeta de Taiga movida por vos
-
-## Registro de trabajo
-<!-- Un bloque por tarea: estado, qué se hizo, archivos, decisiones, CA cubiertos, tests, PR/commits, deuda -->
+> **DoD Nivel 0:** tarea terminada - tests verdes - PR con review - sdd/docs actualizados. **Nivel 1:** historia testeada, cobertura 90%, sin deuda, documentada (RLS solo donde aplica).

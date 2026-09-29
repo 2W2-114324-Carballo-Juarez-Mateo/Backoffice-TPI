@@ -1,30 +1,18 @@
-# dev-6.md (Maldonado, Valentina) — Tareas del Sprint 2
+# dev-6.md (Maldonado, Valentina) - Tareas Sprint 2
 
-> **Capacidad:** 35,3 h · **Asignado:** 27 h (76 %) · **Capas:** BACK + FRONT + TEST + REV + DOC
-> **Flujo:** `feature/tema-12-*` o `fix/tema-12-*` → PR a `develop` con 1 aprobación · sin push directo · commits del backend en español.
-> Incluye una tarea que era de Julieta: 05-N2.
+> **Capacidad:** 35.3 h - **Asignado:** 32 h - **Repo:** 2026-P4-BE/tpi-backoffice + 2026-P4-FE/2026-PIV-TPI-FE
+> **Flujo:** feature/tema-12-*|fix/tema-12-* -> develop - PR con >= 1 aprobacion - sin push directo
+> **Division pareja:** los 8 que programan cubren las 5 capas - nadie testea/revisa lo suyo.
 
-## Tareas, en orden
+- **[BACK]** B-AL - Alerta de presupuesto LLM (70% -> Backoffice): consumidor de `llm.budget.events` (T07) detras de flag; `LLMBudgetAlert` -> notificacion (revisar CONTRATOS.md T07) - 2h
+- **[BACK]** 08-T1 - Consumidores de `llm.events` (T07, filtrar por `eventType` segun contrato) y de T05, detras de flags, con dedup y DLT (HU08) - 5h
+- **[BACK]** #305 - Job programado de recalculo desde `ingested_event` (T03 `challenge.events` y T02 `course.events`) (HU11) - 5h
+- **[FRONT]** #291 - Rehacer el badge de frescura revertido en la PR #99 (HT05) - 3h
+- **[FRONT]** 05-N2 - Dashboard: ocultar los accesos no permitidos a GESTOR y PROFESSOR (HT05) - 2h
+- **[FRONT]** #322 - Dashboard de KPIs con aviso de "muestra insuficiente" (HU13) - 5h
+- **[TEST]** 05-T7 - Specs de las pantallas 09 y 10 conectadas (HU05) - 3h
+- **[REV]** 06B-T5 - Peer review de concurrencia del outbox y del secreto del Gateway (HT06) - 2h
+- **[REV]** 15-T7 - Peer review de seguridad del motor de reportes (RLS/whitelist) (US-15) - 3h
+- **[DOC]** 08-T4 - Actualizar el mapeo de contratos de lectura con T07 y T05 (HU08) - 2h
 
-| Día | ID | Tipo | Tarea | h | Depende de |
-|---|---|---|---|---:|---|
-| 1–2 | 05-N2 | FRONT | Dashboard: ocultar los accesos no permitidos a GESTOR y PROFESSOR | 2 | #3512 |
-| 1–3 | #291 | FRONT | Rehacer el badge de frescura de la cabecera: se mergeó en la PR #91 y se revirtió en la #99, hay que revisar el motivo del revert antes de rehacerlo | 3 | — |
-| 3–5 | #305 | BACK | Job programado de recálculo del read model desde `ingested_event` (T03 `challenge.events` y T02 `course.events`) | 5 | #303 (V18), #304 |
-| 4 | 06B-T5 | REV | Peer review de concurrencia del outbox (06B-T1) y del secreto del Gateway (06B-T3/T4) | 2 | 06B-T1 |
-| 4–6 | 08-T1 | BACK | Consumidores de `llm.events` (T07, filtro por `eventType` según `llm-service-kafka-contract`) y de T05, detrás de flags, con deduplicación y DLT. Rama `feature/tema-12-hu08-consumers` | 5 | contratos de T07 y T05 |
-| 6 | 08-T4 | DOC | Actualizar el mapeo de contratos de lectura con T07 y T05 | 2 | 08-T1 |
-| 5–6 | 05-T7 | TEST | Specs de las pantallas 09 y 10 conectadas | 3 | 04-T3, 05-T3 |
-| 7–9 | #322 | FRONT | Dashboard de KPIs con aviso de "muestra insuficiente" | 5 | contrato de #321 |
-
-**Revisan tu trabajo:** Bruno testea 08-T1 (08-T3) y Luciano lo revisa (08-T5); Regina testea #305 (#306); Mateo testea #291 y 05-N2 (05-N3) y Joaquín los revisa (05-N4); Máximo testea #322 (#323).
-
-## Checklist de DoD
-
-- [ ] `mvn -B verify` en verde (Checkstyle, PMD, JaCoCo ≥ 90 %) · `npm run verify` en el frontend, sin `ng build`
-- [ ] Deduplicación por `eventId` y DLT verificados con Testcontainers
-- [ ] PR revisada por otra persona · sin secretos · OpenAPI y docs actualizados
-- [ ] Tarjeta de Taiga movida por vos
-
-## Registro de trabajo
-<!-- Un bloque por tarea: estado, qué se hizo, archivos, decisiones, CA cubiertos, tests, PR/commits, deuda -->
+> **DoD Nivel 0:** tarea terminada - tests verdes - PR con review - sdd/docs actualizados. **Nivel 1:** historia testeada, cobertura 90%, sin deuda, documentada (RLS solo donde aplica).

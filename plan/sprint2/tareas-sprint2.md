@@ -30,18 +30,18 @@
 
 | Dev | Integrante | Rol | h/día | Días | Aus. | Teóricas | Efectivas | % | **Ajustada** | Plan | % uso |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | Paz, Luciano | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 95 % | **39,4** | 30 | 76 % |
+| 1 | Paz, Luciano | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 95 % | **39,4** | 34 | 86 % |
 | 2 | Carballo Juarez, Mateo | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 100 % | **41,5** | 35 | 84 % |
-| 3 | Baigorria, Damián ★ | PIV | 5 | 10 | 2 | 40 | 31,5 | 100 % | **31,5** | 24 | 76 % |
+| 3 | Baigorria, Damián ★ | PIV | 5 | 10 | 2 | 40 | 31,5 | 100 % | **31,5** | 30 | 95 % |
 | 4 | Cortez, Joaquín | PIV | 5 | 10 | 2 | 40 | 31,5 | 88 % | **27,7** | 23 | 83 % |
-| 6 | Maldonado, Valentina | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 85 % | **35,3** | 30 | 85 % |
+| 6 | Maldonado, Valentina | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 85 % | **35,3** | 32 | 91 % |
 | 7 | Cerquatti, Máximo ★ | MSII+PIV | 6 | 10 | 0 | 60 | 51,5 | 90 % | **46,4** | 39 | 84 % |
-| 8 | Cerasulo, Regina ★ | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 85 % | **35,3** | 29 | 82 % |
-| 9 | Gianoli, Bruno ★ | PIV | 4 | 10 | 0 | 40 | 31,5 | 90 % | **28,4** | 24 | 85 % |
-| 10 | Ducart, Ana Paula | MSII | 5 | 10 | 2 | 40 | 31,5 | 80 % | **25,2** | 20 | 79 % |
-| | **Total** | | | | **6** | **420** | **343,5** | | **310,6** | **254** | **82 %** |
+| 8 | Cerasulo, Regina ★ | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 85 % | **35,3** | 31 | 88 % |
+| 9 | Gianoli, Bruno ★ | PIV | 4 | 10 | 0 | 40 | 31,5 | 90 % | **28,4** | 26 | 92 % |
+| 10 | Ducart, Ana Paula | MSII | 5 | 10 | 2 | 40 | 31,5 | 80 % | **25,2** | 23 | 91 % |
+| | **Total** | | | | **6** | **420** | **343,5** | | **310,6** | **273** | **88 %** |
 
-> ★ **Foco del PO:** Máximo, Regina, Damián y Bruno 76–85 %. **254 h = 82 %** es el tope del rango sano. **Si aparece algo imprevisto, lo primero que se corta es HU13** (indicadores, #322).
+> ★ **Foco del PO:** Máximo, Regina, Damián y Bruno 84–95 %. **273 h = 88 %** es alto (sin margen): **todas las tareas con flag (T10, presupuesto LLM, T08) y el monitor de frescura son las primeras que se cortan** si el sprint se atrasa; HU13 (#322) le sigue.
 
 ---
 
@@ -60,7 +60,12 @@
 | Should | HU11 · Read model y riesgo por cohorte | #25 | 5 | 27 |
 | Should | HU12 · Panel docente con RLS | #24 | 5 | 37 |
 | Should | HU13 · Indicadores con anonimato | #111 | 5 | 26 |
-| | **Total** | | **49** | **254** |
+| Should | **US-10 backfill · Monitor `@Scheduled` de frescura** | #28 (reabierta) | 3 | 8 |
+| Should | **Alerta de presupuesto LLM (70 % → Backoffice, flag)** | nueva | 2 | 2 |
+| Should | **Consumidor T10 (`sandbox.events`, flag)** | nueva | 2 | 4 |
+| Should | **Ingesta T08 por REST (verificar/completar)** | nueva | 2 | 2 |
+| Must | **HT07+ · Guion de la demo del S2 + E2E** | nueva | 2 | 3 |
+| | **Total** | | **58** | **273** |
 | → Sprint 3 | HU06 · Calibración sobre T07 (gated C1) | #27 | 5 | 28 |
 | → Sprint 3 | HU07 · PAR-14, veredicto y deriva sobre T07 (gated C1) | #29 | 5 | 16 |
 | → Sprint 3 | HU14 · Umbrales y alertas | #34 | 3 | 22 |
@@ -231,6 +236,23 @@
 
 ---
 
+## 7bis · Pendientes adicionales (backfill — no queda trabajo sin listar) — 19 h
+
+> Tareas que quedaban **sin registrar en ninguna tabla** y ahora entran al Sprint 2. Las que dependen de un contrato externo van **detrás de flags** (si el contrato no llega, no arrancan y se cortan primero).
+
+| ID | Tarea | Tipo | Dev | h | Gate |
+|---|---|---|---:|---|
+| 10-M1 | **US-10 backfill:** monitor `@Scheduled` que marca `isStale` en `IngestionCounter` cuando `now − last_event_at > PAR-23` (15 min) y lo normaliza al llegar datos | BACKEND | Damián | 6 | — |
+| 10-M2 | Tests del monitor: 16 min → stale, dato llega → marca retirada | TEST | Regina | 2 | — |
+| B-AL | **Alerta de presupuesto LLM (70 % → Backoffice):** consumidor de `llm.budget.events` (T07) detrás de flag; `LLMBudgetAlert` → notificación (revisar `CONTRATOS.md` T07) | BACKEND | Valentina | 2 | 🔶 T07 |
+| T10-1 | **Consumidor de T10 (`sandbox.events`):** dedup + read model de progreso/niveles, detrás de flag (contrato con T10) | BACKEND | Luciano | 4 | 🔶 T10 |
+| T08-1 | **Ingesta T08 por REST (`/api/bank/**`):** verificar/completar el adapter de replay + evento de saldo | BACKEND | Bruno | 2 | 🔶 T08 |
+| D-DEMO | **Guion de la demo del S2 + checklist E2E** (reportes dinámicos + fachada LLM + panel docente) | DOCUMENTACION | Ana | 3 | — |
+
+> **Regla de corte (en orden):** primero se cortan `T10-1`, `B-AL` y `T08-1` (flags apagados) → luego `10-M1/M2` → luego HU13 (#322).
+
+---
+
 ## 8 · Matriz de revisión cruzada (nadie testea ni revisa lo suyo)
 
 | Código de… | Lo testea | Lo revisa |
@@ -246,6 +268,11 @@
 | #303/#304 (Damián) · #305 (Valentina) | Regina (#306) | Máximo (#308) |
 | #310 (Regina) · #311 (Máximo) · #312 (Luciano) · #313 (Damián) | Luciano (#314, sobre #310/#311) · Damián (#315, sobre #311/#312) · Joaquín (12-T9, sobre #313) | Mateo (#317) |
 | #319/#321 (Mateo/Bruno) · #320 (Regina) · #322 (Valentina) | Máximo (#323) | Damián (#325) |
+| 10-M1 (Damián) | Regina (10-M2) | PR normal (Luciano) |
+| B-AL (Valentina) | — | Luciano |
+| T10-1 (Luciano) | — | Joaquín |
+| T08-1 (Bruno) | — | Regina |
+| D-DEMO (Ana) | — | Luciano (exactitud técnica) |
 
 ---
 
@@ -253,18 +280,18 @@
 
 | Dev | Integrante | Capacidad | Horas | % uso | BACK | FRONT | TEST | REV | DOC |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | Luciano Paz | 39,4 | 30 | 76 % | 8 | 4 | 14 | 3 | 1 |
+| 1 | Luciano Paz | 39,4 | 34 | 86 % | 12 | 4 | 14 | 3 | 1 |
 | 2 | Mateo Carballo Juarez | 41,5 | 35 | 84 % | 18 | 6 | 3 | 2 | 6 |
-| 3 | Damián Baigorria ★ | 31,5 | 24 | 76 % | 14 | 5 | 4 | 1 | — |
-| 4 | Joaquín Cortez | 27,7 | 23 | 83 % | 16 | — | 2 | 3 | 2 |
-| 6 | Valentina Maldonado | 35,3 | 30 | 85 % | 10 | 12 | 3 | 2 | 2 |
+| 3 | Damián Baigorria ★ | 31,5 | 30 | 95 % | 20 | 5 | 4 | 1 | — |
+| 4 | Joaquín Cortez | 27,7 | 23 | 83 % | 16 | — | 2 | 4 | 2 |
+| 6 | Valentina Maldonado | 35,3 | 32 | 91 % | 12 | 12 | 3 | 3 | 2 |
 | 7 | Máximo Cerquatti ★ | 46,4 | 39 | 84 % | 19 | 2 | 16 | 2 | — |
-| 8 | Regina Cerasulo ★ | 35,3 | 29 | 82 % | 15 | 7 | 5 | — | 2 |
-| 9 | Bruno Gianoli ★ | 28,4 | 24 | 85 % | 19 | — | 3 | 2 | — |
-| 10 | Ana Paula Ducart | 25,2 | 20 | 79 % | — | — | — | — | 20 |
-| | **Total** | **310,6** | **254** | **82 %** | | | | | |
+| 8 | Regina Cerasulo ★ | 35,3 | 31 | 88 % | 15 | 7 | 7 | — | 2 |
+| 9 | Bruno Gianoli ★ | 28,4 | 26 | 92 % | 21 | — | 3 | 2 | — |
+| 10 | Ana Paula Ducart | 25,2 | 23 | 91 % | — | — | — | — | 23 |
+| | **Total** | **310,6** | **273** | **88 %** | | | | | |
 
-> **Cambios vs la propuesta original:** se quitaron HU06 (28 h) y HU07 (16 h) → S3, y se agregó **US-15 fase 1 backend (36 h)** con la regla de revisión cruzada intacta.
+> **Cambios vs la propuesta unificada anterior:** se sumaron los pendientes que no estaban en ninguna tabla: monitor de frescura (US-10, 8 h), alerta de presupuesto LLM (2 h, flag), consumidor T10 (4 h, flag), ingesta T08 REST (2 h, flag) y guion de demo S2 (3 h). **Con esto, el backlog del S2 no deja trabajo sin listar** (lo que no entra está en Sprint 3 o es Could/flag).
 
 ---
 
@@ -281,7 +308,9 @@
 | 6 | `feature/tema-12-hu11-risk` · `feature/tema-12-us15-dynamic-reports` (base V18) | pantallas 09 y 10 conectadas, #276 |
 | 7 | `feature/tema-12-hu08-consumers` · `fix/tema-12-gateway-trust` (si T01 respondió) | #291, 05-N2 |
 | 8 | `feature/tema-12-hu12-teacher-panel` (V19) · `feature/tema-12-hu13-indicators` | #3331 y #1657 (si T01 respondió) · #313, #322 |
-| 9–10 | ajustes y cierre · US-15 `run` (V20) | integración final |
+| 9–10 | ajustes y cierre · US-15 `run` (V20) · **10-M1 monitor (si sobra margen)** · **flags T10-1/B-AL/T08-1 (solo si llegó el contrato)** | integración final |
+
+> **Backfill (Día 9–10, solo si el margen lo permite):** `feature/tema-12-freshness-monitor` (10-M1) · `feature/tema-12-hu08-extra-consumers` (T10-1, B-AL, T08-1 detrás de flags). Primero en cortarse.
 
 ---
 
@@ -294,7 +323,10 @@
 | R3 | **T11** | Topics de auditoría y notificaciones, `eventType` de `StudentAtHighRisk` | #312, 06B-T4 | El topic va en configuración; el outbox guarda igual |
 | R4 | T02 | Pertenencia docente y fuente del CSAT | #310, #319 | Puerto con flag; el CSAT muestra "muestra insuficiente" |
 | R5 | T05 | Topic de entregas (G2) | 08-T1 | Flag apagado y documentado |
-| I1 | Interno | Carga al 82 %, con un integrante menos | Todo el sprint | Si hay atraso, se corta HU13 primero (#322) |
+| R6 | **T10** | Topic `sandbox.events` y formato del read model | T10-1 | Flag apagado; si no responde, T10-1 se corta |
+| R7 | **T07** | Topic `llm.budget.events` y payload de `LLMBudgetAlert` | B-AL | Flag apagado; se corta si no llega |
+| R8 | **T08** | Replay REST `/api/bank/**` y evento de saldo | T08-1 | Verificación aislada; se corta si no confirma |
+| I1 | Interno | Carga al 88 %, con un integrante menos | Todo el sprint | **Corte primero:** flags (T10-1, B-AL, T08-1) → monitor (10-M1) → HU13 (#322) |
 | I2 | Interno | Colisión de versiones de Flyway | Todas las migraciones | Versiones reservadas V18/V19/V20 (§10) |
 | I3 | Interno | Archivos protegidos del frontend (`angular.json`, `package*.json`, `tsconfig*`) | Todas las PRs del frontend | No tocarlos |
 

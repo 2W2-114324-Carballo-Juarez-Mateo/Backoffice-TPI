@@ -1,28 +1,16 @@
-# dev-10.md (Ducart, Ana Paula) — Tareas del Sprint 2 · solo MSII
+# dev-10.md (Ducart, Ana Paula) - Tareas Sprint 2 (solo MSII / DOC)
 
-> **Capacidad:** 25,2 h · **Asignado:** 19 h (75 %) · **Capas:** DOC (diagramas, contratos, planificación; sin código)
-> **Rama de docs:** `feature/tema-12-docs-sprint2`, con PR a `develop`.
+> **Capacidad:** 25.2 h - **Asignado:** 23 h - **Repo:** 2026-P4-BE/tpi-backoffice + 2026-P4-FE/2026-PIV-TPI-FE + docs
+> **Flujo:** feature/tema-12-*|fix/tema-12-* -> develop - PR con >= 1 aprobacion - sin push directo
+> **Rol:** MSII puro (no codifica) - documentacion, diagramas, contratos, Taiga.
 
-## Tareas, en orden
+- **[DOC]** D-DEMO - Guion de la demo del S2 + checklist E2E (reportes dinamicos + fachada LLM + panel docente) (HT07+) - 3h
+- **[DOC]** C4 - Corregir el §6 del contrato de T07 (fachada) y registrar los acuerdos en `CONTRATOS.md` (HT01) - 3h
+- **[DOC]** 05-T5 - Contrato: `MODEL_CHANGED` lo publica T07 y el Backoffice deja de emitir `ModelProviderChanged` (HU05) - 2h
+- **[DOC]** 15-T6 - OpenAPI de templates/run + catalogo de metricas (US-15) - 4h
+- **[DOC]** #316 - Endpoints del panel docente, politica RLS y contrato de la alerta (HU12) - 3h
+- **[DOC]** D1 - Diagrama de secuencia del cambio de parametro (diferido del Sprint 1) (HT07) - 3h
+- **[DOC]** D3 - Sincronizar `docs/backend/docs` y el sitio con lo real: fachada T07, auditoria via T01, `/backoffice`, roles del Gateway v3 (HT07) - 3h
+- **[DOC]** D4 - Carga y sincronizacion de Taiga del Sprint 2 y acta de la retro del Sprint 1 (HT07) - 2h
 
-| Día | ID | Tipo | Tarea | h | Depende de |
-|---|---|---|---|---:|---|
-| 1–2 | D4 | DOC | Carga y sincronización de Taiga del Sprint 2, y acta de la retro del Sprint 1 | 2 | planning |
-| 1–3 | C4 | DOC | Corregir el §6 del contrato de T07 (fachada: el Backoffice opera `/admin/*` de T07, sin tablas LLM propias) y registrar los acuerdos de C1, C2 y C3 en `CONTRATOS.md` (fecha, responsables de cada lado, versión y evidencia) | 3 | C1–C3 |
-| 2–3 | 05-T5 | DOC | Contrato: `MODEL_CHANGED` lo publica T07 y el Backoffice deja de emitir `ModelProviderChanged` | 2 | — |
-| 3–4 | D1 | DOC | Diagrama de secuencia del cambio de parámetro: ADMIN → Gateway → Backoffice → Outbox → Kafka (quedó diferido del Sprint 1) | 3 | — |
-| 4–6 | 06-T6 | DOC | Diagrama de secuencia ADMIN → Backoffice → T07 (perfil de calibración, corridas y veredicto) | 3 | C1 |
-| 7–8 | #316 | DOC | Endpoints del panel docente, política RLS (`app.current_course`, `ALL` solo ADMIN) y contrato de la alerta `StudentAtHighRisk` | 3 | #310–#312 |
-| 8–10 | D3 | DOC | Sincronizar `docs/backend/docs` y el sitio con lo real: fachada T07, auditoría vía T01, rutas `/backoffice`, roles del Gateway v3 (`ADMIN`, `GESTOR`, `PROFESSOR`, `STUDENT`, `MS`) | 3 | todo el sprint |
-
-> **Coordinación:** los cambios en documentación compartida y en `AGENTS.md` se avisan en el canal antes de mergear. `AGENTS.md` todavía dice `PROFESOR`/`ALUMNO`: proponé el cambio, no lo apliques sin acuerdo del equipo.
-
-## Checklist de DoD (documentación)
-
-- [ ] Diagramas versionados en el sitio y referenciados desde el SDD
-- [ ] Contratos con estado, fecha, responsables y evidencia
-- [ ] PR revisada por otra persona
-- [ ] Tarjeta de Taiga movida por vos
-
-## Registro de trabajo
-<!-- Un bloque por tarea: estado, qué se hizo, archivos, decisiones, pendientes -->
+> **DoD:** solo documentacion: diagramas con source, contratos firmados, Taiga al dia, sitio sincronizado (D3).
