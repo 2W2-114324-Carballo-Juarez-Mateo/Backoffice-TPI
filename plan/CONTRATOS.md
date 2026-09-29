@@ -11,13 +11,13 @@
 | **T01 · Usuarios/Identidad** | Consume (auth/roles/auditoría/retención/cuentas) + provee (auditoría) | ✅ **CERRADO** | `solicitudes/CONTRATOS_T01_SOLICITUD.md` |
 | **T08 · Banco** | Consume (lectura REST + evento de saldo) · **NO consume PAR** | 🟡 **ACUERDO** | `solicitudes/CONTRATOS_T08_RESPUESTA.md` |
 | **T10 · Roadmap y Progreso** | Consume (progreso/XP/niveles) · PAR-21 pendiente de validación | 🟡 **EN CURSO** (solicitud enviada) | `solicitudes/CONTRATOS_T10_SOLICITUD.md` |
-| **T09 · Mercado** | Provee (dueño de precios **PAR-06/07**) | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T09_SOLICITUD.md` |
+| **T09 · Mercado** | Consume de nosotros **PAR-03, PAR-06, PAR-07** (precios/catálogo) | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T09_SOLICITUD.md` |
 | **T11 · Social y Notificaciones** | Coordina **convención de eventos** + consumimos avisos/alertas | ✅ **CERRADO (G1 + formal 27/09)** | `solicitudes/CONTRATOS_T11_SOLICITUD.md` · `solicitudes/CONTRATOS_T11_RESPUESTA.md` · `respuesta-t12.md` · `solicitudes/analisis-brechas-t12.md` |
 | **T02 · Cursos y Matrícula** | Consume (cohorte `course_id`, pertenencia docente, `RosterUpdated`, **encuestas CSAT anónimas**) + provee (PAR-18) | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T02_SOLICITUD.md` |
 | **T04 · Teóricos y Encuestas** | **Sin lectura** — encuestas ahora de **T02**; no consumimos nada de T04 por el momento | ➖ SIN CONTRATO | — |
 | **T05 · Desafíos Prácticos** | Consume (entregas/resultados) + provee (PAR-19/20) | ⏳ PENDIENTE | — |
 | **T07 · Evaluación LLM** | **Fachada de gobernanza:** consumimos `/api/llm/admin/*` de `llm-service` v2.0.0 (proveedores, modelos, activación, uso) · provee (`ModelProviderChanged`, PAR-22) + recibe **alerta de presupuesto** (70%→Backoffice) | ✅ **CERRADO (fachada, 27/09)** — dominio LLM de T07; Backoffice es fachada, sin tablas ni lógica LLM propias | Skill Hub `llm-service-http-contract` v6 · `docs/Task/auditoria-contratos-skillhub.md` |
-| **T03 · Desafíos** | Provee (hecho único en `challenge.events`) + consume PAR (PAR-01/04/05; PAR-03 vía Mercado) | 🟡 **ACUERDO** | `solicitudes/CONTRATOS_T03_RESPUESTA.md` |
+| **T03 · Desafíos** | Provee (hecho único en `challenge.events`) + consume PAR (PAR-01/04/05; PAR-03 de nuestro registro) | 🟡 **ACUERDO** | `solicitudes/CONTRATOS_T03_RESPUESTA.md` |
 
 > **Pendientes internos:** schema externo de `identity.audit` y `retention.events` (confluir nuestra auditoría en `identity.audit`, coordinar con **T01**) · materializar los topics del Backoffice en el broker (T11 los tiene **uncommitted** en `fix/contract-alignment`) · exposición del estado 2FA (T01) · **API de Vault (T01)** · **GESTOR / "profesor con vista"** · **lista blanca de profesores** · **observabilidad de microservicios: FUERA de alcance** (solo logs/health/correlation).
 
@@ -72,8 +72,8 @@
 - **Lectura:** **REST (`/api/bank/**`) para replay/inicial + nos suscribimos al evento de actualización de saldo por alumno/curso** (decisión tomada; REST ya no es solo polling — el evento mejora recursos y frescura). → `solicitudes/CONTRATOS_T08_RESPUESTA.md`
 - **`distribution`:** a Banco solo **saldo en monedas**; la **distribución de XP** la expone **T10**.
 - **"Retención vs desafíos":** **retención de monedas → Banco**, **retención de XP → Roadmap (T10)**; el **Backoffice integra ambos** en el agregado (no se pide a Banco).
-- **Contract 3 (PAR):** **no aplica** → los montos los deriva **T03**; **PAR-03/06/07 los gestiona T09 (Mercado)** (descartados del Backoffice); T03 toma PAR-03 de Mercado; **PAR-21** no está en el PRD (candidato suspendido).
-- **PAR-12 (vidas iniciales/máximo) → ahora de Banco:** Banco la gestiona y publica el evento **`PARAMETER_UPDATED`** (`economy.transactions`, **envelope estándar + `version`**) → **✅ acordado** (payload con envelope en `CONTRATOS_T08_RESPUESTA.md`). Backoffice **no la almacena** (EXTERNO). El **evento de saldo/vidas por alumno** queda **⏳ pendiente de confirmar** (topic + payload).
+- **Contract 3 (PAR):** los montos los deriva **T03**; **PAR-03/06/07 son del Backoffice** y los consumen **T09 (Mercado)** y **T03 (PAR-03)** desde nuestro registro (Skill Hub); **PAR-21** no está en el PRD (candidato suspendido).
+- **PAR-12 (vidas iniciales/máximo) — del Backoffice (lo consume T08):** **PAR-12 es administrado por Backoffice** (Skill Hub `backoffice-t08-banco-contract` v1) y lo consume **T08 (Banco)**. Banco **no lo gestiona** ni publica `PARAMETER_UPDATED`; las modificaciones salen por `administration.events`. El **evento de saldo/vidas por alumno** de Banco queda **⏳ pendiente de confirmar** (topic + payload).
 - **Naming:** el evento de saldo se alinea con la **lista de canales habilitados por release** que publica **T11**.
 - **RF-RPT-06:** no es RF del PRD → pasa a "decisión de arquitectura (frescura ≤15 min)".
 
@@ -81,13 +81,13 @@
 
 - **Hecho único ✅:** `IntentoDesafioFinalizado` (+ `IntentoDesafioCerrado`) en **`challenge.events`**, con desglose y `parametros_aplicados` (versión). Consumimos para read models de engagement.
 - **PAR que consume:** PAR-01, PAR-04, PAR-05 (+ PAR-02 no-MVP, PAR-13 como techo de reintentos). **No usa:** PAR-08/12/22 y el resto.
-- **PAR-03 es de Mercado** (descartado del Backoffice): **T03 necesita que Mercado lo exponga** (evento + REST + versión) para el monto de monedas del hecho único — contrato **T03 ↔ Mercado**.
+- **PAR-03 es del Backoffice** (Skill Hub): **T03 y T09 lo consumen de nuestro registro** para el monto de monedas del hecho único; no hay contrato T03 ↔ Mercado por PARs.
 - **Necesita de nosotros:** `GET /api/administration/parameters` con `{key, value, version}` (confirmado) · snapshot por intento · aviso de cambios PAR-13.
 - **PAR-20:** en **suspenso** (definir comportamiento de la ventana de gracia) · **PAR-25 (nuevo candidato):** plazo máximo de corrección/vencimiento de intento.
 - **Métricas:** por **eventos** (`challenge.events`), no endpoints de agregación. → `solicitudes/CONTRATOS_T03_RESPUESTA.md`
 
 ## T09 — Mercado (SOLICITUD LISTA)
-- **PAR-03 / PAR-06 / PAR-07:** los gestiona **T09 (Mercado)** (descartados del Backoffice). Pendiente: que **Mercado confirme que gestiona PAR-03 y lo expone a T03** (evento + REST + versión). La solicitud `CONTRATOS_T09_SOLICITUD.md` se ajusta.
+- **PAR-03 / PAR-06 / PAR-07:** son del **Backoffice**; **T09 (Mercado) los consume** de nuestro registro (Skill Hub). Pendiente: que **Mercado confirme que los lee del registro** (no los hardcodea). La solicitud `CONTRATOS_T09_SOLICITUD.md` se ajusta.
 
 ## T11 — Social y Notificaciones (✅ CERRADO — G1, análisis de brechas 2026-09-21)
 - **Convención ratificada:** `EventEnvelope<T>` 6 campos, `eventVersion = 1`, solo `traceparent` como header obligatorio (**`correlationId`/`actorId`/`role` → dentro del `payload`**), `producer = tema-12-backoffice-service`, `JsonSerializer`/`JsonDeserializer` + consumer tipado. **T11 confirma que T12 puede emitir hoy.**
@@ -121,7 +121,7 @@
 - **Scope de lectura de parámetros:** aceptado `backoffice.parameters.read` como authority pelada para M2M (PR #51, mergeado). `READ_PARAMS` se mantiene mientras migran.
 - **Alerta de presupuesto al 70% → Backoffice:** evento `LLMBudgetAlert` propuesto en `llm.budget.events` — **Sprint 2** (se integra al retomar US-04/US-07).
 - **Pendiente de aclarar (T07):** (a) los límites de las 4 capas son **solo visualización** desde Backoffice, o (b) **configurables** (→ parámetros EXTERNOS T07). Recomendamos (a).
-- **PAR-22:** nuestro candidato era **semanal (5)**; T07 define **3 desafíos/día** y **40 consultas/día** → **reconciliar** (ajustar a diario o marcar EXTERNO T07).
+- **PAR-22:** valor oficial **3 desafíos/día** (Skill Hub `backoffice-t07-evaluacion-llm-contract` v1) — **es nuestro**, no EXTERNO T07.
 - **Golden set/calibración:** **BLOQUEADO** (US-06) — falta cerrar quién ejecuta el golden set y el endpoint de calibración de T07. `solicitudes/CONTRATOS_T07_SOLICITUD.md` · `solicitudes/CONTRATOS_T07_LLM_LIMITES.md`.
 
 ---
