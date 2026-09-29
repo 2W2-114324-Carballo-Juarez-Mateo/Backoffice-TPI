@@ -1,402 +1,560 @@
-# Tareas Sprint 2 — Backlog dividido (9 integrantes) · PROPUESTA UNIFICADA
+# Tareas Sprint 2 — Backoffice (Tema 12) · PLAN CORREGIDO
 
-> ⚠️ **SUPERADA por `sprint2 (2)/` (plan corregido y auditado).** Esta carpeta es la propuesta original del grupo, conservada como referencia histórica; **no se usa para el Sprint 2**. El plan canónico es **`sprint2 (2)/tareas-sprint2.md`** (+ `dev-01..09`). Los ajustes por Skill Hub (PAR del Backoffice, PAR-14 `average`, decisiones R-1/R-2/P-12) están solo en `sprint2 (2)`.
-
-> **Base:** propuesta de planning del grupo (Sprint 28/09 → 11/10/2026, 10 días hábiles) + ajustes del equipo: **US-15 (reportes docentes, requisito del profe) entra por fases**, **US-14 y calibración (HU06/HU07) pasan al Sprint 3**, regla de riesgo según `uh/US-11.md`.
-> **Repos:** `2026-P4-BE/tpi-backoffice` · `2026-P4-FE/2026-PIV-TPI-FE`.
-> **Flujo:** `feature/tema-12-*` o `fix/tema-12-*` desde `develop` → PR a `develop` con ≥ 1 aprobación. Commits: backend en español (`AGENTS.md`), frontend en inglés.
-> **Estimación:** historia = SP (Fibonacci) · tarea = horas. Las tareas con `#` ya existen en Taiga; `04-T1`, `15-T1`, etc. son nuevas.
-> **Identificación:** el sprint `G06 - Sprint 2` lo crea alguien con permiso (la cátedra); la carga en Taiga se hace al aprobar el grupo.
+> **Sprint:** 28/09 → 11/10/2026 · **Equipo:** TPI-G06 (9 integrantes) · **Repos:** `2026-P4-BE/tpi-backoffice` · `2026-P4-FE/2026-PIV-TPI-FE`
+> **Base:** propuesta unificada del grupo (`sprint2/tareas-sprint2.md`, se conserva sin tocar) + auditoría del Sprint 1 (`auditoria-sprint1.md`) + retrospectiva (`retrospectiva-sprint1.md`). Cada cambio contra la propuesta está justificado en `correcciones-propuesta.md`.
+> **Estimación:** **sin horas** (decisión del equipo: con IA la estimación en horas engaña). Historia = **SP Fibonacci** · tarea = **tamaño relativo** (S/M/L/XL). La capacidad se expresa como **disponibilidad** (alta/media/baja), tomada de la tabla de capacidad que ya había armado el grupo.
+> **Fuente única de verdad:** este archivo. Los `dev-XX.md` se derivan de acá. Si algo no coincide, manda este archivo.
 
 ---
 
-## Decisiones del planning (ajustadas)
+## 0 · Cómo leer este plan
 
-1. **Capacidad:** se mantiene la tabla del Sprint 1 (sin Julieta). **Decisión del equipo: sprint de MÁXIMA capacidad** — entra todo el backlog pendiente (HU04, HU05, HU06, HU07, HU08, HU11, HU12, HU13, HU14, US-15, deuda HT05/06/07, backfill). La carga nominal supera el 100 % por persona; el equipo asume entrega acelerada con IA y la regla de corte (§ corte) para lo que no alcance.
-2. **Opción A (EP-03):** el Backoffice es **fachada del ADMIN sobre `/admin/*` de T07** — sin tablas LLM, sin calcular MAE. T07 decide `PASSED`/`FAILED`; **el Backoffice es dueño del valor de PAR-14**.
-3. **HU06 (calibración) y HU07 (PAR-14/deriva):** entran al S2 como fachada sobre T07, **gated por C1** (si T07 no confirma `/api/llm/admin/*`, esas tareas quedan con stub + flag y se cortan).
-4. **US-15 (reportes docentes, profe) entra completo:** fase 1 backend + **fase 2 (builder FE + specs)** en el mismo sprint.
-5. **Regla de riesgo (HU11) — `uh/US-11.md` (la que tiene CA):**
-   - **ROJO:** > 10 días de inactividad O reprobación > 60 %;
-   - **AMARILLO:** 5–10 días, o reprobación 40–60 %;
-   - **VERDE:** aprobación ≥ 70 %.
-   - Umbrales en configuración tipada. "Vidas agotadas" detrás de un flag hasta que haya datos de T08.
-6. **Historias Done con tareas reabiertas (#17, #28, #182)** → sus pendientes (#3331, #291, #3512) + #1657 pasan a **HT05** (deuda técnica frontend).
-7. **HU09 (#20) → backlog (Could).** US-15 se crea en Taiga (historia + DoR) en la carga inicial.
+| Si sos… | Leé primero |
+|---|---|
+| Dev que programa | Tu `dev-XX.md` → §5 (contratos compartidos) → §8 (secuencia) → `revision-pr.md` (lo que te van a revisar) |
+| Revisor/a de una PR | `revision-pr.md` → §9 (matriz: qué revisás y de quién) |
+| Ana (MSII) | `dev-09.md` → §6.9 (wiki de G06) → §3 (seguimiento de contratos en Taiga) |
+| Quien coordina | §1 (decisiones) → §3 (contratos) → §8 (checkpoints) → §11 (corte) |
 
----
+**Tamaños (relativos, no son tiempo):**
 
-## 1 · Capacidad
-
-| Dev | Integrante | Rol | h/día | Días | Aus. | Teóricas | Efectivas | % | **Ajustada** | Plan | % uso |
-|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | Paz, Luciano | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 95 % | **39,4** | 50 | 127 % |
-| 2 | Carballo Juarez, Mateo | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 100 % | **41,5** | 42 | 101 % |
-| 3 | Baigorria, Damián ★ | PIV | 5 | 10 | 2 | 40 | 31,5 | 100 % | **31,5** | 41 | 130 % |
-| 4 | Cortez, Joaquín | PIV | 5 | 10 | 2 | 40 | 31,5 | 88 % | **27,7** | 35 | 126 % |
-| 6 | Maldonado, Valentina | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 85 % | **35,3** | 35 | 99 % |
-| 7 | Cerquatti, Máximo ★ | MSII+PIV | 6 | 10 | 0 | 60 | 51,5 | 90 % | **46,4** | 50 | 108 % |
-| 8 | Cerasulo, Regina ★ | MSII+PIV | 5 | 10 | 0 | 50 | 41,5 | 85 % | **35,3** | 38 | 108 % |
-| 9 | Gianoli, Bruno ★ | PIV | 4 | 10 | 0 | 40 | 31,5 | 90 % | **28,4** | 42 | 148 % |
-| 10 | Ducart, Ana Paula | MSII | 5 | 10 | 2 | 40 | 31,5 | 80 % | **25,2** | 31 | 123 % |
-| | **Total** | | | | **6** | **420** | **343,5** | | **310,6** | **364** | **117 %** |
-
-> ⚠️ **Carga nominal 117 % — decisión del equipo de máxima capacidad (entrega acelerada con IA).** Si la realidad no acompaña, se corta en este orden: **flags (T10-1, B-AL, T08-1) → 10-M1 → HU13 (#322) → HU14 → HU06/07 (si C1 no llega, ya quedan con stub)**.
+| Tamaño | Significa | Ejemplo |
+|---|---|---|
+| **S** | Cambio acotado: 1 clase/componente principal + su test | Validación de PAR-14, abrir la PR de una rama ya terminada |
+| **M** | Una capa completa de un caso de uso | Cliente real de modelos T07, pantalla conectada |
+| **L** | Caso de uso vertical: varias clases + migración o pantalla | RLS + puerto de pertenencia, proyector de read models |
+| **XL** | Motor o pieza transversal con invariantes de seguridad | Motor de reportes dinámicos + `run` |
 
 ---
 
-## 2 · Alcance (MoSCoW)
+## 1 · Decisiones del plan
 
-| Prioridad | Historia | Taiga | SP | Horas |
-|---|---|---|---|---:|
-| Must | HU04 · Proveedores y modelos (fachada T07) | #18 | 5 | 24 |
-| Must | HU05 · Conmutación de modelos (fachada T07) | #26 | 5 | 21 |
-| Must | HU06 · Calibración institucional (golden set) sobre T07 | #27 | 5 | 28 |
-| Must | HU07 · PAR-14, veredicto y deriva sobre T07 | #29 | 5 | 16 |
-| Must | HU08 · Ingesta: consumidores de T07 y T05 con flags | #1628 | 5 | 11 |
-| Must | HT01 · Contratos entre temas | #1629 | 3 | 9 |
-| Must | **HT05** · Frontend: acceso por rol, rutas `/backoffice` y deuda del S1 | nueva | 5 | 22 |
-| Must | **HT06** · Backend: orden del outbox por `param_key` y confianza en el Gateway | nueva | 3 | 18 |
-| Must | **HT07** · Documentación y proceso del Sprint 2 | nueva | 3 | 8 |
-| Must | **US-15** · Reportes dinámicos (fase 1 backend + fase 2 builder FE) | nueva | 8 | 63 |
-| Should | HU11 · Read model y riesgo por cohorte | #25 | 5 | 27 |
-| Should | HU12 · Panel docente con RLS | #24 | 5 | 37 |
-| Should | HU13 · Indicadores con anonimato | #111 | 5 | 26 |
-| Should | HU14 · Umbrales de aviso | #34 | 3 | 22 |
-| Should | **US-10 backfill** · Monitor `@Scheduled` de frescura | #28 (reabierta) | 3 | 8 |
-| Should | **Alerta de presupuesto LLM (70 % → Backoffice, flag)** | nueva | 2 | 2 |
-| Should | **Consumidor T10 (`sandbox.events`, flag)** | nueva | 2 | 4 |
-| Should | **Ingesta T08 por REST (verificar/completar)** | nueva | 2 | 2 |
-| Must | **HT07+ · Guion de la demo del S2 + E2E** | nueva | 2 | 3 |
-| | **Total** | | **72** | **364** |
-| Could | HU09 · Exportación | #20 | 5 | fuera |
+| # | Decisión | Por qué (evidencia) |
+|---|---|---|
+| D-01 | **Primero se cierra el Sprint 1.** Lo que quedó en ramas sin PR, tareas reabiertas y contratos sin firmar entra como historias de arrastre (§4), antes que lo nuevo. | 11 tareas abiertas del Sprint 1 en Taiga; 6 ramas BE y 3 FE con trabajo fuera de `develop` (ver `auditoria-sprint1.md`). |
+| D-02 | **Un PR de contratos compartidos del Sprint 2 (S2-00) al inicio**, congelado, como hizo el Sprint 1 con S3. Todos codifican contra esas interfaces con mocks. | Fue lo que mejor funcionó en el S1. La propuesta no lo tenía: HU12 tenía **7** devs y US-15 **9** devs sobre los mismos archivos. |
+| D-03 | **Un dueño por paquete/clase.** Si una historia tiene varias tareas de backend en el mismo servicio, se consolidan en una persona (HU13 → Mateo, HU14 → Regina, motor + `run` de US-15 → Bruno, evento de riesgo → quien calcula el riesgo). | Retro: "tareas que se pisaban". En la propuesta #319/#320/#321 (HU13) eran 3 devs en el mismo servicio; 15-T2 y 15-T4 dos devs en el mismo motor. |
+| D-04 | **El Backoffice no produce datos: los lee** (PDF arquitectura, pág. 14). Ningún reporte se programa contra un contrato en `SOLICITUD LISTA` sin **puerto + flag + fallback**. Los contratos de lectura son la ruta crítica (§3). | T02 no respondió la solicitud y T05 ni siquiera tiene solicitud; sin T02 no hay pertenencia docente, ni padrón, ni CSAT. |
+| D-05 | **Frescura ≤ 15 min (PAR-23) en cada respuesta de reporte**, calculada al leer. El recálculo de read models corre cada ≤ 5 min. | En `develop` la frescura ya se calcula al leer (`IngestionCounter`: "not stored: computed at read time"). El 10-M1 de la propuesta (un `@Scheduled` que marca `isStale`) duplicaba y contradecía ese diseño. |
+| D-06 | **Sin comparación entre docentes** es un invariante verificable: ningún endpoint acepta ni devuelve la dimensión docente; el PROFESOR recibe 403 ante un curso ajeno; la vista de plataforma del ADMIN no ordena ni rankea por métrica. | HU12 CA3/CA4 (Taiga), RF-ENC-08 (PRD). |
+| D-07 | **Anonimato de encuestas según el PRD:** el PROFESOR ve puntajes solo si `respuestas ≥ PAR-18` **y** el curso cerró (RF-ENC-13). KPI-01/02 = % de 4–5 y % de 1–2 sobre respuestas emitidas; las abstenciones se informan aparte y no entran al denominador (RF-ENC-10). | La propuesta pedía "umbral mínimo" y "CSAT promedio"; el PRD exige distribución, abstenciones y el corte al cierre. **PAR-18 ya es ese umbral** (no hay conflicto con PAR-18: es el mismo parámetro). |
+| D-08 | **Solo se emiten eventos del catálogo de T11:** `STUDENT_AT_HIGH_RISK` (HU12) y `EXPORT_READY` (HU09) a `notifications.events` por outbox. **`THRESHOLD_BREACHED` no se emite** (HU14 usa alertas internas) salvo que T11 lo registre. | `CONTRATOS_MAPEO_TOPICS.md` (v3): "No se emiten `DATA_STALE_DETECTED` ni `THRESHOLD_BREACHED`". |
+| D-09 | **HU06/HU07 (calibración) siguen como fachada de T07 con gate C1.** Si T07 no confirma `/api/llm/admin/*` en el **CP2 (02/10)**, quedan con stub + flag y sus dueños refuerzan US-15/HU09. La rama `feature/mvp-s6-golden-set-runs` **no se mergea** (contradice la Opción A). | PR #30 cerrada; el golden set y el MAE son de T07. |
+| D-10 | **Carga realista:** núcleo (Must/Should) + tareas con gate + *stretch* (Could). El stretch **solo arranca** cuando el dueño tiene su núcleo mergeado. | Retro: "planificar sin ajustar la capacidad". La propuesta cargaba 117 % nominal y a Bruno 148 % con la ruta crítica (15-T2). |
+| D-11 | **Regla de riesgo (HU11):** la de Taiga, evaluada en orden RED → YELLOW → GREEN, con **R-1: el hueco va a YELLOW** y **R-2: las tasas solo se calculan con ≥ 3 intentos** (decididas por el grupo el 29/09, §6.1). Umbrales en configuración tipada (`reporting.risk.*`), no en PAR. | La regla de Taiga dejaba sin clasificar a un alumno con 60–70 % de aprobación y < 5 días de inactividad, y con 1 intento reprobado lo mandaba a RED. |
+| D-12 | **Flyway reservado V18–V26 con dueño** (§7). Nadie usa otro número sin avisar. | En el S1 la reserva funcionó; la propuesta reservaba 3 versiones para 6 migraciones. |
+| D-13 | **Ana (MSII) trabaja solo en Taiga (tablero y wiki) y Draw.io.** Todo lo que vive en el repo (contratos `.md`, OpenAPI, `docs/`) lo escribe el dev dueño en su PR. Su entregable principal es la **wiki de G06**, que hoy no existe. | Ana no tiene commits en los repos; la cátedra exige una página de wiki por grupo y tema (`guia-doc-proyecto-por-grupo`) y G06 es de los pocos grupos sin página. |
 
-**Por qué este corte:**
-- **US-15 (profe)** entra por fases: el backend es la parte crítica (motor + RLS + whitelist) y ya se puede demostrar; el builder FE cierra en el S3.
-- Las Must dejan la gobernanza de IA real (HU04/05) y la deuda del S1 (HT05/06/07) zanjada.
-- HU11 → HU12 → HU13 es la cadena de valor de reporting; HU14 y la calibración (HU06/07) van al S3 por capacidad y por depender de C1/T07.
-- **Velocidad:** HU04/05/08 y HT01 ya tienen la mayor parte de sus tareas cerradas; la medida real son las horas.
+> **Decisiones tomadas por el grupo (29/09):** **R-1** el hueco de la regla de riesgo se clasifica **YELLOW** · **R-2** mínimo de **3 intentos** para calcular las tasas · **P-12** **PAR-12 es del Backoffice** (se siembra en V24 y se corrige `AGENTS.md`). Detalle en §6.1 y §4.2.
 
 ---
 
-## 3 · EP-03 · Modelos LLM (fachada sobre T07) — HU04 y HU05 en S2
+## 2 · Alcance (MoSCoW, SP)
 
-**Referencias:** Skill Hub `backoffice-admin-and-llm-service-integration-contract` v2 (T07) · `llm-service-http-contract` · `micro-to-micro-calls-with-a-service-token` (timeout 3 s, reintento solo en GET, propagar `X-Request-Id`, nunca traducir 401/403 de T07 a 500). Se reutilizan las interfaces congeladas `LlmAdminClient` y `LlmProviderClient` con sus stubs (`DefaultLlmAdminClient`, `DefaultLlmProviderClient`). **Antes de 04-T1 se necesita la respuesta a C1.**
-
-### HU04 #18 — 24 h
-> Ramas: `feature/tema-12-llm-admin-client` (04-T1, merge Día 3) y `feature/tema-12-llm-providers-models-real` (merge Día 5).
-
-| ID | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| 04-T1 | Infraestructura del cliente HTTP hacia T07: `RestClient` administrado, auth de servicio según C1, `problem+json` → `LlmProviderException`/`LlmModelException`, URL base tipada; stub como fallback con flag | BACKEND | Máximo | 6 |
-| 04-T2 | Cliente real de proveedores y credenciales (providers, provider-credentials, discover-models, test-model). La key viaja a T07; nunca se loguea ni se devuelve | BACKEND | Regina | 5 |
-| 04-T3 | Conectar la pantalla 09 al backend (quitar los datos en memoria y pasar a `/api/backoffice/llm/...`) | FRONTEND | Regina | 4 |
-| 04-T4 | Tests de integración con WireMock del cliente de proveedores: éxito, 404, 409, 503 y key enmascarada | TEST | Luciano | 5 |
-| 04-T5 | Peer review de seguridad de credenciales y del cliente T07 | REVISION | Bruno | 2 |
-| 04-T6 | OpenAPI de la fachada de proveedores y modelos | DOCUMENTACION | Regina | 2 |
-
-### HU05 #26 — 21 h
-
-| ID | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| 05-T1 | Cliente real de modelos evaluadores (listar, activo, desplegar, activar, borrar) sobre 04-T1 | BACKEND | Mateo | 5 |
-| #276 | Modal de conmutación con advertencia (modelo actual → nuevo, confirmación explícita, textos de UI en español) | FRONTEND | Mateo | 3 |
-| 05-T3 | Conectar la pantalla 10 al backend (quitar los datos en memoria) | FRONTEND | Mateo | 3 |
-| 05-T4 | Tests con WireMock de la activación: 200, 409 (no aprobado) y 503 (T07 caído) | TEST | Luciano | 4 |
-| 05-T5 | Contrato: `MODEL_CHANGED` lo publica T07 y el Backoffice deja de emitir `ModelProviderChanged` | DOCUMENTACION | Ana | 2 |
-| 05-T6 | Peer review de la fachada de modelos (mapeo de errores, unicidad delegada en T07) | REVISION | Joaquín | 1 |
-| 05-T7 | Specs de las pantallas 09 y 10 conectadas | TEST | Valentina | 3 |
-
-> **HU06 y HU07 entran al Sprint 2** (fachada sobre T07, gated por C1). Si C1 no responde, quedan con stub + flag y son de las primeras en cortarse.
-
-### HU06 #27 · Calibración institucional sobre T07 (fachada) — 28 h
-> Rama: `feature/tema-12-calibration-facade` · merge Día 6.
-
-| ID | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| #3537 | **Redefinida:** fachada del perfil de calibración institucional (golden set y rúbrica) sobre T07 | BACKEND | Joaquín | 4 |
-| #3539 | **Redefinida:** fachada de corridas de calibración (crear, listar, detalle; `maeFinal`, `maxIndividualError` y veredicto de T07) | BACKEND | Bruno | 5 |
-| #3538 | **Redefinida:** pantalla del perfil de calibración (parte 12) | FRONTEND | Joaquín | 5 |
-| #3540 | **Redefinida:** pantalla de corridas de calibración (parte 13) | FRONTEND | Bruno | 5 |
-| 06-T5 | Tests de integración con WireMock de la fachada de calibración | TEST | Máximo | 4 |
-| 06-T6 | Diagrama de secuencia ADMIN → Backoffice → T07 (calibración) | DOCUMENTACION | Ana | 3 |
-| 06-T7 | Peer review de la fachada de calibración | REVISION | Regina | 1 |
-| 06-T8 | OpenAPI de la fachada de calibración | DOCUMENTACION | Joaquín | 1 |
-
-### HU07 #29 · PAR-14, veredicto y deriva sobre T07 — 16 h
-
-| ID | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| 07-T1 | PAR-14 como fuente de la tolerancia: validar rango y formato en el registro, y comprobar que T07 lo lea con `backoffice.parameters.read` | BACKEND | Damián | 3 |
-| 07-T2 | Endpoint del estado de calibración del modelo activo (último veredicto y marca de deriva, leídos de T07) | BACKEND | Bruno | 4 |
-| #284 | Indicador de veredicto y deriva, y banner de conmutación automática | FRONTEND | Valentina | 3 |
-| 07-T4 | Tests del estado de calibración y de la validación de PAR-14 | TEST | Máximo | 3 |
-| #286 | **Redefinida:** T07 calcula el MAE y el veredicto; el Backoffice gobierna PAR-14; la deriva la emite T07 | DOCUMENTACION | Bruno | 2 |
-| 07-T6 | Peer review | REVISION | Mateo | 1 |
-
----
-
-## 4 · EP-04 · Contratos e ingesta
-
-### HU08 #1628 — 11 h
-> Rama: `feature/tema-12-hu08-consumers` · merge Día 7. Los flags quedan apagados si el contrato no se confirma.
-
-| ID | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| 08-T1 | Consumidores de `llm.events` (T07; filtrar por `eventType` según `llm-service-kafka-contract`) y de T05, detrás de flags, con deduplicación y DLT | BACKEND | Valentina | 5 |
-| 08-T3 | Tests de integración: nuevo, duplicado, malformado → DLT, flag apagado | TEST | Bruno | 3 |
-| 08-T4 | Actualizar el mapeo de contratos de lectura con T07 y T05 | DOCUMENTACION | Valentina | 2 |
-| 08-T5 | Peer review de los consumidores | REVISION | Luciano | 1 |
-
-### HT01 #1629 — 9 h · **se mandan el Día 1**
-
-| ID | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| C1 | Confirmar con T07 y T01 la llamada a `/api/llm/admin/*`: ruta, Gateway o Eureka, token `client_credentials` o headers, y scopes | DOCUMENTACION | Máximo | 2 |
-| C2 | Confirmar con T11 los topics de auditoría (`identity.audit` o `identity.audit.events`) y de notificaciones, y el `eventType` de `StudentAtHighRisk` | DOCUMENTACION | Mateo | 2 |
-| C3 | Pedir a T02 la API de pertenencia docente por cohorte (HU12) y la fuente del CSAT (HU13) | DOCUMENTACION | Damián | 2 |
-| C4 | Corregir el §6 del contrato de T07 (fachada) y registrar los acuerdos en `CONTRATOS.md` | DOCUMENTACION | Ana | 3 |
-
----
-
-## 5 · Historias técnicas
-
-### HT05 (nueva) · Frontend: acceso por rol, rutas `/backoffice` y deuda del Sprint 1 — 5 SP · 22 h
-
-| ID | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| #3512 | Guards: pushear `ecae5fd`, abrir la PR y avisar a los dueños de las partes 03, 04, 06, 10 y 14 | FRONTEND | Máximo | 2 |
-| #3331 | Solo lectura de parámetros para PROFESSOR (depende del permiso de lectura de T01) | FRONTEND | Bruno | 3 |
-| #291 | Rehacer el badge de frescura revertido en la PR #99 | FRONTEND | Valentina | 3 |
-| #1657 | Estado de 2FA y sesión (depende de T01) | FRONTEND | Regina | 3 |
-| 05-N1 | Migrar las partes 01, 02, 04 y 06 de `/api/administration` y `/api/reports` a `/api/backoffice/...`, y retirar el parche de `proxy.conf.backoffice-gateway.cjs` | FRONTEND | Luciano | 4 |
-| 05-N2 | Dashboard: ocultar los accesos no permitidos a GESTOR y PROFESSOR | FRONTEND | Valentina | 2 |
-| 05-N3 | Specs de guards y de la vista de solo lectura (ADMIN, GESTOR y PROFESSOR) | TEST | Mateo | 3 |
-| 05-N4 | Peer review de guards, migración de rutas, badge y 2FA | REVISION | Joaquín | 2 |
-
-### HT06 (nueva) · Backend: orden del outbox y confianza en el Gateway — 3 SP · 18 h
-
-| ID | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| 06B-T1 | Orden estricto por `param_key` en `OutboxMessageRepository.findReadyToPublish`: no tomar una fila si hay una `PENDING` más vieja de la misma key (US-02 CA4; detalle en la PR #46) | BACKEND | Luciano | 4 |
-| 06B-T2 | Test de integración del orden: falla v1 y v2 no sale antes (Testcontainers con Kafka) | TEST | Máximo | 4 |
-| 06B-T3 | Verificar `GATEWAY_SHARED_SECRET` (`GatewayTrustProperties`) con el mecanismo que acuerde T01, sin romper el entorno local | BACKEND | Máximo | 3 |
-| 06B-T4 | Configurar el topic de auditoría confirmado (C2) y la auditoría delegada en T01 (pantalla 11 sin 502) | BACKEND | Máximo | 2 |
-| 06B-T5 | Peer review de concurrencia del outbox y del secreto del Gateway | REVISION | Valentina | 2 |
-| 06B-T6 | Documentar el orden por key en el contrato del consumidor | DOCUMENTACION | Luciano | 1 |
-| 06B-T7 | Peer review de las PRs abiertas del backend #47, #48 y #50 | REVISION | Luciano | 2 |
-
-### HT07 (nueva) · Documentación y proceso del Sprint 2 — 3 SP · 8 h
-
-| ID | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| D1 | Diagrama de secuencia del cambio de parámetro (diferido del Sprint 1) | DOCUMENTACION | Ana | 3 |
-| D3 | Sincronizar `docs/backend/docs` y el sitio con lo real: fachada T07, auditoría vía T01, `/backoffice`, roles del Gateway v3 | DOCUMENTACION | Ana | 3 |
-| D4 | Carga y sincronización de Taiga del Sprint 2 y acta de la retro del Sprint 1 | DOCUMENTACION | Ana | 2 |
-
----
-
-## 6 · US-15 (nueva) · Reportes docentes dinámicos (completo: fase 1 backend + fase 2 builder FE) — 8 SP · 63 h · 🔴 P0 (requisito del profe)
-
-> **Rama:** `feature/tema-12-us15-dynamic-reports` · **Depende de:** HU11 (read models) + pertenencia T02 + anti-comparación.
-> El PROFESOR arma reportes eligiendo **métricas, filtros, período, columnas y agrupación** y **guarda** la configuración (plantilla).
-
-| ID | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| 15-T1 | Catálogo de métricas permitidas (whitelist): CSAT, engagement, aprobación/abandono, promoción, riesgo, distribución XP, actividad semanal — **sin expresiones arbitrarias** | BACKEND | Joaquín | 8 |
-| 15-T2 | Motor de query dinámico (filtros/período/columnas/agrupación) sobre read models con **RLS por `course_id`** | BACKEND | Bruno | 12 |
-| 15-T3 | CRUD de plantillas y favoritas (`report_template(owner_id, course_id, config jsonb, is_favorite)`) | BACKEND | Joaquín | 8 |
-| 15-T4 | Ejecución `POST /api/backoffice/reports/run` (con `templateId` o `config`) + invariantes: matrícula T02, anti-comparación (RF-RPT-07), anonimato (encuestas solo agregados), frescura ≤ 15 min | BACKEND | Mateo | 8 |
-| 15-T5 | Tests del motor dinámico: RLS (PROFESOR A → cohorte A 200 · cohorte B 403), anti-comparación, anonimato | TEST | Máximo | 8 |
-| 15-T6 | OpenAPI de templates/run + catálogo de métricas | DOCUMENTACION | Ana | 4 |
-| 15-T7 | Peer review de seguridad del motor (RLS/whitelist) | REVISION | Valentina | 3 |
-| 15-T8 | **Fase 2:** FE report builder — panel métricas/filtros/período/columnas/agrupación + "Guardar plantilla" (WCAG AA) | FRONTEND | Luciano | 12 |
-| 15-T9 | **Fase 2:** specs del builder (crear/editar/correr plantilla, validaciones, 403 no-ADMIN/gestor) | TEST | Damián | 8 |
-| 15-T10 | **Fase 2:** OpenAPI + documentación de la vista builder | DOCUMENTACION | Ana | 3 |
-| 15-T11 | **Fase 2:** peer review del builder | REVISION | Regina | 2 |
-
-> **Reserva Flyway:** US-15 usa `V20__reporting_custom_templates.sql` (Joaquín).
-
----
-
-## 7 · EP-05 · Analítica (reporting)
-
-### HU11 #25 — 27 h · regla de riesgo `uh/US-11.md`
-> Ramas: `feature/tema-12-hu11-read-model` (solo V18, merge Día 3) y `feature/tema-12-hu11-risk` (merge Día 6).
-
-| # | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| #303 | Migración `V18__reporting_cohort_student_summary` y read model con índices | BACKEND | Damián | 6 |
-| #304 | Algoritmo de riesgo con la regla de `uh/US-11.md` (ROJO >10 días o >60 % · AMARILLO 5–10 días o 40–60 % · VERDE ≥70 %); umbrales en configuración tipada; "vidas agotadas" detrás de flag | BACKEND | Damián | 6 |
-| #305 | Job programado de recálculo desde `ingested_event` (T03 `challenge.events` y T02 `course.events`) | BACKEND | Valentina | 5 |
-| #306 | Partición de equivalencia y valores límite: 10/11 días, 4/5 días, 40/60 %, 70 % | TEST | Regina | 5 |
-| #307 | Reglas de riesgo y esquema del read model | DOCUMENTACION | Mateo | 3 |
-| #308 | Peer review del modelado analítico | REVISION | Máximo | 2 |
-
-### HU12 #24 — 37 h · DoD con **RLS verificado**
-> Rama: `feature/tema-12-hu12-teacher-panel` · merge Día 8.
-
-| # | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| #310 | `GET ${app.api.private-path}/reports/courses/{courseId}/teacher` con un puerto de pertenencia docente (adaptador de T02 según C3; si no hay respuesta, flag) | BACKEND | Regina | 6 |
-| #311 | RLS por `course_id` (`app.current_course`; `ALL` solo para ADMIN) y regla anti-comparación, migración `V19` | BACKEND | Máximo | 6 |
-| #312 | `StudentAtHighRisk` por outbox al pasar a ROJO (topic según C2) | BACKEND | Luciano | 4 |
-| #313 | Panel docente con semáforo (color y texto, WCAG AA) | FRONTEND | Damián | 5 |
-| #314 | Tests de RLS: A → A 200, A → B 403, `ALL` 403, ADMIN 200 (Testcontainers con PostgreSQL) | TEST | Luciano | 5 |
-| #315 | Tests de anti-comparación y de emisión del evento | TEST | Damián | 4 |
-| 12-T9 | Specs del panel docente | TEST | Joaquín | 2 |
-| #316 | Endpoints, política RLS y contrato de la alerta | DOCUMENTACION | Ana | 3 |
-| #317 | Peer review de seguridad RLS (crítico) | REVISION | Mateo | 2 |
-
-### HU13 #111 — 26 h
-> Rama: `feature/tema-12-hu13-indicators` · merge Día 8. **Si el sprint se atrasa, es la primera que se corta.**
-
-| # | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| #319 | Agregación de indicadores: aprobación, abandono y actividad semanal; CSAT solo si hay datos | BACKEND | Mateo | 6 |
-| #320 | Anonimato por umbral mínimo, en configuración (verificar en `PARAMETROS.md` si corresponde a un PAR: hay conflicto con PAR-18) | BACKEND | Regina | 4 |
-| #321 | `GET ${app.api.private-path}/reports/platform`, solo ADMIN, sin ranking | BACKEND | Bruno | 4 |
-| #322 | Dashboard de KPIs con aviso de "muestra insuficiente" | FRONTEND | Valentina | 5 |
-| #323 | Tests de anonimato (4, 5 y 6 respuestas) y 403 para quien no es ADMIN | TEST | Máximo | 4 |
-| #324 | Políticas de privacidad y fórmulas | DOCUMENTACION | Joaquín | 2 |
-| #325 | Peer review de privacidad | REVISION | Damián | 1 |
-
-### HU14 #34 · Umbrales de aviso y acceso al tablero — 22 h
-> Rama: `feature/tema-12-hu14-thresholds` · merge Día 9 · **Depende de:** HU13 (indicadores calculados).
-
-| # | Tarea | Tipo | Dev | h |
-|---|---|---|---:|
-| #326 | Modelo `alert_thresholds(indicator, min_value, max_value, enabled)` + CRUD exclusivo ADMIN | BACKEND | Regina | 4 |
-| #330 | Evaluador periódico de métricas contra umbrales + `ThresholdBreached` (baja → alerta) | BACKEND | Mateo | 6 |
-| 14-T3 | FE: panel de configuración de umbrales + lista de alertas activas | FRONTEND | Luciano | 4 |
-| 14-T4 | Tests: evaluación en el límite y 1 punto abajo + no-ADMIN 403 | TEST | Máximo | 4 |
-| 14-T5 | Documentar catálogo de umbrales + evento `ThresholdBreached` | DOCUMENTACION | Ana | 2 |
-| 14-T6 | Peer review de consistencia del backlog de reporting | REVISION | Joaquín | 2 |
-
----
-
-## 7bis · Pendientes adicionales (backfill — no queda trabajo sin listar) — 19 h
-
-> Tareas que quedaban **sin registrar en ninguna tabla** y ahora entran al Sprint 2. Las que dependen de un contrato externo van **detrás de flags** (si el contrato no llega, no arrancan y se cortan primero).
-
-| ID | Tarea | Tipo | Dev | h | Gate |
+| Prioridad | Historia | Taiga | SP | Estado de partida |
 |---|---|---|---:|---|
-| 10-M1 | **US-10 backfill:** monitor `@Scheduled` que marca `isStale` en `IngestionCounter` cuando `now − last_event_at > PAR-23` (15 min) y lo normaliza al llegar datos | BACKEND | Damián | 6 | — |
-| 10-M2 | Tests del monitor: 16 min → stale, dato llega → marca retirada | TEST | Regina | 2 | — |
-| B-AL | **Alerta de presupuesto LLM (70 % → Backoffice):** consumidor de `llm.budget.events` (T07) detrás de flag; `LLMBudgetAlert` → notificación (revisar `CONTRATOS.md` T07) | BACKEND | Valentina | 2 | 🔶 T07 |
-| T10-1 | **Consumidor de T10 (`sandbox.events`):** dedup + read model de progreso/niveles, detrás de flag (contrato con T10) | BACKEND | Luciano | 4 | 🔶 T10 |
-| T08-1 | **Ingesta T08 por REST (`/api/bank/**`):** verificar/completar el adapter de replay + evento de saldo | BACKEND | Bruno | 2 | 🔶 T08 |
-| D-DEMO | **Guion de la demo del S2 + checklist E2E** (reportes dinámicos + fachada LLM + panel docente) | DOCUMENTACION | Ana | 3 | — |
+| **Must (arrastre S1)** | HT08 · Cierre del Sprint 1: ramas, release v1.0.0 y Taiga coherente | nueva | 2 | Ramas sin PR, PR #54 abierta, estados incoherentes |
+| **Must (arrastre S1)** | HU01-bis · Registro PAR-01..24 completo (PAR-12, PAR-14, IT de US-01) | #17 | 2 | PAR-12 sin sembrar, PAR-14 sin validar rango, IT sin PR |
+| **Must (arrastre S1)** | HU04 · Proveedores LLM reales (fachada T07, solo ADMIN) | #18 | 5 | Endpoints ADMIN ok, cliente **stub** |
+| **Must (arrastre S1)** | HU05 · Modelos y conmutación reales (fachada T07) | #26 | 5 | Endpoints ADMIN ok, cliente **stub**, pantalla 10 con mock |
+| **Must (arrastre S1)** | HT01 · Contratos de lectura con los 6 temas (firmados) | #1629 | 5 | T02/T11 sin respuesta, T05 sin solicitud, tabla de firmas vacía |
+| **Must (arrastre S1)** | HT05 · Frontend: acceso por rol, `/api/backoffice` y deuda S1 | nueva | 5 | Guards y badge terminados **en ramas sin PR** |
+| **Must (arrastre S1)** | HT06 · Outbox: orden estricto por clave + borde del Gateway | nueva | 3 | Detectado en la PR #46 |
+| **Must** | HU11 · Read models y cálculo de riesgo por cohorte | #25 | 5 | Nada en `develop` |
+| **Must** | HU12 · Panel docente con RLS, sin comparación y alerta de riesgo | #24 | 5 | Nada en `develop` |
+| **Must** | HU10-bis · Frescura ≤ 15 min en cada reporte | #28 | 3 | Frescura solo en ingesta |
+| **Must** | US-15 fase 1 · Reportes docentes dinámicos (backend) | nueva | 5 | Requisito de la cátedra |
+| **Must** | HT07 · Wiki de G06 en Taiga (plantilla de la cátedra), diagramas y demo | nueva | 3 | **No existe ninguna página de G06 en la wiki** |
+| **Should** | US-15 fase 2 · Builder de reportes (frontend) | nueva | 3 | Depende de la fase 1 |
+| **Should** | HU13 · KPIs CSAT 5 estrellas con anonimato | #111 | 5 | Depende de T02 (encuestas) |
+| **Should (gate C1)** | HU06 · Calibración institucional (fachada T07) | #27 | 5 | #3537–#3540 abiertas |
+| **Should (gate C1)** | HU07 · PAR-14, veredicto y deriva (fachada T07) | #29 | 5 | #284, #286 abiertas |
+| **Should (gate contrato)** | HU08-bis · Consumidores T07/T05 con flag | #1628 | 3 | Consumidores T03/T02/T08/T10 ya en `develop` |
+| **Could (stretch)** | HU14 · Alertas configurables (internas) | #34 | 3 | — |
+| **Could (stretch)** | HU09 · Exportación asíncrona CSV con `EXPORT_READY` | #20 | 5 | UI de export (slice 07) ya existe |
+| | **Total Must** | | **48** | (el S1 comprometió 34 SP y cerró 19) |
+| | **Total con Should** | | **69** | |
+| | **Total con Could** | | **77** | |
 
-> **Regla de corte (en orden):** primero se cortan `T10-1`, `B-AL` y `T08-1` (flags apagados) → luego `10-M1/M2` → luego HU13 (#322).
+**Fuera del Sprint 2 (backlog, con motivo):**
+
+| Ítem de la propuesta | Motivo | Vuelve cuando |
+|---|---|---|
+| B-AL · alerta de presupuesto LLM (`llm.budget.events`) | El topic **no está registrado en T11** y el contrato con T07 no está firmado. | T11 registra el topic y T07 firma el payload de `LLMBudgetAlert`. |
+| T10-1 · proyección de progreso/XP de T10 | El consumidor `SandboxEventConsumer` **ya existe** (flag apagado); falta el contrato (EN CURSO). | T10 confirma el payload de `sandbox.events` (C6). |
+| T08-1 · replay REST de T08 | `EconomyTransactionConsumer` ya existe (flag apagado); ningún reporte del S2 usa saldos. | Se agregue una métrica de economía al catálogo de US-15. |
+| 06B-T7 · revisar PRs #47, #48 y #50 | **Ya se mergearon el 29/09.** | — (obsoleta) |
 
 ---
 
-## 8 · Matriz de revisión cruzada (nadie testea ni revisa lo suyo)
+## 3 · Contratos de lectura — la ruta crítica (PDF arquitectura, pág. 14)
+
+> La lámina 6 lo dice sin vueltas: el Tema 12 no tiene dominio propio y no puede mostrar nada hasta que seis equipos expongan sus lecturas; si no se acuerdan contratos temprano, el Backoffice queda bloqueado.
+> **Regla D-04:** sin contrato firmado se programa contra un **puerto** con **flag** y un **fallback documentado**. Nunca contra un payload supuesto sin marcarlo.
+
+### 3.1 · Matriz de fuentes → reportes
+
+| Tema | Qué necesitamos exactamente | Lo usa | Mecanismo | Estado del contrato | En `develop` hoy | Resp. T12 | Si no llega al CP2 (02/10) |
+|---|---|---|---|---|---|---|---|
+| **T02** Cursos | (a) **pertenencia docente** `GET /api/courses/{courseId}/teacher-membership?teacherId=` → `{isMember}` · (b) **padrón** `ROSTER_UPDATED` (altas/bajas con `enrolledAt`) · (c) **encuestas agregadas** con **conteo por estrella 1–5, abstenciones, dimensión (curso/contenido/plataforma) y `courseClosed`** · (d) `COURSE_CLOSED` | HU11 (inactivos sin eventos), HU12 (403/RLS), HU13 (CSAT), US-15 | REST vía Gateway (token de servicio) + `courses.events` | 🟡 SOLICITUD LISTA — **sin respuesta**, redactada con el **envelope viejo de 8 campos** y `course.events` | `CourseEventConsumer` ingesta crudo ✅ | **Damián (C3)** | (a) flag `reporting.membership.t02.enabled=false` → PROFESOR **denegado** (fail-closed), ADMIN opera · (b) padrón derivado de alumnos vistos en T03 + aviso "padrón no disponible" · (c) CSAT "sin datos" |
+| **T03** Desafíos | `CHALLENGE_COMPLETED` con `studentId`, `courseId`, `resultado`, `tiempoResolucionSegundos`, `usoTutorIa`, `xpGanada` (ya en `ChallengeCompletedPayload`) · confirmar los valores posibles de `resultado` | HU11 (actividad, reprobación), US-15 (métricas base) | `challenges.events` | 🟡 ACUERDO v1 | Consumidor ✅ | **Valentina (C8)** | Es la única fuente firmada: los reportes arrancan con ella. |
+| **T05** Prácticos | Entregas y resultados de prácticos (incluye tardías, PAR-19/20) | HU11 (reprobación práctica), US-15 | Kafka (topic a registrar con T11) | ⏳ PENDIENTE — **no existe solicitud** | Nada | **Damián (C5)** | Flag apagado; métricas solo con T03 y el reporte lo aclara. |
+| **T10** Roadmap | Progreso/XP/nivel, **vidas agotadas**, agregados de promoción/abandono | HU11 (factor "vidas agotadas"), US-15 | `sandbox.events` + `GET /api/roadmap/courses/{courseId}/retention` | 🟡 EN CURSO | Consumidor ✅ (flag apagado) | **Luciano (C6)** | Factor "vidas agotadas" detrás de flag; promoción/abandono "no disponible". |
+| **T08** Banco | Saldos/transacciones | (ningún reporte del S2) | `accounting.events` + REST | 🟡 ACUERDO parcial | Consumidor ✅ (flag apagado) | **Bruno (C9, solo la firma)** | No bloquea el S2 (backlog). |
+| **T11** Notificaciones | Que `notifications.events` esté **materializado** y el payload de `STUDENT_AT_HIGH_RISK` y `EXPORT_READY` · si registran `THRESHOLD_BREACHED` | HU12 CA2, HU09, HU14 | `notifications.events` (outbox) | ✅ nombres ratificados (mapeo v3) · falta materialización | Ruteo del outbox por topic ✅ (V17) | **Mateo (C2)** | El outbox deja la fila `PENDING` y la publica cuando el topic exista. |
+| **T01** Identidad | Headers del Gateway v3, auditoría, estado 2FA, secreto del Gateway | Todos | Gateway + `identity.audit.events` | ✅ CERRADO | ✅ | **Máximo** | #1657 y 06B-T3 pasan a "Necesita información". |
+| **T07** LLM | `/api/llm/admin/*`: ruta, Gateway o Eureka, token y scopes | HU04–HU07 | REST | 🟡 EN CURSO | Clientes **stub** | **Máximo (C1)** | HU04/05 funcionan con stub; HU06/07 se cortan (D-09). |
+
+### 3.2 · Tareas de contrato (HT01, se mandan en el CP0)
+
+> **Regla:** cada responsable de contrato, en **su misma PR**, actualiza el `.md` del tema, la tabla de estado y **su fila** en la tabla de firmas (G4) de `CONTRATOS.md` (los tres lugares juntos, como exige ese archivo). Ana no edita el repo: lleva el seguimiento en Taiga (T-C).
+
+| ID | Tarea | Dev | Tamaño | Evidencia de "hecho" |
+|---|---|---|---|---|
+| C1 | Confirmar con T07 la llamada a `/api/llm/admin/*` · **en la misma PR:** corregir el §6 del contrato de T07 como fachada (ex C4) y registrar que `MODEL_CHANGED` lo publica T07 (ex 05-T5) · filas de firma de **T07 y T01** | Máximo | M | `CONTRATOS_T07_SOLICITUD.md` actualizado + filas firmadas |
+| C2 | **Reducida:** los topics de auditoría y notificaciones **ya están ratificados** (PR #47). Solo falta confirmar con T11 la materialización de `notifications.events`, el payload de `STUDENT_AT_HIGH_RISK`/`EXPORT_READY` y si registran `THRESHOLD_BREACHED` · fila de **T11** | Mateo | S | Fila de T11 firmada |
+| C3 | **Rehacer la solicitud a T02 con el envelope de 6 campos y `courses.events`**, agregando distribución 1–5, abstenciones, dimensión, `courseClosed`, `COURSE_CLOSED` y el endpoint de pertenencia · fila de **T02** | Damián | S | `CONTRATOS_T02_SOLICITUD.md` v2 + respuesta |
+| C5 | **Nueva:** primera solicitud a T05 (entregas/resultados prácticos, PAR-19/20) · fila de **T05** | Damián | S | `CONTRATOS_T05_SOLICITUD.md` creado y enviado |
+| C6 | **Nueva:** seguimiento con T10 (payload de `sandbox.events`, vidas agotadas, agregados de retención) · fila de **T10** | Luciano | S | `CONTRATOS_T10_SOLICITUD.md` con respuesta |
+| C8 | **Nueva:** confirmar con T03 los valores posibles de `resultado` en `CHALLENGE_COMPLETED` · fila de **T03** | Valentina | S | `CONTRATOS_T03_RESPUESTA.md` actualizado |
+| C9 | **Nueva:** fila de **T08** (el acuerdo parcial ya está escrito) | Bruno | S | Fila de T08 firmada |
+| T-C | **Nueva:** seguimiento en Taiga: una tarjeta por tema fuente con responsable y fecha tope en el CP2; se repasa en cada daily | Ana | S | Ningún `⛔ a completar` en `CONTRATOS.md` al CP2 (o el motivo en la tarjeta) |
+
+> **Anonimato en la ingesta (C3, crítico):** si T02 publica cada respuesta de encuesta como un evento, `reporting.ingested_event` guardaría el payload y el `occurred_at` exacto de cada respuesta, lo que habilita correlación por tiempo (RF-ENC-04 lo prohíbe expresamente). Pedir a T02 **agregados** por curso y dimensión; si no pueden, el consumidor de encuestas **no** persiste el payload crudo (solo suma conteos).
+
+### 3.3 · Parámetros que consumen otros (misma lámina)
+
+T03, T05, T08 y T10 leen `GET /api/backoffice/parameters/{key}` con el scope `backoffice.parameters.read` (ya desplegado, PRs #51/#52). En el S2 no hay trabajo nuevo acá salvo **PAR-12** (§4.2) y la validación de **PAR-14** (07-T1).
+
+---
+
+## 4 · Historias de arrastre del Sprint 1
+
+### 4.1 · HT08 (nueva) · Cierre del Sprint 1 — 2 SP · **CP0**
+
+| ID | Tarea | Dev | Tamaño |
+|---|---|---|---|
+| H-01 | `feature/us-01-testcontainers`: rescatar **solo** `GlobalParameterServiceIntegrationTest` sobre `develop` (descartar el `jsonKafkaTemplate`: la auditoría ya va por outbox) en `feature/tema-12-us01-parameter-it` | Mateo | M (= 01-IT) |
+| H-02 | Cerrar sin mergear: `feature/contratos-alineados-drive` (superada por el mapeo v3) y `feature/us-02-envelope` (superada por `DomainEventOutboxImpl` + `EventEnvelope`) · FE: `fix/admin-export-service-spec` y los 3 commits sueltos de `feature/tema-12-backoffice` (`develop` ya tiene una versión más estricta: `3899e9d` + `495e29b`) | Mateo | S |
+| H-04 | `feature/mvp-s6-golden-set-runs`: **no mergear**; tag `archive/s6-golden-set-local` y borrar la rama | Bruno | S |
+| H-05 | `feature/contexto-sprint1`: PR solo de `docs/Task/plan-mvp-sprint1-backoffice.md` y `auditoria-contratos-skillhub.md` (sin `Contexto.md`) · `fix/development-doc-real-workflow`: rebase y PR solo de `DEVELOPMENT.md` | Luciano | S |
+| H-06 | PR #54 `release/v1.0.0 → main`: CI verde + revisión + merge + tag `v1.0.0` | Damián (dueño) · revisa Mateo | S |
+| H-07 | Taiga coherente (§5 de `auditoria-sprint1.md`) | Ana (dentro de D4) | S |
+
+### 4.2 · HU01-bis · Registro PAR-01..24 completo — 2 SP
+
+| ID | Tarea | Dev | Tamaño | Gate |
+|---|---|---|---|---|
+| 07-T1 | Validar **PAR-14** con la forma oficial de Skill Hub (`backoffice-t07-evaluacion-llm-contract` v1): `{"average": 5, "dimension": 10}` (**clave `average`, no `promedio`**), ambas numéricas y `0 < average ≤ dimension ≤ 100`. **Incluye renombrar `promedio → average` en el seed (migración)**. Hoy `ParameterValueRules` solo valida "es un mapa" | Damián | S | — |
+| P-12 | **PAR-12** (`{"initialLives":3,"maxLives":3}`): **CONFIRMADO — es del Backoffice** (Skill Hub `backoffice-t08-banco-contract` v1, lo consume T08). Seed en **V24** + regla `1 ≤ initialLives ≤ maxLives` + corregir `AGENTS.md` (hecho en PR #56). **Además: sembrar PAR-03/06/07/24** (también son nuestros según Skill Hub; hoy V2 los excluye) en V24 o una migración contigua | Damián | S | — |
+| 01-IT | IT con Testcontainers de US-01 (ver H-01) | Mateo | M | — |
+| #3331 | Solo lectura de parámetros para PROFESSOR en el FE (el backend ya permite leer con `PARAMETER_READERS`) | Bruno | S | — |
+
+### 4.3 · HU04 · Proveedores LLM reales — 5 SP · solo ADMIN
+
+| ID | Tarea | Dev | Tamaño | Gate |
+|---|---|---|---|---|
+| 04-T1 | Infraestructura del cliente HTTP a T07: `RestClient` administrado, auth según C1, `problem+json` → `LlmProviderException`/`LlmModelException`, timeout 3 s, reintento solo en GET, propagar `X-Request-Id`, un 401/403 de T07 nunca se traduce a 500. El stub queda como fallback con flag | Máximo | M | Arranca con WireMock sin esperar C1 |
+| 04-T2 | Cliente real de proveedores y credenciales. La key viaja a T07; nunca se loguea ni se devuelve | Regina | M | Sobre 04-T1 |
+| 04-T3 | Pantalla 09 conectada a `/api/backoffice/llm/...` | Regina | M | — |
+| 04-T4 | Suite WireMock del cliente de proveedores: 200, 404, 409, 503, key enmascarada | Luciano | M | — |
+| 04-T5 | Peer review de seguridad de credenciales y del cliente T07 | Bruno | S | — |
+| 04-T6 | OpenAPI de la fachada de proveedores y modelos | Regina | S | — |
+
+### 4.4 · HU05 · Modelos y conmutación reales — 5 SP
+
+| ID | Tarea | Dev | Tamaño |
+|---|---|---|---|
+| 05-T1 | Cliente real de modelos evaluadores (listar, activo, desplegar, activar, borrar) sobre 04-T1 | Mateo | M |
+| #276 | Modal de conmutación con advertencia (actual → nuevo, confirmación explícita, textos en español) | Mateo | S |
+| 05-T3 | Pantalla 10 conectada (hoy sirve `MOCK_MODELS` desde `llm-models.service.ts`) | Mateo | M |
+| 05-T4 | Suite WireMock de la activación: 200, 409 (no aprobado), 503 (T07 caído) | Luciano | M |
+| 05-T5 | Contrato: `MODEL_CHANGED` lo publica T07; el Backoffice deja de emitir `ModelProviderChanged` (**queda dentro de C1**: mismo archivo de contrato) | Máximo | — |
+| 05-T6 | Peer review de la fachada de modelos | Joaquín | S |
+| 05-T7 | Specs de las pantallas 09 y 10 conectadas | Valentina | M |
+
+### 4.5 · HT05 · Frontend: acceso por rol y deuda S1 — 5 SP
+
+| ID | Tarea | Dev | Tamaño | Corrección |
+|---|---|---|---|---|
+| #3512 | Guards: **la rama ya está pusheada** (`feature/tema-12-admin-route-guards`, `8c2c82e`); solo falta abrir la PR y avisar a los dueños de las partes 03, 04, 06, 10 y 14 | Máximo | S | Antes decía "pushear `ecae5fd`" |
+| #291 | Badge de frescura: **ya está re-aplicado con los fixes de la review** en `feature/mvp-s7-ingestion-ui` (`d175ca1`). Abrir la PR a `develop` y dejar el componente reutilizable para los reportes (§6.3) | Valentina | S | Antes decía "rehacer" |
+| #1657 | Estado de 2FA y sesión | Regina | S | Gate T01 |
+| 05-N1 | Migrar las partes 01, 02, 04 y 06 de `/api/administration` y `/api/reports` a `/api/backoffice/...` (hoy en `admin-api-url.ts`) y retirar el parche de `proxy.conf.backoffice-gateway.cjs`. **Los alias viejos del backend no se borran en el S2** (otros equipos pueden seguir leyendo por ahí) | Luciano | M | — |
+| 05-N2 | Dashboard: ocultar accesos no permitidos a GESTOR y PROFESSOR | Valentina | S | — |
+| 05-N3 | Specs de guards y de la vista de solo lectura | Mateo | M | — |
+| 05-N4 | Peer review de guards, migración de rutas, badge y 2FA | Joaquín | S | — |
+
+### 4.6 · HT06 · Outbox y borde del Gateway — 3 SP
+
+| ID | Tarea | Dev | Tamaño | Corrección |
+|---|---|---|---|---|
+| 06B-T1 | Orden estricto por clave en `findReadyToPublish`: no tomar una fila si hay una `PENDING` más vieja **con la misma clave de partición** (`NOT EXISTS`). El outbox ya es genérico (auditoría, riesgo, export) y guarda esa clave en la columna `param_key`; una fila en `DEAD_LETTER` no debe bloquear su clave | Luciano | S | Generalizada |
+| 06B-T2 | IT del orden (Testcontainers + Kafka): falla v1 y v2 no sale antes | Máximo | M | — |
+| 06B-T3 | Verificar `GATEWAY_SHARED_SECRET` con el mecanismo que acuerde T01, sin romper el entorno local | Máximo | S | Gate T01 |
+| 06B-T4 | **Redefinida:** el topic ya es `identity.audit.events` (PR #47). Falta pasarlo de **constante** (`TOPIC_AUDIT_EVENTS`, `DEFAULT_AUDIT_TOPIC`) a **propiedad** tipada | Máximo | S | Antes: "configurar el topic confirmado" |
+| 06B-T5 | Peer review de concurrencia del outbox y del secreto del Gateway | Valentina | S | — |
+| 06B-T6 | Documentar el orden por clave en el contrato del consumidor | Luciano | S | — |
+
+---
+
+## 5 · Contratos compartidos del Sprint 2 — S2-00 (Luciano) · **CP1, congelado**
+
+> Un solo PR, chico, **sin lógica**: interfaces, DTOs, enums, OpenAPI esqueleto y rutas stub del FE. Lo revisan **Máximo y Mateo** (dos aprobaciones porque afecta a todos). Después del merge **no se cambia sin avisar en el canal** y con PR propia.
+
+| Artefacto | Paquete / archivo | Lo implementa | Lo consumen |
+|---|---|---|---|
+| `ReportScopeResolver` (ADMIN → `ALL`, PROFESSOR → curso validado o 403) | `reporting/services/access` | Máximo (#311) | #310, HU13, US-15, HU09 |
+| `TeacherMembershipPort` (T02) | `reporting/services/access` | Máximo (#311) | `ReportScopeResolver` |
+| `CohortSummaryQuery` (lectura del read model por curso) | `reporting/services` | Damián (#303) | #310, #304, US-15 |
+| `DataFreshnessProvider` + `DataFreshnessDto {asOf, stale, thresholdMinutes, sources[]}` | `reporting/services`, `reporting/dtos` | Valentina (10-M1) | Todo endpoint de reporte |
+| `RiskLevel {RED, YELLOW, GREEN}` + `RiskFactor` | `reporting/entities` | Damián (#304) | #310, #313, US-15 |
+| `ReportMetric`, `ReportDimension` (**sin `TEACHER`**) | `reporting/dtos/dynamic` | Joaquín (15-T1) | Bruno (15-T2), Luciano (15-T8) |
+| `ReportRunRequestDto` / `ReportRunResponseDto` / `ReportTemplateDto` | `reporting/dtos/dynamic` | Bruno (15-T4), Joaquín (15-T3) | Luciano (15-T8) |
+| `TeacherPanelResponseDto` | `reporting/dtos/panel` | Regina (#310) | Damián (#313) |
+| `CsatKpiDto` (distribución, abstenciones, `insufficientSample`, `availableAfterCourseClose`) | `reporting/dtos/kpi` | Mateo (HU13) | Valentina (#322) |
+| OpenAPI esqueleto de los endpoints nuevos (§6) | `docs/openapi` | cada dueño completa el suyo | FE |
+| FE: modelos TS + rutas stub (`reports/teacher/:courseId`, `reports/kpis`, `reports/builder`, `alerts`) con `loadPlaceholder` | `features/admin/admin.routes.ts` y `data-access` | cada dueño cambia **solo su línea** | FE |
+
+> **Por qué:** en el S1 el PR de contratos compartidos (S3) permitió que 8 slices avanzaran con mocks sin pisarse. Es la mitigación directa de "tareas que se pisaban" de la retro.
+
+---
+
+## 6 · Reporting del Sprint 2 (lo asignado)
+
+### Flujo y dueño de cada tramo
+
+```text
+T03 / T02 / (T05, T10 con flag)
+   │ Kafka — consumidores ya en develop
+   ▼
+reporting.ingested_event (append-only)                     ← ya existe (S7)
+   │ proyector cada ≤ 5 min (#305 · Valentina)
+   ▼
+read models V18 (#303 · Damián): cohort_roster, student_activity_summary (+ columnas de riesgo)
+   │ cálculo de riesgo (#304 · Damián) ──► STUDENT_AT_HIGH_RISK por outbox (#312 · Damián)
+   ▼
+ReportScopeResolver + RLS V19 (#311 · Máximo) ◄── TeacherMembershipPort (T02)
+   │
+   ├─► Panel docente      GET  /reports/courses/{courseId}/teacher      (#310 · Regina)  ─► FE #313 (Damián)
+   ├─► KPIs CSAT          GET  /reports/courses/{courseId}/kpis · /reports/platform (HU13 · Mateo) ─► FE #322 (Valentina)
+   ├─► Reportes dinámicos POST /reports/run · /reports/templates · GET /reports/metrics (US-15 · Bruno/Joaquín) ─► FE 15-T8 (Luciano)
+   ├─► Alertas (stretch)  /reports/alert-thresholds · /reports/alerts   (HU14 · Regina)
+   └─► Export (stretch)   /reports/exports ─► EXPORT_READY por outbox   (HU09 · Damián)
+Todas las respuestas llevan DataFreshnessDto (10-M1 · Valentina)
+```
+
+> Rutas bajo `${app.api.private-path}` = `/api/backoffice`. Roles del Gateway v3: `ADMIN`, `GESTOR`, `PROFESSOR`, `STUDENT`, `MS`.
+
+### 6.1 · HU11 #25 · Read models y riesgo por cohorte — 5 SP
+
+> Ramas: `feature/tema-12-hu11-read-model` (#303, **CP2**) · `feature/tema-12-hu11-projector` (#305, CP3) · `feature/tema-12-hu11-risk` (#304 + #312, CP3).
+
+| ID | Tarea | Dev | Tamaño |
+|---|---|---|---|
+| #303 | `V18__reporting_cohort_read_model.sql`: `cohort_roster(course_id, student_id, enrolled_at, source)` y `student_activity_summary(course_id, student_id, last_activity_at, attempts, passed, failed, lives_exhausted, risk_level, risk_factors, risk_computed_at, previous_risk_level)` con índices por `course_id`. Entidades + `CohortSummaryQuery` | Damián | M |
+| #305 | Proyector desde `ingested_event` (T03 `CHALLENGE_COMPLETED`, T02 `ROSTER_UPDATED`; T05/T10 detrás de flag), idempotente, con checkpoint (V26 si hace falta), cada ≤ 5 min (propiedad tipada, siempre < PAR-23) | Valentina | L |
+| #304 | Clasificador de riesgo puro + recálculo. Umbrales en `@ConfigurationProperties("reporting.risk")`. Factor "vidas agotadas" detrás de `reporting.risk.lives-exhausted.enabled=false` | Damián | M |
+| #306 | Partición de equivalencia y valores límite (tabla abajo) | Regina | M |
+| #307 | Documentar reglas de riesgo y esquema del read model | Mateo | S |
+| #308 | Peer review del modelado analítico | Máximo | S |
+
+**Regla (Taiga HU11 + decisiones del grupo del 29/09) — se evalúa en este orden y gana la primera que aplica:**
+
+| Orden | Estado | Condición |
+|---|---|---|
+| 1 | **RED** | inactividad **> 10** días **o** (≥ 3 intentos **y** reprobación **> 60 %**) **o** vidas agotadas (flag) |
+| 2 | **YELLOW** | inactividad **5–10** días **o** (≥ 3 intentos **y** reprobación **40–60 %**) |
+| 3 | **GREEN** | (≥ 3 intentos **y** aprobación **≥ 70 %**) **o** (< 3 intentos: las tasas no se evalúan) |
+| 4 | **YELLOW** | **R-1:** cualquier otro caso (≥ 3 intentos con aprobación < 70 % y reprobación < 40 %) |
+
+> ✅ **R-1 (decidido: YELLOW).** El hueco de la regla de Taiga (aprobación 60–70 % con menos de 5 días de inactividad) se clasifica como **YELLOW**: se prefiere avisar de más.
+> ✅ **R-2 (decidido: mínimo 3 intentos).** Con menos de 3 intentos **no se calculan las tasas** (ni para bajar a RED/YELLOW ni como requisito de GREEN): el estado sale solo de la inactividad y de las vidas, y el panel muestra el factor "muestra insuficiente". Así un alumno que reprobó su único intento no queda en rojo.
+> **Configuración tipada** `reporting.risk.*`: `red-inactivity-days=10`, `yellow-inactivity-days=5`, `red-failure-rate=60`, `yellow-failure-rate=40`, `green-approval-rate=70`, `min-attempts=3`, `lives-exhausted.enabled=false`.
+> **Sin padrón (T02) no se ven los inactivos que nunca actuaron:** sin eventos no hay fila. Por eso el padrón de T02 es ruta crítica (§3).
+
+**Casos que #306 tiene que cubrir (valores límite + decisiones):**
+
+| Caso | Intentos | Aprobación / reprobación | Inactividad | Esperado |
+|---|---:|---|---:|---|
+| Límite de inactividad RED | 5 | 80 % / 20 % | 10 → 11 días | YELLOW → **RED** |
+| Límite de inactividad YELLOW | 5 | 80 % / 20 % | 4 → 5 días | GREEN → **YELLOW** |
+| Límite de reprobación RED | 100 | 40 % / 60 % → 39 % / 61 % | 1 día | YELLOW → **RED** |
+| Límite de reprobación YELLOW | 100 | 61 % / 39 % → 60 % / 40 % | 1 día | YELLOW (R-1) → **YELLOW** (regla) |
+| Límite de aprobación GREEN | 100 | 69 % / 31 % → 70 % / 30 % | 1 día | YELLOW (R-1) → **GREEN** |
+| **R-1** | 3 (2 aprobados) | 67 % / 33 % | 2 días | **YELLOW** |
+| **R-2** bajo el mínimo | 2 (0 aprobados) | 0 % / 100 % | 1 día | **GREEN** + "muestra insuficiente" |
+| **R-2** en el mínimo | 3 (1 aprobado) | 33 % / 67 % | 1 día | **RED** |
+| Precedencia | 10 (9 aprobados) | 90 % / 10 % | 14 días | **RED** (la inactividad gana) |
+| Escenario 1 de Taiga | 5 | 40 % / 60 % | 14 días | **RED** |
+| Escenario 2 de Taiga | 5 | 80 % / 20 % | 7 días | **YELLOW** |
+| Escenario 3 de Taiga | 5 | 80 % / 20 % | 1 día | **GREEN** |
+
+### 6.2 · HU12 #24 · Panel docente con RLS y alerta — 5 SP · DoD con **RLS verificado**
+
+> Ramas: `feature/tema-12-hu12-access-rls` (#311, **CP2**) · `feature/tema-12-hu12-teacher-panel` (#310, CP3) · FE `feature/tema-12-hu12-teacher-panel-ui` (#313, CP4).
+
+| ID | Tarea | Dev | Tamaño | Cambio vs propuesta |
+|---|---|---|---|---|
+| #311 | `ReportScopeResolver` + `TeacherMembershipPort` (adaptador T02 por Gateway con token de servicio; flag **fail-closed**) + `TenantContext` (`SET LOCAL app.current_course`) + **`V19__reporting_rls.sql`** con `ENABLE` **y `FORCE ROW LEVEL SECURITY`** (la app se conecta como dueña de las tablas) + guardia anti-comparación | Máximo | L | El puerto de pertenencia pasa de #310 a #311: es transversal (panel, KPIs, US-15, export) |
+| #310 | `GET /api/backoffice/reports/courses/{courseId}/teacher`: alumnos con semáforo y factores, promedio **solo del propio curso**, `DataFreshnessDto`, < 2 s | Regina | M | Sin el adaptador de T02 |
+| #312 | `STUDENT_AT_HIGH_RISK` por `DomainEventOutbox` **solo en la transición** a RED (misma transacción que el recálculo; payload con IDs, sin PII) a `notifications.events` | **Damián** | S | Pasa de Luciano a quien calcula el riesgo (evita tocar código ajeno) |
+| #313 | Panel docente con semáforo (color **y** texto, teclado, WCAG AA) y badge de frescura | Damián | M | — |
+| #314 + #315 | Suite de integración HU12 (Testcontainers PostgreSQL; H2 no soporta RLS): A→A 200, A→B 403, sin pertenencia 403, ADMIN 200, `ALL` solo ADMIN, anti-comparación, evento emitido una sola vez en la transición | **Luciano** | L | #315 pasa de Damián a Luciano (Damián es autor de #312) |
+| 12-T9 | Specs del panel docente | Joaquín | S | — |
+| #316 | Página de wiki "G06 - Reportes y panel docente": endpoints, política RLS explicada y aviso de riesgo (con ejemplos que le pasan Regina y Máximo) | Ana (wiki) | S | Pasa del repo a la wiki (D-13) |
+| #317 | Peer review de seguridad RLS (crítico) | Mateo | S | — |
+
+### 6.3 · HU10-bis · Frescura ≤ 15 min en cada reporte — 3 SP
+
+| ID | Tarea | Dev | Tamaño | Cambio vs propuesta |
+|---|---|---|---|---|
+| 10-M1 | **Redefinida:** `DataFreshnessProvider` que arma `DataFreshnessDto` con `IngestionStatsQuery` y PAR-23 **al leer**, según las fuentes que declara cada reporte (panel: T03+T02; KPIs: T02; US-15: según métricas) | Valentina | M | Ya no es un `@Scheduled` que marca `isStale` |
+| 10-M2 | **Redefinida:** tests del proveedor de frescura (14/15/16 min, fuente sin eventos, PAR-23 modificado) **y del proyector #305** | Regina | M | Cubre #305, que en la propuesta no tenía tester |
+
+### 6.4 · US-15 · Reportes docentes dinámicos — fase 1 **Must** (5 SP) · fase 2 **Should** (3 SP)
+
+> Ramas: `feature/tema-12-us15-catalog-templates` (Joaquín, CP3) · `feature/tema-12-us15-engine` (Bruno, CP4) · FE `feature/tema-12-us15-builder` (Luciano, CP5).
+> **Invariantes (se revisan en toda PR de US-15):** métricas y dimensiones de lista blanca (enum), **sin expresiones libres ni SQL concatenado**; sin dimensión docente; PROFESOR solo sus cursos (403 si pide uno ajeno); métricas de encuesta solo agregadas y con PAR-18 + curso cerrado; `DataFreshnessDto` en la respuesta; paginado y rango de período máximo.
+
+| ID | Tarea | Dev | Tamaño | Cambio vs propuesta |
+|---|---|---|---|---|
+| 15-T1 | Catálogo de métricas (tabla abajo) con su fuente y disponibilidad según el estado del contrato; `GET /reports/metrics` | Joaquín | M | Se agrega fuente y disponibilidad |
+| 15-T3 | CRUD de plantillas y favoritas, solo del dueño: `V20__reporting_report_template.sql` (`owner_id, course_id, config jsonb, is_favorite`) | Joaquín | M | — |
+| 15-T2 + 15-T4 | **Motor + `POST /reports/run`** (con `templateId` o `config`) con los invariantes, ejecutado dentro de `ReportScopeResolver` + RLS | **Bruno** | XL | **Consolidadas** (antes Bruno + Mateo en el mismo servicio) |
+| 15-T5 | Tests del motor: RLS, anti-comparación, anonimato, lista blanca (métrica desconocida → 400) | Máximo | L | — |
+| 15-T6 | OpenAPI de metrics/templates/run: **la escribe cada dueño en su endpoint** (Joaquín en 15-T1/15-T3, Bruno en 15-T2/T4) | Joaquín · Bruno | — | Antes era de Ana; la OpenAPI está en el código (`@Operation` + `docs/openapi`) |
+| 15-T7 | Peer review de seguridad del motor | Valentina | S | — |
+| 15-T8 | **Fase 2:** builder FE (métricas, filtros, período, columnas, agrupación, "Guardar plantilla", WCAG AA) | Luciano | L | Queda **Should**: la propuesta decía "entra completo" (§1) y a la vez "el builder cierra en el S3" (§2) |
+| 15-T9 | **Fase 2:** specs del builder | Damián | M | — |
+| 15-T10 | **Fase 2:** vista del builder y catálogo de métricas en la wiki | Ana (wiki) | S | Pasa del repo a la wiki (D-13) |
+| 15-T11 | **Fase 2:** peer review del builder | Regina | S | — |
+
+**Catálogo inicial (15-T1):**
+
+| Métrica | Fuente | Disponible en el S2 |
+|---|---|---|
+| Actividad semanal, alumnos activos | T03 | ✅ |
+| Tasa de aprobación / reprobación de desafíos | T03 `resultado` | ✅ |
+| Tiempo promedio de resolución | T03 `tiempoResolucionSegundos` | ✅ |
+| Uso del tutor IA (% de intentos con IA, consultas promedio) | T03 `usoTutorIa`, `cantidadConsultasIa` | ✅ |
+| XP ganada (distribución) | T03 `xpGanada` (aproximada: el XP exacto es de T10 porque puede bajar retroactivamente) | ✅ con nota |
+| Distribución de riesgo | HU11 | ✅ |
+| CSAT: % satisfechos, % detractores, respuestas, abstenciones | T02 | 🔶 gate C3 |
+| Promoción / abandono | T10 | 🔶 gate C6 |
+| Entregas tardías | T05 | 🔶 gate C5 |
+
+**Dimensiones permitidas:** `WEEK`, `CHALLENGE`, `RISK_LEVEL`, `COURSE` (PROFESOR: solo los propios). **Nunca** `TEACHER`; **nunca** `STUDENT` en métricas de encuesta.
+
+### 6.5 · HU13 #111 · KPIs CSAT 5 estrellas con anonimato — 5 SP · Should
+
+> Rama: `feature/tema-12-hu13-csat-kpis` (Mateo, CP4). **Consolidada** en un dueño (antes #319 Mateo, #320 Regina, #321 Bruno sobre el mismo servicio).
+
+| ID | Tarea | Dev | Tamaño |
+|---|---|---|---|
+| #319/#320/#321 | `V22__reporting_survey_summary.sql` (conteos por estrella, abstenciones, dimensión, `course_closed`; **sin autor ni timestamp preciso**) · KPI-01/02 (% 4–5 y % 1–2 sobre respuestas emitidas; metas 80 % / 10 % como referencia) · abstenciones aparte (RF-ENC-10) · **PAR-18 + curso cerrado** para el PROFESOR (RF-ENC-13) · `GET /reports/courses/{courseId}/kpis` (PROFESOR propio, ADMIN) y `GET /reports/platform` (solo ADMIN: consolidado + desglose por curso **sin ranking**) | Mateo | L |
+| #322 | Dashboard de KPIs con "muestra insuficiente" y "disponible al cierre del curso" | Valentina | M |
+| #323 | Tests de anonimato: 4, 5 y 6 respuestas con PAR-18 = 5; curso abierto → sin puntajes; no-ADMIN en `/platform` → 403 | **Joaquín** | M |
+| #324 | Políticas de privacidad y fórmulas | Joaquín | S |
+| #325 | Peer review de privacidad | Damián | S |
+
+### 6.6 · HU14 #34 · Alertas configurables — 3 SP · **Could (stretch)**
+
+> Rama: `feature/tema-12-hu14-alerts` (Regina, CP5). **Vertical en un dueño** (antes #326 Regina, #330 Mateo, 14-T3 Luciano).
+
+| ID | Tarea | Dev | Tamaño |
+|---|---|---|---|
+| #326/#330 | `V23__reporting_alerts.sql` (`alert_threshold(indicator, min_value, max_value, enabled)` + `alert`), CRUD solo ADMIN, evaluador periódico sobre indicadores de HU11/HU13, **alertas internas** (activa/resuelta). **No emite `THRESHOLD_BREACHED`** (D-08) | Regina | L |
+| 14-T3 | Panel de umbrales + lista de alertas activas | Regina | M |
+| 14-T4 | Tests: en el límite, 1 punto abajo, no-ADMIN 403 | Máximo | M |
+| 14-T5 | Sección de la wiki con el catálogo de umbrales | Ana (wiki) | S |
+| 14-T6 | Peer review | Joaquín | S |
+
+### 6.7 · HU09 #20 · Exportación asíncrona — 5 SP · **Could (stretch)**
+
+> Rama: `feature/tema-12-hu09-export` (Damián, CP5). Damián implementó las export tools de la slice 07 en el S1 (`ff33671`).
+
+| ID | Tarea | Dev | Tamaño |
+|---|---|---|---|
+| 09-T1 | `V25__reporting_export_job.sql` + `POST /reports/exports` (desde una plantilla de US-15 o el panel) → job asíncrono → CSV → `EXPORT_READY` por outbox → `GET /reports/exports/{id}/download`. Hereda **todos** los invariantes (scope, anti-comparación, anonimato) | Damián | L |
+| 09-T2 | Conectar las export tools de la slice 07 al export asíncrono | Damián | S |
+| 09-T3 | Tests (scope, anonimato, evento una sola vez) | Bruno o Joaquín (quien libere primero su gate) | M |
+| 09-T4 | Sección de la wiki del export y de `EXPORT_READY` | Ana (wiki) | S |
+
+### 6.8 · HU06/HU07 (gate C1) y HU08-bis (gate contrato)
+
+| ID | Tarea | Dev | Tamaño | Gate |
+|---|---|---|---|---|
+| #3537 | Fachada del perfil de calibración institucional sobre T07 | Joaquín | M | C1 |
+| #3538 | Pantalla del perfil de calibración (parte 12) | Joaquín | M | C1 |
+| #3539 | Fachada de corridas (crear, listar, detalle; `maeFinal`, `maxIndividualError`, veredicto de T07) | Bruno | M | C1 |
+| #3540 | Pantalla de corridas (parte 13) | Bruno | M | C1 |
+| 07-T2 | Estado de calibración del modelo activo (veredicto y deriva, leídos de T07) | Bruno | M | C1 |
+| #284 | Indicador de veredicto/deriva y banner de conmutación | Valentina (**en Taiga figura Joaquín: corregir**) | S | C1 |
+| #286 | T07 calcula MAE y veredicto; el Backoffice gobierna PAR-14 | Bruno | S | C1 |
+| 06-T5 / 07-T4 | Tests WireMock de calibración y de estado (la parte de PAR-14 de 07-T4 **no** tiene gate) | Máximo | M / M | C1 |
+| 06-T6 · 06-T7 · 06-T8 · 07-T6 | Diagrama de secuencia (Draw.io + wiki) · review · OpenAPI · review | Ana · Regina · Joaquín · Mateo | S | C1 |
+| 08-T1 | Consumidores de `llm.events` (T07) y de T05 con flag, dedup y DLT (mismo patrón que `RawEnvelopeIngestor`) | Valentina | M | Contrato T07/T05 |
+| 08-T3 | IT: nuevo, duplicado, malformado → DLT, flag apagado | Bruno | M | Ídem |
+| 08-T4 · 08-T5 | Mapeo de contratos · review | Valentina · Luciano | S | Ídem |
+
+### 6.9 · HT07 · Wiki de G06, diagramas y demo — 3 SP (Ana, D-13)
+
+> La cátedra pide documentar cada tema en la wiki de Taiga (`guia-doc-proyecto-por-grupo`, plantilla `template-proyecto-por-grupo`): páginas **"G06 - TEMA"** con descripción, historias enlazadas, diagramas en Draw.io en orden **DER → BPMN → Clases → Estados → Secuencias → Microservicios** con su explicación, y endpoints con ejemplos. **G06 no tiene ninguna página todavía.**
+
+| ID | Tarea | Dónde | Tamaño |
+|---|---|---|---|
+| D4 | Taiga coherente (H-07), carga del S2 y acta de la retro | Taiga | S |
+| W-1 | **Nueva:** páginas del Sprint 1: "G06 - Parámetros globales y administración" y "G06 - Gobernanza LLM y contratos de lectura" | Wiki + Draw.io | L |
+| D1 | Secuencia del cambio de parámetro (va en la página de parámetros) | Draw.io + wiki | S |
+| D5 | **Nueva:** diagrama de microservicios "fuentes de datos → reportes" (§3.1) | Draw.io + wiki | S |
+| #316 · 15-T10 | Página "G06 - Reportes y panel docente" (§6.2, §6.4) | Wiki | S · S |
+| D-DEMO | Guion + checklist E2E (revisa Luciano) | Wiki o Drive | S |
+
+**Salen de Ana (D-13):** C4 y 05-T5 → Máximo (dentro de C1) · C7 → cada responsable completa su fila de firma · 15-T6 → Joaquín y Bruno (OpenAPI en el código) · **D3 → DoD**: cada dueño actualiza `docs/backend/docs` y su OpenAPI en la misma PR del cambio.
+**Insumos:** cada dueño de historia le pasa a Ana tablas para el DER y ejemplos reales de request/response, y revisa su sección (el detalle está en `dev-09.md`).
+
+---
+
+## 7 · Reserva de Flyway (D-12)
+
+> `develop` llega a **V17** (V9–V13 y V16 quedaron reservadas y sin uso en el S1; **no se reutilizan**). `spring.flyway.out-of-order=true` permite mergear en cualquier orden, pero **cada número tiene un solo dueño**.
+
+| Versión | Contenido | Dueño | CP |
+|---|---|---|---|
+| **V18** | `reporting_cohort_read_model` | Damián | CP2 |
+| **V19** | `reporting_rls` (políticas + `FORCE`) sobre V18 | Máximo | CP2 |
+| **V20** | `reporting_report_template` | Joaquín | CP3 |
+| **V21** | `reporting_source_contract_v3` (corrige topics del seed de V14) | Joaquín | CP1 |
+| **V22** | `reporting_survey_summary` (+ su política RLS) | Mateo | CP4 |
+| **V23** | `reporting_alerts` (+ RLS si tiene `course_id`) | Regina | CP5 |
+| **V24** | `global_parameter_par12` (solo si se confirma P-12) | Damián | CP2 |
+| **V25** | `reporting_export_job` | Damián | CP5 |
+| **V26** | `reporting_projection_checkpoint` (si #305 lo necesita) | Valentina | CP3 |
+
+> **Regla:** toda tabla nueva de `reporting` con `course_id` trae su política RLS **en la misma migración**, copiando el patrón de V19.
+> **V21 (arrastre S1):** el seed de V14 todavía tiene `courses.lifecycle`, `challenges.results` y `economy.transactions`; desde la PR #47 los topics reales son `courses.events`, `challenges.events` y `accounting.events`. La pantalla 14 de contratos muestra datos viejos. Una migración aplicada no se edita: se corrige con `UPDATE` en V21 (y se ajustan `ReadContractControllerTest` y `SourceContractRepositoryTest`, que usan los nombres viejos).
+
+---
+
+## 8 · Secuencia por checkpoints
+
+| CP | Fecha | Backend (PR a `develop`) | Frontend | Coordinación |
+|---|---|---|---|---|
+| **CP0** | 29–30/09 | Higiene (H-01…H-06) · PR de S2-00 abierta | PR de #3512 y #291 (ramas ya terminadas) | Cada dev **valida su `dev-XX.md`** (§12) · se mandan C1, C2, C3, C5, C6 · Ana corrige Taiga |
+| **CP1** | 01/10 | **S2-00 mergeado (congelado)** · 06B-T1 · V21 · 01-IT | 05-N1 | — |
+| **CP2** | 02/10 | V18 (#303) · #311 + V19 · 04-T1 · 07-T1 (+V24 si P-12) | — | **Gate:** ¿respondieron T07 (C1) y T02 (C3)? Si no → flags y corte (§11) |
+| **CP3** | 06/10 | #305 · #304 + #312 · #310 · 04-T2 · 05-T1 · 15-T1 + 15-T3 · 10-M1 | 04-T3 · 05-T3 · #276 | — |
+| **CP4** | 08/10 | 15-T2/T4 · HU13 · suites #314/#315, 15-T5, #306, 10-M2, #323 · 06B-T2 | #313 · #322 · 05-T7 · 05-N3 | — |
+| **CP5** | 09–11/10 | Stretch (HU14, HU09) · gates liberados | 15-T8 · 15-T9 · 14-T3 | Demo · E2E · retro |
+
+**Reglas de PR (retro "Ordenar las PR"):**
+1. **Una rama por slice**; la PR se abre **cuando la rama está terminada** (no PR "para ir viendo").
+2. La descripción lleva: IDs de tarea, CA cubiertos, salida de `mvn -B clean verify` (en `develop` no hay CI de tests) o `npm run verify`, capturas si es FE, y los revisores de la matriz §9.
+3. **Todo comentario de review va en GitHub** (en la PR o en la línea). Lo que se hable por WhatsApp se vuelca a la PR antes de aprobar.
+4. Antes de pedir review: `git merge origin/develop` en la rama y volver a correr el verify (lección de la FE #114, que se mergeó 65 commits atrás de `develop`).
+
+---
+
+## 9 · Matriz de revisión cruzada (nadie testea ni revisa lo suyo)
 
 | Código de… | Lo testea | Lo revisa |
 |---|---|---|
-| 04-T1, cliente T07 (Máximo) | Luciano (04-T4 y 05-T4) | Bruno (04-T5) |
-| 04-T2/04-T3, proveedores (Regina) | Luciano (04-T4) · Valentina (05-T7) | Bruno (04-T5) |
-| 05-T1, #276 y 05-T3, modelos (Mateo) | Luciano (05-T4) · Valentina (05-T7) | Joaquín (05-T6) |
-| 08-T1, consumidores (Valentina) | Bruno (08-T3) | Luciano (08-T5) |
-| #3512 (Máximo) · #3331 (Bruno) · #291/05-N2 (Valentina) · #1657 (Regina) · 05-N1 (Luciano) | Mateo (05-N3) | Joaquín (05-N4) |
-| 06B-T1 (Luciano) · 06B-T3/T4 (Máximo) | Máximo (06B-T2, sobre código de Luciano) | Valentina (06B-T5) |
-| PRs #47, #48 y #50 (Mateo) | — | Luciano (06B-T7) |
-| **15-T1/15-T3 (Joaquín) · 15-T2 (Bruno) · 15-T4 (Mateo)** | **Máximo (15-T5)** | **Valentina (15-T7)** |
-| #303/#304 (Damián) · #305 (Valentina) | Regina (#306) | Máximo (#308) |
-| #310 (Regina) · #311 (Máximo) · #312 (Luciano) · #313 (Damián) | Luciano (#314, sobre #310/#311) · Damián (#315, sobre #311/#312) · Joaquín (12-T9, sobre #313) | Mateo (#317) |
-| #319/#321 (Mateo/Bruno) · #320 (Regina) · #322 (Valentina) | Máximo (#323) | Damián (#325) |
-| 10-M1 (Damián) | Regina (10-M2) | PR normal (Luciano) |
-| B-AL (Valentina) | — | Luciano |
-| T10-1 (Luciano) | — | Joaquín |
-| T08-1 (Bruno) | — | Regina |
-| D-DEMO (Ana) | — | Luciano (exactitud técnica) |
-| #3537/#3538 (Joaquín) · #3539/#3540 (Bruno) | Máximo (06-T5) | Regina (06-T7) |
-| 07-T1 (Damián) · 07-T2/#286 (Bruno) · #284 (Valentina) | Máximo (07-T4) | Mateo (07-T6) |
-| #326 (Regina) · #330 (Mateo) · 14-T3 (Luciano) | Máximo (14-T4) | Joaquín (14-T6) |
+| S2-00 (Luciano) | — (sin lógica) | **Máximo + Mateo** |
+| 06B-T1, 06B-T6 (Luciano) | Máximo (06B-T2) | Valentina (06B-T5) |
+| 05-N1 (Luciano) | Mateo (05-N3) | Joaquín (05-N4) |
 | 15-T8 (Luciano) | Damián (15-T9) | Regina (15-T11) |
+| 04-T1 (Máximo) | Luciano (04-T4) | Bruno (04-T5) |
+| #311 (Máximo) · #310 (Regina) · #312 (Damián) | Luciano (#314/#315) | Mateo (#317) |
+| 06B-T3/T4 (Máximo) · #3512 (Máximo) | Mateo (05-N3, para #3512) | Valentina (06B-T5) · Joaquín (05-N4) |
+| 04-T2/04-T3 (Regina) | Luciano (04-T4) · Valentina (05-T7) | Bruno (04-T5) |
+| 05-T1/#276/05-T3 (Mateo) | Luciano (05-T4) · Valentina (05-T7) | Joaquín (05-T6) |
+| HU13 (Mateo) | Joaquín (#323) | Damián (#325) |
+| 01-IT (Mateo, prueba código de Damián) | — | Regina |
+| #303/#304 (Damián) | Regina (#306) | Máximo (#308) |
+| #305 · 10-M1 (Valentina) | Regina (10-M2) | Máximo (#308) |
+| #313 (Damián) | Joaquín (12-T9) | Mateo (#317) |
+| #322 (Valentina) | — (specs propias) | Damián (#325) |
+| 07-T1 · P-12 (Damián) | Máximo (07-T4, parte PAR-14) | Mateo (07-T6) |
+| 15-T1/15-T3 (Joaquín) · 15-T2/T4 (Bruno) | Máximo (15-T5) | Valentina (15-T7) |
+| V21 (Joaquín) | — | Valentina |
+| HU14 (Regina) | Máximo (14-T4) | Joaquín (14-T6) |
+| HU09 (Damián) | Bruno o Joaquín (09-T3) | Luciano |
+| #3537/#3538 (Joaquín) · #3539/#3540/07-T2 (Bruno) | Máximo (06-T5, 07-T4) | Regina (06-T7) · Mateo (07-T6) |
+| 08-T1 (Valentina) | Bruno (08-T3) | Luciano (08-T5) |
+| #3331 (Bruno) · #291/05-N2 (Valentina) · #1657 (Regina) | Mateo (05-N3) | Joaquín (05-N4) |
+| H-06 release v1.0.0 (Damián) | CI de `main` | Mateo |
+| Páginas de wiki y diagramas de Ana | — | El dueño de la historia (que además le pasa los ejemplos reales) · D-DEMO: Luciano |
+| Filas de firma de contratos (C1, C2, C3, C5, C6, C8, C9) | — | Ana verifica en Taiga (T-C) que ninguna quede `⛔ a completar` |
 
 ---
 
-## 9 · Resumen de carga (los 8 que codifican cubren las 5 capas)
+## 10 · Carga por dev (sin horas)
 
-| Dev | Integrante | Capacidad | Horas | % uso | BACK | FRONT | TEST | REV | DOC |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | Luciano Paz | 39,4 | 50 | 127 % | 16 | 16 | 14 | 3 | 1 |
-| 2 | Mateo Carballo Juarez | 41,5 | 42 | 101 % | 24 | 6 | 3 | 3 | 6 |
-| 3 | Damián Baigorria ★ | 31,5 | 41 | 130 % | 23 | 5 | 12 | 1 | — |
-| 4 | Joaquín Cortez | 27,7 | 35 | 126 % | 20 | 5 | 2 | 4 | 4 |
-| 6 | Valentina Maldonado | 35,3 | 35 | 99 % | 12 | 15 | 3 | 3 | 2 |
-| 7 | Máximo Cerquatti ★ | 46,4 | 50 | 108 % | 19 | 2 | 27 | 2 | — |
-| 8 | Regina Cerasulo ★ | 35,3 | 38 | 108 % | 19 | 7 | 7 | 3 | 2 |
-| 9 | Bruno Gianoli ★ | 28,4 | 42 | 148 % | 30 | 5 | 3 | 2 | 2 |
-| 10 | Ana Paula Ducart | 25,2 | 31 | 123 % | — | — | — | — | 31 |
-| | **Total** | **310,6** | **364** | **117 %** | | | | | |
+> Unidades relativas: S = 1, M = 2, L = 3, XL = 5. Sirven para **comparar** cargas, no para calcular tiempo. La disponibilidad sale de la tabla de capacidad del grupo (días, ausencias y dedicación).
 
-> **Sprint de máxima capacidad:** entra todo el backlog pendiente (incluye HU06, HU07, HU14 y US-15 fase 2). La carga nominal supera la capacidad — asumido por el equipo (IA acelerada). **Orden de corte si la realidad no acompaña:** flags (T10-1, B-AL, T08-1) → 10-M1 → HU13 (#322) → HU14 → HU06/07 (si C1 no llega, quedan con stub).
+| Dev | Integrante | Disponibilidad | Núcleo | Con gate | Stretch | Capas del núcleo |
+|---|---|---|---:|---:|---:|---|
+| 01 | Luciano Paz | Alta | 19 | 1 | — | BACK · FRONT · TEST · REV · DOC |
+| 02 | Mateo Carballo Juarez | Alta | 16 | 1 | — | BACK · FRONT · TEST · REV · DOC |
+| 03 | Damián Baigorria | Media (2 días de ausencia) | 15 | — | 4 | BACK · FRONT · TEST · REV · DOC |
+| 04 | Joaquín Cortez | Baja | 12 | 5 | — | BACK · TEST · REV · DOC (FRONT con gate) |
+| 05 | Valentina Maldonado | Media | 14 | 4 | — | BACK · FRONT · TEST · REV · DOC |
+| 06 | Máximo Cerquatti | Alta | 17 | 5 | — | BACK · FRONT · TEST · REV · DOC |
+| 07 | Regina Cerasulo | Media | 12 | 2 | 5 | BACK · FRONT · TEST · REV · DOC |
+| 08 | Bruno Gianoli | Baja | 9 (incluye el XL de la ruta crítica) | 9 | — | BACK · FRONT · REV · DOC |
+| 09 | Ana Paula Ducart | MSII (no codifica) | 10 | 1 | 2 | Taiga · wiki · Draw.io |
 
----
+> **Numeración:** desde el Sprint 2 es corrida (01 a 09). En el Sprint 1 el 05 era Julieta, que ya no está en el equipo. Equivalencias con el S1: Valentina 06 → 05 · Máximo 07 → 06 · Regina 08 → 07 · Bruno 09 → 08 · Ana 10 → 09.
 
-## 10 · Ruta crítica y priorización
-
-| # | Punto crítico | Mitigación |
-|---|---|---|
-| PC1 | **15-T2 (motor dinámico, Bruno) es la ruta crítica de US-15** — de él dependen los tests de Máximo (15-T5) y el builder de Luciano (15-T8) | **Bruno arranca con 15-T2 el Día 1.** Si el motor se demora, **#3540 (pantalla de corridas) y T08-1 se postergan** o se apoyan en otro dev |
-| PC2 | **HU04/05/06/07 dependen de la API de T07** | **Máximo arma 04-T1 con WireMock desde el Día 1** (no espera C1). Si T07 no entrega el contrato, las historias quedan **funcionales con stubs/mocks bajo flag** y la demo usa el stub |
-| PC3 | **Migraciones Flyway concurrentes** | Versiones + dueños reservados (§ secuencia de merges): **V18 → Damián · V19 → Máximo · V20 → Joaquín** |
+**Lectura de la tabla:**
+- **Ana** no tiene tareas en los repos (D-13): su núcleo es la wiki de G06, que es un entregable de la cátedra que hoy falta.
+- **Bruno** queda con la ruta crítica (motor de US-15) **sin otra tarea grande de núcleo**. Si C1 no llega, sus 9 unidades con gate se liberan y toma 09-T3. En la propuesta tenía 148 % con la ruta crítica.
+- **Máximo** deja de ser "el tester del equipo" (la propuesta le daba la mayor carga de TEST): mantiene los tests de seguridad (su especialidad) y #323 pasa a Joaquín.
+- **Luciano** tiene el núcleo más alto porque S2-00 dura un solo checkpoint y habilita a todos; no tiene stretch.
 
 ---
 
-## 11 · Secuencia de merges
+## 11 · Orden de corte (si la realidad no acompaña)
 
-**Día 1:** se mandan C1, C2 y C3. Las interfaces LLM ya están congeladas, así que Regina, Mateo, Bruno y Joaquín arrancan con mocks.
-**Versiones de Flyway reservadas (dueño):** **V18** `reporting_cohort_student_summary` → **Damián** (HU11) · **V19** `reporting_teacher_course_rls` → **Máximo** (HU12 RLS) · **V20** `reporting_custom_templates` → **Joaquín** (US-15). Nadie usa otro número sin avisar.
+1. **Gates vencidos en el CP2:** HU06/HU07 (salvo 07-T1), 08-T1/08-T3, #1657, 06B-T3 → quedan con stub/flag y pasan a "Necesita información" en Taiga.
+2. **Stretch:** HU09 → HU14.
+3. **#322** (el backend de HU13 queda con OpenAPI y tests).
+4. **15-T8/15-T9** (fase 2 de US-15) → Sprint 3, con la fase 1 cerrada.
 
-| Día | Backend (PR a `develop`) | Frontend |
-|---|---|---|
-| 2 | — | #3512 guards |
-| 3 | `fix/tema-12-outbox-key-ordering` (HT06) · `feature/tema-12-llm-admin-client` (04-T1) · `feature/tema-12-hu11-read-model` (V18) | 05-N1, migración a `/backoffice` |
-| 5 | `feature/tema-12-llm-providers-models-real` (HU04) | integración `feature/tema-12-backoffice` → `develop` (Luciano) |
-| 6 | `feature/tema-12-hu11-risk` · `feature/tema-12-calibration-facade` (HU06) · `feature/tema-12-us15-dynamic-reports` (base V18) | pantallas 09 y 10 conectadas, #276, #284 |
-| 7 | `feature/tema-12-hu08-consumers` · `fix/tema-12-gateway-trust` (si T01 respondió) | #291, 05-N2 |
-| 8 | `feature/tema-12-hu12-teacher-panel` (V19) · `feature/tema-12-hu13-indicators` · `feature/tema-12-hu07-verdict-drift` (HU07, si C1) | #3331 y #1657 (si T01 respondió) · #313, #322 · partes 12 y 13 (HU06) |
-| 9 | `feature/tema-12-hu14-thresholds` · **10-M1 monitor** · US-15 `run` (V20) | #313, #322, builder US-15 (15-T8) |
-| 10–11 | ajustes y cierre · **flags T10-1/B-AL/T08-1 (solo si llegó el contrato)** | integración final + demo |
+**Nunca se corta:** HT08, HU01-bis, HU04, HU05, HT01, HT05, HT06, HU11, HU12, HU10-bis y US-15 fase 1.
 
 ---
 
-## 12 · Riesgos y dependencias externas
+## 12 · Control humano del plan (retro "Revisar la planificación")
 
-| # | Equipo | Dependencia | Bloquea | Mitigación |
-|---|---|---|---|---|
-| R1 | **T07** | Ruta, autenticación y scopes de `/api/llm/admin/*` (contradicción handoff "sin M2M/Eureka" vs skill "token propio + Gateway") | 04-T2, 05-T1, **HU06, HU07**, 15-T2 | **Máximo arma 04-T1 con WireMock desde el Día 1 (no espera C1).** Si T07 no responde el Día 5, HU04–07 quedan **funcionales con stubs/mocks bajo flag** y la demo usa el stub |
-| R2 | **T01** | Permiso de lectura para PROFESSOR, estado de 2FA, `GET /api/users/audit`, secreto del Gateway, token de servicio | #3331, #1657, 06B-T3/T4, pantalla 11 | Tareas aisladas; si no hay respuesta el Día 6, pasan a "Necesita información" |
-| R3 | **T11** | Topics de auditoría y notificaciones, `eventType` de `StudentAtHighRisk` | #312, 06B-T4 | El topic va en configuración; el outbox guarda igual |
-| R4 | T02 | Pertenencia docente y fuente del CSAT | #310, #319 | Puerto con flag; el CSAT muestra "muestra insuficiente" |
-| R5 | T05 | Topic de entregas (G2) | 08-T1 | Flag apagado y documentado |
-| R6 | **T10** | Topic `sandbox.events` y formato del read model | T10-1 | Flag apagado; si no responde, T10-1 se corta |
-| R7 | **T07** | Topic `llm.budget.events` y payload de `LLMBudgetAlert` | B-AL | Flag apagado; se corta si no llega |
-| R8 | **T08** | Replay REST `/api/bank/**` y evento de saldo | T08-1 | Verificación aislada; se corta si no confirma |
-| I1 | Interno | **Carga nominal 117 %** (sprint de máxima capacidad) | Todo el sprint | **Corte primero:** flags (T10-1, B-AL, T08-1) → 10-M1 → HU13 (#322) → HU14 → HU06/07 (si C1) |
-| I2 | Interno | Colisión de versiones de Flyway | Todas las migraciones | Versiones reservadas V18/V19/V20 (§10) |
-| I3 | Interno | Archivos protegidos del frontend (`angular.json`, `package*.json`, `tsconfig*`) | Todas las PRs del frontend | No tocarlos |
+Antes del CP1 **cada dev** confirma estos 5 puntos sobre su `dev-XX.md` (comentario en la PR del plan o en su historia de Taiga):
+
+- [ ] Todas mis tareas son del Tema 12 (ninguna es de otro grupo: T01, T02, T07, T09, T10…).
+- [ ] Ningún archivo que voy a tocar es de otro dev (§5, §7 y la sección "Archivos" de mi `dev-XX.md`).
+- [ ] Mis dependencias están en S2-00 o tienen un gate con fallback.
+- [ ] Sé qué CA cubro y quién me testea y revisa (§9).
+- [ ] Si una tarea mía tiene gate, sé qué hago en el CP2 si no llega el contrato.
 
 ---
 
-## 13 · DoD (igual para los 9)
+## 13 · Riesgos
 
-- **Nivel 0 · Tarea:** `mvn -B verify` en verde (tests, Checkstyle, **PMD 3.26**, **JaCoCo ≥ 0,90**); en el frontend, `npm run verify` (lint:all y Vitest) **sin `ng build` local**.
-- **Nivel 1 · Historia:** cumple los CA; integración con Testcontainers donde haya eventos o BD; autorización 200/403 con roles del Gateway v3 (`ADMIN`, `GESTOR`, `PROFESSOR`, `STUDENT`, `MS`); **RLS verificado** en HU11/12/13 y US-15; OpenAPI actualizado; PR revisada por otra persona; sin secretos; docs y sitio sincronizados (D3).
-- **Nivel 2 · Sprint:** suite completa en verde, Taiga al día, demo y retro.
-- **Skills del Skill Hub:** `project-quality-gate` · `project-gitflow-guard` · `micro-to-micro-calls-with-a-service-token` (cliente T07) · `typed-configuration-env-vars-and-secret-files` (umbrales y flags) · `frontend-ui-kit-compliance` · `frontend-through-the-api-gateway`.
+| # | Riesgo | Impacto | Mitigación |
+|---|---|---|---|
+| R1 | **T02 no responde** (pertenencia, padrón, encuestas) | HU12 sin PROFESOR, HU11 sin inactivos, HU13 sin datos | C3 en el CP0; flag fail-closed; demo con ADMIN y datos de T03; escalar a la cátedra en el CP2 |
+| R2 | T07 no confirma `/admin/*` | HU04/05 con stub, HU06/07 cortadas | 04-T1 con WireMock desde el inicio |
+| R3 | RLS mal configurada (la app es dueña de las tablas) | Fuga entre cursos | `FORCE ROW LEVEL SECURITY` + suite #314 en PostgreSQL real + review crítica #317 |
+| R4 | Motor de US-15 con SQL dinámico | Inyección / fuga de datos | Lista blanca por enum, parámetros bind, 15-T5 y 15-T7 |
+| R5 | Anonimato de encuestas roto por la ingesta cruda | Incumple RF-ENC-04 | Agregados de T02; no persistir respuestas individuales (§3.2) |
+| R6 | Colisión de Flyway | Migración rota en `develop` | §7 |
+| R7 | Archivos protegidos del FE (`angular.json`, `package*.json`, `tsconfig*`, `.github/**`) | PR rechazada por el CI del FE | No tocarlos |
+| R8 | Carga alta en Luciano, Mateo y Máximo | Atrasos | Stretch solo con núcleo mergeado; corte §11 |
 
 ---
 
-## 14 · Fuera del Sprint 2 (solo Could)
+## 14 · DoD (igual para los 9)
 
-| Historia | Horas | Nota |
-|---|---:|---|
-| HU09 · Exportación asíncrona PDF/CSV | Could | La UI de export (slice 07) ya existe; el backend asíncrono queda fuera por ser Could |
-
-> **Todo el resto del backlog (US-04/05/06/07/08/10/11/12/13/14/15 + deuda + backfill) está en el Sprint 2.** Solo HU09 queda como Could fuera del sprint.
+- **Tarea:** `mvn -B clean verify` en verde (tests, Checkstyle, PMD 3.26, JaCoCo ≥ 0,90) pegado en la PR · FE: `npm run verify` sin `ng build` local · código, comentarios, `@DisplayName` y mensajes de error en **inglés** · commits BE en español, FE en inglés · sin `var`, sin `@Autowired`, sin FQCN, sin `@Data` en entidades · `ErrorApi` en errores · `@PreAuthorize` en cada endpoint.
+- **Historia:** CA cumplidos · Testcontainers donde hay BD real, RLS o eventos · autorización 200/403 con roles del Gateway v3 · **RLS verificado** en HU11/12/13/US-15/HU09 · `DataFreshnessDto` en cada reporte · **OpenAPI y `docs/backend/docs` actualizados en la misma PR del cambio** (absorbe la ex D3) · ejemplos reales entregados a Ana y su sección de wiki revisada · PR revisada según §9 · Taiga movida por su dueño.
+- **Sprint:** suite completa en verde en `develop`, Taiga sin estados incoherentes, demo y retro.
