@@ -213,4 +213,66 @@
 
 ---
 
+## 7 · Dependencias y orden de trabajo
+
+```
+US-11 (read model) ──┬──► US-13 (indicadores) ──► US-14 (umbrales)
+                     └──► US-12 (panel + RLS) ──► US-15 (reportes dinámicos)
+US-04/05 (M2M T07)  → independiente, bloqueada por el token de T01
+US-10 (monitor)     → independiente, P2
+```
+
+| # | Cadena | Regla |
+|---|---|---|
+| 1 | **US-11 arranca primero** | Migración + algoritmo + job (Damian, Bruno, Joaquin). Nadie de US-12/13/15 arranca backend sin el read model |
+| 2 | **US-13 y US-12 dependen de US-11** | Pueden arrancar los FE en paralelo con la interfaz; el backend espera |
+| 3 | **US-14 depende de US-13** | Cierra el pipeline; no arranca antes |
+| 4 | **US-15 depende de US-11 + pertenencia T02 + anti-comparación** | El motor consume read models con RLS |
+| 5 | **LLM M2M y frescura monitor son independientes** | Se hacen cuando llega el token / queda margen |
+
+---
+
+## 8 · Revisión cruzada (nadie revisa ni testea su propio código)
+
+| # | Tarea | Autor | Revisa/Testea |
+|---|---|---|---|
+| US-11 | Read model + algoritmo | Damian · Bruno · Joaquin | **Valentina** (rev) · **Máximo** (tests) |
+| US-12 | Panel + RLS | Valentina · Regina · Mateo · Damian | **Bruno** (rev RLS) · **Luciano** (tests) · **Máximo** (tests alerta) |
+| US-13 | KPIs + anonimato | Joaquin · Valentina · Bruno · Mateo | **Luciano** (rev privacidad) · **Regina** (tests) |
+| US-14 | Umbrales | Regina · Mateo · Luciano | **Joaquin** (rev) · **Máximo** (tests) |
+| US-15 | Reportes dinámicos | Damian · Máximo · Valentina · Mateo · Luciano | **Joaquin** (rev motor) · **Regina** (tests) |
+| US-04/05 | M2M T07 | Máximo | **Bruno** (rev seguridad M2M) |
+
+> **Regla del Sprint 1 que se mantiene:** los **unitarios** los escribe el autor (TDD); la **integración** y la **revisión** corren por otra persona para no duplicar la interpretación de los CA.
+
+---
+
+## 9 · DoD y reglas (mismas que Sprint 1)
+
+- **Gate local:** `mvn clean verify` en verde (tests + Checkstyle + PMD + JaCoCo ≥ **90 %**, con Docker para Testcontainers) antes de abrir el PR; el revisor lo re-corre. FE: `ng lint` + `prettier --check` + `ng test`.
+- **Ramas:** `feature/<algo>` o `fix/<algo>` desde `develop` → PR → review → `develop` (el workflow `branching-name-check` de cátedra rechaza otra combinación).
+- **Commits:** Conventional Commits en **inglés**, sin "Co-Authored-By" ni firmas de IA.
+- **Reglas que la IA suele romper:** sin `var`, sin `@Autowired`, sin `@Data` en entidades, colecciones vacías en vez de `null`, `BigDecimal` para dinero.
+- **Cobertura:** JaCoCo ≥ 90 % (nuestro DoD, no el 80 % del template de cátedra).
+- **RLS:** punto de seguridad **CRÍTICO** en US-12/US-15 — la revisión lo audita estrictamente.
+
+---
+
+## 10 · Calendario propuesto (sprint de 10–11 días hábiles)
+
+| Día | Hito |
+|---|---|
+| Día 1 | **Cierre S1:** merge #47/#48/#50 · planning confirma alcance y reparto · Ana carga Taiga |
+| Día 2–3 | Rama `us-11` + migración + algoritmo · FE de US-12/13/15 en paralelo |
+| Día 4–5 | **Merge US-11** · arrancan backend de US-13 y US-12 |
+| Día 6–7 | **Merge US-13** · arranca US-14 y el motor de US-15 |
+| Día 8 | **Merge US-12 (RLS)** — revisión CRÍTICA |
+| Día 9 | **Merge US-14** |
+| Día 10–11 | **Merge US-15** + M2M T07 (si llegó el token) + monitor frescura P2 |
+| Día 12 | E2E de la demo + ensayo + cierre de Taiga |
+
+> **Regla de corte (como S1):** si un hito no llega, se entrega su P0 y el resto va al próximo sprint; US-15 es P0 del profe y no se toca.
+
+---
+
 > **Cobertura de los requisitos del profe:** ✅ **Panel del profesor con indicador de alumno en riesgo** (US-12) · ✅ **Frescura máxima de 15 min** (US-10, endpoint ya en develop + monitor P2) · ✅ **Sin comparación entre docentes** (US-12 RLS anti-comparación + US-13 sin ranking) · ✅ **Reportes docentes** (US-15).
