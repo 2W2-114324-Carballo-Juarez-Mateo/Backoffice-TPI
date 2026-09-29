@@ -12,11 +12,11 @@
 | **T08 · Banco** | Consume (lectura REST + evento de saldo) · **NO consume PAR** | 🟡 **ACUERDO** | `solicitudes/CONTRATOS_T08_RESPUESTA.md` |
 | **T10 · Roadmap y Progreso** | Consume (progreso/XP/niveles) · PAR-21 pendiente de validación | 🟡 **EN CURSO** (solicitud enviada) | `solicitudes/CONTRATOS_T10_SOLICITUD.md` |
 | **T09 · Mercado** | Provee (dueño de precios **PAR-06/07**) | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T09_SOLICITUD.md` |
-| **T11 · Social y Notificaciones** | Coordina **convención de eventos** + consumimos avisos/alertas | ✅ **CERRADO (G1)** | `solicitudes/CONTRATOS_T11_SOLICITUD.md` · `solicitudes/CONTRATOS_T11_RESPUESTA.md` · `solicitudes/analisis-brechas-t12.md` |
+| **T11 · Social y Notificaciones** | Coordina **convención de eventos** + consumimos avisos/alertas | ✅ **CERRADO (G1 + formal 27/09)** | `solicitudes/CONTRATOS_T11_SOLICITUD.md` · `solicitudes/CONTRATOS_T11_RESPUESTA.md` · `respuesta-t12.md` · `solicitudes/analisis-brechas-t12.md` |
 | **T02 · Cursos y Matrícula** | Consume (cohorte `course_id`, pertenencia docente, `RosterUpdated`, **encuestas CSAT anónimas**) + provee (PAR-18) | 🟡 **SOLICITUD LISTA** | `solicitudes/CONTRATOS_T02_SOLICITUD.md` |
 | **T04 · Teóricos y Encuestas** | **Sin lectura** — encuestas ahora de **T02**; no consumimos nada de T04 por el momento | ➖ SIN CONTRATO | — |
 | **T05 · Desafíos Prácticos** | Consume (entregas/resultados) + provee (PAR-19/20) | ⏳ PENDIENTE | — |
-| **T07 · Evaluación LLM** | Consume (deriva/calibración) + provee (`ModelProviderChanged`, PAR-22) + recibe **alerta de presupuesto** (70%→Backoffice) | 🟡 **EN CURSO** — recibimos su doc de límites y uso | `solicitudes/CONTRATOS_T07_SOLICITUD.md` · `solicitudes/CONTRATOS_T07_LLM_LIMITES.md` |
+| **T07 · Evaluación LLM** | **Fachada de gobernanza:** consumimos `/api/llm/admin/*` de `llm-service` v2.0.0 (proveedores, modelos, activación, uso) · provee (`ModelProviderChanged`, PAR-22) + recibe **alerta de presupuesto** (70%→Backoffice) | ✅ **CERRADO (fachada, 27/09)** — dominio LLM de T07; Backoffice es fachada, sin tablas ni lógica LLM propias | Skill Hub `llm-service-http-contract` v6 · `docs/Task/auditoria-contratos-skillhub.md` |
 | **T03 · Desafíos** | Provee (hecho único en `challenge.events`) + consume PAR (PAR-01/04/05; PAR-03 vía Mercado) | 🟡 **ACUERDO** | `solicitudes/CONTRATOS_T03_RESPUESTA.md` |
 
 > **Pendientes internos:** schema externo de `identity.audit` y `retention.events` (confluir nuestra auditoría en `identity.audit`, coordinar con **T01**) · materializar los topics del Backoffice en el broker (T11 los tiene **uncommitted** en `fix/contract-alignment`) · exposición del estado 2FA (T01) · **API de Vault (T01)** · **GESTOR / "profesor con vista"** · **lista blanca de profesores** · **observabilidad de microservicios: FUERA de alcance** (solo logs/health/correlation).
@@ -43,6 +43,7 @@
 
 ### 6 · Gestión de cuentas ADMIN
 - `/api/auth/*` y `/api/admin/accounts/*` son de T01. Último ADMIN y baja 2FA validadas 100% en users-service. `identity.audit` payloads pendientes.
+- **Contrato cuentas confirmado (27/09, T01):** **no existe `/api/admin/accounts`**; la API real es **`/api/users`**: `GET /api/users` → array directo sin `remainingAdmins` (solo activas; GESTOR ve PROFESSOR/GESTOR) · `PATCH /api/users/{id}/role` con body `{role}` · `POST /api/users` (solo ADMIN, crea solo ADMIN) · `DELETE /api/users/{id}` con body `{password, twoFactorCode, usernameConfirmation}` (usernameConfirmation = **email**). Errores `problem+json` con `type` = URI completa (`last-admin` 409, `access-denied` 403, `duplicate-email`, `invalid-code`, `invalid-credentials`). Evidencia: `MENSAJE-T01-CUENTAS-ADMIN.md`.
 
 ### 7 · 2FA
 - Hoy OTP por email; evaluando TOTP. Exposición del estado sin definir → front usa mock.
@@ -91,9 +92,9 @@
 ## T11 — Social y Notificaciones (✅ CERRADO — G1, análisis de brechas 2026-09-21)
 - **Convención ratificada:** `EventEnvelope<T>` 6 campos, `eventVersion = 1`, solo `traceparent` como header obligatorio (**`correlationId`/`actorId`/`role` → dentro del `payload`**), `producer = tema-12-backoffice-service`, `JsonSerializer`/`JsonDeserializer` + consumer tipado. **T11 confirma que T12 puede emitir hoy.**
 - **Topics emitidos:** `administration.events` ✅ (3 particiones) · DLT = **`administration.events.DLT`** (mayúsculas, auto-aprovisionado) · **auditoría → `identity.audit`** (sin stream separado; coordinar con T01).
-- **Topics consumidos (catálogo oficial):** `challenges.results` ✅ · `courses.lifecycle` ✅ · `economy.transactions` (antes `bank.events`) · `sandbox.events` (T10) · `identity.audit`. **`group.id` = `tema-12-backoffice-group`**.
-- **Emisiones a `system.notifications`:** `ACADEMIC_DATA_EXPIRING` ✅ · `STUDENT_AT_HIGH_RISK` ✅ · `EXPORT_READY` ✅ · `DATA_STALE_DETECTED`/`THRESHOLD_BREACHED` ❌ (no, operativas internas).
-- **Nota de T11:** los topics del Backoffice están provisionados pero **uncommitted** en su rama `fix/contract-alignment` (materializar el broker = commitear + recrear `kafka-init`). Referencias: `solicitudes/CONTRATOS_T11_RESPUESTA.md` · `solicitudes/analisis-brechas-t12.md`.
+- **Topics consumidos (catálogo oficial v3, aplicados en código — PR #47):** `challenges.events` (T03) · `courses.events` (T02) · `accounting.events` (T08) · `identity.audit.events` (T01) · `notifications.events` (T11). **`group.id` = `tema-12-backoffice-group`**.
+- **Emisiones a `notifications.events`:** `ACADEMIC_DATA_EXPIRING` ✅ · `STUDENT_AT_HIGH_RISK` ✅ (Sprint 2, US-12) · `EXPORT_READY` ✅ · `DATA_STALE_DETECTED`/`THRESHOLD_BREACHED` ❌ (no, operativas internas).
+- **Confirmación formal (27/09):** T11 respondió por escrito en `respuesta-t12.md` ratificando el catálogo de topics, el envelope de 6 campos, el producer `tema-12-backoffice-service` y el provisioning en el mesh (`event-bus/init-topics.sh`, 3 particiones). Referencias: `solicitudes/CONTRATOS_T11_RESPUESTA.md` · `solicitudes/analisis-brechas-t12.md` · `respuesta-t12.md`.
 - **Pendiente (coordinación):** confluir la auditoría en **`identity.audit`** del lado de **T01**.
 
 ---
@@ -115,13 +116,13 @@
 
 > **Impacto en Backoffice:** consumimos **`challenges.results`** (T03) y **`courses.lifecycle`** (T02). **Topics a registrar con T11 (G1):** `administration.events` (config), `audit.events`, `administration.events.DLT` (DLT). Nombres de eventos propios (`GLOBAL_CONFIGURATION_CHANGED`, `PARAMETER_CHANGED`…) a fijar en inglés y coordinar en G1/G4. La **auditoría** sigue en `audit.events` (T01 persiste).
 
-## T07 — Evaluación LLM (EN CURSO — doc recibido)
-- **Recibimos** `CONTRATOS_T07_LLM_LIMITES.md` (Explicación de Límites y Uso): 4 capas (mensaje 800 tokens / ejercicio 10 msgs-25k tokens / diaria 40 consultas-3 desafíos / presupuesto USD 20 mes con semáforo 70-90-100%). Todo consistente con **PAR-05, PAR-10, PAR-11, PAR-14, PAR-15**.
-- **Nuevo punto de integración:** **alerta de presupuesto al 70% → Backoffice** (evento `LLMBudgetAlert` propuesto en `llm.budget.events`). **Sprint 2** (se integra al retomar US-04/US-07; no bloquea Sprint 1).
-- **Pendiente de aclarar (T07):** (a) los límites de las 4 capas son **solo visualización** desde Backoffice, o (b) **configurables** (→ parámetros EXTERNOS T07). Recomendamos (a) por ser "Parámetro Fijo" en su doc.
+## T07 — Evaluación LLM (✅ CERRADO — fachada de gobernanza, 27/09)
+- **Pivote (opción A):** el dominio LLM (proveedores, credenciales, modelos, activación, golden set, calibración PAR-14) es de **T07** (`llm-service` v2.0.0, publicado en Skill Hub). El Backoffice es **fachada de gobernanza**: consume `/api/llm/admin/*` con scope **`llm.calibration.manage`** (security `serviceJwt`) y path var **`{deploymentId}`** (`GET /admin/evaluator-models`, `/active`, `POST .../{deploymentId}/activate`, `.../select-for-calibration`, `.../usage`, `DELETE .../{deploymentId}`). **Sin tablas ni lógica LLM propias** (`V10` eliminado del shared). Fuente: `docs/Task/auditoria-contratos-skillhub.md`.
+- **Scope de lectura de parámetros:** aceptado `backoffice.parameters.read` como authority pelada para M2M (PR #51, mergeado). `READ_PARAMS` se mantiene mientras migran.
+- **Alerta de presupuesto al 70% → Backoffice:** evento `LLMBudgetAlert` propuesto en `llm.budget.events` — **Sprint 2** (se integra al retomar US-04/US-07).
+- **Pendiente de aclarar (T07):** (a) los límites de las 4 capas son **solo visualización** desde Backoffice, o (b) **configurables** (→ parámetros EXTERNOS T07). Recomendamos (a).
 - **PAR-22:** nuestro candidato era **semanal (5)**; T07 define **3 desafíos/día** y **40 consultas/día** → **reconciliar** (ajustar a diario o marcar EXTERNO T07).
-- **Moderador de Chat:** modelo **a probar / sujeto a cambios** → no es dependencia dura para Sprint 1.
-- Contratos ya previstos: `ModelProviderChanged` (nosotros→ellos) · deriva/calibración/golden set (ellos→nosotros) · PAR-22. → `solicitudes/CONTRATOS_T07_SOLICITUD.md`
+- **Golden set/calibración:** **BLOQUEADO** (US-06) — falta cerrar quién ejecuta el golden set y el endpoint de calibración de T07. `solicitudes/CONTRATOS_T07_SOLICITUD.md` · `solicitudes/CONTRATOS_T07_LLM_LIMITES.md`.
 
 ---
 

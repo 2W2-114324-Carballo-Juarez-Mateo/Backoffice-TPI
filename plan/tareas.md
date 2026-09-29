@@ -4,6 +4,8 @@
 >
 > **Roles:** `[BACKEND]` · `[FRONTEND]` · `[TEST]` · `[DOCUMENTACION]` · `[REVISION]`
 
+> **✅ Estado de entrega (Sprint 1, verificado en repos oficiales 28/09):** entregadas y mergeadas en `develop` **US-01 · US-02 · US-03 · US-08 (acotada T03/T02) · US-10 (parcial) · EP-04 contratos (T11/T01/T07 cerrados) · Infra · Frontend backoffice (slices 01–14)**. **Pendientes → Sprint 2:** US-04 (fachada real T07), US-05, US-06 (⚠️ bloqueado), US-07, US-09 (Could), US-11, US-12, US-13, US-14, US-15. División y reparto en **`plan/sprint2/tareas-sprint2.md`**.
+
 ## Estimación
 
 - **Historia = Story Points (Fibonacci): 1 · 2 · 3 · 5 · 8 · 13** — tamaño relativo (ver matriz en `sprint0/Sprint0-Propuesta.md`).

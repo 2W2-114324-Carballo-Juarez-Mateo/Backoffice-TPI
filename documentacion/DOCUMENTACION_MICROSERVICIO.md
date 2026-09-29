@@ -3,6 +3,8 @@
 > **Plataforma de Aprendizaje Gamificado de Programación y Desarrollo de Software** · UTN FRC · MSII · Grupo 2W2-G06 (Tema 12)
 > Este documento consolida la documentación del microservicio para **compartir y presentar**. Las fuentes de verdad detalladas viven en `plan/` (repo Backoffice-TPI) y en el sitio desplegado (`backoffice-docs`). Los flujos en HTML están en `flujos/`.
 
+> **✅ ESTADO DE ENTREGA (Sprint 1, 28/09):** entregado en los repos oficiales — backend `2026-P4-BE/tpi-backoffice` `develop` `944992f` (US-01 parámetros, US-02 outbox/Kafka/DLT, US-03 seguridad/cuentas vía T01, US-08 ingesta acotada + contratos, US-10 frescura parcial) y frontend `2026-P4-FE/2026-PIV-TPI-FE` `develop` `cfaac18` (backoffice administrativo completo, slices 01–14). **Sprint 2 (propuesto):** US-04/05 (fachada LLM real a T07), US-10, US-11/12/13/14 (reporting + RLS) — ver `plan/sprint2/tareas-sprint2.md`. Bloqueado: US-06/07 (calibración T07). **Nota de arquitectura:** el backend es **mono-módulo** (1 datasource + 2 esquemas `administration`/`reporting`), Spring Boot 4 · Java 21.
+
 ---
 
 ## 1. Descripción general
@@ -11,11 +13,11 @@ El **Backoffice** es el **Tema 12** de la plataforma y se define como **consumid
 
 | Dato | Valor |
 |---|---|
-| Servicios propietarios | **2**: `administration-service` (configuración + gobernanza LLM) y `reporting-service` (reportes, métricas, export, alertas) |
+| Servicios propietarios | **1 (mono-módulo)** — `tpi-backoffice` con 2 esquemas: `administration` (configuración + gobernanza LLM) y `reporting` (reportes, métricas, export, alertas) |
 | Consume de | **T01** (identidad/auth/roles/auditoría/retención), **T02** (cohorte `course_id`, pertenencia docente) |
-| Lee (contratos de lectura) | **T02 (cohorte + encuestas CSAT), T03 (`challenge.events`), T05, T07, T08, T10** (RF-RPT-10) |
+| Lee (contratos de lectura) | **T02 (cohorte + encuestas CSAT), T03 (`challenges.events`), T05, T07, T08, T10** (RF-RPT-10) |
 | Provee | `GlobalConfigurationChanged` (PAR) a **T03** (montos) / **T09** (precios) / **T10** (rachas, pendiente) y `ModelProviderChanged` (evaluador) a **T07** |
-| Stack | Java 21 · Spring Boot 3 · Kafka · PostgreSQL · Docker Compose |
+| Stack | Java 21 · Spring Boot 4 · Kafka · PostgreSQL (2 esquemas) · Docker Compose |
 
 ---
 
