@@ -5,6 +5,29 @@
 
 ---
 
+## 0 · Estado — ✅ resuelto vs ⏳ pendiente
+
+| ✅ **RESUELTO** | |
+|---|---|
+| Decisiones **R-1** (🟡 AMARILLO) · **R-2** (mínimo 3 intentos) · **P-12** (PAR-12 del Backoffice) | Ver §1 |
+| Alineación a **Skill Hub**: `AGENTS.md` + `PARAMETROS.md` + `CONTRATOS.md` | PR #56 (docs) |
+| Seed **V24** (PAR-03/06/07/12/24 + PAR-14 `average`) + `ParameterValueRules` | PR #56 (código, 26 tests verdes) |
+| Contrato maestro Skill Hub: revisión propuesta (PAR-14 `{average, dimension}`) | pendiente de admin |
+| Catálogo **US-15**: métrica "Uso del tutor IA" → **no-disponible** (T03 no la trae) | plan/sprint2 |
+| Contrato **T03** actualizado (C8 resuelto: `result.status` = `APPROVED`/`DISAPPROVE`) | plan/sprint2 |
+| Plan canónico consolidado en **`plan/sprint2/`** | docs repo |
+
+| ⏳ **PENDIENTE (acciones del grupo — CP0)** | Responsable |
+|---|---|
+| Validar cada `dev-XX.md` (checklist §3) y responder ✅ | Cada dev |
+| Enviar contratos **C1, C2, C3, C5, C6, C8, C9** (§2) | Máximo · Mateo · Damián · Luciano · Valentina · Bruno |
+| Taiga coherente + esqueleto de la **wiki de G06** | Ana |
+| **PR #54** (`release/v1.0.0 → main`): merge + tag `v1.0.0` + back-merge a `develop` | Damián (revisa Mateo) |
+| **PR #56** (alineación Skill Hub): revisión + merge | Revisor a asignar |
+| **S2-00** (contratos compartidos) en el CP1 | Luciano (revisa Máximo + Mateo) |
+
+---
+
 ## 1 · Decisiones del grupo (CONFIRMADAS — elegidas las recomendadas)
 
 ### R-1 · Un alumno en la "zona gris" del semáforo → ¿qué color le toca?
