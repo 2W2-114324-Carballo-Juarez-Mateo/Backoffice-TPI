@@ -4,29 +4,31 @@
 > **Flujo:** `feature/tema-12-*` | `fix/tema-12-*` → `develop` · PR solo con la rama terminada · comentarios de review en GitHub
 > **Fuente de verdad:** `distribucion-pareja.md` (reparto) y `tareas-sprint2.md` (contexto). Líneas = código + tests efectivos, estimadas (±30 %).
 
+> **Etiquetas de tipo de trabajo** (para cargar en Taiga, una o más por tarea): Backend · Frontend · Testing · Base de Datos · DevOps · Documentación · Análisis · Diseño / UX-UI · Integración · Configuración · Seguridad · Investigación · Gestión · Otro. Criterio completo e índice maestro en `etiquetas-tareas.md`.
+
 ## Núcleo
 
-| ID | Tarea | Capa | Líneas | CP |
-|---|---|---|---:|---|
-| #303 | Read model de cohorte: **`V19__reporting_cohort_read_model.sql`** (`cohort_roster`, `student_activity_summary` con columnas de riesgo e índices por `course_id`) + entidades + `CohortSummaryQuery`. **No V18: ya lo usa la release** | BACK | 420 | **CP2** |
-| #304 | Clasificador de riesgo **puro** (sin Spring) + recálculo. Umbrales en `reporting.risk.*`. Reglas decididas: **R-1** el hueco va a YELLOW · **R-2** las tasas solo con ≥ 3 intentos (ver §6.1 de `tareas-sprint2.md`) | BACK | 760 | CP3 |
-| #312 | `STUDENT_AT_HIGH_RISK` por `DomainEventOutbox` **solo en la transición** a RED, misma transacción que el recálculo, a `notifications.events` (payload con IDs, sin PII) | BACK | 240 | CP3 |
-| 15-T8 | **Builder de reportes de US-15** (FE): métricas, filtros, período, columnas, agrupación, "Guardar plantilla", WCAG AA; solo ofrece las métricas de `GET /reports/metrics` (pasó de Luciano a vos) | FRONT | 1.400 | CP5 |
-| #3331 | Solo lectura de parámetros para PROFESSOR (FE); el backend ya lo permite (pasó de Bruno a vos) | FRONT | 200 | CP3 |
-| | **Subtotal núcleo** | | **3.020** | |
+| ID | Tarea | Capa | Líneas | CP | Etiquetas |
+|---|---|---|---:|---|---|
+| #303 | Read model de cohorte: **`V19__reporting_cohort_read_model.sql`** (`cohort_roster`, `student_activity_summary` con columnas de riesgo e índices por `course_id`) + entidades + `CohortSummaryQuery`. **No V18: ya lo usa la release** | BACK | 420 | **CP2** | Base de Datos, Backend |
+| #304 | Clasificador de riesgo **puro** (sin Spring) + recálculo. Umbrales en `reporting.risk.*`. Reglas decididas: **R-1** el hueco va a YELLOW · **R-2** las tasas solo con ≥ 3 intentos (ver §6.1 de `tareas-sprint2.md`) | BACK | 760 | CP3 | Backend, Análisis |
+| #312 | `STUDENT_AT_HIGH_RISK` por `DomainEventOutbox` **solo en la transición** a RED, misma transacción que el recálculo, a `notifications.events` (payload con IDs, sin PII) | BACK | 240 | CP3 | Backend, Integración |
+| 15-T8 | **Builder de reportes de US-15** (FE): métricas, filtros, período, columnas, agrupación, "Guardar plantilla", WCAG AA; solo ofrece las métricas de `GET /reports/metrics` (pasó de Luciano a vos) | FRONT | 1.400 | CP5 | Frontend, Diseño / UX-UI |
+| #3331 | Solo lectura de parámetros para PROFESSOR (FE); el backend ya lo permite (pasó de Bruno a vos) | FRONT | 200 | CP3 | Frontend, Seguridad |
+| | **Subtotal núcleo** | | **3.020** | | |
 
 ## Condicionado y extra
 
-| ID | Tarea | Capa | Líneas | Condición |
-|---|---|---|---:|---|
-| 09-T1 | HU09: `V25__reporting_export_job.sql` + `POST /reports/exports` → job asíncrono → CSV → `EXPORT_READY` por outbox → descarga. Hereda scope, anti-comparación y anonimato; el CSV se protege contra inyección de fórmulas | BACK | 1.000 | Extra (solo con el núcleo mergeado) |
-| | **Subtotal** | | **1.000** | |
+| ID | Tarea | Capa | Líneas | Condición | Etiquetas |
+|---|---|---|---:|---|---|
+| 09-T1 | HU09: `V25__reporting_export_job.sql` + `POST /reports/exports` → job asíncrono → CSV → `EXPORT_READY` por outbox → descarga. Hereda scope, anti-comparación y anonimato; el CSV se protege contra inyección de fórmulas | BACK | 1.000 | Extra (solo con el núcleo mergeado) | Backend, Base de Datos, Integración |
+| | **Subtotal** | | **1.000** | | |
 
 ## Sin líneas de código (documentación y revisión)
 
-- **H-06:** PR #54 `release/v1.0.0 → main` (CI verde, revisión, merge y tag `v1.0.0`) si todavía sigue abierta.
-- **C3:** rehacer la solicitud a T02 (envelope de 6 campos, `courses.events`, distribución 1–5, abstenciones, dimensión, `courseClosed`, pertenencia) y fila de T02. **C5:** primera solicitud a T05 y fila de T05.
-- **Revisás:** **la PR #56 de Mateo** (vos sos el dueño original del registro de parámetros) · #325 (privacidad de HU13 y #322) · 07-T6 (calibración).
+- **H-06:** PR #54 `release/v1.0.0 → main` (CI verde, revisión, merge y tag `v1.0.0`) si todavía sigue abierta. *Etiquetas: DevOps, Gestión.*
+- **C3:** rehacer la solicitud a T02 (envelope de 6 campos, `courses.events`, distribución 1–5, abstenciones, dimensión, `courseClosed`, pertenencia) y fila de T02. **C5:** primera solicitud a T05 y fila de T05. *Etiquetas: Integración, Gestión.*
+- **Revisás:** **la PR #56 de Mateo** (vos sos el dueño original del registro de parámetros) · #325 (privacidad de HU13 y #322) · 07-T6 (calibración). *Etiquetas: Testing.*
 - **Insumos para la wiki (Ana):** tablas de parámetros y read model para el DER, ejemplos de parámetros y estados del riesgo (`RED`/`YELLOW`/`GREEN`).
 
 ## Archivos

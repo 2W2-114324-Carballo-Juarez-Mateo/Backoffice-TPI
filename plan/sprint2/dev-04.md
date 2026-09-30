@@ -4,27 +4,29 @@
 > **Flujo:** `feature/tema-12-*` | `fix/tema-12-*` → `develop` · PR solo con la rama terminada · comentarios de review en GitHub
 > **Fuente de verdad:** `distribucion-pareja.md` (reparto) y `tareas-sprint2.md` (contexto). Líneas = código + tests efectivos, estimadas (±30 %).
 
+> **Etiquetas de tipo de trabajo** (para cargar en Taiga, una o más por tarea): Backend · Frontend · Testing · Base de Datos · DevOps · Documentación · Análisis · Diseño / UX-UI · Integración · Configuración · Seguridad · Investigación · Gestión · Otro. Criterio completo e índice maestro en `etiquetas-tareas.md`.
+
 ## Núcleo
 
-| ID | Tarea | Capa | Líneas | CP |
-|---|---|---|---:|---|
-| 15-T1 | Catálogo de métricas de US-15 (lista blanca por enum) con fuente y disponibilidad según el contrato; `GET /reports/metrics` con su OpenAPI. **Sin `usoTutorIa`**: T03 no lo envía | BACK | 550 | CP3 |
-| 15-T3 | Plantillas y favoritas, solo del dueño: **`V21__reporting_report_template.sql`** (`owner_id, course_id, config jsonb, is_favorite`). El `config` se valida contra la lista blanca al guardar; OpenAPI incluida | BACK | 850 | CP3 |
-| HU13 | **KPIs CSAT completos (pasó de Mateo a vos):** `V22__reporting_survey_summary.sql` (conteos por estrella, abstenciones, dimensión, `course_closed`, **sin autor ni timestamp preciso**, con política RLS) · KPI-01/02 = % 4–5 y % 1–2 sobre respuestas emitidas · abstenciones aparte (RF-ENC-10) · **PAR-18 y curso cerrado** para el PROFESOR (RF-ENC-13) · `GET /reports/courses/{courseId}/kpis` y `GET /reports/platform` (solo ADMIN, desglose por curso **sin ranking**) · `DataFreshnessDto` | BACK | 1.600 | CP4 |
-| | **Subtotal núcleo** | | **3.000** | |
+| ID | Tarea | Capa | Líneas | CP | Etiquetas |
+|---|---|---|---:|---|---|
+| 15-T1 | Catálogo de métricas de US-15 (lista blanca por enum) con fuente y disponibilidad según el contrato; `GET /reports/metrics` con su OpenAPI. **Sin `usoTutorIa`**: T03 no lo envía | BACK | 550 | CP3 | Backend, Análisis |
+| 15-T3 | Plantillas y favoritas, solo del dueño: **`V21__reporting_report_template.sql`** (`owner_id, course_id, config jsonb, is_favorite`). El `config` se valida contra la lista blanca al guardar; OpenAPI incluida | BACK | 850 | CP3 | Backend, Base de Datos |
+| HU13 | **KPIs CSAT completos (pasó de Mateo a vos):** `V22__reporting_survey_summary.sql` (conteos por estrella, abstenciones, dimensión, `course_closed`, **sin autor ni timestamp preciso**, con política RLS) · KPI-01/02 = % 4–5 y % 1–2 sobre respuestas emitidas · abstenciones aparte (RF-ENC-10) · **PAR-18 y curso cerrado** para el PROFESOR (RF-ENC-13) · `GET /reports/courses/{courseId}/kpis` y `GET /reports/platform` (solo ADMIN, desglose por curso **sin ranking**) · `DataFreshnessDto` | BACK | 1.600 | CP4 | Backend, Base de Datos, Seguridad |
+| | **Subtotal núcleo** | | **3.000** | | |
 
 ## Condicionado (gate C1: T07 confirma `/api/llm/admin/*` en el CP2)
 
-| ID | Tarea | Capa | Líneas |
-|---|---|---|---:|
-| #3537 | Fachada del perfil de calibración institucional (golden set y rúbrica) sobre T07 | BACK | 480 |
-| #3538 | Pantalla del perfil de calibración (parte 12) | FRONT | 750 |
-| | **Subtotal** | | **1.230** |
+| ID | Tarea | Capa | Líneas | Etiquetas |
+|---|---|---|---:|---|
+| #3537 | Fachada del perfil de calibración institucional (golden set y rúbrica) sobre T07 | BACK | 480 | Backend, Integración |
+| #3538 | Pantalla del perfil de calibración (parte 12) | FRONT | 750 | Frontend, Integración |
+| | **Subtotal** | | **1.230** | |
 
 ## Sin líneas de código (documentación y revisión)
 
-- **#324:** políticas de privacidad y fórmulas de los KPIs. **06-T8:** OpenAPI de la fachada de calibración (en el código).
-- **Revisás:** 05-T6 (fachada de modelos de Mateo) · 05-N4 (guards, migración de rutas, badge, 2FA y solo lectura) · 14-T6 (alertas, si se hace el extra).
+- **#324:** políticas de privacidad y fórmulas de los KPIs. **06-T8:** OpenAPI de la fachada de calibración (en el código). *Etiquetas: Documentación, Seguridad.*
+- **Revisás:** 05-T6 (fachada de modelos de Mateo) · 05-N4 (guards, migración de rutas, badge, 2FA y solo lectura) · 14-T6 (alertas, si se hace el extra). *Etiquetas: Testing.*
 - **Insumos para la wiki (Ana):** tabla de contratos para el DER, ejemplos de métricas, plantillas y KPIs.
 
 ## Archivos

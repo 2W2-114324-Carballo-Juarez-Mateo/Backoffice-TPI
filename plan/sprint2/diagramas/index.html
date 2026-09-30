@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprint 2 · Diagramas</title>
+<style>
+  :root { --bg:#f6f7f9; --fg:#14181f; --muted:#5a6472; --card:#fff; --line:#dfe3e8; --accent:#0a7cff; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6eaf0; --muted:#9aa4b2; --card:#151b23; --line:#283040; --accent:#58a6ff; } }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 system-ui, sans-serif; }
+  main { max-width:960px; margin:0 auto; padding:32px 16px 48px; }
+  h1 { margin:0 0 4px; font-size:1.6rem; }
+  p.sub { margin:0 0 24px; color:var(--muted); }
+  ol { list-style:none; margin:0; padding:0; display:grid; gap:12px; }
+  li a { display:block; padding:16px 18px; background:var(--card); border:1px solid var(--line); border-radius:10px; color:inherit; text-decoration:none; }
+  li a:hover, li a:focus-visible { border-color:var(--accent); outline:none; }
+  li strong { display:block; font-size:1.05rem; }
+  li span { color:var(--muted); font-size:.95rem; }
+  footer { margin-top:24px; color:var(--muted); font-size:.9rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Backoffice (Tema 12) · Sprint 2</h1>
+  <p class="sub">Qué vamos a construir y cómo lo vamos a hacer. Cada diagrama es interactivo: se puede enfocar un nodo, cambiar de tema y exportar.</p>
+  <ol>
+    <li><a href="01-arquitectura-backoffice.html"><strong>1. Arquitectura</strong><span>El Backoffice como consumidor de seis temas y administrador de los parámetros.</span></a></li>
+    <li><a href="02-flujo-datos.html"><strong>2. Flujo de datos</strong><span>Del evento que llega de otro tema al reporte del docente, en tres carriles.</span></a></li>
+    <li><a href="03-secuencia-reporte.html"><strong>3. Secuencia de un reporte</strong><span>Quién decide qué puede ver el profesor antes de tocar la base de datos.</span></a></li>
+    <li><a href="04-ciclo-riesgo.html"><strong>4. Regla de riesgo del alumno</strong><span>Rojo, amarillo o verde, con las dos decisiones del equipo.</span></a></li>
+    <li><a href="05-plan-checkpoints.html"><strong>5. Plan por checkpoints</strong><span>Del 28/09 al 11/10: cierre del Sprint 1, contratos, backend, frontend y demo.</span></a></li>
+  </ol>
+  <footer>Generados con Archify a partir de los archivos JSON de la carpeta <code>fuentes/</code>.</footer>
+</main>
+</body>
+</html>

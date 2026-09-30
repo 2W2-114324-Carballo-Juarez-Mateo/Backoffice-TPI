@@ -4,30 +4,32 @@
 > **Flujo:** `feature/tema-12-*` | `fix/tema-12-*` → `develop` · PR solo con la rama terminada · comentarios de review en GitHub
 > **Fuente de verdad:** `distribucion-pareja.md` (reparto) y `tareas-sprint2.md` (contexto). Líneas = código + tests efectivos, estimadas (±30 %).
 
+> **Etiquetas de tipo de trabajo** (para cargar en Taiga, una o más por tarea): Backend · Frontend · Testing · Base de Datos · DevOps · Documentación · Análisis · Diseño / UX-UI · Integración · Configuración · Seguridad · Investigación · Gestión · Otro. Criterio completo e índice maestro en `etiquetas-tareas.md`.
+
 ## Núcleo
 
-| ID | Tarea | Capa | Líneas | CP |
-|---|---|---|---:|---|
-| #3512 | **La rama ya está pusheada** (`feature/tema-12-admin-route-guards`, `8c2c82e`): sincronizar con `develop`, abrir la PR y avisar a los dueños de las partes 03, 04, 06, 10 y 14 | FRONT | 98 | **CP0** |
-| 04-T1 | Infraestructura del cliente HTTP a T07 (`RestClient` administrado, auth según C1, `problem+json` → excepciones de dominio, timeout 3 s, reintento solo en GET, `X-Request-Id`, 401/403 de T07 nunca como 500, stub como fallback con flag). Arrancás con WireMock sin esperar C1 | BACK | 750 | **CP2** |
-| #311 | **Capa de acceso de reporting:** `ReportScopeResolver` + `TeacherMembershipPort` (adaptador T02 por Gateway con token de servicio, flag **fail-closed**) + `TenantContext` + **`V20__reporting_rls.sql`** con `ENABLE` **y `FORCE ROW LEVEL SECURITY`** + guardia anti-comparación. **V20 va sobre V19 de Damián** | BACK | 1.250 | **CP2** |
-| 06B-T4 | Pasar el topic de auditoría (`TOPIC_AUDIT_EVENTS`, `DEFAULT_AUDIT_TOPIC`) de constante a propiedad tipada (el nombre `identity.audit.events` ya entró con la PR #47) | BACK | 100 | CP3 |
-| 15-T5 | Tests del motor de US-15: RLS, anti-comparación, anonimato, lista blanca (métrica desconocida → 400) | TEST | 700 | CP4 |
-| | **Subtotal núcleo** | | **2.898** | |
+| ID | Tarea | Capa | Líneas | CP | Etiquetas |
+|---|---|---|---:|---|---|
+| #3512 | **La rama ya está pusheada** (`feature/tema-12-admin-route-guards`, `8c2c82e`): sincronizar con `develop`, abrir la PR y avisar a los dueños de las partes 03, 04, 06, 10 y 14 | FRONT | 98 | **CP0** | Frontend, Seguridad |
+| 04-T1 | Infraestructura del cliente HTTP a T07 (`RestClient` administrado, auth según C1, `problem+json` → excepciones de dominio, timeout 3 s, reintento solo en GET, `X-Request-Id`, 401/403 de T07 nunca como 500, stub como fallback con flag). Arrancás con WireMock sin esperar C1 | BACK | 750 | **CP2** | Backend, Integración, Seguridad |
+| #311 | **Capa de acceso de reporting:** `ReportScopeResolver` + `TeacherMembershipPort` (adaptador T02 por Gateway con token de servicio, flag **fail-closed**) + `TenantContext` + **`V20__reporting_rls.sql`** con `ENABLE` **y `FORCE ROW LEVEL SECURITY`** + guardia anti-comparación. **V20 va sobre V19 de Damián** | BACK | 1.250 | **CP2** | Backend, Base de Datos, Seguridad |
+| 06B-T4 | Pasar el topic de auditoría (`TOPIC_AUDIT_EVENTS`, `DEFAULT_AUDIT_TOPIC`) de constante a propiedad tipada (el nombre `identity.audit.events` ya entró con la PR #47) | BACK | 100 | CP3 | Backend, Configuración |
+| 15-T5 | Tests del motor de US-15: RLS, anti-comparación, anonimato, lista blanca (métrica desconocida → 400) | TEST | 700 | CP4 | Testing, Seguridad |
+| | **Subtotal núcleo** | | **2.898** | | |
 
 ## Condicionado y extra
 
-| ID | Tarea | Capa | Líneas | Condición |
-|---|---|---|---:|---|
-| 06B-T3 | Verificar `GATEWAY_SHARED_SECRET` con el mecanismo que acuerde T01 sin romper el entorno local | BACK | 160 | Gate: T01 |
-| 06-T5 + 07-T4 | Tests WireMock de calibración y del estado de calibración | TEST | 580 | Gate: C1 |
-| 14-T4 | Tests de alertas (HU14): en el límite, 1 punto abajo, no-ADMIN 403 | TEST | 250 | Extra |
-| | **Subtotal** | | **990** | |
+| ID | Tarea | Capa | Líneas | Condición | Etiquetas |
+|---|---|---|---:|---|---|
+| 06B-T3 | Verificar `GATEWAY_SHARED_SECRET` con el mecanismo que acuerde T01 sin romper el entorno local | BACK | 160 | Gate: T01 | Backend, Seguridad, Configuración |
+| 06-T5 + 07-T4 | Tests WireMock de calibración y del estado de calibración | TEST | 580 | Gate: C1 | Testing, Integración |
+| 14-T4 | Tests de alertas (HU14): en el límite, 1 punto abajo, no-ADMIN 403 | TEST | 250 | Extra | Testing |
+| | **Subtotal** | | **990** | | |
 
 ## Sin líneas de código (documentación y revisión)
 
-- **C1:** dueño del contrato con T07 y de la fila de T01: confirmar `/api/llm/admin/*` (ruta, Gateway o Eureka, token, scopes), corregir el §6 como fachada y registrar que `MODEL_CHANGED` lo publica T07. Volcarlo a `CONTRATOS_T07_SOLICITUD.md` en la misma PR que las filas de firma.
-- **Revisás:** #308 (modelado analítico) · S2-00 junto con Mateo: es tu contrato de `ReportScopeResolver`, revisalo con lupa.
+- **C1:** dueño del contrato con T07 y de la fila de T01: confirmar `/api/llm/admin/*` (ruta, Gateway o Eureka, token, scopes), corregir el §6 como fachada y registrar que `MODEL_CHANGED` lo publica T07. Volcarlo a `CONTRATOS_T07_SOLICITUD.md` en la misma PR que las filas de firma. *Etiquetas: Integración, Seguridad, Documentación.*
+- **Revisás:** #308 (modelado analítico) · S2-00 junto con Mateo: es tu contrato de `ReportScopeResolver`, revisalo con lupa. *Etiquetas: Testing.*
 - **Sale de tu lista:** 06B-T2 (IT del orden del outbox) pasó a Regina; vos la acompañás porque hiciste el test de publicación del Sprint 1.
 - **Insumos para la wiki (Ana):** ejemplos de auditoría y de la política RLS.
 

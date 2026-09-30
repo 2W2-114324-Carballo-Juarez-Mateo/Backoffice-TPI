@@ -9,6 +9,7 @@
 | **`distribucion-pareja.md`** | **Reparto por integrante, parejo en líneas de código efectivas** (incluye lo pendiente del Sprint 1), Flyway renumerado y revisión cruzada. **Prevalece sobre lo que contradiga `tareas-sprint2.md`** | Todos |
 | **`tareas-sprint2.md`** | Plan canónico: decisiones, alcance, contratos de lectura, slices, checkpoints, corte, riesgos | Todos |
 | `dev-01.md` … `dev-09.md` | Tareas de cada integrante, con líneas, archivos propios, dependencias y quién los revisa | Cada dev |
+| `etiquetas-tareas.md` | Etiqueta de tipo de trabajo de cada tarea (Backend, Frontend, Testing, etc.), criterio y conteo por integrante. Cada dueño las carga en Taiga | Todos, Ana |
 | `estimacion-lineas-codigo.md` | Cómo se estimaron las líneas, antes y después del reparto | Quien coordina |
 | `revision-pr.md` | Checklists de revisión por PR y comentarios para las ramas pendientes | Autores y revisores |
 | `auditoria-sprint1.md` | Qué quedó del Sprint 1: estado por área, PRD, ramas fuera de `develop`, Taiga, PRs | Quien coordina, Ana |

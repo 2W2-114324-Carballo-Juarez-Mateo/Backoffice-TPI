@@ -4,28 +4,30 @@
 > **Flujo:** `feature/tema-12-*` | `fix/tema-12-*` → `develop` · PR solo con la rama terminada · comentarios de review en GitHub
 > **Fuente de verdad:** `distribucion-pareja.md` (reparto) y `tareas-sprint2.md` (contexto). Líneas = código + tests efectivos, estimadas (±30 %).
 
+> **Etiquetas de tipo de trabajo** (para cargar en Taiga, una o más por tarea): Backend · Frontend · Testing · Base de Datos · DevOps · Documentación · Análisis · Diseño / UX-UI · Integración · Configuración · Seguridad · Investigación · Gestión · Otro. Criterio completo e índice maestro en `etiquetas-tareas.md`.
+
 ## Núcleo
 
-| ID | Tarea | Capa | Líneas | CP |
-|---|---|---|---:|---|
-| 15-T2 + 15-T4 | **Ruta crítica de US-15:** motor de consultas dinámicas (filtros, período, columnas, agrupación) **y** `POST /api/backoffice/reports/run` (con `templateId` o `config`), con su OpenAPI. Ejecuta dentro de `ReportScopeResolver` + RLS. Invariantes: solo métricas y dimensiones del enum, parámetros bind, sin `TEACHER`, encuestas solo agregadas con PAR-18 + curso cerrado, `DataFreshnessDto`, paginado y período máximo | BACK | 2.100 | **CP4** |
-| 15-T9 | **Specs del builder de US-15** (FE, de Damián): crear, editar y correr plantilla, validaciones, 403 | TEST | 450 | CP5 |
-| 12-T9 | **Specs del panel docente** (FE, de Luciano) | TEST | 250 | CP4 |
-| | **Subtotal núcleo** | | **2.800** | |
+| ID | Tarea | Capa | Líneas | CP | Etiquetas |
+|---|---|---|---:|---|---|
+| 15-T2 + 15-T4 | **Ruta crítica de US-15:** motor de consultas dinámicas (filtros, período, columnas, agrupación) **y** `POST /api/backoffice/reports/run` (con `templateId` o `config`), con su OpenAPI. Ejecuta dentro de `ReportScopeResolver` + RLS. Invariantes: solo métricas y dimensiones del enum, parámetros bind, sin `TEACHER`, encuestas solo agregadas con PAR-18 + curso cerrado, `DataFreshnessDto`, paginado y período máximo | BACK | 2.100 | **CP4** | Backend, Seguridad, Base de Datos |
+| 15-T9 | **Specs del builder de US-15** (FE, de Damián): crear, editar y correr plantilla, validaciones, 403 | TEST | 450 | CP5 | Testing, Frontend |
+| 12-T9 | **Specs del panel docente** (FE, de Luciano) | TEST | 250 | CP4 | Testing, Frontend |
+| | **Subtotal núcleo** | | **2.800** | | |
 
 ## Condicionado (gate C1: T07 confirma `/api/llm/admin/*` en el CP2)
 
-| ID | Tarea | Capa | Líneas |
-|---|---|---|---:|
-| #3539 | Fachada de corridas de calibración (crear, listar, detalle; `maeFinal`, `maxIndividualError` y veredicto **de T07**) | BACK | 500 |
-| 07-T2 | Estado de calibración del modelo activo (último veredicto y deriva, leídos de T07) | BACK | 460 |
-| | **Subtotal** | | **960** |
+| ID | Tarea | Capa | Líneas | Etiquetas |
+|---|---|---|---:|---|
+| #3539 | Fachada de corridas de calibración (crear, listar, detalle; `maeFinal`, `maxIndividualError` y veredicto **de T07**) | BACK | 500 | Backend, Integración |
+| 07-T2 | Estado de calibración del modelo activo (último veredicto y deriva, leídos de T07) | BACK | 460 | Backend, Integración |
+| | **Subtotal** | | **960** | |
 
 ## Sin líneas de código (documentación y revisión)
 
-- **H-04:** `feature/mvp-s6-golden-set-runs` **no se mergea** (MAE y veredicto son de T07 por la Opción A; la PR #30 ya está cerrada). Tag `archive/s6-golden-set-local` y borrar la rama. `ToleranceEvaluator` de esa rama sirve de referencia para leer PAR-14.
-- **#286:** documentar que T07 calcula MAE y veredicto, el Backoffice gobierna PAR-14 y la deriva la emite T07 (gate C1).
-- **Revisás:** 04-T5 (seguridad de credenciales y cliente T07).
+- **H-04:** `feature/mvp-s6-golden-set-runs` **no se mergea** (MAE y veredicto son de T07 por la Opción A; la PR #30 ya está cerrada). Tag `archive/s6-golden-set-local` y borrar la rama. `ToleranceEvaluator` de esa rama sirve de referencia para leer PAR-14. *Etiquetas: Gestión, DevOps.*
+- **#286:** documentar que T07 calcula MAE y veredicto, el Backoffice gobierna PAR-14 y la deriva la emite T07 (gate C1). *Etiquetas: Documentación, Análisis.*
+- **Revisás:** 04-T5 (seguridad de credenciales y cliente T07). *Etiquetas: Testing.*
 - **Sale de tu lista:** #3331 pasó a Damián; #3540 (pantalla de corridas) pasó a Mateo; 08-T3 pasó a Mateo.
 - **Insumos para la wiki (Ana):** ejemplos reales de request y response del `run`.
 
