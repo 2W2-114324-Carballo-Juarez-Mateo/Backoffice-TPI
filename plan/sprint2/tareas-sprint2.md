@@ -2,8 +2,10 @@
 
 > **Sprint:** 28/09 → 11/10/2026 · **Equipo:** TPI-G06 (9 integrantes) · **Repos:** `2026-P4-BE/tpi-backoffice` · `2026-P4-FE/2026-PIV-TPI-FE`
 > **Base:** propuesta unificada del grupo (`sprint2/tareas-sprint2.md`, se conserva sin tocar) + auditoría del Sprint 1 (`auditoria-sprint1.md`) + retrospectiva (`retrospectiva-sprint1.md`). Cada cambio contra la propuesta está justificado en `correcciones-propuesta.md`.
-> **Estimación:** **sin horas** (decisión del equipo: con IA la estimación en horas engaña). Historia = **SP Fibonacci** · tarea = **tamaño relativo** (S/M/L/XL). La capacidad se expresa como **disponibilidad** (alta/media/baja), tomada de la tabla de capacidad que ya había armado el grupo.
+> **Estimación:** **sin horas** (decisión del equipo: con IA la estimación en horas engaña). Historia = **SP Fibonacci** · tarea = **tamaño relativo** (S/M/L/XL). El reparto entre personas es **parejo en líneas de código efectivas** (`distribucion-pareja.md`), sin ponderar por disponibilidad individual.
 > **Fuente única de verdad:** este archivo. Los `dev-XX.md` se derivan de acá. Si algo no coincide, manda este archivo.
+>
+> **⚠ Actualización del 30/09:** la **distribución del trabajo por integrante se rehízo pareja en líneas de código** (ver `distribucion-pareja.md` y los `dev-XX.md`). Donde las secciones 4, 5 y 6 nombren a otro dueño para una tarea, **manda `distribucion-pareja.md`**. Cambiaron de dueño, entre otras: PR #56 (07-T1 y P-12) → Mateo · HU13 → Joaquín · #313 → Luciano · 15-T8 → Damián · #322 → Mateo · #3331 → Damián · 15-T9 y 12-T9 → Bruno · #323 y 06B-T2 → Regina. **Flyway también se renumeró** (V18 y V24 ya están ocupadas): ver §7.
 
 ---
 
@@ -33,7 +35,7 @@
 |---|---|---|
 | D-01 | **Primero se cierra el Sprint 1.** Lo que quedó en ramas sin PR, tareas reabiertas y contratos sin firmar entra como historias de arrastre (§4), antes que lo nuevo. | 11 tareas abiertas del Sprint 1 en Taiga; 6 ramas BE y 3 FE con trabajo fuera de `develop` (ver `auditoria-sprint1.md`). |
 | D-02 | **Un PR de contratos compartidos del Sprint 2 (S2-00) al inicio**, congelado, como hizo el Sprint 1 con S3. Todos codifican contra esas interfaces con mocks. | Fue lo que mejor funcionó en el S1. La propuesta no lo tenía: HU12 tenía **7** devs y US-15 **9** devs sobre los mismos archivos. |
-| D-03 | **Un dueño por paquete/clase.** Si una historia tiene varias tareas de backend en el mismo servicio, se consolidan en una persona (HU13 → Mateo, HU14 → Regina, motor + `run` de US-15 → Bruno, evento de riesgo → quien calcula el riesgo). | Retro: "tareas que se pisaban". En la propuesta #319/#320/#321 (HU13) eran 3 devs en el mismo servicio; 15-T2 y 15-T4 dos devs en el mismo motor. |
+| D-03 | **Un dueño por paquete/clase.** Si una historia tiene varias tareas de backend en el mismo servicio, se consolidan en una persona (HU13 → Joaquín, HU14 → Regina, motor + `run` de US-15 → Bruno, evento de riesgo → quien calcula el riesgo). | Retro: "tareas que se pisaban". En la propuesta #319/#320/#321 (HU13) eran 3 devs en el mismo servicio; 15-T2 y 15-T4 dos devs en el mismo motor. |
 | D-04 | **El Backoffice no produce datos: los lee** (PDF arquitectura, pág. 14). Ningún reporte se programa contra un contrato en `SOLICITUD LISTA` sin **puerto + flag + fallback**. Los contratos de lectura son la ruta crítica (§3). | T02 no respondió la solicitud y T05 ni siquiera tiene solicitud; sin T02 no hay pertenencia docente, ni padrón, ni CSAT. |
 | D-05 | **Frescura ≤ 15 min (PAR-23) en cada respuesta de reporte**, calculada al leer. El recálculo de read models corre cada ≤ 5 min. | En `develop` la frescura ya se calcula al leer (`IngestionCounter`: "not stored: computed at read time"). El 10-M1 de la propuesta (un `@Scheduled` que marca `isStale`) duplicaba y contradecía ese diseño. |
 | D-06 | **Sin comparación entre docentes** es un invariante verificable: ningún endpoint acepta ni devuelve la dimensión docente; el PROFESOR recibe 403 ante un curso ajeno; la vista de plataforma del ADMIN no ordena ni rankea por métrica. | HU12 CA3/CA4 (Taiga), RF-ENC-08 (PRD). |
@@ -145,10 +147,10 @@ T03, T05, T08 y T10 leen `GET /api/backoffice/parameters/{key}` con el scope `ba
 
 | ID | Tarea | Dev | Tamaño | Gate |
 |---|---|---|---|---|
-| 07-T1 | Validar **PAR-14** con la forma oficial de Skill Hub (`backoffice-t07-evaluacion-llm-contract` v1): `{"average": 5, "dimension": 10}` (**clave `average`, no `promedio`**), ambas numéricas y `0 < average ≤ dimension ≤ 100`. **Incluye renombrar `promedio → average` en el seed (migración)**. Hoy `ParameterValueRules` solo valida "es un mapa" | Damián | S | — |
-| P-12 | **PAR-12** (`{"initialLives":3,"maxLives":3}`): **CONFIRMADO — es del Backoffice** (Skill Hub `backoffice-t08-banco-contract` v1, lo consume T08). Seed en **V24** + regla `1 ≤ initialLives ≤ maxLives` + corregir `AGENTS.md` (hecho en PR #56). **Además: sembrar PAR-03/06/07/24** (también son nuestros según Skill Hub; hoy V2 los excluye) en V24 o una migración contigua | Damián | S | — |
+| 07-T1 | Validar **PAR-14** con la forma oficial de Skill Hub (`backoffice-t07-evaluacion-llm-contract` v1): `{"average": 5, "dimension": 10}` (**clave `average`, no `promedio`**), ambas numéricas y `0 < average ≤ dimension ≤ 100`. **Incluye renombrar `promedio → average` en el seed (migración)**. Hoy `ParameterValueRules` solo valida "es un mapa" | Mateo (PR #56, ya abierta) | S | — |
+| P-12 | **PAR-12** (`{"initialLives":3,"maxLives":3}`): **CONFIRMADO — es del Backoffice** (Skill Hub `backoffice-t08-banco-contract` v1, lo consume T08). Seed en **V24** + regla `1 ≤ initialLives ≤ maxLives` + corregir `AGENTS.md` (hecho en PR #56). **Además: sembrar PAR-03/06/07/24** (también son nuestros según Skill Hub; hoy V2 los excluye) en V24 o una migración contigua | Mateo (PR #56, ya abierta) | S | — |
 | 01-IT | IT con Testcontainers de US-01 (ver H-01) | Mateo | M | — |
-| #3331 | Solo lectura de parámetros para PROFESSOR en el FE (el backend ya permite leer con `PARAMETER_READERS`) | Bruno | S | — |
+| #3331 | Solo lectura de parámetros para PROFESSOR en el FE (el backend ya permite leer con `PARAMETER_READERS`) | Damián | S | — |
 
 ### 4.3 · HU04 · Proveedores LLM reales — 5 SP · solo ADMIN
 
@@ -190,7 +192,7 @@ T03, T05, T08 y T10 leen `GET /api/backoffice/parameters/{key}` con el scope `ba
 | ID | Tarea | Dev | Tamaño | Corrección |
 |---|---|---|---|---|
 | 06B-T1 | Orden estricto por clave en `findReadyToPublish`: no tomar una fila si hay una `PENDING` más vieja **con la misma clave de partición** (`NOT EXISTS`). El outbox ya es genérico (auditoría, riesgo, export) y guarda esa clave en la columna `param_key`; una fila en `DEAD_LETTER` no debe bloquear su clave | Luciano | S | Generalizada |
-| 06B-T2 | IT del orden (Testcontainers + Kafka): falla v1 y v2 no sale antes | Máximo | M | — |
+| 06B-T2 | IT del orden (Testcontainers + Kafka): falla v1 y v2 no sale antes | Regina | M | — |
 | 06B-T3 | Verificar `GATEWAY_SHARED_SECRET` con el mecanismo que acuerde T01, sin romper el entorno local | Máximo | S | Gate T01 |
 | 06B-T4 | **Redefinida:** el topic ya es `identity.audit.events` (PR #47). Falta pasarlo de **constante** (`TOPIC_AUDIT_EVENTS`, `DEFAULT_AUDIT_TOPIC`) a **propiedad** tipada | Máximo | S | Antes: "configurar el topic confirmado" |
 | 06B-T5 | Peer review de concurrencia del outbox y del secreto del Gateway | Valentina | S | — |
@@ -209,10 +211,10 @@ T03, T05, T08 y T10 leen `GET /api/backoffice/parameters/{key}` con el scope `ba
 | `CohortSummaryQuery` (lectura del read model por curso) | `reporting/services` | Damián (#303) | #310, #304, US-15 |
 | `DataFreshnessProvider` + `DataFreshnessDto {asOf, stale, thresholdMinutes, sources[]}` | `reporting/services`, `reporting/dtos` | Valentina (10-M1) | Todo endpoint de reporte |
 | `RiskLevel {RED, YELLOW, GREEN}` + `RiskFactor` | `reporting/entities` | Damián (#304) | #310, #313, US-15 |
-| `ReportMetric`, `ReportDimension` (**sin `TEACHER`**) | `reporting/dtos/dynamic` | Joaquín (15-T1) | Bruno (15-T2), Luciano (15-T8) |
-| `ReportRunRequestDto` / `ReportRunResponseDto` / `ReportTemplateDto` | `reporting/dtos/dynamic` | Bruno (15-T4), Joaquín (15-T3) | Luciano (15-T8) |
-| `TeacherPanelResponseDto` | `reporting/dtos/panel` | Regina (#310) | Damián (#313) |
-| `CsatKpiDto` (distribución, abstenciones, `insufficientSample`, `availableAfterCourseClose`) | `reporting/dtos/kpi` | Mateo (HU13) | Valentina (#322) |
+| `ReportMetric`, `ReportDimension` (**sin `TEACHER`**) | `reporting/dtos/dynamic` | Joaquín (15-T1) | Bruno (15-T2), Damián (15-T8) |
+| `ReportRunRequestDto` / `ReportRunResponseDto` / `ReportTemplateDto` | `reporting/dtos/dynamic` | Bruno (15-T4), Joaquín (15-T3) | Damián (15-T8) |
+| `TeacherPanelResponseDto` | `reporting/dtos/panel` | Regina (#310) | Luciano (#313) |
+| `CsatKpiDto` (distribución, abstenciones, `insufficientSample`, `availableAfterCourseClose`) | `reporting/dtos/kpi` | Joaquín (HU13) | Mateo (#322) |
 | OpenAPI esqueleto de los endpoints nuevos (§6) | `docs/openapi` | cada dueño completa el suyo | FE |
 | FE: modelos TS + rutas stub (`reports/teacher/:courseId`, `reports/kpis`, `reports/builder`, `alerts`) con `loadPlaceholder` | `features/admin/admin.routes.ts` y `data-access` | cada dueño cambia **solo su línea** | FE |
 
@@ -231,14 +233,14 @@ T03 / T02 / (T05, T10 con flag)
 reporting.ingested_event (append-only)                     ← ya existe (S7)
    │ proyector cada ≤ 5 min (#305 · Valentina)
    ▼
-read models V18 (#303 · Damián): cohort_roster, student_activity_summary (+ columnas de riesgo)
+read models V19 (#303 · Damián): cohort_roster, student_activity_summary (+ columnas de riesgo)
    │ cálculo de riesgo (#304 · Damián) ──► STUDENT_AT_HIGH_RISK por outbox (#312 · Damián)
    ▼
-ReportScopeResolver + RLS V19 (#311 · Máximo) ◄── TeacherMembershipPort (T02)
+ReportScopeResolver + RLS V20 (#311 · Máximo) ◄── TeacherMembershipPort (T02)
    │
-   ├─► Panel docente      GET  /reports/courses/{courseId}/teacher      (#310 · Regina)  ─► FE #313 (Damián)
-   ├─► KPIs CSAT          GET  /reports/courses/{courseId}/kpis · /reports/platform (HU13 · Mateo) ─► FE #322 (Valentina)
-   ├─► Reportes dinámicos POST /reports/run · /reports/templates · GET /reports/metrics (US-15 · Bruno/Joaquín) ─► FE 15-T8 (Luciano)
+   ├─► Panel docente      GET  /reports/courses/{courseId}/teacher      (#310 · Regina)  ─► FE #313 (Luciano)
+   ├─► KPIs CSAT          GET  /reports/courses/{courseId}/kpis · /reports/platform (HU13 · Joaquín) ─► FE #322 (Mateo)
+   ├─► Reportes dinámicos POST /reports/run · /reports/templates · GET /reports/metrics (US-15 · Bruno/Joaquín) ─► FE 15-T8 (Damián)
    ├─► Alertas (stretch)  /reports/alert-thresholds · /reports/alerts   (HU14 · Regina)
    └─► Export (stretch)   /reports/exports ─► EXPORT_READY por outbox   (HU09 · Damián)
 Todas las respuestas llevan DataFreshnessDto (10-M1 · Valentina)
@@ -252,7 +254,7 @@ Todas las respuestas llevan DataFreshnessDto (10-M1 · Valentina)
 
 | ID | Tarea | Dev | Tamaño |
 |---|---|---|---|
-| #303 | `V18__reporting_cohort_read_model.sql`: `cohort_roster(course_id, student_id, enrolled_at, source)` y `student_activity_summary(course_id, student_id, last_activity_at, attempts, passed, failed, lives_exhausted, risk_level, risk_factors, risk_computed_at, previous_risk_level)` con índices por `course_id`. Entidades + `CohortSummaryQuery` | Damián | M |
+| #303 | `V19__reporting_cohort_read_model.sql`: `cohort_roster(course_id, student_id, enrolled_at, source)` y `student_activity_summary(course_id, student_id, last_activity_at, attempts, passed, failed, lives_exhausted, risk_level, risk_factors, risk_computed_at, previous_risk_level)` con índices por `course_id`. Entidades + `CohortSummaryQuery` | Damián | M |
 | #305 | Proyector desde `ingested_event` (T03 `CHALLENGE_COMPLETED`, T02 `ROSTER_UPDATED`; T05/T10 detrás de flag), idempotente, con checkpoint (V26 si hace falta), cada ≤ 5 min (propiedad tipada, siempre < PAR-23) | Valentina | L |
 | #304 | Clasificador de riesgo puro + recálculo. Umbrales en `@ConfigurationProperties("reporting.risk")`. Factor "vidas agotadas" detrás de `reporting.risk.lives-exhausted.enabled=false` | Damián | M |
 | #306 | Partición de equivalencia y valores límite (tabla abajo) | Regina | M |
@@ -296,12 +298,12 @@ Todas las respuestas llevan DataFreshnessDto (10-M1 · Valentina)
 
 | ID | Tarea | Dev | Tamaño | Cambio vs propuesta |
 |---|---|---|---|---|
-| #311 | `ReportScopeResolver` + `TeacherMembershipPort` (adaptador T02 por Gateway con token de servicio; flag **fail-closed**) + `TenantContext` (`SET LOCAL app.current_course`) + **`V19__reporting_rls.sql`** con `ENABLE` **y `FORCE ROW LEVEL SECURITY`** (la app se conecta como dueña de las tablas) + guardia anti-comparación | Máximo | L | El puerto de pertenencia pasa de #310 a #311: es transversal (panel, KPIs, US-15, export) |
+| #311 | `ReportScopeResolver` + `TeacherMembershipPort` (adaptador T02 por Gateway con token de servicio; flag **fail-closed**) + `TenantContext` (`SET LOCAL app.current_course`) + **`V20__reporting_rls.sql`** con `ENABLE` **y `FORCE ROW LEVEL SECURITY`** (la app se conecta como dueña de las tablas) + guardia anti-comparación | Máximo | L | El puerto de pertenencia pasa de #310 a #311: es transversal (panel, KPIs, US-15, export) |
 | #310 | `GET /api/backoffice/reports/courses/{courseId}/teacher`: alumnos con semáforo y factores, promedio **solo del propio curso**, `DataFreshnessDto`, < 2 s | Regina | M | Sin el adaptador de T02 |
 | #312 | `STUDENT_AT_HIGH_RISK` por `DomainEventOutbox` **solo en la transición** a RED (misma transacción que el recálculo; payload con IDs, sin PII) a `notifications.events` | **Damián** | S | Pasa de Luciano a quien calcula el riesgo (evita tocar código ajeno) |
-| #313 | Panel docente con semáforo (color **y** texto, teclado, WCAG AA) y badge de frescura | Damián | M | — |
+| #313 | Panel docente con semáforo (color **y** texto, teclado, WCAG AA) y badge de frescura | Luciano | M | — |
 | #314 + #315 | Suite de integración HU12 (Testcontainers PostgreSQL; H2 no soporta RLS): A→A 200, A→B 403, sin pertenencia 403, ADMIN 200, `ALL` solo ADMIN, anti-comparación, evento emitido una sola vez en la transición | **Luciano** | L | #315 pasa de Damián a Luciano (Damián es autor de #312) |
-| 12-T9 | Specs del panel docente | Joaquín | S | — |
+| 12-T9 | Specs del panel docente | Bruno | S | — |
 | #316 | Página de wiki "G06 - Reportes y panel docente": endpoints, política RLS explicada y aviso de riesgo (con ejemplos que le pasan Regina y Máximo) | Ana (wiki) | S | Pasa del repo a la wiki (D-13) |
 | #317 | Peer review de seguridad RLS (crítico) | Mateo | S | — |
 
@@ -320,13 +322,13 @@ Todas las respuestas llevan DataFreshnessDto (10-M1 · Valentina)
 | ID | Tarea | Dev | Tamaño | Cambio vs propuesta |
 |---|---|---|---|---|
 | 15-T1 | Catálogo de métricas (tabla abajo) con su fuente y disponibilidad según el estado del contrato; `GET /reports/metrics` | Joaquín | M | Se agrega fuente y disponibilidad |
-| 15-T3 | CRUD de plantillas y favoritas, solo del dueño: `V20__reporting_report_template.sql` (`owner_id, course_id, config jsonb, is_favorite`) | Joaquín | M | — |
+| 15-T3 | CRUD de plantillas y favoritas, solo del dueño: `V21__reporting_report_template.sql` (`owner_id, course_id, config jsonb, is_favorite`) | Joaquín | M | — |
 | 15-T2 + 15-T4 | **Motor + `POST /reports/run`** (con `templateId` o `config`) con los invariantes, ejecutado dentro de `ReportScopeResolver` + RLS | **Bruno** | XL | **Consolidadas** (antes Bruno + Mateo en el mismo servicio) |
 | 15-T5 | Tests del motor: RLS, anti-comparación, anonimato, lista blanca (métrica desconocida → 400) | Máximo | L | — |
 | 15-T6 | OpenAPI de metrics/templates/run: **la escribe cada dueño en su endpoint** (Joaquín en 15-T1/15-T3, Bruno en 15-T2/T4) | Joaquín · Bruno | — | Antes era de Ana; la OpenAPI está en el código (`@Operation` + `docs/openapi`) |
 | 15-T7 | Peer review de seguridad del motor | Valentina | S | — |
-| 15-T8 | **Fase 2:** builder FE (métricas, filtros, período, columnas, agrupación, "Guardar plantilla", WCAG AA) | Luciano | L | Queda **Should**: la propuesta decía "entra completo" (§1) y a la vez "el builder cierra en el S3" (§2) |
-| 15-T9 | **Fase 2:** specs del builder | Damián | M | — |
+| 15-T8 | **Fase 2:** builder FE (métricas, filtros, período, columnas, agrupación, "Guardar plantilla", WCAG AA) | Damián | L | Queda **Should**: la propuesta decía "entra completo" (§1) y a la vez "el builder cierra en el S3" (§2) |
+| 15-T9 | **Fase 2:** specs del builder | Bruno | M | — |
 | 15-T10 | **Fase 2:** vista del builder y catálogo de métricas en la wiki | Ana (wiki) | S | Pasa del repo a la wiki (D-13) |
 | 15-T11 | **Fase 2:** peer review del builder | Regina | S | — |
 
@@ -348,36 +350,36 @@ Todas las respuestas llevan DataFreshnessDto (10-M1 · Valentina)
 
 ### 6.5 · HU13 #111 · KPIs CSAT 5 estrellas con anonimato — 5 SP · Should
 
-> Rama: `feature/tema-12-hu13-csat-kpis` (Mateo, CP4). **Consolidada** en un dueño (antes #319 Mateo, #320 Regina, #321 Bruno sobre el mismo servicio).
+> Rama: `feature/tema-12-hu13-csat-kpis` (Joaquín, CP4). **Consolidada** en un dueño (antes #319 Mateo, #320 Regina, #321 Bruno sobre el mismo servicio).
 
 | ID | Tarea | Dev | Tamaño |
 |---|---|---|---|
-| #319/#320/#321 | `V22__reporting_survey_summary.sql` (conteos por estrella, abstenciones, dimensión, `course_closed`; **sin autor ni timestamp preciso**) · KPI-01/02 (% 4–5 y % 1–2 sobre respuestas emitidas; metas 80 % / 10 % como referencia) · abstenciones aparte (RF-ENC-10) · **PAR-18 + curso cerrado** para el PROFESOR (RF-ENC-13) · `GET /reports/courses/{courseId}/kpis` (PROFESOR propio, ADMIN) y `GET /reports/platform` (solo ADMIN: consolidado + desglose por curso **sin ranking**) | Mateo | L |
-| #322 | Dashboard de KPIs con "muestra insuficiente" y "disponible al cierre del curso" | Valentina | M |
-| #323 | Tests de anonimato: 4, 5 y 6 respuestas con PAR-18 = 5; curso abierto → sin puntajes; no-ADMIN en `/platform` → 403 | **Joaquín** | M |
+| #319/#320/#321 | `V22__reporting_survey_summary.sql` (conteos por estrella, abstenciones, dimensión, `course_closed`; **sin autor ni timestamp preciso**) · KPI-01/02 (% 4–5 y % 1–2 sobre respuestas emitidas; metas 80 % / 10 % como referencia) · abstenciones aparte (RF-ENC-10) · **PAR-18 + curso cerrado** para el PROFESOR (RF-ENC-13) · `GET /reports/courses/{courseId}/kpis` (PROFESOR propio, ADMIN) y `GET /reports/platform` (solo ADMIN: consolidado + desglose por curso **sin ranking**) | Joaquín | L |
+| #322 | Dashboard de KPIs con "muestra insuficiente" y "disponible al cierre del curso" | Mateo | M |
+| #323 | Tests de anonimato: 4, 5 y 6 respuestas con PAR-18 = 5; curso abierto → sin puntajes; no-ADMIN en `/platform` → 403 | **Regina** | M |
 | #324 | Políticas de privacidad y fórmulas | Joaquín | S |
 | #325 | Peer review de privacidad | Damián | S |
 
 ### 6.6 · HU14 #34 · Alertas configurables — 3 SP · **Could (stretch)**
 
-> Rama: `feature/tema-12-hu14-alerts` (Regina, CP5). **Vertical en un dueño** (antes #326 Regina, #330 Mateo, 14-T3 Luciano).
+> Rama: `feature/tema-12-hu14-alerts` (Regina el backend, Luciano el panel FE 14-T3; CP5, extra).
 
 | ID | Tarea | Dev | Tamaño |
 |---|---|---|---|
 | #326/#330 | `V23__reporting_alerts.sql` (`alert_threshold(indicator, min_value, max_value, enabled)` + `alert`), CRUD solo ADMIN, evaluador periódico sobre indicadores de HU11/HU13, **alertas internas** (activa/resuelta). **No emite `THRESHOLD_BREACHED`** (D-08) | Regina | L |
-| 14-T3 | Panel de umbrales + lista de alertas activas | Regina | M |
+| 14-T3 | Panel de umbrales + lista de alertas activas | Luciano | M |
 | 14-T4 | Tests: en el límite, 1 punto abajo, no-ADMIN 403 | Máximo | M |
 | 14-T5 | Sección de la wiki con el catálogo de umbrales | Ana (wiki) | S |
 | 14-T6 | Peer review | Joaquín | S |
 
 ### 6.7 · HU09 #20 · Exportación asíncrona — 5 SP · **Could (stretch)**
 
-> Rama: `feature/tema-12-hu09-export` (Damián, CP5). Damián implementó las export tools de la slice 07 en el S1 (`ff33671`).
+> Rama: `feature/tema-12-hu09-export` (Damián el backend, Valentina el FE 09-T2; CP5, extra). Damián implementó las export tools de la slice 07 en el S1 (`ff33671`).
 
 | ID | Tarea | Dev | Tamaño |
 |---|---|---|---|
 | 09-T1 | `V25__reporting_export_job.sql` + `POST /reports/exports` (desde una plantilla de US-15 o el panel) → job asíncrono → CSV → `EXPORT_READY` por outbox → `GET /reports/exports/{id}/download`. Hereda **todos** los invariantes (scope, anti-comparación, anonimato) | Damián | L |
-| 09-T2 | Conectar las export tools de la slice 07 al export asíncrono | Damián | S |
+| 09-T2 | Conectar las export tools de la slice 07 al export asíncrono | Valentina | S |
 | 09-T3 | Tests (scope, anonimato, evento una sola vez) | Bruno o Joaquín (quien libere primero su gate) | M |
 | 09-T4 | Sección de la wiki del export y de `EXPORT_READY` | Ana (wiki) | S |
 
@@ -388,14 +390,14 @@ Todas las respuestas llevan DataFreshnessDto (10-M1 · Valentina)
 | #3537 | Fachada del perfil de calibración institucional sobre T07 | Joaquín | M | C1 |
 | #3538 | Pantalla del perfil de calibración (parte 12) | Joaquín | M | C1 |
 | #3539 | Fachada de corridas (crear, listar, detalle; `maeFinal`, `maxIndividualError`, veredicto de T07) | Bruno | M | C1 |
-| #3540 | Pantalla de corridas (parte 13) | Bruno | M | C1 |
+| #3540 | Pantalla de corridas (parte 13) | Mateo | M | C1 |
 | 07-T2 | Estado de calibración del modelo activo (veredicto y deriva, leídos de T07) | Bruno | M | C1 |
 | #284 | Indicador de veredicto/deriva y banner de conmutación | Valentina (**en Taiga figura Joaquín: corregir**) | S | C1 |
 | #286 | T07 calcula MAE y veredicto; el Backoffice gobierna PAR-14 | Bruno | S | C1 |
 | 06-T5 / 07-T4 | Tests WireMock de calibración y de estado (la parte de PAR-14 de 07-T4 **no** tiene gate) | Máximo | M / M | C1 |
-| 06-T6 · 06-T7 · 06-T8 · 07-T6 | Diagrama de secuencia (Draw.io + wiki) · review · OpenAPI · review | Ana · Regina · Joaquín · Mateo | S | C1 |
+| 06-T6 · 06-T7 · 06-T8 · 07-T6 | Diagrama de secuencia (Draw.io + wiki) · review · OpenAPI · review | Ana · Regina · Joaquín · Damián | S | C1 |
 | 08-T1 | Consumidores de `llm.events` (T07) y de T05 con flag, dedup y DLT (mismo patrón que `RawEnvelopeIngestor`) | Valentina | M | Contrato T07/T05 |
-| 08-T3 | IT: nuevo, duplicado, malformado → DLT, flag apagado | Bruno | M | Ídem |
+| 08-T3 | IT: nuevo, duplicado, malformado → DLT, flag apagado | Mateo | M | Ídem |
 | 08-T4 · 08-T5 | Mapeo de contratos · review | Valentina · Luciano | S | Ídem |
 
 ### 6.9 · HT07 · Wiki de G06, diagramas y demo — 3 SP (Ana, D-13)
@@ -416,24 +418,24 @@ Todas las respuestas llevan DataFreshnessDto (10-M1 · Valentina)
 
 ---
 
-## 7 · Reserva de Flyway (D-12)
+## 7 · Reserva de Flyway (D-12, renumerada el 30/09)
 
-> `develop` llega a **V17** (V9–V13 y V16 quedaron reservadas y sin uso en el S1; **no se reutilizan**). `spring.flyway.out-of-order=true` permite mergear en cualquier orden, pero **cada número tiene un solo dueño**.
+> `develop` todavía no tiene las migraciones de la release v1.0.0. Esa release (PR #58) trae **`V18__update_source_contract_topics.sql`** (corrige los topics del seed de V14), así que **se mergea primero la PR #58** y **el V21 de Joaquín del plan anterior queda obsoleto**. La PR #56 de Mateo usa **V24**. `spring.flyway.out-of-order=true` permite mergear en cualquier orden, pero **cada número tiene un solo dueño**. V9–V13 y V16 quedaron reservadas y sin uso en el S1: **no se reutilizan**.
 
 | Versión | Contenido | Dueño | CP |
 |---|---|---|---|
-| **V18** | `reporting_cohort_read_model` | Damián | CP2 |
-| **V19** | `reporting_rls` (políticas + `FORCE`) sobre V18 | Máximo | CP2 |
-| **V20** | `reporting_report_template` | Joaquín | CP3 |
-| **V21** | `reporting_source_contract_v3` (corrige topics del seed de V14) | Joaquín | CP1 |
-| **V22** | `reporting_survey_summary` (+ su política RLS) | Mateo | CP4 |
-| **V23** | `reporting_alerts` (+ RLS si tiene `course_id`) | Regina | CP5 |
-| **V24** | `global_parameter_par12` (solo si se confirma P-12) | Damián | CP2 |
-| **V25** | `reporting_export_job` | Damián | CP5 |
+| **V18** | Topics del registro de contratos (**ya existe en la release, PR #58**) | Mateo | CP0 |
+| **V19** | `reporting_cohort_read_model` | Damián | CP2 |
+| **V20** | `reporting_rls` (políticas + `FORCE`) sobre V19 | Máximo | CP2 |
+| **V21** | `reporting_report_template` | Joaquín | CP3 |
+| **V22** | `reporting_survey_summary` (+ su política RLS) | Joaquín | CP4 |
+| **V23** | `reporting_alerts` (+ RLS si tiene `course_id`), extra | Regina | CP5 |
+| **V24** | PAR-12 y alineación con Skill Hub (**PR #56, ya abierta**) | Mateo | CP0 |
+| **V25** | `reporting_export_job`, extra | Damián | CP5 |
 | **V26** | `reporting_projection_checkpoint` (si #305 lo necesita) | Valentina | CP3 |
 
-> **Regla:** toda tabla nueva de `reporting` con `course_id` trae su política RLS **en la misma migración**, copiando el patrón de V19.
-> **V21 (arrastre S1):** el seed de V14 todavía tiene `courses.lifecycle`, `challenges.results` y `economy.transactions`; desde la PR #47 los topics reales son `courses.events`, `challenges.events` y `accounting.events`. La pantalla 14 de contratos muestra datos viejos. Una migración aplicada no se edita: se corrige con `UPDATE` en V21 (y se ajustan `ReadContractControllerTest` y `SourceContractRepositoryTest`, que usan los nombres viejos).
+> **Regla:** toda tabla nueva de `reporting` con `course_id` trae su política RLS **en la misma migración**, copiando el patrón de V20.
+> Las pruebas `ReadContractControllerTest` y `SourceContractRepositoryTest` que usan los nombres viejos de topics se ajustan en la PR #58 o en la del dueño de V18 (Mateo).
 
 ---
 
@@ -442,8 +444,8 @@ Todas las respuestas llevan DataFreshnessDto (10-M1 · Valentina)
 | CP | Fecha | Backend (PR a `develop`) | Frontend | Coordinación |
 |---|---|---|---|---|
 | **CP0** | 29–30/09 | Higiene (H-01…H-06) · PR de S2-00 abierta | PR de #3512 y #291 (ramas ya terminadas) | Cada dev **valida su `dev-XX.md`** (§12) · se mandan C1, C2, C3, C5, C6 · Ana corrige Taiga |
-| **CP1** | 01/10 | **S2-00 mergeado (congelado)** · 06B-T1 · V21 · 01-IT | 05-N1 | — |
-| **CP2** | 02/10 | V18 (#303) · #311 + V19 · 04-T1 · 07-T1 (+V24 si P-12) | — | **Gate:** ¿respondieron T07 (C1) y T02 (C3)? Si no → flags y corte (§11) |
+| **CP1** | 01/10 | **S2-00 mergeado (congelado)** · 06B-T1 · PR #58 (V18) · 01-IT | 05-N1 | — |
+| **CP2** | 02/10 | V19 (#303) · #311 + V20 · 04-T1 · PR #56 (V24) | — | **Gate:** ¿respondieron T07 (C1) y T02 (C3)? Si no → flags y corte (§11) |
 | **CP3** | 06/10 | #305 · #304 + #312 · #310 · 04-T2 · 05-T1 · 15-T1 + 15-T3 · 10-M1 | 04-T3 · 05-T3 · #276 | — |
 | **CP4** | 08/10 | 15-T2/T4 · HU13 · suites #314/#315, 15-T5, #306, 10-M2, #323 · 06B-T2 | #313 · #322 · 05-T7 · 05-N3 | — |
 | **CP5** | 09–11/10 | Stretch (HU14, HU09) · gates liberados | 15-T8 · 15-T9 · 14-T3 | Demo · E2E · retro |
@@ -456,68 +458,69 @@ Todas las respuestas llevan DataFreshnessDto (10-M1 · Valentina)
 
 ---
 
-## 9 · Matriz de revisión cruzada (nadie testea ni revisa lo suyo)
+## 9 · Matriz de revisión cruzada (nadie testea ni revisa lo suyo) — versión del 30/09
 
 | Código de… | Lo testea | Lo revisa |
 |---|---|---|
 | S2-00 (Luciano) | — (sin lógica) | **Máximo + Mateo** |
-| 06B-T1, 06B-T6 (Luciano) | Máximo (06B-T2) | Valentina (06B-T5) |
-| 05-N1 (Luciano) | Mateo (05-N3) | Joaquín (05-N4) |
-| 15-T8 (Luciano) | Damián (15-T9) | Regina (15-T11) |
-| 04-T1 (Máximo) | Luciano (04-T4) | Bruno (04-T5) |
-| #311 (Máximo) · #310 (Regina) · #312 (Damián) | Luciano (#314/#315) | Mateo (#317) |
-| 06B-T3/T4 (Máximo) · #3512 (Máximo) | Mateo (05-N3, para #3512) | Valentina (06B-T5) · Joaquín (05-N4) |
+| 06B-T1, 06B-T6 (Luciano) | Regina (06B-T2) | Valentina (06B-T5) |
+| 05-N1 y #1657 (Luciano) | Mateo (05-N3) | Joaquín (05-N4) |
+| #313 (Luciano) | Bruno (12-T9) | Mateo (#317) |
+| 14-T3 (Luciano) y HU14 BE (Regina) | Máximo (14-T4) | Joaquín (14-T6) |
+| 04-T1 y #311 (Máximo) | Luciano (04-T4, #314) | Bruno (04-T5) · Mateo (#317) |
+| 06B-T3/T4 y #3512 (Máximo) | Mateo (05-N3, para #3512) | Valentina (06B-T5) · Joaquín (05-N4) |
 | 04-T2/04-T3 (Regina) | Luciano (04-T4) · Valentina (05-T7) | Bruno (04-T5) |
+| #310 (Regina) · #312 (Damián) | Luciano (#314/#315) | Mateo (#317) |
 | 05-T1/#276/05-T3 (Mateo) | Luciano (05-T4) · Valentina (05-T7) | Joaquín (05-T6) |
-| HU13 (Mateo) | Joaquín (#323) | Damián (#325) |
-| 01-IT (Mateo, prueba código de Damián) | — | Regina |
-| #303/#304 (Damián) | Regina (#306) | Máximo (#308) |
-| #305 · 10-M1 (Valentina) | Regina (10-M2) | Máximo (#308) |
-| #313 (Damián) | Joaquín (12-T9) | Mateo (#317) |
-| #322 (Valentina) | — (specs propias) | Damián (#325) |
-| 07-T1 · P-12 (Damián) | Máximo (07-T4, parte PAR-14) | Mateo (07-T6) |
+| **PR #56 (Mateo)** | su test + Máximo (07-T4, parte PAR-14) | **Damián** |
+| 01-IT (Mateo) | — | Regina |
+| #322 (Mateo) | specs propias | Damián (#325) |
+| HU13 BE (Joaquín) | Regina (#323) | Damián (#325) |
 | 15-T1/15-T3 (Joaquín) · 15-T2/T4 (Bruno) | Máximo (15-T5) | Valentina (15-T7) |
-| V21 (Joaquín) | — | Valentina |
-| HU14 (Regina) | Máximo (14-T4) | Joaquín (14-T6) |
-| HU09 (Damián) | Bruno o Joaquín (09-T3) | Luciano |
-| #3537/#3538 (Joaquín) · #3539/#3540/07-T2 (Bruno) | Máximo (06-T5, 07-T4) | Regina (06-T7) · Mateo (07-T6) |
-| 08-T1 (Valentina) | Bruno (08-T3) | Luciano (08-T5) |
-| #3331 (Bruno) · #291/05-N2 (Valentina) · #1657 (Regina) | Mateo (05-N3) | Joaquín (05-N4) |
+| 15-T8 (Damián) | Bruno (15-T9) | Regina (15-T11) |
+| #303/#304 (Damián) | Regina (#306) | Máximo (#308) |
+| #3331 (Damián) | Mateo (05-N3) | Joaquín (05-N4) |
+| #305 · 10-M1 (Valentina) | Regina (10-M2) | Máximo (#308) |
+| #291/05-N2 (Valentina) | Mateo (05-N3) | Joaquín (05-N4) |
+| HU09: BE (Damián) y FE (Valentina) | Máximo | Luciano |
+| 08-T1 (Valentina) | Mateo (08-T3) | Luciano (08-T5) |
+| #3537/#3538 (Joaquín) · #3539/07-T2 (Bruno) · #3540 (Mateo) · #284 (Valentina) | Máximo (06-T5, 07-T4) | Regina (06-T7) · Damián (07-T6) |
 | H-06 release v1.0.0 (Damián) | CI de `main` | Mateo |
 | Páginas de wiki y diagramas de Ana | — | El dueño de la historia (que además le pasa los ejemplos reales) · D-DEMO: Luciano |
 | Filas de firma de contratos (C1, C2, C3, C5, C6, C8, C9) | — | Ana verifica en Taiga (T-C) que ninguna quede `⛔ a completar` |
 
 ---
 
-## 10 · Carga por dev (sin horas)
+## 10 · Carga por dev — distribución pareja en líneas de código (v2, 30/09)
 
-> Unidades relativas: S = 1, M = 2, L = 3, XL = 5. Sirven para **comparar** cargas, no para calcular tiempo. La disponibilidad sale de la tabla de capacidad del grupo (días, ausencias y dedicación).
+> **Criterio del grupo:** Sprint 2 es un sprint nuevo: las asignaciones se reparten **parejas en líneas de código efectivas** (código + tests, sin documentación), **sin arrastrar** lo que cada uno hizo en el Sprint 1, e **incluyendo las tareas y PRs sin terminar del Sprint 1**. El detalle tarea por tarea y los cambios contra la versión anterior están en **`distribucion-pareja.md`**, que prevalece sobre cualquier asignación de las secciones 4, 5 y 6 de este archivo que la contradiga. Las líneas son estimaciones con margen ±30 %.
 
-| Dev | Integrante | Disponibilidad | Núcleo | Con gate | Stretch | Capas del núcleo |
-|---|---|---|---:|---:|---:|---|
-| 01 | Luciano Paz | Alta | 19 | 1 | — | BACK · FRONT · TEST · REV · DOC |
-| 02 | Mateo Carballo Juarez | Alta | 16 | 1 | — | BACK · FRONT · TEST · REV · DOC |
-| 03 | Damián Baigorria | Media (2 días de ausencia) | 15 | — | 4 | BACK · FRONT · TEST · REV · DOC |
-| 04 | Joaquín Cortez | Baja | 12 | 5 | — | BACK · TEST · REV · DOC (FRONT con gate) |
-| 05 | Valentina Maldonado | Media | 14 | 4 | — | BACK · FRONT · TEST · REV · DOC |
-| 06 | Máximo Cerquatti | Alta | 17 | 5 | — | BACK · FRONT · TEST · REV · DOC |
-| 07 | Regina Cerasulo | Media | 12 | 2 | 5 | BACK · FRONT · TEST · REV · DOC |
-| 08 | Bruno Gianoli | Baja | 9 (incluye el XL de la ruta crítica) | 9 | — | BACK · FRONT · REV · DOC |
-| 09 | Ana Paula Ducart | MSII (no codifica) | 10 | 1 | 2 | Taiga · wiki · Draw.io |
+| Dev | Integrante | Núcleo (Must + Should) | Condicionado + extra | Total (techo) |
+|---|---|---:|---:|---:|
+| 01 | Luciano Paz | 2.925 | 1.050 | 3.975 |
+| 02 | Mateo Carballo Juarez | 2.990 | 1.050 | 4.040 |
+| 03 | Damián Baigorria | 3.020 | 1.000 | 4.020 |
+| 04 | Joaquín Cortez | 3.000 | 1.230 | 4.230 |
+| 05 | Valentina Maldonado | 2.930 | 1.150 | 4.080 |
+| 06 | Máximo Cerquatti | 2.898 | 990 | 3.888 |
+| 07 | Regina Cerasulo | 2.990 | 1.000 | 3.990 |
+| 08 | Bruno Gianoli | 2.800 | 960 | 3.760 |
+| 09 | Ana Paula Ducart | — (no codifica: Taiga, wiki y Draw.io) | — | — |
+| | **Total** | **23.553** | **8.430** | **31.983** |
 
 > **Numeración:** desde el Sprint 2 es corrida (01 a 09). En el Sprint 1 el 05 era Julieta, que ya no está en el equipo. Equivalencias con el S1: Valentina 06 → 05 · Máximo 07 → 06 · Regina 08 → 07 · Bruno 09 → 08 · Ana 10 → 09.
 
-**Lectura de la tabla:**
-- **Ana** no tiene tareas en los repos (D-13): su núcleo es la wiki de G06, que es un entregable de la cátedra que hoy falta.
-- **Bruno** queda con la ruta crítica (motor de US-15) **sin otra tarea grande de núcleo**. Si C1 no llega, sus 9 unidades con gate se liberan y toma 09-T3. En la propuesta tenía 148 % con la ruta crítica.
-- **Máximo** deja de ser "el tester del equipo" (la propuesta le daba la mayor carga de TEST): mantiene los tests de seguridad (su especialidad) y #323 pasa a Joaquín.
-- **Luciano** tiene el núcleo más alto porque S2-00 dura un solo checkpoint y habilita a todos; no tiene stretch.
+**Lectura:**
+- El núcleo va de 2.800 a 3.020 (1,08 veces). En la versión anterior iba de 1.950 a 3.780.
+- **PAR-14/PAR-12 (PR #56) son de Mateo**: ya está hecha y con la PR abierta. Damián no las tiene.
+- **Ana** no tiene tareas en los repos (D-13): su entregable es la wiki de G06, que hoy falta.
+- **Bruno** queda con el motor (ruta crítica) más las specs del builder y del panel. Si C1 no llega, sus líneas condicionadas se liberan.
 
 ---
 
 ## 11 · Orden de corte (si la realidad no acompaña)
 
-1. **Gates vencidos en el CP2:** HU06/HU07 (salvo 07-T1), 08-T1/08-T3, #1657, 06B-T3 → quedan con stub/flag y pasan a "Necesita información" en Taiga.
+1. **Gates vencidos en el CP2:** HU06/HU07 (salvo la PR #56), 08-T1/08-T3, #1657, 06B-T3 → quedan con stub/flag y pasan a "Necesita información" en Taiga.
 2. **Stretch:** HU09 → HU14.
 3. **#322** (el backend de HU13 queda con OpenAPI y tests).
 4. **15-T8/15-T9** (fase 2 de US-15) → Sprint 3, con la fase 1 cerrada.

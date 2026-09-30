@@ -72,7 +72,7 @@
 
 | Acuerdo | Mecanismo concreto en `tareas-sprint2.md` | Responsable | Cómo lo medimos en la retro del S2 |
 |---|---|---|---|
-| Estimar con mayor precisión | Sin horas: SP por historia, tamaño relativo por tarea y disponibilidad por persona (§10). Núcleo / con gate / stretch (D-10) | Todos | % de historias del núcleo cerradas (objetivo ≥ 80 %) |
+| Estimar con mayor precisión | Sin horas: SP por historia y reparto pareja en líneas de código efectivas por persona (§10). Núcleo / con gate / stretch (D-10) | Todos | % de historias del núcleo cerradas (objetivo ≥ 80 %) |
 | Asignar más tareas | Núcleo de 48 SP (vs 34 del S1) + 21 SP Should + 8 SP stretch | Todos | SP completados vs S1 |
 | Actualizar Taiga | Corrección de estados en el CP0 (H-07); cada dueño mueve su tarjeta al abrir y al mergear la PR | Ana + cada dev | Historias con estado incoherente al cierre = 0 |
 | Coordinar entre grupos | HT01 como historia **Must** con responsable por tema (§3); gate en el CP2 con fallback | Máximo, Mateo, Damián, Luciano, Valentina, Bruno · seguimiento en Taiga: Ana | Contratos de los 6 temas fuente con firma |

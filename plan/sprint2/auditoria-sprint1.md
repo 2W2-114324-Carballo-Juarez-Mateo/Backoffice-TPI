@@ -38,7 +38,7 @@
 | Lectura M2M con scope `backoffice.parameters.read` | PRs #51/#52, desplegado | ✅ |
 | Exclusión de externos (PAR-03/06/07 → T09, PAR-24 → T01) | V2 los excluye | ✅ |
 | **PAR-12** (vidas iniciales/máximas) | `PARAMETROS.md` lo declara **CONFIRMADO del Backoffice** (lo consume T10); `AGENTS.md` dice **EXTERNO T08**; V2 lo excluye y ningún seed lo agrega | ❌ **contradicción documental + hueco en el registro** → P-12 |
-| **PAR-14** (tolerancia de calibración) | `ParameterValueRules` solo valida "es un mapa"; el PRD exige ±5 promedio y ±10 individual | ⚠️ → 07-T1 |
+| **PAR-14** (tolerancia de calibración) | `ParameterValueRules` solo valida "es un mapa"; el PRD exige ±5 promedio y ±10 individual | ⚠️ → PR #56 (Mateo) |
 | PAR-21 | Suspendido y documentado (no está en el PRD) | ✅ correcto no sembrarlo |
 | Orden estricto por clave en el outbox (US-02 CA4) | La PR #46 demostró que `findReadyToPublish` puede publicar v2 antes que v1 con reintentos | ⚠️ → 06B-T1/T2 |
 | IT con Testcontainers del servicio de parámetros (US-01 T8) | Rama `feature/us-01-testcontainers` (177 líneas de test), **nunca tuvo PR** | ⚠️ → H-01 |
@@ -61,7 +61,7 @@
 | Registro de contratos (tabla + endpoint + pantalla 14) | V14, `ReadContractController` (`GET /reports/contracts`, ADMIN) (PR #45) | ✅ |
 | Consumidores con dedup y DLT | `ChallengeEventConsumer`, `CourseEventConsumer` activos; `EconomyTransactionConsumer`, `SandboxEventConsumer` con flag apagado; `processed_event`, `KafkaDeadLetterPublisher` | ✅ |
 | Frescura PAR-23 de la ingesta | `IngestionReportController` (`/health/freshness`), cálculo al leer | ✅ |
-| **Seed de V14 con topics viejos** | `courses.lifecycle`, `challenges.results`, `economy.transactions` · desde la PR #47 los reales son `courses.events`, `challenges.events`, `accounting.events` | ❌ la pantalla 14 muestra datos desactualizados → V21 |
+| **Seed de V14 con topics viejos** | `courses.lifecycle`, `challenges.results`, `economy.transactions` · desde la PR #47 los reales son `courses.events`, `challenges.events`, `accounting.events` | ❌ la pantalla 14 muestra datos desactualizados → V18 de la release (PR #58) |
 | Estado de los contratos | T01 ✅ · T03 🟡 ACUERDO · T08 🟡 ACUERDO parcial · T10 🟡 EN CURSO · **T02 🟡 SOLICITUD LISTA sin respuesta** · **T11 sin firma** · **T05 ⏳ sin solicitud** | ❌ → HT01 |
 | Tabla de firmas (G4) | Todas las filas con `⛔ a completar` | ❌ → cada responsable completa su fila (C1, C2, C3, C5, C6, C8, C9); Ana hace el seguimiento en Taiga (T-C) |
 | Solicitud a T02 | Escrita con el **envelope viejo de 8 campos** y `course.events`; pide CSAT como **promedio** | ❌ → C3 |
@@ -75,7 +75,7 @@
 | RF-CFG-04 | Catálogo de la economía como configuración global solo ADMIN | ✅ | PAR-12 | P-12 |
 | RF-CFG-05 | Ámbitos ADMIN (valor) vs PROFESOR (estructura del curso) | ✅ backend | FE de solo lectura | #3331 |
 | RF-CFG-06 | Los cambios rigen hacia adelante | ✅ versionado + historial | Orden estricto por clave | 06B-T1 |
-| PAR-14 (RF-IA-31) | ±5 promedio y ±10 en una dimensión | ⚠️ | Validación de rango | 07-T1 |
+| PAR-14 (RF-IA-31) | ±5 promedio y ±10 en una dimensión | ⚠️ | Validación de rango | PR #56 (Mateo) |
 | PAR-18 (RF-ENC-13) | Mínimo 5 respuestas para mostrar encuestas al PROFESOR | ✅ sembrado | No se aplica en ningún reporte | HU13 |
 | RF-ENC-04 | Anonimato estructural: ni autor ni timestamp que permita correlacionar | — | **La ingesta cruda guardaría el `occurred_at` exacto de cada respuesta** si T02 publica por respuesta | C3 + HU13 |
 | RF-ENC-08 | KPIs agregados: PROFESOR los suyos, ADMIN consolidado + desglose por curso | ❌ | Todo | HU13 |
@@ -200,4 +200,4 @@ La cátedra pide documentar cada tema en la wiki (`guia-doc-proyecto-por-grupo`,
 | T-4 | La frescura se calcula al leer; no hay (ni hace falta) un marcador programado | `IngestionCounter`, `SourceIngestionStatsDto` | Reusar ese diseño en los reportes (10-M1 redefinida) |
 | T-5 | `THRESHOLD_BREACHED` y `DATA_STALE_DETECTED` están **excluidos** del catálogo de T11 | `CONTRATOS_MAPEO_TOPICS.md` | HU14 con alertas internas |
 | T-6 | `llm.budget.events` no está registrado en T11 | Ídem | B-AL al backlog |
-| T-7 | Las migraciones V9–V13 y V16 quedaron reservadas y sin usar | `db/migration` | No reutilizarlas: el S2 arranca en V18 |
+| T-7 | Las migraciones V9–V13 y V16 quedaron reservadas y sin usar | `db/migration` | No reutilizarlas: el S2 arranca en V19 (V18 la ocupa la release v1.0.0) |

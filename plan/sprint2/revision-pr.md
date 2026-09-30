@@ -95,14 +95,14 @@ Testea: @___ · Revisa: @___
 - [ ] Hay índice que soporte la subconsulta (estado + clave + `created_at`), o se justifica por qué no hace falta.
 - [ ] Filas de **otras** claves siguen saliendo en paralelo.
 
-**V21 · Topics v3 del registro de contratos (Joaquín) — revisa Valentina**
-- [ ] V14 **no** se edita; V21 hace `UPDATE ... WHERE topic = '<viejo>'` (idempotente).
+**V18 · Topics v3 del registro de contratos (release v1.0.0, PR #58, Mateo) — revisa Valentina** *(reemplaza al V21 de Joaquín, que quedó obsoleto)*
+- [ ] V14 **no** se edita; V18 hace `UPDATE ... WHERE topic = '<viejo>'` (idempotente).
 - [ ] `ReadContractControllerTest` y `SourceContractRepositoryTest` usan los nombres nuevos.
 - [ ] La pantalla 14 muestra `courses.events`, `challenges.events` y `accounting.events`.
 
-**07-T1 · PAR-14 y P-12 · PAR-12 (Damián) — revisa Mateo**
+**PR #56 · PAR-14, PAR-12 y alineación con Skill Hub (Mateo, ya abierta) — revisa Damián**
 - [ ] PAR-14: conserva las claves sembradas en V2 (`promedio`, `dimension`); rechaza faltantes, no numéricos, negativos, `promedio > dimension` y `> 100`; mensajes en inglés y accionables.
-- [ ] P-12 (si el grupo lo confirmó): V24 siembra el valor **y** su fila v1 en el historial (mismo patrón que V8); regla `1 ≤ initialLives ≤ maxLives`; `AGENTS.md` corregido **en la misma PR**.
+- [ ] P-12 (confirmado): V24 siembra el valor **y** su fila v1 en el historial (mismo patrón que V8); regla `1 ≤ initialLives ≤ maxLives`; `AGENTS.md` corregido **en la misma PR**.
 
 **01-IT · Test de integración de US-01 (Mateo) — revisa Regina**
 - [ ] Solo el test (sin el `jsonKafkaTemplate` de la rama vieja).
@@ -142,7 +142,7 @@ Testea: @___ · Revisa: @___
 
 ### 4.3 · Reporting (HU11, HU12, HU10-bis)
 
-**#303 · Read model V18 (Damián) — revisa Máximo**
+**#303 · Read model V19 (Damián) — revisa Máximo**
 - [ ] Esquema `reporting`; único `(course_id, student_id)`; índices por `course_id` y `(course_id, risk_level)`.
 - [ ] Sin FK hacia tablas de otros slices (solo IDs).
 - [ ] `CohortSummaryQuery` de solo lectura.
@@ -182,7 +182,7 @@ Testea: @___ · Revisa: @___
 - [ ] PAR-23 leído del registro con 15 por defecto.
 - [ ] `asOf` = el evento más viejo entre las fuentes requeridas; `stale` si cualquiera supera PAR-23; fuente sin eventos → `stale` y marcada.
 
-**#313 · Panel FE (Damián) — revisa Mateo, specs Joaquín**
+**#313 · Panel FE (Luciano) — revisa Mateo, specs Bruno (12-T9)**
 - [ ] Semáforo con color **y** texto; navegable por teclado.
 - [ ] 403 → mensaje claro, sin datos.
 - [ ] Badge de frescura reutilizado de #291 (no copiado).
@@ -203,17 +203,17 @@ Testea: @___ · Revisa: @___
 - [ ] Período máximo y tamaño de página máximo; `DataFreshnessDto` en la respuesta.
 - [ ] Ejecuta dentro de `ReportScopeResolver` + RLS.
 
-**HU13 · KPIs CSAT (Mateo) — revisa Damián, testea Joaquín**
+**HU13 · KPIs CSAT (Joaquín) — revisa Damián, testea Regina (#323)**
 - [ ] V22 **sin autor y sin timestamp preciso** (a lo sumo el día o el período); con RLS.
 - [ ] KPI = % 4–5 y % 1–2 sobre respuestas emitidas; abstenciones fuera del denominador pero informadas.
 - [ ] PROFESOR: puntajes solo con `respuestas ≥ PAR-18` **y** curso cerrado; si no, solo el conteo.
 - [ ] `/platform` solo ADMIN; desglose por curso **ordenado por curso, sin ranking**.
 
-**#322 · Dashboard KPIs (Valentina) — revisa Damián**
+**#322 · Dashboard KPIs (Mateo) — revisa Damián**
 - [ ] Estados "muestra insuficiente" y "disponible al cierre del curso".
 - [ ] Gráficos con alternativa textual.
 
-**15-T8 · Builder (Luciano) — revisa Regina, specs Damián**
+**15-T8 · Builder (Damián) — revisa Regina, specs Bruno (15-T9)**
 - [ ] Solo ofrece métricas de `GET /reports/metrics`; las no disponibles se ven deshabilitadas con el motivo.
 - [ ] No existe opción de agrupar por docente.
 - [ ] Guardar plantilla con validación y feedback accesible.
@@ -245,7 +245,7 @@ Testea: @___ · Revisa: @___
 - [ ] Se retiró el parche de `proxy.conf.backoffice-gateway.cjs`.
 - [ ] Los alias del backend **siguen** (no se tocan en esta PR).
 
-**#3331 · Solo lectura PROFESSOR (Bruno) · #1657 · 2FA (Regina) · 05-N2 (Valentina) — revisa Joaquín**
+**#3331 · Solo lectura PROFESSOR (Damián) · #1657 · 2FA (Luciano) · 05-N2 (Valentina) — revisa Joaquín**
 - [ ] PROFESSOR ve parámetros sin botones de edición y sin acceso a la ruta de edición.
 - [ ] 2FA: solo lectura del estado que expone T01.
 - [ ] El dashboard oculta lo que el rol no puede usar.

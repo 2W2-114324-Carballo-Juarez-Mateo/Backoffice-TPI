@@ -39,11 +39,11 @@ No tenés que leer código. Cada dueño de historia te pasa lo de su área y **r
 
 | Insumo | Te lo pasa |
 |---|---|
-| Tablas y relaciones para el DER (migraciones V1–V17 y las nuevas) | Damián (parámetros) · Valentina (ingesta) · Joaquín (contratos) |
-| Ejemplos reales de request/response de parámetros y auditoría | Damián · Máximo |
+| Tablas y relaciones para el DER (migraciones V1–V18 y las nuevas) | Damián (read model) · Valentina (ingesta) · Mateo (registro de contratos y parámetros) |
+| Ejemplos reales de request/response de parámetros y auditoría | Mateo (parámetros, PR #56) · Máximo (auditoría) |
 | Ejemplos de proveedores y modelos LLM | Regina · Mateo |
-| Ejemplos del panel docente y de la política RLS | Regina · Máximo |
-| Ejemplos de métricas, plantillas y `run` de US-15 | Joaquín · Bruno |
+| Ejemplos del panel docente y de la política RLS | Regina · Máximo · Luciano (panel FE) |
+| Ejemplos de métricas, plantillas, KPIs y `run` de US-15 | Joaquín · Bruno · Damián (builder) |
 | Estados del outbox (`PENDING` → `PUBLISHED` / `DEAD_LETTER`) y del riesgo (`RED`/`YELLOW`/`GREEN`) | Luciano · Damián |
 
 ## Reglas para vos (retro)

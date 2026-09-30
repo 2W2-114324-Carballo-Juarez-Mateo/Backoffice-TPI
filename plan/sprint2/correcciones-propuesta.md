@@ -43,9 +43,9 @@
 |---|---|---|---|
 | 17 | Test de integración de US-01 en una rama sin PR | `feature/us-01-testcontainers` (Mateo) | H-01 / 01-IT |
 | 18 | Ramas que hay que cerrar para que nadie las mergee por error | `us-02-envelope`, `contratos-alineados-drive`, `mvp-s6-golden-set-runs`, FE `fix/admin-export-service-spec` | H-02, H-04 |
-| 19 | Seed de contratos con topics viejos | V14: `courses.lifecycle`, `challenges.results`, `economy.transactions` | V21 (Joaquín) |
+| 19 | Seed de contratos con topics viejos | V14: `courses.lifecycle`, `challenges.results`, `economy.transactions` | V18 de la release v1.0.0 (PR #58, Mateo); el V21 de Joaquín quedó obsoleto |
 | 20 | PAR-12 sin sembrar pese a estar CONFIRMADO en `PARAMETROS.md` | V2 lo excluye; `AGENTS.md` lo da como externo | P-12 (decisión del grupo) |
-| 21 | Validación real de PAR-14 | `ParameterValueRules` solo valida "es un mapa" | Se mantiene 07-T1, pero **sin gate** (no depende de T07) |
+| 21 | Validación real de PAR-14 | `ParameterValueRules` solo valida "es un mapa" | Se mantiene 07-T1, pero **sin gate**; ya la hizo Mateo en la PR #56 |
 | 22 | Solicitud a T05 | No existe `CONTRATOS_T05_SOLICITUD.md` | C5 |
 | 23 | Solicitud a T02 desactualizada | Envelope de 8 campos y `course.events` | C3 reescrita |
 | 24 | Tabla de firmas vacía | `⛔ a completar` en todas las filas de `CONTRATOS.md` | Cada responsable completa su fila en su PR (C1, C2, C3, C5, C6, C8, C9) · seguimiento de Ana en Taiga (T-C) |
@@ -62,13 +62,13 @@
 | 30 | **HU13** con #319 (Mateo), #320 (Regina), #321 (Bruno) | Tres devs en el mismo servicio de KPIs | Consolidado en Mateo |
 | 31 | **HU14** con #326 (Regina), #330 (Mateo), 14-T3 (Luciano) | Tres devs en una historia chica | Vertical en Regina |
 | 32 | 06B-T1 "no tomar una fila si hay una PENDING más vieja de la misma `param_key`" | El outbox ya es genérico (auditoría, riesgo, export) | La regla es por **clave de partición** |
-| 33 | Reserva de Flyway V18–V20 | Hacen falta 9 versiones | V18–V26 con dueño (§7 del plan) |
+| 33 | Reserva de Flyway V18–V20 | Hacen falta 9 versiones | V18–V26 con dueño (§7 del plan; renumeradas el 30/09 porque V18 y V24 ya están ocupadas) |
 
 ## 6 · Carga y estimación
 
 | # | En la propuesta | Problema | Corrección |
 |---|---|---|---|
-| 34 | Horas por tarea y capacidad en horas | El equipo decidió no estimar en horas (con IA engañan) | SP por historia + tamaño relativo por tarea + disponibilidad por persona |
+| 34 | Horas por tarea y capacidad en horas | El equipo decidió no estimar en horas (con IA engañan) | SP por historia + líneas de código efectivas por tarea, repartidas parejas entre los 8 que programan (`distribucion-pareja.md`) |
 | 35 | Carga nominal 117 % con todo en el mismo nivel | No distingue lo que depende de otro equipo | Núcleo / con gate / stretch; el stretch arranca con el núcleo mergeado |
 | 36 | **Bruno** 148 % **y** dueño de la ruta crítica (15-T2) | El riesgo que la misma propuesta marcaba como PC1 | Bruno queda con el motor como único núcleo grande; sale T08-1 y #321 |
 | 37 | **Máximo** con la mayor carga de TEST del equipo | Rol de "tester", contrario a "los 8 que programan cubren las 5 capas" | #323 pasa a Joaquín; Máximo conserva los tests de seguridad |
