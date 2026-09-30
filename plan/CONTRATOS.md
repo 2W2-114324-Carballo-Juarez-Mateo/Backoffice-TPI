@@ -110,11 +110,11 @@
 | `eventType` | Inglés SCREAMING_SNAKE_CASE (`CHALLENGE_COMPLETED`, `ACADEMIC_DATA_EXPIRING`…) |
 | `producer` | `spring.application.name` (Backoffice: **`tema-12-backoffice-service`**) |
 | `timestamp` | ISO 8601 UTC |
-| Topics | Inglés: `challenges.results` · `courses.lifecycle` · `system.notifications` · `economy.transactions`… |
+| Topics | Inglés (v3, T11): `challenges.events` · `courses.events` · `notifications.events` · `accounting.events` · `identity.audit.events`… |
 | Serialización | `JsonSerializer`/`JsonDeserializer` + `spring.json.trusted.packages` + consumer tipado `Event<Payload>` |
 | Regla de topics | **No se crean topics nuevos: se avisa a T11 para registrarlos** |
 
-> **Impacto en Backoffice:** consumimos **`challenges.results`** (T03) y **`courses.lifecycle`** (T02). **Topics a registrar con T11 (G1):** `administration.events` (config), `audit.events`, `administration.events.DLT` (DLT). Nombres de eventos propios (`GLOBAL_CONFIGURATION_CHANGED`, `PARAMETER_CHANGED`…) a fijar en inglés y coordinar en G1/G4. La **auditoría** sigue en `audit.events` (T01 persiste).
+> **Impacto en Backoffice (v3, T11):** consumimos **`challenges.events`** (T03) y **`courses.events`** (T02); también `accounting.events` (T08) y `identity.audit.events` (T01, auditoría delegada). **Emisión:** `administration.events` (config) + `administration.events.DLT` + `notifications.events` (alertas). Nombres de eventos propios (`GLOBAL_CONFIGURATION_CHANGED`, `STUDENT_AT_HIGH_RISK`, `EXPORT_READY`) en inglés. `producer = tema-12-backoffice-service`.
 
 ## T07 — Evaluación LLM (✅ CERRADO — fachada de gobernanza, 27/09)
 - **Pivote (opción A):** el dominio LLM (proveedores, credenciales, modelos, activación, golden set, calibración PAR-14) es de **T07** (`llm-service` v2.0.0, publicado en Skill Hub). El Backoffice es **fachada de gobernanza**: consume `/api/llm/admin/*` con scope **`llm.calibration.manage`** (security `serviceJwt`) y path var **`{deploymentId}`** (`GET /admin/evaluator-models`, `/active`, `POST .../{deploymentId}/activate`, `.../select-for-calibration`, `.../usage`, `DELETE .../{deploymentId}`). **Sin tablas ni lógica LLM propias** (`V10` eliminado del shared). Fuente: `docs/Task/auditoria-contratos-skillhub.md`.
@@ -141,7 +141,7 @@
 ## Convenciones transversales (aplican a todos)
 
 - **Envelope estándar (T11/cátedra):** **`EventEnvelope<T>{eventId (UUID), eventType, eventVersion (int), timestamp, producer, payload (T)}`** (genérico, payload tipado). `correlationId/actorId/role` → **dentro del `payload`**. **Todo en inglés**. `producer = spring.application.name` (**`tema-12-backoffice-service`**).
-- **Topics:** en inglés (`challenges.results`, `courses.lifecycle`, `system.notifications`…), versionados. **No se crean topics nuevos: se registran con T11.** **Idempotencia:** `event_id` + versión.
+- **Topics (v3, T11):** en inglés (`challenges.events`, `courses.events`, `notifications.events`, `accounting.events`…), versionados. **No se crean topics nuevos: se registran con T11.** **Idempotencia:** `event_id` + versión.
 - **Rutas:** `/api/{servicio}/**`. **Frescura de lectura:** ≤ 15 min (decisión de arquitectura).
 - **Caché de parámetros en consumidores:** TTL 10 min + invalidación por evento.
 

@@ -355,7 +355,7 @@ El Backoffice depende de **contratos de lectura** con los temas que le proveen d
 
 > La **persistencia y consulta de auditoría** pertenecen al **Tema 01 (Identidad y Usuarios)**. El Backoffice **emite** los eventos de auditoría de sus operaciones administrativas (o los provoca), y Tema 01 los persiste; el Backoffice puede **consultar** auditoría vía contrato de lectura, pero **no implementa** el registro.
 >
-> **Contrato cerrado (T01):** publicación en topic **`audit.events` (v1)**, envelope estándar + `role` (propuesto como estándar de plataforma, T01 lo confirma). Eventos emitidos por el Backoffice: `ParameterChanged`, `ModelProviderChanged`, `EvaluatorActivated`, `GlobalRead`. Lectura: `GET /api/users/audit` y `GET /api/users/audit/{id}` (ruteo del gateway `/api/{servicio}/**`), rol **ADMIN**, paginación `offset`/`limit` (def. 50, máx 100), respuesta `{items, total, nextOffset}`.
+> **Contrato cerrado (T01):** publicación en topic **`identity.audit.events` (v1)**, envelope estándar + `role` (propuesto como estándar de plataforma, T01 lo confirma). Eventos emitidos por el Backoffice: `ParameterChanged`, `ModelProviderChanged`, `EvaluatorActivated`, `GlobalRead`. Lectura: `GET /api/users/audit` y `GET /api/users/audit/{id}` (ruteo del gateway `/api/{servicio}/**`), rol **ADMIN**, paginación `offset`/`limit` (def. 50, máx 100), respuesta `{items, total, nextOffset}`.
 
 ### RF-AUD-01 — Registro de acciones administrativas
 
@@ -363,7 +363,7 @@ Las operaciones administrativas sensibles del Backoffice (cambios de parámetros
 
 ### RF-AUD-02 — Datos mínimos de auditoría
 
-Los eventos de auditoría que el Backoffice emite contienen, como mínimo: evento, actor, rol, fecha/hora, operación, recurso, resultado, motivo cuando aplique y correlation ID. El schema se acordó con Tema 01 (envelope estándar + `role`, topic `audit.events` v1).
+Los eventos de auditoría que el Backoffice emite contienen, como mínimo: evento, actor, rol, fecha/hora, operación, recurso, resultado, motivo cuando aplique y correlation ID. El schema se acordó con Tema 01 (envelope estándar + `role`, topic `identity.audit.events` v1).
 
 ### RF-AUD-03 — Acciones que el Backoffice debe auditar
 
@@ -1016,12 +1016,12 @@ Los eventos deberán incluir (estándar **Drive oficial**):
 |---|---|---|---|
 | `sistema.notificaciones` | **VENCIMIENTO_DATOS_ACADEMICOS** (+ avisos a confirmar con T11) | Publica | `notificaciones` |
 | config del Backoffice *(nombre a fijar en G1)* | `CAMBIO_CONFIGURACION_GLOBAL` (antes `GlobalConfigurationChanged`) | Publica | `challenges`, `roadmap`, `market`… |
-| `audit.events` (v1) | eventos de auditoría (RF-AUD-*) | Publica | `audit` |
+| `identity.audit.events` (v1) | eventos de auditoría (RF-AUD-*) | Publica | `audit` |
 | `identity.audit` | AdminCreated, AdminDeleted, AdminRecoveryExecuted, RoleChanged | Publica (T01) | `audit`, `reporting`… |
 | `retention.events` | RetentionDecisionCreated, DataAnonymized | Publica (T01) | `audit`, `reporting`… |
-| `cursos.ciclo-vida` | NUEVO_CURSO_DISPONIBLE, CURSO_EN_RIESGO, CURSO_ARCHIVADO, matrícula | **Consume** | `reporting` |
-| `desafios.resultados` | **hecho único T03** (resultado de desafío, XP/monedas y desglose) | **Consume** | `reporting` |
-| `economy.transactions` / `survey.events` / `ranking.events` / `sandbox.events` | eventos de otros equipos | **Consume** | `reporting` |
+| `courses.events` | NUEVO_CURSO_DISPONIBLE, CURSO_EN_RIESGO, CURSO_ARCHIVADO, matrícula | **Consume** | `reporting` |
+| `challenges.events` | **hecho único T03** (resultado de desafío, XP/monedas y desglose) | **Consume** | `reporting` |
+| `accounting.events` / `survey.events` / `ranking.events` / `sandbox.events` | eventos de otros equipos | **Consume** | `reporting` |
 
 Cada **consumer group** pertenece a un consumidor (un servicio). **Idempotencia por `event_id` y por `version`** (el consumidor descarta `v ≤ local`). Los **read models de Reporting se reconstruyen vía contratos de lectura REST** (no dependen del historial del broker). Los consumidores de parámetros usan **caché local con TTL 10 min** que el evento invalida antes (respaldo ante caída del Backoffice).
 
@@ -2356,7 +2356,7 @@ El equipo de BackOffice no debe implementar el frontend administrativo salvo que
 
 ### 4. Autorización y auditoría (contrato cerrado con T01)
 - **Auth/autorización:** el gateway (T01) valida el token y propaga contexto (`X-User-Id`, `X-User-Roles`, `X-Principal-Type`, `traceparent`, `X-Request-Id`); la autorización se decide **localmente** en cada microservicio con `@PreAuthorize` sobre el rol propagado (no hay endpoint REST de autorización).
-- **Auditoría:** el Backoffice emite eventos en `audit.events` (v1) con el envelope estándar + `role`; T01 los persiste. Lectura: `GET /api/users/audit` (ADMIN, paginado).
+- **Auditoría:** el Backoffice emite eventos en `identity.audit.events` (v1) con el envelope estándar + `role`; T01 los persiste. Lectura: `GET /api/users/audit` (ADMIN, paginado).
 
 ### 5. Retención (contrato cerrado con T01)
 - El Backoffice **no purga por su cuenta**; alinea sus read models al recibir `DataAnonymized`/`RetentionDecisionCreated` (payload con `entityType`/`entityId`). Lectura opcional de política: `GET /api/users/retention/*`.

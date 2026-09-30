@@ -19,27 +19,27 @@ Broker elegido: **Kafka** (ADR-003). **RabbitMQ** queda como alternativa. Mismos
 - **`eventVersion`**: versión del **contrato del evento** (evolución del schema). No es la versión de negocio del payload.
 - **Serialización (T11):** `JsonSerializer`/`JsonDeserializer` + `spring.json.trusted.packages` + consumer tipado `EventEnvelope<Payload>`.
 - **`correlationId` / `actorId` / `role` → dentro del `payload`** (trazabilidad y auditoría; a confirmar formalmente con T01/T11). No viajan en el body.
-- **Regla de topics:** **no se crean topics nuevos — se registran con T11 (G1).** Topics a registrar: `administration.events` (config), `audit.events`, `administration.events.DLT` (DLT).
-- Backoffice emite a **`system.notifications`**: **`ACADEMIC_DATA_EXPIRING`** `{cohortId, courseName, closingDate, expirationDate, daysRemaining}` (preaviso de retención, PAR-16/17).
+- **Regla de topics:** **no se crean topics nuevos — se registran con T11 (G1).** Topics a registrar: `administration.events` (config), `identity.audit.events`, `administration.events.DLT` (DLT).
+- Backoffice emite a **`notifications.events`**: **`ACADEMIC_DATA_EXPIRING`** `{cohortId, courseName, closingDate, expirationDate, daysRemaining}` (preaviso de retención, PAR-16/17).
 
-> La auditoría se publica en `audit.events` (T01 persiste); nombre/topic a confirmar con T11 en G1/G4. Nuestros eventos de configuración (`GLOBAL_CONFIGURATION_CHANGED`, `PARAMETER_CHANGED`, `MODEL_PROVIDER_CHANGED`) **quedan en inglés** y su topic de emisión se fija/registra en G1.
+> La auditoría se publica en `identity.audit.events` (T01 persiste); nombre/topic a confirmar con T11 en G1/G4. Nuestros eventos de configuración (`GLOBAL_CONFIGURATION_CHANGED`, `PARAMETER_CHANGED`, `MODEL_PROVIDER_CHANGED`) **quedan en inglés** y su topic de emisión se fija/registra en G1.
 
 ## Topics y particiones
 
 | Topic | Eventos | Rol Backoffice | Partición |
 |---|---|---|---|
-| `system.notifications` | **ACADEMIC_DATA_EXPIRING** (+ avisos T11 a confirmar) | **Publica** | por `cohortId` |
-| `challenges.results` | **hecho único T03** (resultado de desafío, XP/monedas y desglose) | **Consume** (read models engagement) | por `courseId` |
-| `courses.lifecycle` | COURSE_CREATED, COURSE_ACTIVATED, COURSE_ARCHIVED, ROSTER_UPDATED | **Consume** (lectura) | por `courseId` |
-| `audit.events` (v1) | auditoría RF-AUD-* | **Publica** (T01 persiste) | por `actorId` (header) |
+| `notifications.events` | **ACADEMIC_DATA_EXPIRING** (+ avisos T11 a confirmar) | **Publica** | por `cohortId` |
+| `challenges.events` | **hecho único T03** (resultado de desafío, XP/monedas y desglose) | **Consume** (read models engagement) | por `courseId` |
+| `courses.events` | COURSE_CREATED, COURSE_ACTIVATED, COURSE_ARCHIVED, ROSTER_UPDATED | **Consume** (lectura) | por `courseId` |
+| `identity.audit.events` (v1) | auditoría RF-AUD-* | **Publica** (T01 persiste) | por `actorId` (header) |
 | `identity.audit` | AdminCreated/Deleted, AdminRecoveryExecuted, RoleChanged | Tema 01; payloads **pendientes de contrato** | por `actorId` |
 | `retention.events` | RetentionDecisionCreated, DataAnonymized | Tema 01; payload acordado, schema externo **pendiente** | por `courseId` |
-| `economy.transactions` | **ACCOUNT_BALANCE_CHANGED** (saldo por alumno/curso) | **Consume** (frescura; REST para replay) | por `courseId` |
+| `accounting.events` | **ACCOUNT_BALANCE_CHANGED** (saldo por alumno/curso) | **Consume** (frescura; REST para replay) | por `courseId` |
 | `sandbox.events`, `survey.events`, `ranking.events` | eventos de los Temas 10/02 | **Consume** (lectura) | por `courseId` |
 
-> **Topics a registrar con T11 (G1):** `administration.events` (config del Backoffice), `audit.events`, `administration.events.DLT` (DLT). **No se crean topics nuevos sin T11.**
+> **Topics a registrar con T11 (G1):** `administration.events` (config del Backoffice), `identity.audit.events`, `administration.events.DLT` (DLT). **No se crean topics nuevos sin T11.**
 > **T08 (Banco):** además del **REST** (`/api/bank/**`) para replay/inicial, **nos suscribimos** al evento de actualización de saldo por alumno/curso (nombre/payload a confirmar con Banco; naming alineado con la lista de canales que publica **T11**).
-> **T03 (Desafíos):** ingesta por **eventos** (`challenges.results` — hecho único), no por endpoints de agregación (acordado con T03).
+> **T03 (Desafíos):** ingesta por **eventos** (`challenges.events` — hecho único), no por endpoints de agregación (acordado con T03).
 
 Cada **consumer group** pertenece a un consumidor. Idempotencia por `event_id` y `version` (descarta `v <= local`). Los read models se reconstruyen vía **contratos de lectura (REST)**. **Frescura de lectura ≤ 15 min** (decisión de arquitectura).
 
@@ -73,19 +73,19 @@ Al recibir `DataAnonymized`/`RetentionDecisionCreated` (payload `entityType`/`en
 ```text
 Backoffice (Tema 12)
   │ EventoDTO{eventId, eventType, timestamp, producer: "tema-12-backoffice-service", payload}
-  │   config → topic a registrar con T11 (G1) · ACADEMIC_DATA_EXPIRING → system.notifications
-  │   auditoría → audit.events (T01 persiste)
+  │   config → topic a registrar con T11 (G1) · ACADEMIC_DATA_EXPIRING → notifications.events
+  │   auditoría → identity.audit.events (T01 persiste)
   ▼
 Kafka
   ├──► Temas 03/05/07/08/10 (consumen la configuración)
-  └──► Tema 01 — persiste auditoría (audit.events)
+  └──► Tema 01 — persiste auditoría (identity.audit.events)
 ```
 
 ```text
 Temas 02/03/05/07/08/10
   │ eventos de cohorte, resultados de desafíos, encuestas, práctica, evaluación, banco, roadmap
   ▼
-Kafka (topics de cada tema: courses.lifecycle, challenges.results, …)
+Kafka (topics de cada tema: courses.events, challenges.events, …)
   ▼
 Reporting & Analytics Service (consumer group: reporting → read models)
 ```
