@@ -1,6 +1,6 @@
 # Sprint 2 · CP0 — Confirmación y arranque (mensaje para el grupo)
 
-> **Paquete:** `sprint2 (2)` — plan corregido y auditado. Para tomarlo como DEFINITIVO solo faltan las 3 decisiones de abajo y el arranque de CP0.
+> **Paquete:** **`plan/sprint2/`** — plan corregido y auditado (canónico). Las 3 decisiones ya están tomadas y la alineación a Skill Hub quedó aplicada (AGENTS.md, seed V24, `ParameterValueRules`, contrato maestro con revisión propuesta). Lo que falta es **arrancar el CP0** (acciones abajo).
 > **Actualización contratos (Skill Hub):** la mayoría de los contratos ya están publicados en el Skill Hub (los listo en §2). Por eso los C-tasks son en su mayoría **leer + firmar** (no "enviar solicitud" a ciegas); solo T02 y T10 siguen sin publicar.
 
 ---
@@ -79,11 +79,14 @@
 
 ---
 
-## 5 · Confirmación (lo que queda)
+## 5 · Confirmación (lo que queda — acciones del grupo, no decisiones)
 
-Las **3 decisiones ya están tomadas** (R-1 = 🟡 AMARILLO · R-2 = mínimo 3 · P-12 = Backoffice). Lo que falta para dejar el plan cerrado:
+Las **decisiones y la alineación a Skill Hub ya están resueltas** (R-1 = 🟡 AMARILLO · R-2 = mínimo 3 · P-12 = Backoffice; seed V24 + `ParameterValueRules` en PR #56; catálogo US-15 corregido: "Uso del tutor IA" no-disponible). Lo que falta es **arrancar el CP0**:
 - Cada dev **valida su `dev-XX.md`** (checklist del punto 3) y responde ✅ en el canal.
 - Enviar los **contratos C1, C2, C3, C5, C6, C8, C9** (§2).
 - Ana corrige **Taiga** y crea el esqueleto de la **wiki de G06**.
+- **PR #54** (`release/v1.0.0 → main`): merge + tag `v1.0.0` + back-merge a `develop`.
+- **PR #56** (alineación Skill Hub): revisión + merge.
+- **S2-00 (Luciano):** PR de contratos compartidos en el **CP1**.
 
 Con eso el plan queda **definitivo** y arranca el Sprint 2.
