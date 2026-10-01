@@ -181,7 +181,7 @@ T03, T05, T08 y T10 leen `GET /api/backoffice/parameters/{key}` con el scope `ba
 |---|---|---|---|---|
 | #3512 | Guards: **la rama ya está pusheada** (`feature/tema-12-admin-route-guards`, `8c2c82e`); solo falta abrir la PR y avisar a los dueños de las partes 03, 04, 06, 10 y 14 | Máximo | S | Antes decía "pushear `ecae5fd`" |
 | #291 | Badge de frescura: **ya está re-aplicado con los fixes de la review** en `feature/mvp-s7-ingestion-ui` (`d175ca1`). Abrir la PR a `develop` y dejar el componente reutilizable para los reportes (§6.3) | Valentina | S | Antes decía "rehacer" |
-| #1657 | Estado de 2FA y sesión | Regina | S | Gate T01 |
+| #1657 | Estado de 2FA y sesión | Luciano | S | Gate T01. Pasó de Regina a Luciano en el reparto pareja (ya reasignada en Taiga el 01/10) |
 | 05-N1 | Migrar las partes 01, 02, 04 y 06 de `/api/administration` y `/api/reports` a `/api/backoffice/...` (hoy en `admin-api-url.ts`) y retirar el parche de `proxy.conf.backoffice-gateway.cjs`. **Los alias viejos del backend no se borran en el S2** (otros equipos pueden seguir leyendo por ahí) | Luciano | M | — |
 | 05-N2 | Dashboard: ocultar accesos no permitidos a GESTOR y PROFESSOR | Valentina | S | — |
 | 05-N3 | Specs de guards y de la vista de solo lectura | Mateo | M | — |

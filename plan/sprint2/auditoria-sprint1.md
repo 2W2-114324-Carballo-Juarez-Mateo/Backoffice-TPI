@@ -146,13 +146,13 @@ La PR #54 `release/v1.0.0 → main` (Damián) está **abierta**, mergeable, con 
 | #284 | Indicador de deriva y banner | **Joaquín** | **Valentina** (la propuesta la reasignó: falta actualizar Taiga) |
 | #286 | Documentar evaluación, PAR-14 y deriva | Bruno | Bruno (gate C1) |
 | #291 | Badge de frescura | Valentina | Valentina (solo PR) |
-| #1657 | 2FA y sesión | Regina | Regina (gate T01) |
-| #3331 | Parámetros de solo lectura para PROFESOR | Bruno | Bruno |
+| #1657 | 2FA y sesión | Regina | **Luciano** (gate T01; ya reasignada en Taiga el 01/10) |
+| #3331 | Parámetros de solo lectura para PROFESOR | Bruno | **Damián** (reparto pareja) |
 | #3512 | Guards de rutas | Máximo | Máximo (solo PR) |
 | #3537 | Casos del golden set → **fachada del perfil** | Joaquín | Joaquín (gate C1) |
 | #3538 | Pantalla de casos → **pantalla del perfil** | Joaquín | Joaquín (gate C1) |
 | #3539 | Corridas y MAE → **fachada de corridas** (el MAE lo calcula T07) | Bruno | Bruno (gate C1) |
-| #3540 | Pantalla de corridas | Bruno | Bruno (gate C1) |
+| #3540 | Pantalla de corridas | Bruno | **Mateo** (gate C1; reparto pareja) |
 
 > Las #3537 y #3539 tienen títulos que ya no corresponden (hablan de implementar casos y calcular MAE en el Backoffice). Renombrarlas en Taiga para que nadie las implemente como en la rama S6.
 
