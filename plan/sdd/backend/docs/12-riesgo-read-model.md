@@ -2,6 +2,8 @@
 
 > Tarea: **#307** (documentación) · Historia: **HU11 #25** · Fuente: `tareas-sprint2.md` §6.1 ·
 > Código: #303/#304 (Damián) · #305 (Valentina) · #306 (Regina) · #308 (Máximo).
+> **Estado:** diseño acordado por el grupo; el código está en curso (#303–#312), nada de esto está
+> todavía en `develop`.
 
 ## Objetivo
 
@@ -99,17 +101,33 @@ la migración V19 (CP2); este documento fija la estructura acordada.
    `reporting.risk.lives-exhausted.enabled=false`.
 3. **RLS (#311, Máximo):** `V20` con `ENABLE` **y** `FORCE ROW LEVEL SECURITY`; `TenantContext`
    (`SET LOCAL app.current_course`); guardia anti-comparación.
+   - **Requisito de rol de aplicación:** `ENABLE` + `FORCE` no protegen si la app se conecta como
+     superusuario (el default `postgres` en dev, prod y compose ignora RLS siempre). La aplicación
+     debe conectarse con un **rol sin `SUPERUSER` ni `BYPASSRLS`**; `FORCE` solo alcanza al dueño de
+     la tabla. Los tests de RLS deben correr con ese rol (el usuario por defecto de Testcontainers es
+     superusuario y no ejercitaría la política).
+   - El **ADMIN** ve todo con `app.current_course = 'ALL'` (ver `docs/02-arquitectura.md`).
 4. **Panel (#310, Regina) / semáforo FE (#313, Luciano):**
    `GET /api/backoffice/reports/courses/{courseId}/teacher` con alumnos, semáforo (color + texto),
    factores y "muestra insuficiente"; `DataFreshnessDto`; < 2 s.
 5. **Alerta (#312, Damián):** `STUDENT_AT_HIGH_RISK` por `DomainEventOutbox` **solo en la transición
-   a RED** (misma transacción que el recálculo) a `notifications.events` (payload con IDs, sin PII).
+   a RED** (misma transacción que el recálculo) a `notifications.events`.
+   - **Alineación con el contrato publicado** (`docs/Contracts/CONTRATOS_JSON.md` §2.3): el evento
+     envía `eventType: STUDENT_AT_HIGH_RISK` con `riskLevel: "CRITICO_ROJO"` (el estado RED de esta
+     regla), `inactivityDays`, `failedAttemptsRate` (**fracción 0–1**, p. ej. `0.85`) y
+     `suggestedAction`. La solicitud a T11 (`CONTRATOS_T11_SOLICITUD.md`) lista solo
+     `courseId`, `studentId`, `riskLevel`.
+   - **Pendientes de coordinar con T11 (C1/C2):** payload definitivo (IDs sin PII vs los campos del
+     ejemplo), y la **escala** de `failedAttemptsRate` (fracción) frente a los umbrales de
+     `reporting.risk.*` que están en **porcentaje** (60/40/70) — comparar una fracción contra 60
+     nunca dispara RED si no se normaliza.
 
 > **Sin padrón (T02) no se ven los inactivos que nunca actuaron:** sin eventos no hay fila. El
 > padrón de T02 es ruta crítica (§3 del plan).
 
 ## Referencias
 
-- `tareas-sprint2.md` §6.1 (HU11) · `dev-03.md` (#303/#304) · `dev-05.md` (#305) · `dev-07.md`
-  (#306) · `revision-pr.md` (checklist) · `correcciones-propuesta.md` (R-1, R-2, P-12).
+- Las referencias de plan (`tareas-sprint2.md` §6.1, `dev-03.md`, `dev-05.md`, `dev-07.md`,
+  `revision-pr.md`, `correcciones-propuesta.md`) viven en el **repo de documentación del grupo**
+  (`plan/sprint2/`), no en este repo.
 - Taiga: #303, #304, #305, #306, #307, #308, #310, #311, #312, #313.
