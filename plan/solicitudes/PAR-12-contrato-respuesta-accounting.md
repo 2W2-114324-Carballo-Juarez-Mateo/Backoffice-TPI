@@ -69,13 +69,14 @@ A continuación quedan definidos los puntos del contrato de PAR-12 consultados p
 **5. Consumo vía API Gateway**
 
 - Endpoint: `GET /api/backoffice/parameters/PAR-12`.
-- Headers de servicio requeridos:
+- **Headers que inyecta el Gateway** (derivados del token M2M; el cliente no los envía):
   - `X-Principal-Type: service`
-  - `X-Service-Id: <identificador canónico de Accounting>`
-  - `X-Service-Scopes: MS`
-  - `traceparent` y `X-Request-Id` (trazabilidad)
-- Scope de lectura: `backoffice.parameters.read`.
-- El contrato publicado hoy referencia el consumo de PAR-12 con `X-Service-Id: tema-08-banco`. Pedimos **confirmar el identificador canónico** que enviará Accounting, para que la autorización coincida en Backoffice.
+  - `X-Service-Id`: el `client_id` del token M2M de Accounting (claim `sub` del JWT)
+  - `X-Service-Scopes`: `MS,<scope>` (roles + scopes, sin espacios)
+  - `traceparent` y `X-Request-Id`
+- **Scope de lectura**: `backoffice.parameters.read` (o el nombre final que users-service asigne al client de Accounting). El Gateway propaga el `scope` del token tal cual.
+- **`aud` del token**: el token M2M debe declarar `aud` = el serviceId de Backoffice en Eureka (a fijar; probablemente `backoffice-service`); si no coincide, el Gateway responde `403 INVALID_AUDIENCE`.
+- **A coordinar con Accounting**: que su **client M2M** esté registrado en users-service, confirmar su `client_id`, y que pueda solicitar el token con el `scope` y el `aud` indicados.
 
 **6. Verificación extremo a extremo**
 

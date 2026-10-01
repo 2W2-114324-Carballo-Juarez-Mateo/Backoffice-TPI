@@ -22,7 +22,7 @@ El Gateway debe propagar el scope **`backoffice.parameters.read`** (Backoffice l
 ```
 X-Principal-Type: service
 X-Service-Id: <id de Accounting>
-X-Service-Scopes: MS, <scope>
+X-Service-Scopes: MS,<scope>
 traceparent: <traceparent-w3c>
 X-Request-Id: <uuid-o-correlacion>
 ```
