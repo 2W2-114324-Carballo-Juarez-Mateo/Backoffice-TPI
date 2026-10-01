@@ -105,11 +105,11 @@
 
 ## 5 · Flyway (renumerado)
 
-`develop` todavía no tiene las migraciones de la release v1.0.0. Esa release (PR #58) trae **`V18__update_source_contract_topics.sql`**, que corrige los topics del registro de contratos, así que **el V21 de Joaquín queda obsoleto**. La PR #56 de Mateo usa **V24**.
+**El back-merge de la release v1.0.0 (PR #58) ya se mergeó a `develop` el 30/09** (fix C1 del outbox, **`V18__update_source_contract_topics.sql`** y pom 1.0.0), así que **el V21 de Joaquín queda obsoleto**. La PR #56 de Mateo usa **V24** (sobre el `develop` ya sincronizado).
 
 | Versión | Contenido | Dueño |
 |---|---|---|
-| **V18** | Ya existe en la release (topics del registro de contratos). **Se mergea primero la PR #58** | Mateo |
+| **V18** | Ya en `develop` (topics del registro de contratos, vía PR #58) | Mateo |
 | **V19** | Read model de cohorte | Damián |
 | **V20** | RLS de reporting (sobre V19) | Máximo |
 | **V21** | Plantillas de reportes (US-15) | Joaquín |
