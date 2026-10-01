@@ -6,6 +6,15 @@
 
 > **Etiquetas de tipo de trabajo** (para cargar en Taiga, una o más por tarea): Backend · Frontend · Testing · Base de Datos · DevOps · Documentación · Análisis · Diseño / UX-UI · Integración · Configuración · Seguridad · Investigación · Gestión · Otro. Criterio completo e índice maestro en `etiquetas-tareas.md`.
 
+## PRs de Mateo — estado (1/10)
+
+| PR | Qué | Estado | Falta para mergear |
+|---|---|---|---|
+| **PR #56** | PAR-14 / PAR-12 y alineación con Skill Hub (rama `feature/docs-params-skillhub`) | **Abierta y sincronizada** con `develop` (`state=clean`, ahead=6, base `10098ad`) | Review de Damián; confirmar con T07 el rename `promedio → average` |
+| **#276** | Modal de conmutación (rama `feature/tema-12-model-switch-modal`) | **Implementada** · `npm run verify` en verde (226 archivos / 2204 tests) | Push + abrir PR; testean Luciano/Valentina, revisa Joaquín |
+
+> **DoD PR:** `npm run verify` en verde pegado en la PR · PR revisada según la matriz · Taiga movida por vos · OpenAPI y `docs/` al día en la misma PR.
+
 ## Núcleo
 
 | ID | Tarea | Capa | Líneas | CP | Etiquetas |
