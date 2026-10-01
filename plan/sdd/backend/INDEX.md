@@ -27,6 +27,7 @@
 | Diseño general por épica e historias (14 UH) | `docs/11-epicas-historias.md` + repo `plan/sprint0/uh/` |
 | Propuestas de tareas (detalle técnico por dominio, mapeado a épicas) | `tareas/01..05` (administración, parámetros, proveedor LLM, contratos, reportes) |
 | Reportes, métricas, exportación | `docs/09-despliegue.md` + `skills/SKILL-reporting.md` (si existe) |
+| Riesgo por cohorte y read model (HU11) | `docs/12-riesgo-read-model.md` |
 | Compilar, testear, docker | `skills/SKILL-build-test.md` + `skills/SKILL-despliegue.md` |
 | Reglas que NUNCA se deben violar | `rules/RULES-invariantes.md` (leer siempre) |
 
