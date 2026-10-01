@@ -1,7 +1,7 @@
 # Registro de Parámetros Globales (PAR) — Backoffice (Tema 12)
 
 > **Registro único** de los parámetros de configuración global del Backoffice. El registro es **genérico y extensible** (`key` + `value` jsonb + `version`), versionado y con cambios **solo hacia adelante** (RF-CFG-06). La modificación es **exclusiva de ADMIN** (RF-CFG-05) y se propaga por evento (**`EventEnvelope<T>` de 6 campos** de T11/cátedra, `producer = tema-12-backoffice-service`) vía Outbox + caché TTL 10 min en consumidores.
-> **Dueño de TODOS los PAR-01..24: el Backoffice** (contratos publicados en Skill Hub, `backoffice-global-parameters-contract` v1). Los demás temas son **consumidores**: T03 deriva los montos de XP (PAR-01) y emite el monto ya resuelto; T08/T09/T01 **leen** PAR-12/PAR-03-06-07/PAR-24 de nosotros. **No hay PAR "externos"** (antes se marcaron EXTERNOS PAR-03/06/07 de T09, PAR-12 de T08 y PAR-24 de T01 por error): el seed del Backoffice debe incluirlos (pendiente de migración).
+> **Dueño de TODOS los PAR-01..24: el Backoffice** (contratos publicados en Skill Hub, `backoffice-global-parameters-contract` v1). Los demás temas son **consumidores**: T03 deriva los montos de XP (PAR-01) y emite el monto ya resuelto; T08/T09/T01 **leen** PAR-12/PAR-03-06-07/PAR-24 de nosotros. **No hay PAR "externos"** (antes se marcaron EXTERNOS PAR-03/06/07 de T09, PAR-12 de T08 y PAR-24 de T01 por error): el seed del Backoffice ya los incluye (**V24**, mergeada).
 
 ## PAR-01..PAR-18 — Confirmados (tabla del PRD, RF-CFG-04)
 
@@ -61,7 +61,7 @@
 | 🟡 CANDIDATO | Deducido, a validar con la cátedra | PAR-19..20, PAR-22, PAR-23, PAR-25 |
 | ⚪ SUSPENDIDO | Candidato sin respaldo en el PRD, depende de otro dominio | PAR-21 |
 
-> **Consumidores (matriz Skill Hub):** PAR-03/06/07 → T09 · PAR-12 → T08 · PAR-24 → T01 · PAR-16/17 → T01 · PAR-18 → T02 · PAR-01/08/09 → T10 · PAR-04/05/19/20 → T05 · PAR-02/05/10/11/14/15/22 → T07 · PAR-01/02/03/04/05/13 → T03. **Todos los PAR son del Backoffice** (dueño/seed); el seed debe completarse (migración pendiente: PAR-03/06/07/12/24 y clave `average` de PAR-14). **PAR-25 (CANDIDATO):** plazo máximo de corrección/vencimiento de intento, propuesto por T03.
+> **Consumidores (matriz Skill Hub):** PAR-03/06/07 → T09 · PAR-12 → T08 · PAR-24 → T01 · PAR-16/17 → T01 · PAR-18 → T02 · PAR-01/08/09 → T10 · PAR-04/05/19/20 → T05 · PAR-02/05/10/11/14/15/22 → T07 · PAR-01/02/03/04/05/13 → T03. **Todos los PAR son del Backoffice** (dueño/seed); el seed ya está completo (**V24**: PAR-03/06/07/12/24 sembrados y PAR-14 con clave `average`). **PAR-25 (CANDIDATO):** plazo máximo de corrección/vencimiento de intento, propuesto por T03.
 
 > Detalle de la justificación de los candidatos: `sprint0/PAR-19-23-justificacion.md`.
 > Modelo de datos: `GlobalParameter` (`param_key` único, `value` jsonb, `version`, `updated_by/at`) — `sdd/backend/docs/04-modelo-datos.md`.

@@ -2,7 +2,7 @@
 
 > **Fuente única de verdad** del estado de los contratos de integración. Cada contrato indica: tema, relación (consumimos / proveemos), estado y dónde está definido. Las solicitudes viven en `plan/solicitudes/`. Los detalles acordados con **T01** están consolidados abajo; el resto quedan **pendientes**.
 >
-> **✅ Estándar de eventos CERRADO (T11/cátedra, 2026-09):** **`EventEnvelope<T>{eventId (UUID), eventType, eventVersion (int), timestamp, producer, payload (T)}`** (6 campos; `correlationId/actorId/role` → **dentro del `payload`**). **Todo en inglés.** `producer` = `spring.application.name` → **`tema-12-backoffice-service`**. **No se crean topics nuevos: se registran con T11.** Backoffice emite `ACADEMIC_DATA_EXPIRING` → `system.notifications`. Queda coordinar con cada tema: **registrar nuestros topics** (config/auditoría/DLT) con T11 (G1), payloads por evento y confirmación del producer.
+> **✅ Estándar de eventos CERRADO (T11/cátedra, 2026-09):** **`EventEnvelope<T>{eventId (UUID), eventType, eventVersion (int), timestamp, producer, payload (T)}`** (6 campos; `correlationId/actorId/role` → **dentro del `payload`**). **Todo en inglés.** `producer` = **`tema-12-backoffice-service`** (constante del contrato, independiente de `spring.application.name` = `backoffice-service`). **No se crean topics nuevos: se registran con T11.** Backoffice emite `ACADEMIC_DATA_EXPIRING` → `system.notifications`. Queda coordinar con cada tema: **registrar nuestros topics** (config/auditoría/DLT) con T11 (G1), payloads por evento y confirmación del producer.
 
 ## Estado por tema
 
@@ -108,7 +108,7 @@
 | `correlationId/actorId/role` | **Dentro del `payload`** (trazabilidad/auditoría; a confirmar formalmente con T01/T11) |
 | Idioma | **Todo en inglés** (literal del PDF de T11) |
 | `eventType` | Inglés SCREAMING_SNAKE_CASE (`CHALLENGE_COMPLETED`, `ACADEMIC_DATA_EXPIRING`…) |
-| `producer` | `spring.application.name` (Backoffice: **`tema-12-backoffice-service`**) |
+| `producer` | constante **`tema-12-backoffice-service`** (independiente de `spring.application.name` = `backoffice-service`) |
 | `timestamp` | ISO 8601 UTC |
 | Topics | Inglés (v3, T11): `challenges.events` · `courses.events` · `notifications.events` · `accounting.events` · `identity.audit.events`… |
 | Serialización | `JsonSerializer`/`JsonDeserializer` + `spring.json.trusted.packages` + consumer tipado `Event<Payload>` |
@@ -140,7 +140,7 @@
 
 ## Convenciones transversales (aplican a todos)
 
-- **Envelope estándar (T11/cátedra):** **`EventEnvelope<T>{eventId (UUID), eventType, eventVersion (int), timestamp, producer, payload (T)}`** (genérico, payload tipado). `correlationId/actorId/role` → **dentro del `payload`**. **Todo en inglés**. `producer = spring.application.name` (**`tema-12-backoffice-service`**).
+- **Envelope estándar (T11/cátedra):** **`EventEnvelope<T>{eventId (UUID), eventType, eventVersion (int), timestamp, producer, payload (T)}`** (genérico, payload tipado). `correlationId/actorId/role` → **dentro del `payload`**. **Todo en inglés**. `producer` = **`tema-12-backoffice-service`** (constante del contrato, independiente de `spring.application.name` = `backoffice-service`).
 - **Topics (v3, T11):** en inglés (`challenges.events`, `courses.events`, `notifications.events`, `accounting.events`…), versionados. **No se crean topics nuevos: se registran con T11.** **Idempotencia:** `event_id` + versión.
 - **Rutas:** `/api/{servicio}/**`. **Frescura de lectura:** ≤ 15 min (decisión de arquitectura).
 - **Caché de parámetros en consumidores:** TTL 10 min + invalidación por evento.

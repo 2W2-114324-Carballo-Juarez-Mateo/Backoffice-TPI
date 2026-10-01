@@ -15,7 +15,7 @@ Broker elegido: **Kafka** (ADR-003). **RabbitMQ** queda como alternativa. Mismos
 }
 ```
 
-- **6 campos** (todos obligatorios) y nada más en el body; es el genérico **`EventEnvelope<T>`** con **payload tipado** (`eventId` UUID · `eventType` · `eventVersion` int · `timestamp` · `producer` · `payload`). **Todo en inglés.** `producer` = `spring.application.name` (**`tema-12-backoffice-service`**).
+- **6 campos** (todos obligatorios) y nada más en el body; es el genérico **`EventEnvelope<T>`** con **payload tipado** (`eventId` UUID · `eventType` · `eventVersion` int · `timestamp` · `producer` · `payload`). **Todo en inglés.** `producer` = **`tema-12-backoffice-service`** (constante del contrato de eventos, independiente de `spring.application.name`, que es `backoffice-service`).
 - **`eventVersion`**: versión del **contrato del evento** (evolución del schema). No es la versión de negocio del payload.
 - **Serialización (T11):** `JsonSerializer`/`JsonDeserializer` + `spring.json.trusted.packages` + consumer tipado `EventEnvelope<Payload>`.
 - **`correlationId` / `actorId` / `role` → dentro del `payload`** (trazabilidad y auditoría; a confirmar formalmente con T01/T11). No viajan en el body.
