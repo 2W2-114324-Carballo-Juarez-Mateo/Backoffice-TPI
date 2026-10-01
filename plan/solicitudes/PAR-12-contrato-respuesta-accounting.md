@@ -5,8 +5,6 @@
 
 ---
 
-## 1 · Mensaje para T11 (para enviar)
-
 ### Respuesta de Backoffice (Tema 12) — Contrato del parámetro PAR-12
 
 A continuación quedan definidos los puntos del contrato de PAR-12 consultados por Accounting.
@@ -83,23 +81,3 @@ A continuación quedan definidos los puntos del contrato de PAR-12 consultados p
 
 - Backoffice verificará el endpoint (GET con headers de servicio) y el evento publicado (envelope con `paramKey`) mediante tests de integración.
 - La verificación completa contra el entorno real (Gateway + credenciales de servicio) depende de la infraestructura del Gateway; coordinaremos su ejecución cuando esté disponible.
-
----
-
-## 2 · Plan de ajustes — INTERNO (no se envía)
-
-| # | Ajuste | Tipo | Responsable (quién lo hizo) | Archivos |
-|---|---|---|---|---|
-| 1 | Publicador del evento: `key` → **`paramKey`** en el payload | Código | **Joaquín** (autor de `GlobalConfigurationChangedPayloadDto`/`ParameterChangeRecorderImpl`, US-01 T4 — su javadoc dice "PROVISIONAL") | `dtos/events/GlobalConfigurationChangedPayloadDto.java` · `services/impl/ParameterChangeRecorderImpl.java` (+ test) |
-| 2 | Validación PAR-12: `1 <= initialLives <= maxLives` → **`0 <= initialLives <= maxLives`** | Código | **Mateo** (autor de `ParameterValueRules`, PR #56) | `services/impl/ParameterValueRules.java` (+ test) |
-| 3 | Descripción de PAR-12: aclarar **alcance global** (no "por cada curso") | Documentación | **Mateo** (seed/descripción en V24 y `PARAMETROS.md`) | `V24__...sql` (solo texto de descripción) · `plan/PARAMETROS.md` · `docs/Contracts/CONTRATOS.md` |
-| 4 | Contrato publicado: payload `paramKey/value/version` + validación `0 <=` documentadas | Contrato (Skill Hub) | **Backoffice Tema 12** (Mateo mantiene la alineación) | `backoffice-global-parameters-contract` (propose_revision) · `backoffice-t08-banco-contract` |
-| 5 | Test de integración del evento (`paramKey`) y del GET con headers de servicio | Código (test) | **Mateo** (con OK de Joaquín por el #1) | IT nuevo en el back (Testcontainers) |
-| 6 | Confirmar `X-Service-Id`/scope con T11/T01 | Coordinación | **T11 + T01** (respuesta del punto 5 del mensaje) | — |
-
-**Notas:**
-
-- El **#1** toca código de Joaquín (regla de no pisar tareas ajenas): coordinarlo antes de implementar.
-- Los **#2 y #3** son 100% de Mateo.
-- El **#4** sale por `propose_revision` en Skill Hub (pendiente de admin).
-- El **#5** depende de que el #1 esté (para asertar `paramKey`).
