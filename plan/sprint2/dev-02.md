@@ -12,6 +12,8 @@
 |---|---|---|---|
 | **PR #56** | PAR-14 / PAR-12 y alineación con Skill Hub (rama `feature/docs-params-skillhub`) | **Abierta y sincronizada** con `develop` (`state=clean`, ahead=6, base `10098ad`) | Review de Damián; confirmar con T07 el rename `promedio → average` |
 | **#276** | Modal de conmutación (rama `feature/tema-12-model-switch-modal`) | **Implementada** · `npm run verify` en verde (226 archivos / 2204 tests) | Push + abrir PR; testean Luciano/Valentina, revisa Joaquín |
+| **#4522 (01-IT)** | IT de US-01 (rama `feature/tema-12-us-01-it`) | **Implementada** · commit `73a5696` | Push + abrir PR; requiere **V24 (PR #56) mergeado primero**; revisa Regina |
+| **#307** | Doc reglas de riesgo + read model (rama `feature/tema-12-riesgo-doc`) | **Implementada** (docs en back + workspace) · commit `a5f4b66` | Push + abrir PR |
 
 > **DoD PR:** `npm run verify` en verde pegado en la PR · PR revisada según la matriz · Taiga movida por vos · OpenAPI y `docs/` al día en la misma PR.
 
